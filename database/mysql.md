@@ -2,7 +2,7 @@
 
 =========================
 
-grant select on *.* to 'read_from_mysql'@'%' identified by '...';
+grant select on \*.\* to 'read_from_mysql'@'%' identified by '...';
 
 flush privileges;
 
