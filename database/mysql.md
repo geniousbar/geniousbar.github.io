@@ -2,7 +2,8 @@
 
 =========================
 
-grant select on *.* to 'read_from_mysql'@'%' identified by 'phantom_smart_huanteng';
+grant select on *.* to 'read_from_mysql'@'%' identified by '...';
+
 flush privileges;
 
 ===========================
