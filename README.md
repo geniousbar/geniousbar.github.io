@@ -3,8 +3,6 @@
 
 [mysql](database/mysql.md)
 
-[rails5](doc/01.2.md)
-
-[ruby](doc/01.3.md)
+[linux解压缩](ubuntu/tar.md)
 
 ===================
