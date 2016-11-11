@@ -9,7 +9,7 @@
 
 [linux解压缩](ubuntu/tar.md)
 
-[ruby神奇方法](ruby/magical.md)
+[ruby](ruby/magical.md)
 
 [Firefox](firefox/firefox.md)
 
