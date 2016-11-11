@@ -1,6 +1,6 @@
 ## 参考
 [性能测试之ab测试工具](http://www.makmong.com/1314.html)
-[性能测试之ab测试工具-mht](ubuntu/ab_test.mht)
+[性能测试之ab测试工具-mht](ab_test.mht)
 ### ab测试参数详解：
 ```
 -n 测试会话中所执行的请求个数,默认仅执行一个请求
