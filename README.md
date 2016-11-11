@@ -11,6 +11,8 @@
 
 [ruby神奇方法](ruby/magical.md)
 
+[Firefox](firefox/firefox.md)
+
 [安装gitlab-runner](ubuntu/install_gitlab_runner.md)
 
 ===================
