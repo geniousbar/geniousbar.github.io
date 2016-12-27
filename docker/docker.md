@@ -22,3 +22,12 @@ $ sudo apt-get update
 $ sudo apt-get install docker-engine
 
 ```
+### Docker导入和导出
+```
+Export命令用于持久化容器
+docker export <CONTAINER ID> > /home/export.tar
+Save命令用于持久化镜像
+docker save busybox-1 > /home/save.tar
+导入export.tar文件
+cat /home/export.tar | docker import - busybox-1-export:latest
+```
