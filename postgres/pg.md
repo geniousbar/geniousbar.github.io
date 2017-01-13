@@ -3,7 +3,7 @@
 SELECT date_trunc('minute', dd) :: TIMESTAMP
 FROM generate_series('2016-10-01' :: TIMESTAMP, '2016-12-31' :: TIMESTAMP, '10 minute' :: INTERVAL) dd;
 
-CREATE USER read_from_pg WITH ENCRYPTED PASSWORD 'phantom_smart_huanteng';
+CREATE USER read_from_pg WITH ENCRYPTED PASSWORD '...';
 GRANT CONNECT ON DATABASE test to read_from_pg;
 \c test
 GRANT USAGE ON SCHEMA public to read_from_pg;
