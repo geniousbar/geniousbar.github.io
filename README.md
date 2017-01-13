@@ -5,6 +5,8 @@
 
 [mysql](database/mysql.md)
 
+[postgres](postgres/pg.md)
+
 [linux](ubuntu/linux.md)
 
 [ab测试](ubuntu/ab_test.md)
