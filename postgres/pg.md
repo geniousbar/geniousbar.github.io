@@ -15,7 +15,12 @@ update empsalary set salary=9999 where empno=10;
 ```
 ### 幻腾pg表结构
 ```
+select column_name, data_type, character_maximum_length
+from INFORMATION_SCHEMA.COLUMNS where table_name = 'logs';
 
+INSERT into big_logs (id, time, ip, device_ip, teleport_addr,op_code, params, dir,device_online,teleport_online) (
+  SELECT * from logs where time > '2017-02-17 00:00:00'
+);
 
 create table big_logs (id bigint, time timestamp, ip inet, device_ip integer, teleport_addr integer, op_code varchar(255), params varchar(1024), dir integer, device_online boolean, teleport_online boolean)
 SELECT setval('big_logs_id_seq', 2147483646);
