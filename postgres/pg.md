@@ -13,3 +13,46 @@ GRANT SELECT ON ALL TABLES IN SCHEMA public TO read_from_pg;
 select * from empsalary;
 update empsalary set salary=9999 where empno=10;
 ```
+### 幻腾pg表结构
+```
+
+
+create table big_logs (id bigint, time timestamp, ip inet, device_ip integer, teleport_addr integer, op_code varchar(255), params varchar(1024), dir integer, device_online boolean, teleport_online boolean)
+SELECT setval('big_logs_id_seq', 2147483646);
+
+logs	index_logs_on_op_code	op_code
+logs	index_logs_on_teleport_addr	teleport_addr
+logs	index_logs_on_teleport_addr_and_time	teleport_addr
+logs	index_logs_on_teleport_addr_and_time	time
+logs	index_logs_on_time	time
+logs	logs_pkey	id
+
+CREATE INDEX index_big_logs_on_device_ip ON big_logs (device_ip);
+-- CREATE INDEX index_logs_on_teleport_addr ON big_logs (teleport_addr);
+CREATE INDEX index_big_logs_on_time ON big_logs (time);
+CREATE INDEX index_big_logs_on_time_and_device_ip ON big_logs (time, device_ip);
+CREATE INDEX index_big_logs_on_teleport_addr ON big_logs (teleport_addr);
+CREATE INDEX index_big_logs_on_time_and_teleport_addr ON big_logs (time, teleport_addr);
+CREATE INDEX big_logs_pkey ON big_logs (id);
+
+
+select
+ t.relname as table_name,
+ i.relname as index_name,
+ a.attname as column_name
+from
+ pg_class t,
+ pg_class i,
+ pg_index ix,
+ pg_attribute a
+where
+ t.oid = ix.indrelid
+ and i.oid = ix.indexrelid
+ and a.attrelid = t.oid
+ and a.attnum = ANY(ix.indkey)
+ and t.relkind = 'r'
+ and t.relname like '%big_logs%'
+order by
+ t.relname,
+ i.relname;
+```
