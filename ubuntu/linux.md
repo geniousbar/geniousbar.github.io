@@ -32,3 +32,28 @@ $ sudo umount /media/VBoxGuestAdditions
 # remove the mount folder
 $ sudo rmdir /media/VBoxGuestAdditions
 ```
+### Ubuntu增加虚拟内存
+```
+docker run --name caravel -d -p 8088:8088 amancevice/caravel
+docker exec -it caravel demo
+
+设置swappiness的值
+swappiness 可以具有介于 0 和 100 之间的值
+swappiness = 0 告诉内核尽可能长时间避免交换物理内存的过程
+swappiness = 100 告诉内核积极交换物理内存的进程，并将它们交换缓存移动
+
+cat /proc/sys/vm/swappiness
+
+sudo sysctl vm.swappiness=66
+
+sudo vi /etc/sysctl.conf
+文档的尾部追加:
+
+vm.swappiness=66
+
+增加虚拟内存
+dd if=/dev/zero of=/swap/swapadd bs=1024 count=2097152  # 2GB
+mkswap /swap/swapadd
+swapon /swap/swapadd
+/swap/swapadd none swap sw 0 0
+```
