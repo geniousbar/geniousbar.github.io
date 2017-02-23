@@ -41,14 +41,10 @@ docker exec -it caravel demo
 swappiness 可以具有介于 0 和 100 之间的值
 swappiness = 0 告诉内核尽可能长时间避免交换物理内存的过程
 swappiness = 100 告诉内核积极交换物理内存的进程，并将它们交换缓存移动
-
 cat /proc/sys/vm/swappiness
-
 sudo sysctl vm.swappiness=66
-
 sudo vi /etc/sysctl.conf
 文档的尾部追加:
-
 vm.swappiness=66
 
 增加虚拟内存
@@ -56,4 +52,12 @@ dd if=/dev/zero of=/swap/swapadd bs=1024 count=2097152  # 2GB
 mkswap /swap/swapadd
 swapon /swap/swapadd
 /swap/swapadd none swap sw 0 0
+
+关闭虚拟内存服务
+swapoff -v /swap/swapadd
+
+如果当前的虚存所在的磁盘空间不够，可以首先关闭虚存服务，将其移动到别的磁盘，再启用即可。
+swapoff -v /swap/swapadd
+mv /swap/swapadd /mnt/swap
+swapon /swap/swapadd
 ```
