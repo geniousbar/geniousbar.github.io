@@ -61,3 +61,14 @@ swapoff -v /swap/swapadd
 mv /swap/swapadd /mnt/swap
 swapon /swap/swapadd
 ```
+### supervisor使用
+```
+sudo pip install supervisor
+conf file: /etc/supervisord.conf
+$ supervisorctl status
+$ supervisorctl stop usercenter
+$ supervisorctl start usercenter
+$ supervisorctl restart usercenter
+$ supervisorctl reread
+$ supervisorctl update
+```
