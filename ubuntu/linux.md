@@ -74,3 +74,16 @@ $ supervisorctl restart usercenter
 $ supervisorctl reread
 $ supervisorctl update
 ```
+### linux手动释放内存
+```
+释放前最好sync一下，防止丢数据。
+cache释放：
+To free pagecache:
+echo 1 > /proc/sys/vm/drop_caches
+
+To free dentries and inodes:
+echo 2 > /proc/sys/vm/drop_caches
+
+To free pagecache, dentries and inodes:
+echo 3 > /proc/sys/vm/drop_caches
+```
