@@ -51,6 +51,8 @@ vm.swappiness=66
 dd if=/dev/zero of=/swap/swapadd bs=1024 count=2097152  # 2GB
 mkswap /swap/swapadd
 swapon /swap/swapadd
+
+change conf file /etc/fstab
 /swap/swapadd none swap sw 0 0
 
 关闭虚拟内存服务
