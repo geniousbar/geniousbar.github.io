@@ -31,3 +31,36 @@ docker save busybox-1 > /home/save.tar
 导入export.tar文件
 cat /home/export.tar | docker import - busybox-1-export:latest
 ```
+### Docker开发
+```
+mysql:
+  docker run --name mysql -p 3306:3306 -v /sun/docker_data/mysql:/sun -e MYSQL_ROOT_PASSWORD=sun -d mysql:latest
+  docker run -d --name mysql -v /tmp/db:/var/lib/mysql -p 3309:3306 -e MYSQL_ROOT_PASSWORD=sun mysql
+postgres:
+  docker run --name postgres -p 5432:5432 -v /sun/docker_data/postgres:/sun -e POSTGRES_PASSWORD=sun -d postgres:latest
+redis:
+  docker run -p 6379:6379 -v /sun/docker_data/redis:/sun -v /sun/docker_data/redis/redis.conf:/usr/local/etc/redis/redis.conf --name redis -d redis:latest redis-server /sun/redis.conf
+rails5:
+  docker run -t -i -p 3000:3000 -v /sun/phantom/rails5:/sun/rails5 --name rails5 -d rails:latest /bin/bash
+rails:
+  docker run -t -i -p 3000:3000 -v /sun:/sun --name rails -d rails:latest /bin/bash
+golang:
+  docker run -t -i -p 8899:8899 -v /sun/go:/go --name golang -d golang:latest /bin/bash
+gogs:
+  docker run -t -i -p 10022:22 -p 10080:3000 -v /sun/phantom/gogs:/data --name=gogs gogs/gogs
+birt:
+  docker run -t -i --name birt -p 9000:8080 -v /sun/birt:/var/lib/tomcat7/webapps/birt/reports -d lavadiablo/docker-birt-host
+memcached:
+  docker run --name memcached -p 11211:11211 -d memcached:latest
+storm:
+  docker run -t -i -p 6666:6666 -v /sun/phantom/storm:/sun/storm --name storm -d storm:latest /bin/bash
+java:
+  docker run -t -i -p 8888:8888 -v /sun/phantom/storm:/sun/storm --name java -d java:latest /bin/bash
+jruby:
+  docker run -t -i -p 6666:6666 -v /sun/jruby:/sun/jruby --name jruby -d jruby:latest /bin/bash
+caravel:
+  docker run --name caravel -d -p 8088:8088 amancevice/caravel
+  docker exec -it caravel demo
+
+docker export <container id> > /sun/docker_data/docker_image/dev_golang_image_20161127.tar
+```
