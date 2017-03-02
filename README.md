@@ -20,3 +20,8 @@
 [安装gitlab-runner](ubuntu/install_gitlab_runner.md)
 
 ===================
+
+### IntelliJ IDEA 注册码
+```
+http://idea.lanyus.com/
+```
