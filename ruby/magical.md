@@ -17,4 +17,9 @@ ary.each_cons(3).to_a
 ### ruby多线程-多进程
 1. EventMachine
 2. MultiThread
-3. Celluloid  
+3. Celluloid
+
+### wicked_pdf中文乱码解决
+```
+apt-get install ttf-wqy-zenhei
+```
