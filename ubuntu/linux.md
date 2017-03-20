@@ -1,3 +1,5 @@
+### 二台机器之间同步大文件(拷贝文件到另一台机器)
+rsync -rP --rsh=ssh /file/path name@ip:/file/path
 ### 建立软连接
 ln -s original/file/path soft/file/path
 ### linux后台启动服务
