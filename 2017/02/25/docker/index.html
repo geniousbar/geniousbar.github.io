@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>知识总结: Docker</title>
+<meta content='安装docker 阿里云的安装脚本 curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh - 使用脚本自动安装 Docker 官方为了简化安装流程，提供了一套...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='知识总结' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Docker' property='og:title'>
+<meta content='安装docker 阿里云的安装脚本 curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh - 使用脚本自动安装 Docker 官方为了简化安装流程，提供了一套...' property='og:description'>
+<meta content='https://geniousbar.github.io/2017/02/25/docker/' property='og:url'>
+<meta content='2017-02-25' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Docker' name='twitter:title'>
+<meta content='安装docker 阿里云的安装脚本 curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh - 使用脚本自动安装 Docker 官方为了简化安装流程，提供了一套...' name='twitter:description'>
+<meta content='https://geniousbar.github.io/2017/02/25/docker/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="/images/favicon.ico" rel="icon" type="image/ico" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+<link href="/stylesheets/application.css" rel="stylesheet" />
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home'>
+<a href='/'>Home</a>
+</li>
+<li class='nav-hom1e'>
+<a href='/'>Hom1e</a>
+</li>
+</ul>
+</div>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Docker</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2017-02-25'>
+25 February 2017
+</time>
+on <a href='/tag/docker/'>Docker</a>
+</section>
+</header>
+<section class='post-content'><h3>安装docker</h3>
+<pre class="highlight plaintext"><code>阿里云的安装脚本
+curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh -
+使用脚本自动安装
+Docker 官方为了简化安装流程，提供了一套安装脚本，CentOS 系统上可以使用这套脚本安装：
+curl -sSL https://get.docker.com/ | sh
+
+DaoCloud 的安装脚本
+curl -sSL https://get.daocloud.io/docker | sh
+
+</code></pre>
+<h3>My Docker On Road Dev</h3>
+<pre class="highlight plaintext"><code>mysql:
+  docker run --name dev_mysql -p 3306:3306 -v /sun/docker_data/mysql:/sun -e MYSQL_ROOT_PASSWORD=sun -d mysql:latest
+redis:
+  docker run -p 6379:6379 -v /sun/docker_data/redis:/sun -v /sun/docker_data/redis/redis.conf:/usr/local/etc/redis/redis.conf --name dev_redis -d redis:latest redis-server /sun/redis.conf
+rails5:
+  docker run -t -i -p 3000:3000 -v /sun/phantom/rails5:/sun/rails5 --name dev_rails5 -d rails:latest /bin/bash
+rails:
+  docker run -t -i -p 3000:3000 -v /sun:/sun --name dev_rails -d rails:latest /bin/bash
+</code></pre>
+<h3>重新安装docker</h3>
+<pre class="highlight plaintext"><code>$ sudo apt-get autoremove --purge docker-engine
+
+# Nothing worked until I added this step
+$ sudo rm -rfv /var/lib/docker
+
+# Reboot here
+
+$ sudo apt-get update
+$ sudo apt-get install docker-engine
+
+</code></pre>
+<h3>Docker导入和导出</h3>
+<pre class="highlight plaintext"><code>Export命令用于持久化容器
+docker export &lt;CONTAINER ID&gt; &gt; /home/export.tar
+Save命令用于持久化镜像
+docker save busybox-1 &gt; /home/save.tar
+导入export.tar文件
+cat /home/export.tar | docker import - busybox-1-export:latest
+</code></pre>
+<h3>Docker开发</h3>
+<pre class="highlight plaintext"><code>mysql:
+  docker run --name mysql -p 3306:3306 -v /sun/docker_data/mysql:/sun -e MYSQL_ROOT_PASSWORD=sun -d mysql:latest
+  docker run -d --name mysql -v /tmp/db:/var/lib/mysql -p 3309:3306 -e MYSQL_ROOT_PASSWORD=sun mysql
+postgres:
+  docker run --name postgres -p 5432:5432 -v /sun/docker_data/postgres:/sun -e POSTGRES_PASSWORD=sun -d postgres:latest
+redis:
+  docker run -p 6379:6379 -v /sun/docker_data/redis:/sun -v /sun/docker_data/redis/redis.conf:/usr/local/etc/redis/redis.conf --name redis -d redis:latest redis-server /sun/redis.conf
+rails5:
+  docker run -t -i -p 3000:3000 -v /sun/phantom/rails5:/sun/rails5 --name rails5 -d rails:latest /bin/bash
+rails:
+  docker run -t -i -p 3000:3000 -v /sun:/sun --name rails -d rails:latest /bin/bash
+golang:
+  docker run -t -i -p 8899:8899 -v /sun/go:/go --name golang -d golang:latest /bin/bash
+gogs:
+  docker run -t -i -p 10022:22 -p 10080:3000 -v /sun/phantom/gogs:/data --name=gogs gogs/gogs
+birt:
+  docker run -t -i --name birt -p 9000:8080 -v /sun/birt:/var/lib/tomcat7/webapps/birt/reports -d lavadiablo/docker-birt-host
+memcached:
+  docker run --name memcached -p 11211:11211 -d memcached:latest
+storm:
+  docker run -t -i -p 6666:6666 -v /sun/phantom/storm:/sun/storm --name storm -d storm:latest /bin/bash
+java:
+  docker run -t -i -p 8888:8888 -v /sun/phantom/storm:/sun/storm --name java -d java:latest /bin/bash
+jruby:
+  docker run -t -i -p 6666:6666 -v /sun/jruby:/sun/jruby --name jruby -d jruby:latest /bin/bash
+caravel:
+  docker run --name caravel -d -p 8088:8088 amancevice/caravel
+  docker exec -it caravel demo
+
+docker export &lt;container id&gt; &gt; /sun/docker_data/docker_image/dev_golang_image_20161127.tar
+</code></pre></section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/geniousbar/'>geniousbar</a>
+</h4>
+<p></p>
+Read
+<a href='/author/geniousbar/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Docker&amp;amp;url=https://geniousbar.github.io/2017/02/25/docker/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=https://geniousbar.github.io/2017/02/25/docker/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=https://geniousbar.github.io/2017/02/25/docker/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2017/01/13/postgres/'>
+<section class='post'>
+<h2>Postgres</h2>
+<p>pg创建只读用户 SELECT date_trunc('minute', dd) :: TIMESTAMP FROM generate_series('2016-10-01' :: TIMESTAMP, '2016-12-31' :: TIMESTAMP, '10 minute' :: INTERVAL) dd; CREATE&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>知识总结</a>
+&copy;
+2017
+</section>
+<section class='poweredby'></section>
+</footer>
+</div>
+<script src="/javascripts/application.js"></script>
+</body>
+</html>

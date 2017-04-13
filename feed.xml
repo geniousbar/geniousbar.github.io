@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>知识总结</title>
+  <subtitle>日常知识总结</subtitle>
+  <id>https://geniousbar.github.io</id>
+  <link href="https://geniousbar.github.io"/>
+  <link href="https://geniousbar.github.io/feed.xml" rel="self"/>
+  <updated>2017-02-25T08:00:00+08:00</updated>
+  <author>
+    <name>geniousbar</name>
+  </author>
+  <entry>
+    <title>Docker</title>
+    <link rel="alternate" href="https://geniousbar.github.io/2017/02/25/docker/"/>
+    <id>https://geniousbar.github.io/2017/02/25/docker/</id>
+    <published>2017-02-25T08:00:00+08:00</published>
+    <updated>2017-04-13T18:12:29+08:00</updated>
+    <author>
+      <name>geniousbar</name>
+    </author>
+    <summary type="html">安装docker
+阿里云的安装脚本
+curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh -
+使用脚本自动安装
+Docker 官方为了简化安装流程，提供了一套安装脚本，CentOS 系统上可以使用这套脚本安装：
+curl -sSL https://get.docker.com/ | sh
+
+DaoCloud 的安装脚本
+curl -sSL https://get.daocloud</summary>
+  </entry>
+  <entry>
+    <title>Postgres</title>
+    <link rel="alternate" href="https://geniousbar.github.io/2017/01/13/postgres/"/>
+    <id>https://geniousbar.github.io/2017/01/13/postgres/</id>
+    <published>2017-01-13T08:00:00+08:00</published>
+    <updated>2017-04-13T18:16:28+08:00</updated>
+    <author>
+      <name>geniousbar</name>
+    </author>
+    <summary type="html">pg创建只读用户
+SELECT date_trunc('minute', dd) :: TIMESTAMP
+FROM generate_series('2016-10-01' :: TIMESTAMP, '2016-12-31' :: TIMESTAMP, '10 minute' :: INTERVAL) dd;
+
+CREATE USER read_from_pg WITH ENCRYPTED PASSWORD '...';
+GRANT CONNECT ON DATABASE test to read_from_pg</summary>
+  </entry>
+  <entry>
+    <title>Firefox</title>
+    <link rel="alternate" href="https://geniousbar.github.io/2016/11/11/firefox/"/>
+    <id>https://geniousbar.github.io/2016/11/11/firefox/</id>
+    <published>2016-11-11T08:00:00+08:00</published>
+    <updated>2017-04-13T18:17:57+08:00</updated>
+    <author>
+      <name>geniousbar</name>
+    </author>
+    <summary type="html">如何才能使用非签名的附加组件？（高级用户）
+
+Firefox ESR 45版，以及 开发者版 和 Nightly 版，将允许通过改变偏好来屏蔽增强的附加组件签名要求，请在 Firefox 配置编辑器（about:config 页）将 xpinstall.signatures.required 的值改为 false。还有其它一些山寨版的 Firefox 也允许此项屏蔽。更多内容，参阅 MozillaWiki 文章 附加组件/扩展签名。
+</summary>
+  </entry>
+  <entry>
+    <title>Ruby</title>
+    <link rel="alternate" href="https://geniousbar.github.io/2016/10/21/ruby-magic/"/>
+    <id>https://geniousbar.github.io/2016/10/21/ruby-magic/</id>
+    <published>2016-10-21T08:00:00+08:00</published>
+    <updated>2017-04-13T18:24:42+08:00</updated>
+    <author>
+      <name>geniousbar</name>
+    </author>
+    <summary type="html">排列组合
+arr = [1, 2, 3, 4, 5]
+arr.combination(3).to_a
+ary.each_cons(3).to_a
+
+ruby GIL
+1: Ruby MRI为了线程安全，用了GIL只支持单核。任何时刻只有一个线程在运行：当一个Thread阻塞时（比如IO, sleep等），就会切换到另个一线程。 所以就算用了celluloid, puma自动创建多线程的，MRI下每个进程还是单核。
+而Rubinius，JRuby则没有GIL，支持多核（每个线程分配一个cpu）。
+2</summary>
+  </entry>
+  <entry>
+    <title>abtest</title>
+    <link rel="alternate" href="https://geniousbar.github.io/2016/09/07/ubuntu-abtest/"/>
+    <id>https://geniousbar.github.io/2016/09/07/ubuntu-abtest/</id>
+    <published>2016-09-07T08:00:00+08:00</published>
+    <updated>2017-04-13T18:21:26+08:00</updated>
+    <author>
+      <name>geniousbar</name>
+    </author>
+    <summary type="html">参考
+
+性能测试之ab测试工具
+
+性能测试之ab测试工具-mht
+
+ab测试参数详解：
+-n 测试会话中所执行的请求个数,默认仅执行一个请求
+-c 一次产生的请求个数,即同一时间发出多少个请求,默认为一次一个
+-t 测试所进行的最大秒数,默认为无时间限制....其内部隐含值是[-n 50000],它可以使对服务器的测试限制在一个固定的总时间以内
+-p 包含了需要POST的数据的文件
+-T POST数据所使用的Content-type头信息
+-v 设置显示信息的详细程度
+-w 以HTML表格的形式</summary>
+  </entry>
+  <entry>
+    <title>linux</title>
+    <link rel="alternate" href="https://geniousbar.github.io/2016/09/07/linux/"/>
+    <id>https://geniousbar.github.io/2016/09/07/linux/</id>
+    <published>2016-09-07T08:00:00+08:00</published>
+    <updated>2017-04-13T18:24:07+08:00</updated>
+    <author>
+      <name>geniousbar</name>
+    </author>
+    <summary type="html">二台机器之间同步大文件(拷贝文件到另一台机器)
+
+rsync -rP –rsh=ssh /file/path name@ip:/file/path
+
+建立软连接
+
+ln -s original/file/path soft/file/path
+
+linux后台启动服务
+
+nohup ruby http_server.rb 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; log.log 2&amp;gt;&amp;amp;1 /dev/null &amp;amp;
+
+linux根据关键字得到pid号
+
+pgrep -f keyword
+
+linux创建sudo用户
+
+adduser</summary>
+  </entry>
+</feed>

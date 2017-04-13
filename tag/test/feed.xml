@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>知识总结: test</title>
+  <subtitle>Posts tagged with test</subtitle>
+  <id>https://geniousbar.github.io</id>
+  <link href="https://geniousbar.github.io"/>
+  <link href="https://geniousbar.github.io/tag/test/feed.xml" rel="self"/>
+  <updated>2016-09-07T08:00:00+08:00</updated>
+  <author>
+    <name>geniousbar</name>
+  </author>
+  <entry>
+    <title>abtest</title>
+    <link rel="alternate" href="https://geniousbar.github.io/2016/09/07/ubuntu-abtest/"/>
+    <id>https://geniousbar.github.io/2016/09/07/ubuntu-abtest/</id>
+    <published>2016-09-07T08:00:00+08:00</published>
+    <updated>2017-04-13T18:21:26+08:00</updated>
+    <author>
+      <name>geniousbar</name>
+    </author>
+    <summary type="html">参考
+
+性能测试之ab测试工具
+
+性能测试之ab测试工具-mht
+
+ab测试参数详解：
+-n 测试会话中所执行的请求个数,默认仅执行一个请求
+-c 一次产生的请求个数,即同一时间发出多少个请求,默认为一次一个
+-t 测试所进行的最大秒数,默认为无时间限制....其内部隐含值是[-n 50000],它可以使对服务器的测试限制在一个固定的总时间以内
+-p 包含了需要POST的数据的文件
+-T POST数据所使用的Content-type头信息
+-v 设置显示信息的详细程度
+-w 以HTML表格的形式</summary>
+  </entry>
+</feed>

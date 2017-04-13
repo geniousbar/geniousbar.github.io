@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>知识总结: Ruby</title>
+<meta content='排列组合 arr = [1, 2, 3, 4, 5] arr.combination(3).to_a ary.each_cons(3).to_a ruby GIL 1: Ruby MRI为了线程安全，用了GIL只支持单核。任何时刻只有一个线程在运行：当一个Thread阻塞时（比如IO, ...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='知识总结' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Ruby' property='og:title'>
+<meta content='排列组合 arr = [1, 2, 3, 4, 5] arr.combination(3).to_a ary.each_cons(3).to_a ruby GIL 1: Ruby MRI为了线程安全，用了GIL只支持单核。任何时刻只有一个线程在运行：当一个Thread阻塞时（比如IO, ...' property='og:description'>
+<meta content='https://geniousbar.github.io/2016/10/21/ruby-magic/' property='og:url'>
+<meta content='2016-10-21' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Ruby' name='twitter:title'>
+<meta content='排列组合 arr = [1, 2, 3, 4, 5] arr.combination(3).to_a ary.each_cons(3).to_a ruby GIL 1: Ruby MRI为了线程安全，用了GIL只支持单核。任何时刻只有一个线程在运行：当一个Thread阻塞时（比如IO, ...' name='twitter:description'>
+<meta content='https://geniousbar.github.io/2016/10/21/ruby-magic/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="/images/favicon.ico" rel="icon" type="image/ico" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+<link href="/stylesheets/application.css" rel="stylesheet" />
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home'>
+<a href='/'>Home</a>
+</li>
+<li class='nav-hom1e'>
+<a href='/'>Hom1e</a>
+</li>
+</ul>
+</div>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Ruby</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-10-21'>
+21 October 2016
+</time>
+on <a href='/tag/ruby/'>Ruby</a>
+</section>
+</header>
+<section class='post-content'><h3>排列组合</h3>
+<pre class="highlight plaintext"><code>arr = [1, 2, 3, 4, 5]
+arr.combination(3).to_a
+ary.each_cons(3).to_a
+</code></pre>
+<h3>ruby GIL</h3>
+<pre class="highlight plaintext"><code>1: Ruby MRI为了线程安全，用了GIL只支持单核。任何时刻只有一个线程在运行：当一个Thread阻塞时（比如IO, sleep等），就会切换到另个一线程。 所以就算用了celluloid, puma自动创建多线程的，MRI下每个进程还是单核。
+而Rubinius，JRuby则没有GIL，支持多核（每个线程分配一个cpu）。
+2: 如果MRI下要用多核，就要用sidekiq之类的跑多个worker进程。
+3: 单核不一定比多核慢，很多时候瓶颈不在CPU，而MRI多线程可以保证IO并发，所以性能可能是一样的。
+4: 多进程消耗内存，而且进程间难以通信(只能通过IO之类的)。多线程，直接共享变量（内存）。
+5: 在 IO 等待比较多的场景中，应用多线程与多进程都能不同程度的提高效率
+6: 在 CPU 计算比较多的场景中，多线程对程序的效率提升随着计算量的提升，几乎可以忽略不计
+</code></pre>
+<h3>ruby多线程-多进程</h3>
+
+<ol>
+<li>EventMachine</li>
+<li>MultiThread</li>
+<li>Celluloid</li>
+</ol>
+
+<h3>wicked_pdf中文乱码解决</h3>
+<pre class="highlight plaintext"><code>apt-get install ttf-wqy-zenhei
+</code></pre></section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/geniousbar/'>geniousbar</a>
+</h4>
+<p></p>
+Read
+<a href='/author/geniousbar/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Ruby&amp;amp;url=https://geniousbar.github.io/2016/10/21/ruby-magic/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=https://geniousbar.github.io/2016/10/21/ruby-magic/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=https://geniousbar.github.io/2016/10/21/ruby-magic/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/09/07/ubuntu-abtest/'>
+<section class='post'>
+<h2>abtest</h2>
+<p>参考 性能测试之ab测试工具 性能测试之ab测试工具-mht ab测试参数详解： -n 测试会话中所执行的请求个数,默认仅执行一个请求 -c 一次产生的请求个数,即同一时间发出多少个请求,默认为一次一个 -t 测试所进行的最大秒数,默认为无时间限制....其内部隐含值是[-n 50000],它可以使对服务器的测试限制在一个固定的总时间以内 -p 包含了需要POST的数据的文件 -T POST数据所使用的Content-type头信息 -v 设置显示信息的详细程度 -w 以HTML表格的形式输出结果,默认是白色背景的两列宽度的一张表&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/11/11/firefox/'>
+<section class='post'>
+<h2>Firefox</h2>
+<p>如何才能使用非签名的附加组件？（高级用户） Firefox ESR 45版，以及 开发者版 和 Nightly 版，将允许通过改变偏好来屏蔽增强的附加组件签名要求，请在 Firefox 配置编辑器（about:config 页）将 xpinstall.signatures.required 的值改为 false。还有其它一些山寨版的 Firefox 也允许此项屏蔽。更多内容，参阅 MozillaWiki 文章 附加组件/扩展签名。&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>知识总结</a>
+&copy;
+2017
+</section>
+<section class='poweredby'></section>
+</footer>
+</div>
+<script src="/javascripts/application.js"></script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>知识总结: abtest</title>
+<meta content='参考 性能测试之ab测试工具 性能测试之ab测试工具-mht ab测试参数详解： -n 测试会话中所执行的请求个数,默认仅执行一个请求 -c 一次产生的请求个数,即同一时间发出多少个请求,默认为一次一个 -t 测试所进行的最大秒数,默认为无时间限制....其内部隐含值是[-n 50000...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='知识总结' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='abtest' property='og:title'>
+<meta content='参考 性能测试之ab测试工具 性能测试之ab测试工具-mht ab测试参数详解： -n 测试会话中所执行的请求个数,默认仅执行一个请求 -c 一次产生的请求个数,即同一时间发出多少个请求,默认为一次一个 -t 测试所进行的最大秒数,默认为无时间限制....其内部隐含值是[-n 50000...' property='og:description'>
+<meta content='https://geniousbar.github.io/2016/09/07/ubuntu-abtest/' property='og:url'>
+<meta content='2016-09-07' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='abtest' name='twitter:title'>
+<meta content='参考 性能测试之ab测试工具 性能测试之ab测试工具-mht ab测试参数详解： -n 测试会话中所执行的请求个数,默认仅执行一个请求 -c 一次产生的请求个数,即同一时间发出多少个请求,默认为一次一个 -t 测试所进行的最大秒数,默认为无时间限制....其内部隐含值是[-n 50000...' name='twitter:description'>
+<meta content='https://geniousbar.github.io/2016/09/07/ubuntu-abtest/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="/images/favicon.ico" rel="icon" type="image/ico" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+<link href="/stylesheets/application.css" rel="stylesheet" />
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home'>
+<a href='/'>Home</a>
+</li>
+<li class='nav-hom1e'>
+<a href='/'>Hom1e</a>
+</li>
+</ul>
+</div>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>abtest</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-09-07'>
+07 September 2016
+</time>
+on <a href='/tag/test/'>test</a>
+</section>
+</header>
+<section class='post-content'><h2>参考</h2>
+
+<p><a href="http://www.makmong.com/1314.html" rel="nofollow">性能测试之ab测试工具</a></p>
+
+<p><a href="ab_test.mht" rel="nofollow">性能测试之ab测试工具-mht</a></p>
+
+<h3>ab测试参数详解：</h3>
+<pre class="highlight plaintext"><code>-n 测试会话中所执行的请求个数,默认仅执行一个请求
+-c 一次产生的请求个数,即同一时间发出多少个请求,默认为一次一个
+-t 测试所进行的最大秒数,默认为无时间限制....其内部隐含值是[-n 50000],它可以使对服务器的测试限制在一个固定的总时间以内
+-p 包含了需要POST的数据的文件
+-T POST数据所使用的Content-type头信息
+-v 设置显示信息的详细程度
+-w 以HTML表格的形式输出结果,默认是白色背景的两列宽度的一张表
+-i 以HTML表格的形式输出结果,默认是白色背景的两列宽度的一张表
+-x 设置&lt;table&gt;属性的字符串,此属性被填入&lt;table 这里&gt;
+-y 设置&lt;tr&gt;属性的字符串
+-z 设置&lt;td&gt;属性的字符串
+-C 对请求附加一个Cookie行，其典型形式是name=value的参数对,此参数可以重复
+-H 对请求附加额外的头信息,此参数的典型形式是一个有效的头信息行,其中包含了以冒号分隔的字段和值的对(如"Accept-Encoding: zip/zop;8bit")
+-A HTTP验证,用冒号:分隔传递用户名及密码
+-P 无论服务器是否需要(即是否发送了401认证需求代码),此字符串都会被发送
+-X 对请求使用代理服务器
+-V 显示版本号并退出
+-k 启用HTTP KeepAlive功能,即在一个HTTP会话中执行多个请求,默认为不启用KeepAlive功能
+-d 不显示"percentage served within XX [ms] table"的消息(为以前的版本提供支持)
+-S 不显示中值和标准背离值,且均值和中值为标准背离值的1到2倍时,也不显示警告或出错信息,默认会显示最小值/均值/最大值等(为以前的版本提供支持)
+-g 把所有测试结果写入一个'gnuplot'或者TSV(以Tab分隔的)文件
+-e 产生一个以逗号分隔的(CSV)文件,其中包含了处理每个相应百分比的请求所需要(从1%到100%)的相应百分比的(以微妙为单位)时间
+-h 显示使用方法
+-k 发送keep-alive指令到服务器端
+</code></pre>
+<h3>ab测试解读</h3>
+<pre class="highlight plaintext"><code>[root@web ~]# ab -n 100 -c 10 -k http://192.168.18.41/forum.php
+This is ApacheBench, Version 2.3 &lt;$Revision: 1430300 $&gt;
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+Benchmarking 192.168.18.41 (be patient).....done
+Server Software:        Apache/2.4.4 #被测试Web服务软件名称
+Server Hostname:        192.168.18.41 #服务器主机名,即请求的URL中的主机部分名称
+Server Port:            80 #被测试Web服务器软件的监听端口
+Document Path:          /forum.php #请求URL的绝问文件路径,即请求的资源
+Document Length:        12428 bytes #请求文件的大小
+Concurrency Level:      10 #并发数(-c属性来设置)
+Time taken for tests:   1.014 seconds #执行完所有的请求所花费的时间,即整个测试持续的时间
+Complete requests:      100 #完成的请求数量
+Failed requests:        96 #失败的请求数量
+   (Connect: 0, Receive: 0, Length: 96, Exceptions: 0)
+Write errors:           0
+Keep-Alive requests:    0
+Total transferred:      1243660 bytes #整个场景中的网络传输量,即所有请求的响应数据的总和,包含头信息和正文长度
+HTML transferred:       1180016 bytes #整个场景中的HTML内容传输量,即所有请求中响应数据的正文长度,不包含头信息的长度
+Requests per second:    98.61 [#/sec] (mean) #吞吐率：即每秒处理的请求数,相当于LR中的每秒事务数,括号中的mean表示这是一个平均值,其值为Complete requests/Time taken for tests
+Time per request:       101.407 [ms] (mean) #服务器平均请求处理的时间,即每个请求实际运行时间的平均值,其值为Time per request/Concurrency Level
+Time per request:       10.141 [ms] (mean, across all concurrent requests) #平均每秒网络上的流量,即这些请求在单位内从服务器获取的数据长度,其值为(Total transferred/Time taken for tests)/1024
+Transfer rate:          1197.65 [Kbytes/sec] received  #这个统计选项可以很好的说明服务器在处理能力达到极限时其出口带宽的需求量,可以帮助排除是否存在网络流量过大导致响应时间延长的问题
+Connection Times (ms) #网络上消耗的时间的分解
+              min  mean[+/-sd] median   max
+Connect:        0    1   0.7      1       4
+Processing:    24   99  93.1     68     482
+Waiting:       19   92  92.1     59     475
+Total:         25  100  93.3     69     482
+#整个场景中所有请求的响应情况,在场景中每个请求都有一个响应时间
+#下面结果表明,50％的用户响应时间(即请求处理时间,这里处理时间是指Time per request)小于69毫秒,66％的用户响应时间小于97毫秒,而最大的响应时间小于1268毫秒
+#对于并发请求,实际上CPU并不是同时处理的,而是按照每个请求获得的时间片而逐个轮转处理的,所以基本上第一个Time per request时间约等于第二个Time per request时间乘以并发请求数
+Percentage of the requests served within a certain time (ms)
+  50%     69
+  66%     97
+  75%    117
+  80%    123
+  90%    224
+  95%    330
+  98%    452
+  99%    482
+ 100%    482 (longest request)
+</code></pre></section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/geniousbar/'>geniousbar</a>
+</h4>
+<p></p>
+Read
+<a href='/author/geniousbar/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=abtest&amp;amp;url=https://geniousbar.github.io/2016/09/07/ubuntu-abtest/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=https://geniousbar.github.io/2016/09/07/ubuntu-abtest/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=https://geniousbar.github.io/2016/09/07/ubuntu-abtest/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2013/10/26/welcome-to-ghost/'>
+<section class='post'>
+<h2>Welcome to Ghost</h2>
+<p>You&rsquo;re in! Nice. We&rsquo;ve put together a little post to introduce you to the Ghost editor and get you&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/10/21/ruby-magic/'>
+<section class='post'>
+<h2>Ruby</h2>
+<p>排列组合 arr = [1, 2, 3, 4, 5] arr.combination(3).to_a ary.each_cons(3).to_a ruby GIL 1: Ruby MRI为了线程安全，用了GIL只支持单核。任何时刻只有一个线程在运行：当一个Thread阻塞时（比如IO, sleep等），就会切换到另个一线程。 所以就算用了celluloid, puma自动创建多线程的，MRI下每个进程还是单核。 而Rubinius，JRuby则没有GIL，支持多核（每个线程分配一个cpu）。&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>知识总结</a>
+&copy;
+2017
+</section>
+<section class='poweredby'></section>
+</footer>
+</div>
+<script src="/javascripts/application.js"></script>
+</body>
+</html>

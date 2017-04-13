@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>知识总结: linux</title>
+<meta content='二台机器之间同步大文件(拷贝文件到另一台机器) rsync -rP &amp;ndash;rsh=ssh /file/path name@ip:/file/path 建立软连接 ln -s original/file/path soft/file/path linux后台启动服务 nohup r...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='知识总结' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='linux' property='og:title'>
+<meta content='二台机器之间同步大文件(拷贝文件到另一台机器) rsync -rP &amp;ndash;rsh=ssh /file/path name@ip:/file/path 建立软连接 ln -s original/file/path soft/file/path linux后台启动服务 nohup r...' property='og:description'>
+<meta content='https://geniousbar.github.io/2016/09/07/linux/' property='og:url'>
+<meta content='2016-09-07' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='linux' name='twitter:title'>
+<meta content='二台机器之间同步大文件(拷贝文件到另一台机器) rsync -rP &amp;ndash;rsh=ssh /file/path name@ip:/file/path 建立软连接 ln -s original/file/path soft/file/path linux后台启动服务 nohup r...' name='twitter:description'>
+<meta content='https://geniousbar.github.io/2016/09/07/linux/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="/images/favicon.ico" rel="icon" type="image/ico" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+<link href="/stylesheets/application.css" rel="stylesheet" />
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home'>
+<a href='/'>Home</a>
+</li>
+<li class='nav-hom1e'>
+<a href='/'>Hom1e</a>
+</li>
+</ul>
+</div>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>linux</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-09-07'>
+07 September 2016
+</time>
+on <a href='/tag/linux/'>linux</a>
+</section>
+</header>
+<section class='post-content'><h3>二台机器之间同步大文件(拷贝文件到另一台机器)</h3>
+
+<p>rsync -rP &ndash;rsh=ssh /file/path name@ip:/file/path</p>
+
+<h3>建立软连接</h3>
+
+<p>ln -s original/file/path soft/file/path</p>
+
+<h3>linux后台启动服务</h3>
+
+<p>nohup ruby http_server.rb 2&gt;&amp;1 &gt;&gt; log.log 2&gt;&amp;1 /dev/null &amp;</p>
+
+<h3>linux根据关键字得到pid号</h3>
+
+<p>pgrep -f keyword</p>
+
+<h3>linux创建sudo用户</h3>
+
+<p>adduser username
+usermod -aG sudo username</p>
+
+<h3>sudo免密码</h3>
+
+<p>vi /etc/sudoers
+root    ALL=(ALL:ALL) ALL
+deployer ALL=(ALL) NOPASSWD: ALL
+%admin ALL=(ALL) NOPASSWD: ALL
+%sudo   ALL=(ALL:ALL) NOPASSWD: ALL</p>
+
+<h3>virtualbox安装VboxLinuxAdditions</h3>
+<pre class="highlight plaintext"><code># prepare
+$ sudo apt-get install -y linux-headers-generic build-essential dkms
+# get the right ISO from http://download.virtualbox.org/virtualbox/
+$ wget http://download.virtualbox.org/virtualbox/5.1.6/VBoxGuestAdditions_5.1.6.iso
+# create a mount folder
+$ sudo mkdir /media/VBoxGuestAdditions
+# mount the ISO
+$ sudo mount -o loop,ro VBoxGuestAdditions_5.1.6.iso /media/VBoxGuestAdditions
+# install the guest additions
+$ sudo sh /media/VBoxGuestAdditions/VBoxLinuxAdditions.run
+# remove the ISO
+$ rm VBoxGuestAdditions_5.1.6.iso
+# unmount the ISO
+$ sudo umount /media/VBoxGuestAdditions
+# remove the mount folder
+$ sudo rmdir /media/VBoxGuestAdditions
+</code></pre>
+<h3>Ubuntu增加虚拟内存</h3>
+<pre class="highlight plaintext"><code>docker run --name caravel -d -p 8088:8088 amancevice/caravel
+docker exec -it caravel demo
+
+设置swappiness的值
+swappiness 可以具有介于 0 和 100 之间的值
+swappiness = 0 告诉内核尽可能长时间避免交换物理内存的过程
+swappiness = 100 告诉内核积极交换物理内存的进程，并将它们交换缓存移动
+cat /proc/sys/vm/swappiness
+sudo sysctl vm.swappiness=66
+sudo vi /etc/sysctl.conf
+文档的尾部追加:
+vm.swappiness=66
+
+增加虚拟内存
+dd if=/dev/zero of=/swap/swapadd bs=1024 count=2097152  # 2GB
+mkswap /swap/swapadd
+swapon /swap/swapadd
+
+change conf file /etc/fstab
+/swap/swapadd none swap sw 0 0
+
+关闭虚拟内存服务
+swapoff -v /swap/swapadd
+
+如果当前的虚存所在的磁盘空间不够，可以首先关闭虚存服务，将其移动到别的磁盘，再启用即可。
+swapoff -v /swap/swapadd
+mv /swap/swapadd /mnt/swap
+swapon /swap/swapadd
+</code></pre>
+<h3>supervisor使用</h3>
+<pre class="highlight plaintext"><code>sudo pip install supervisor
+conf file: /etc/supervisord.conf
+$ supervisorctl status
+$ supervisorctl stop usercenter
+$ supervisorctl start usercenter
+$ supervisorctl restart usercenter
+$ supervisorctl reread
+$ supervisorctl update
+</code></pre>
+<h3>linux手动释放内存</h3>
+<pre class="highlight plaintext"><code>释放前最好sync一下，防止丢数据。
+cache释放：
+To free pagecache:
+echo 1 &gt; /proc/sys/vm/drop_caches
+
+To free dentries and inodes:
+echo 2 &gt; /proc/sys/vm/drop_caches
+
+To free pagecache, dentries and inodes:
+echo 3 &gt; /proc/sys/vm/drop_caches
+</code></pre></section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/geniousbar/'>geniousbar</a>
+</h4>
+<p></p>
+Read
+<a href='/author/geniousbar/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=linux&amp;amp;url=https://geniousbar.github.io/2016/09/07/linux/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=https://geniousbar.github.io/2016/09/07/linux/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=https://geniousbar.github.io/2016/09/07/linux/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2013/10/26/welcome-to-ghost/'>
+<section class='post'>
+<h2>Welcome to Ghost</h2>
+<p>You&rsquo;re in! Nice. We&rsquo;ve put together a little post to introduce you to the Ghost editor and get you&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/10/21/ruby-magic/'>
+<section class='post'>
+<h2>Ruby</h2>
+<p>排列组合 arr = [1, 2, 3, 4, 5] arr.combination(3).to_a ary.each_cons(3).to_a ruby GIL 1: Ruby MRI为了线程安全，用了GIL只支持单核。任何时刻只有一个线程在运行：当一个Thread阻塞时（比如IO, sleep等），就会切换到另个一线程。 所以就算用了celluloid, puma自动创建多线程的，MRI下每个进程还是单核。 而Rubinius，JRuby则没有GIL，支持多核（每个线程分配一个cpu）。&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>知识总结</a>
+&copy;
+2017
+</section>
+<section class='poweredby'></section>
+</footer>
+</div>
+<script src="/javascripts/application.js"></script>
+</body>
+</html>

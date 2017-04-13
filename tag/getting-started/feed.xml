@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>知识总结: Getting Started</title>
+  <subtitle>Posts tagged with Getting Started</subtitle>
+  <id>https://geniousbar.github.io</id>
+  <link href="https://geniousbar.github.io"/>
+  <link href="https://geniousbar.github.io/tag/getting-started/feed.xml" rel="self"/>
+  <updated>2013-10-26T08:00:00+08:00</updated>
+  <author>
+    <name>geniousbar</name>
+  </author>
+  <entry>
+    <title>Welcome to Ghost</title>
+    <link rel="alternate" href="https://geniousbar.github.io/2013/10/26/welcome-to-ghost/"/>
+    <id>https://geniousbar.github.io/2013/10/26/welcome-to-ghost/</id>
+    <published>2013-10-26T08:00:00+08:00</published>
+    <updated>2017-04-13T17:38:14+08:00</updated>
+    <author>
+      <name>geniousbar</name>
+    </author>
+    <summary type="html">You’re in! Nice. We’ve put together a little post to introduce you to the Ghost
+editor and get you started. Go ahead and edit this post to get going and learn
+how it all works!
+
+Getting Started
+
+Writing in markdown is really easy. In the left hand panel</summary>
+  </entry>
+</feed>
