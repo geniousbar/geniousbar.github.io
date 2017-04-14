@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://geniousbar.github.io/2015/12/20/dark-time-one/index.html</loc>
+    <lastmod>2017-04-14T12:49:55+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/2015/12/24/dark-time-two/index.html</loc>
+    <lastmod>2017-04-14T12:49:44+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/2016/01/10/dark-time-books/index.html</loc>
+    <lastmod>2017-04-14T12:49:12+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/2016/01/10/dark-time-three/index.html</loc>
+    <lastmod>2017-04-14T12:49:34+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/2016/01/10/how-to-became-a-mind-person/index.html</loc>
+    <lastmod>2017-04-14T13:03:58+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/2016/03/12/ruby-red-book/index.html</loc>
+    <lastmod>2017-04-14T12:42:08+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/2016/07/01/ruby-dsl/index.html</loc>
+    <lastmod>2017-04-14T12:36:34+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://geniousbar.github.io/2016/09/07/linux-swap/index.html</loc>
     <lastmod>2017-04-13T18:23:40+08:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -21,6 +63,12 @@
   <url>
     <loc>https://geniousbar.github.io/2016/09/07/ubuntu-abtest/index.html</loc>
     <lastmod>2017-04-13T18:21:26+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/2016/10/01/javascript-good-part/index.html</loc>
+    <lastmod>2017-04-14T11:58:10+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -50,73 +98,127 @@
   </url>
   <url>
     <loc>https://geniousbar.github.io/index.html</loc>
-    <lastmod>2017-04-13T18:40:27+08:00</lastmod>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://geniousbar.github.io/author/geniousbar/index.html</loc>
-    <lastmod>2017-04-13T18:40:27+08:00</lastmod>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://geniousbar.github.io/tag/linux/index.html</loc>
-    <lastmod>2017-04-13T18:40:27+08:00</lastmod>
+    <loc>https://geniousbar.github.io/tag/book/index.html</loc>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://geniousbar.github.io/tag/command/index.html</loc>
-    <lastmod>2017-04-13T18:40:27+08:00</lastmod>
+    <loc>https://geniousbar.github.io/tag/mind/index.html</loc>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://geniousbar.github.io/tag/test/index.html</loc>
-    <lastmod>2017-04-13T18:40:27+08:00</lastmod>
+    <loc>https://geniousbar.github.io/tag/dark-time/index.html</loc>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/tag/poem/index.html</loc>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://geniousbar.github.io/tag/ruby/index.html</loc>
-    <lastmod>2017-04-13T18:40:27+08:00</lastmod>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/tag/dsl/index.html</loc>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/tag/linux/index.html</loc>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/tag/command/index.html</loc>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/tag/test/index.html</loc>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/tag/javascript/index.html</loc>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/tag/ruby/index.html</loc>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://geniousbar.github.io/tag/firefox/index.html</loc>
-    <lastmod>2017-04-13T18:40:27+08:00</lastmod>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://geniousbar.github.io/tag/database/index.html</loc>
-    <lastmod>2017-04-13T18:40:27+08:00</lastmod>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://geniousbar.github.io/tag/postgres/index.html</loc>
-    <lastmod>2017-04-13T18:40:27+08:00</lastmod>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://geniousbar.github.io/tag/docker/index.html</loc>
-    <lastmod>2017-04-13T18:40:27+08:00</lastmod>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://geniousbar.github.io/page/2/index.html</loc>
-    <lastmod>2017-04-13T18:40:27+08:00</lastmod>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/page/3/index.html</loc>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://geniousbar.github.io/author/geniousbar/page/2/index.html</loc>
-    <lastmod>2017-04-13T18:40:27+08:00</lastmod>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://geniousbar.github.io/author/geniousbar/page/3/index.html</loc>
+    <lastmod>2017-04-14T13:06:02+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

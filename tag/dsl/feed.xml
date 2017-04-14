@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>知识总结: dsl</title>
+  <subtitle>Posts tagged with dsl</subtitle>
+  <id>https://geniousbar.github.io</id>
+  <link href="https://geniousbar.github.io"/>
+  <link href="https://geniousbar.github.io/tag/dsl/feed.xml" rel="self"/>
+  <updated>2016-07-01T08:00:00+08:00</updated>
+  <author>
+    <name>geniousbar</name>
+  </author>
+  <entry>
+    <title>Ruby Dsl</title>
+    <link rel="alternate" href="https://geniousbar.github.io/2016/07/01/ruby-dsl/"/>
+    <id>https://geniousbar.github.io/2016/07/01/ruby-dsl/</id>
+    <published>2016-07-01T08:00:00+08:00</published>
+    <updated>2017-04-14T12:36:34+08:00</updated>
+    <author>
+      <name>geniousbar</name>
+    </author>
+    <summary type="html">
+ruby中的dsl大部分都是利用方法调用，eval代码。 来执行代码, 可以参考rails， 大量的dsl
+
+
+Whenever 代码 DSL
+  bin
+    Whenever::CommandLine.execute(options)
+      -- self.new() &amp;amp;&amp;amp; run
+        -- whenever_cron
+          -- Whenever.corn
+            -- ** Whenever::JobList.new(options).</summary>
+  </entry>
+</feed>

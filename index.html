@@ -29,8 +29,8 @@
 <li class='nav-home nav-current'>
 <a href='/'>Home</a>
 </li>
-<li class='nav-hom1e nav-current'>
-<a href='/'>Hom1e</a>
+<li class='nav-docker'>
+<a href='/tag/docker'>docker</a>
 </li>
 </ul>
 </div>
@@ -55,7 +55,7 @@
 <main class='content' id='content' role='main'>
 <div class='extra-pagination inner'>
 <nav class='pagination' role='pagination'>
-<span class='page-number'>Page 1 of 2</span>
+<span class='page-number'>Page 1 of 3</span>
 <a href="/page/2/" class="older-posts">Older Posts →</a>
 </nav>
 
@@ -158,73 +158,71 @@ on <a href='/tag/ruby/'>Ruby</a>
 </article>
 <article class='post'>
 <header class='post-header'>
-<h2 class='post-title'><a href="/2016/09/07/ubuntu-abtest/">abtest</a></h2>
+<h2 class='post-title'><a href="/2016/10/01/javascript-good-part/">Javascript 语言精粹</a></h2>
 </header>
 <section class='post-excerpt'>
 <p>
-参考
+javascrip 语言精粹
 
-性能测试之ab测试工具
 
-性能测试之ab测试工具-mht
+假值： false, null, undefined, 0, ‘ ’, NaN
+数据类型： 数字， 字符串， 布尔， null， undefined， 对象
+反射： typeof, hasOwnProperty
+delete： 不会触及原型任何对象， 会显露出来原型中的对象属性
 
-ab测试参数详解：
--n 测试会话中所执行的请求个数,默认仅执行一个请求
--c 一次产生的请求个数,即同一时间发出多少个请求,默认为一次一个
--t 测试所进行的最大秒数,默认为无时间限制....其内部隐含值是[-n 50000],它可以使对服务器的测试限制在一个固定的总时间以内
--p 包含了需要POST的数据的文件
--T POST数据所使用的Content-type头信息
--v 设置显示信息的详细程度
--w 以HTML表格的形式
-<a href="/2016/09/07/ubuntu-abtest/" class="read-more">&raquo;</a>
+
+函数
+
+
+函数也是对象，只是可以调用
+调用模式： 方法调用模式， 函数调用模式， 构造器调用模式，apply调用模式（在初始化this上存在差异）
+函数调用中， 多余或者不足的形式参
+
+<a href="/2016/10/01/javascript-good-part/" class="read-more">&raquo;</a>
 </p>
 </section>
 <footer class='post-meta'>
 <a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/test/'>test</a>
-<time class='post-date' datetime='2016-09-07'>
-07 September 2016
+on <a href='/tag/javascript/'>javascript</a>
+<time class='post-date' datetime='2016-10-01'>
+01 October 2016
 </time>
 </footer>
 </article>
 <article class='post'>
 <header class='post-header'>
-<h2 class='post-title'><a href="/2016/09/07/linux/">linux</a></h2>
+<h2 class='post-title'><a href="/2016/09/07/linux-tar/">linux tar command</a></h2>
 </header>
 <section class='post-excerpt'>
 <p>
-二台机器之间同步大文件(拷贝文件到另一台机器)
+zip
 
-rsync -rP –rsh=ssh /file/path name@ip:/file/path
+zip可能是目前使用得最多的文档压缩格式。
 
-建立软连接
+它最大的优点就是在不同的操作系统平台，比如Linux， Windows以及Mac OS上使用。缺点就是支持的压缩率不是很高，而tar.gz和tar.gz2在压缩率方面做得非常好。闲话少说，我们步入正题吧：
 
-ln -s original/file/path soft/file/path
+我们可以使用下列的命令压缩一个目录：
+zip -r archivename.zip directoryto_compress
 
-linux后台启动服务
+下面是如果解压一个zip文档：
+unzip archive_name.zip
 
-nohup ruby http_server.rb 2&gt;&amp;1 &gt;&gt; log.log 2&gt;&amp;1 /dev/null &amp;
+tar.gz
 
-linux根据关键字得到pid号
-
-pgrep -f keyword
-
-linux创建sudo用户
-
-adduser
-<a href="/2016/09/07/linux/" class="read-more">&raquo;</a>
+这种格式是我
+<a href="/2016/09/07/linux-tar/" class="read-more">&raquo;</a>
 </p>
 </section>
 <footer class='post-meta'>
 <a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/linux/'>linux</a>
+on <a href='/tag/linux/'>linux</a>, <a href='/tag/command/'>command</a>
 <time class='post-date' datetime='2016-09-07'>
 07 September 2016
 </time>
 </footer>
 </article>
 <nav class='pagination' role='pagination'>
-<span class='page-number'>Page 1 of 2</span>
+<span class='page-number'>Page 1 of 3</span>
 <a href="/page/2/" class="older-posts">Older Posts →</a>
 </nav>
 

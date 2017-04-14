@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>知识总结: 暗时间 第三章</title>
+<meta content='跟波利亚学解题 跟波利亚学解题 ** 波利亚的三本书 《how to solve it》 《数学的发现》 《数学与猜想》** 大部分的书籍只是证明求解，而没有真实的求证过程 一些方法（解决题目，解决生活问题、生活决策） 1. 时刻不忘位置变量 2. 用特例启发思考 3. 反过来推导（由结...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='知识总结' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='暗时间 第三章' property='og:title'>
+<meta content='跟波利亚学解题 跟波利亚学解题 ** 波利亚的三本书 《how to solve it》 《数学的发现》 《数学与猜想》** 大部分的书籍只是证明求解，而没有真实的求证过程 一些方法（解决题目，解决生活问题、生活决策） 1. 时刻不忘位置变量 2. 用特例启发思考 3. 反过来推导（由结...' property='og:description'>
+<meta content='https://geniousbar.github.io/2016/01/10/dark-time-three/' property='og:url'>
+<meta content='2016-01-10' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='暗时间 第三章' name='twitter:title'>
+<meta content='跟波利亚学解题 跟波利亚学解题 ** 波利亚的三本书 《how to solve it》 《数学的发现》 《数学与猜想》** 大部分的书籍只是证明求解，而没有真实的求证过程 一些方法（解决题目，解决生活问题、生活决策） 1. 时刻不忘位置变量 2. 用特例启发思考 3. 反过来推导（由结...' name='twitter:description'>
+<meta content='https://geniousbar.github.io/2016/01/10/dark-time-three/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="/images/favicon.ico" rel="icon" type="image/ico" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+<link href="/stylesheets/application.css" rel="stylesheet" />
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home'>
+<a href='/'>Home</a>
+</li>
+<li class='nav-docker'>
+<a href='/tag/docker'>docker</a>
+</li>
+</ul>
+</div>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>暗时间 第三章</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-01-10'>
+10 January 2016
+</time>
+on <a href='/tag/book/'>book</a>, <a href='/tag/mind/'>mind</a>, <a href='/tag/dark-time/'>dark-time</a>
+</section>
+</header>
+<section class='post-content'><h2>跟波利亚学解题</h2>
+
+<ul>
+<li>跟波利亚学解题
+** 波利亚的三本书 《how to solve it》 《数学的发现》 《数学与猜想》**
+大部分的书籍只是证明求解，而没有真实的求证过程</li>
+</ul>
+
+<p>一些方法（解决题目，解决生活问题、生活决策）
+  1. 时刻不忘位置变量
+  2. 用特例启发思考
+  3. 反过来推导（由结论反过来推导条件）
+  4. 试错 （枚举所有可能解）
+  5. 调整题目条件（改变环境变量， 环境可以理解为生活中的）
+  6. 类似问题（将问题抽象， 与8 有共通的地方， 将问题抽象泛化抽象出更加本质的东西）
+  7. 查看反例
+  8. 将问题泛化求解更一般的问题
+  9. 使用潜意识解决问题（需要长时间的锻炼， 将问题转化为潜意识的思考）</p>
+<pre class="highlight plaintext"><code>    好题目坏题目
+     1. 不需要用到未来的知识
+     2. 用到未来的知识，但是可以通过对题目的分析获取
+     3. 考察解题的一般性思路，而不是特定的技巧
+     4. 考察思维能力（联想、类比、抽象、归纳演绎）
+     坏题目：
+     将知识性的题目当成能力型的题目
+
+&gt; 生活的本质就是解题
+</code></pre>
+<ul>
+<li><p>锤子和钉子
+关注要解决的问题，而不是我拥有什么方法解决问题</p></li>
+<li><p>鱼是最后一个看到水的
+&ldquo;`
+总而言之， 大众对设计的定性存在严重的问题，许多人把设计模式当作时精巧的利器。然而事实上实际上远非如此， 设计模式是补丁，其出现往往意味着语言不够强大，其使用意味着大量的，与所要达到的编程目的无关的样板式代码</p></li>
+</ul>
+<pre class="highlight plaintext"><code>  &gt; 把简单的事情搞复杂的比比皆是，把复杂的事情搞简单的则凤毛麟角
+  语言之争
+  &gt; 避免思维被一门语言所束缚的最好办法就是   “学些一门新的语言”
+  &gt; think out of the box
+
+
+
+
+* 一些相关的问题
+  ** 停机问题 **
+  &gt; 定义： 不存在这样一个程序（算法）， 它能够计算任何程序（算法）在给定输入上是否能够结束（停机）
+
+        //我们假定下面的函数符合条件（可以验证一个函数是否能够停机）
+        bool God_algo(char* program, char* input)
+            {
+                if(&lt;program&gt; halt on &lt;input&gt;)
+                    return true;
+                return false;
+            }
+
+        // 那么下面的函数则可以永远不能够被判断是否停机
+            bool Satan_algo(char* program)
+            {
+                if(God_algo(char*program, program)){
+                    while(1) // loop forerver
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+
+            Satan_alog(Satan_alog) // 存在悖论，考虑函数是否可以被判定停机
+</code></pre></section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/geniousbar/'>geniousbar</a>
+</h4>
+<p></p>
+Read
+<a href='/author/geniousbar/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=暗时间 第三章&amp;amp;url=https://geniousbar.github.io/2016/01/10/dark-time-three/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=https://geniousbar.github.io/2016/01/10/dark-time-three/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=https://geniousbar.github.io/2016/01/10/dark-time-three/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2015/12/24/dark-time-two/'>
+<section class='post'>
+<h2>暗时间 第二章</h2>
+<p>思维改变生活 逃出你的肖申克 为什么只有亲身经历了才能明白 不能够切身体验 世界时复杂的，未来是不确定的 不能够很好的抓住事物的本质、触类旁通，将道理推广到表面不相似但本质一样的 认知失调、自我辩护， 根据认知失调理论，我们也会竭力的为自己辩护，又由于世界时复杂的（事情的表面现象并不能够真正的相似）， 又由于缺少将表面现象提取出本质的能力，所以我们总能为自己找到借口 失败即是成功 情绪对照（将过往的经历照搬到现在的状况中，虽然并不合适，比如我们将过往的成功经历、失败经历，不自觉的迁移到现在的状况中） 天性（自然选择过程试图最优化的目标函数并不是幸福，而是繁衍概率。，当你知道钱与幸福感并不相关的时候，原始的大脑（代之进化而来的大脑）则使用焦虑驱动你，让你寝食难安，等你挣到钱，给你短暂的满足感，然后不断的适应满足感。然后忘记了幸福） 习惯，习惯的力量大于我们的想象 亲身经历也不见得明白 我们自身看中结果而没有重视过程（从长远统计来看，过程重于结果， 好的过程必然促使更好的结果） 认知偏差（不同于认知失调） 情绪或者习惯的力量 逃出你的肖申克（2,&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/03/12/ruby-red-book/'>
+<section class='post'>
+<h2>Ruby 面向对象语言描述</h2>
+<p>面向对象设计实践指南Ruby语言描述 问题比答案更重要， 下面的章节中会关注与问题的提问，然后才是问题的解决方案 面向对象设计 设计的目的（要解决的问题） 应对变化 变化困难的原因（建立了太多的依赖关系，对周围的环境期望太多） 设计良好的大型程序必须由设计良好的小程序演变而来， 不存在设计错误小程序演变为设计良好的大型程序（当然大量的重构和重新设计也不无可能，然而存在的可能性太小） 实用的设计不回去预测未来将要发生什么 设计的目的时为了将来进行设计（应对变化）， 首要目的： 降低变化所来成本 工程师的目的：权衡 现在设计、 现在不设计+将来改动成本，之间的权重比较 设计的工具 solid原则（Single Responsibility、Open-Closed&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>知识总结</a>
+&copy;
+2017
+</section>
+<section class='poweredby'></section>
+</footer>
+</div>
+<script src="/javascripts/application.js"></script>
+</body>
+</html>
