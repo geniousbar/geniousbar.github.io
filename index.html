@@ -55,11 +55,62 @@
 <main class='content' id='content' role='main'>
 <div class='extra-pagination inner'>
 <nav class='pagination' role='pagination'>
-<span class='page-number'>Page 1 of 3</span>
+<span class='page-number'>Page 1 of 4</span>
 <a href="/page/2/" class="older-posts">Older Posts →</a>
 </nav>
 
 </div>
+<article class='post'>
+<header class='post-header'>
+<h2 class='post-title'><a href="/2017/04/25/rails-activemodel/">Rails ActiveModel</a></h2>
+</header>
+<section class='post-excerpt'>
+<p>
+rails activemodel
+    module ActiveModel
+      extend ActiveSupport::Autoload
+
+      autoload :AttributeAssignment
+      autoload :AttributeMethods
+      autoload :BlockValidator, 'active_model/validator'
+      autoload :Callbacks
+      autoload :Conversion
+<a href="/2017/04/25/rails-activemodel/" class="read-more">&raquo;</a>
+</p>
+</section>
+<footer class='post-meta'>
+<a href='/author/geniousbar/'>geniousbar</a>
+on <a href='/tag/rails/'>rails</a>, <a href='/tag/activemodel/'>activemodel</a>
+<time class='post-date' datetime='2017-04-25'>
+25 April 2017
+</time>
+</footer>
+</article>
+<article class='post'>
+<header class='post-header'>
+<h2 class='post-title'><a href="/2017/04/25/docker-abc/">docker 入门</a></h2>
+</header>
+<section class='post-excerpt'>
+<p>
+docker
+
+概念
+
+image(景象), container(容器),volume（数据卷）
+  
+    镜像(Image)和容器(Container)的关系,就像是面向对象程序设计中 的 类 和 实例 一样,镜像是静态的定义,容器是镜像运行时的实体。容器可以被 创建、启动、停止、删除、暂停等。
+    容器的实质是进程,但与直接在宿主执行的进程不同,容器进程运行于属于自己的 独立的 命名空间。因此容器可以拥有自己的 root 文件系统、自己的网络配置、 自己的进程空间,甚至自己的用户 ID
+<a href="/2017/04/25/docker-abc/" class="read-more">&raquo;</a>
+</p>
+</section>
+<footer class='post-meta'>
+<a href='/author/geniousbar/'>geniousbar</a>
+on <a href='/tag/docker/'>docker</a>
+<time class='post-date' datetime='2017-04-25'>
+25 April 2017
+</time>
+</footer>
+</article>
 <article class='post'>
 <header class='post-header'>
 <h2 class='post-title'><a href="/2017/04/20/rails-activerecord/">Rails ActivRecord源码（未完成）</a></h2>
@@ -174,55 +225,8 @@ on <a href='/tag/database/'>database</a>, <a href='/tag/postgres/'>postgres</a>
 </time>
 </footer>
 </article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2016/11/11/firefox/">Firefox</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-如何才能使用非签名的附加组件？（高级用户）
-
-Firefox ESR 45版，以及 开发者版 和 Nightly 版，将允许通过改变偏好来屏蔽增强的附加组件签名要求，请在 Firefox 配置编辑器（about:config 页）将 xpinstall.signatures.required 的值改为 false。还有其它一些山寨版的 Firefox 也允许此项屏蔽。更多内容，参阅 MozillaWiki 文章 附加组件/扩展签名。
-
-<a href="/2016/11/11/firefox/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/firefox/'>Firefox</a>
-<time class='post-date' datetime='2016-11-11'>
-11 November 2016
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2016/10/21/ruby-magic/">Ruby</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-排列组合
-arr = [1, 2, 3, 4, 5]
-arr.combination(3).to_a
-ary.each_cons(3).to_a
-
-ruby GIL
-1: Ruby MRI为了线程安全，用了GIL只支持单核。任何时刻只有一个线程在运行：当一个Thread阻塞时（比如IO, sleep等），就会切换到另个一线程。 所以就算用了celluloid, puma自动创建多线程的，MRI下每个进程还是单核。
-而Rubinius，JRuby则没有GIL，支持多核（每个线程分配一个cpu）。
-2
-<a href="/2016/10/21/ruby-magic/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/ruby/'>Ruby</a>
-<time class='post-date' datetime='2016-10-21'>
-21 October 2016
-</time>
-</footer>
-</article>
 <nav class='pagination' role='pagination'>
-<span class='page-number'>Page 1 of 3</span>
+<span class='page-number'>Page 1 of 4</span>
 <a href="/page/2/" class="older-posts">Older Posts →</a>
 </nav>
 

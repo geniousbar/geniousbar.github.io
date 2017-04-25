@@ -56,11 +56,58 @@
 <div class='extra-pagination inner'>
 <nav class='pagination' role='pagination'>
 <a href="/" class="newer-posts">← Newer Posts</a>
-<span class='page-number'>Page 2 of 3</span>
+<span class='page-number'>Page 2 of 4</span>
 <a href="/page/3/" class="older-posts">Older Posts →</a>
 </nav>
 
 </div>
+<article class='post'>
+<header class='post-header'>
+<h2 class='post-title'><a href="/2016/11/11/firefox/">Firefox</a></h2>
+</header>
+<section class='post-excerpt'>
+<p>
+如何才能使用非签名的附加组件？（高级用户）
+
+Firefox ESR 45版，以及 开发者版 和 Nightly 版，将允许通过改变偏好来屏蔽增强的附加组件签名要求，请在 Firefox 配置编辑器（about:config 页）将 xpinstall.signatures.required 的值改为 false。还有其它一些山寨版的 Firefox 也允许此项屏蔽。更多内容，参阅 MozillaWiki 文章 附加组件/扩展签名。
+
+<a href="/2016/11/11/firefox/" class="read-more">&raquo;</a>
+</p>
+</section>
+<footer class='post-meta'>
+<a href='/author/geniousbar/'>geniousbar</a>
+on <a href='/tag/firefox/'>Firefox</a>
+<time class='post-date' datetime='2016-11-11'>
+11 November 2016
+</time>
+</footer>
+</article>
+<article class='post'>
+<header class='post-header'>
+<h2 class='post-title'><a href="/2016/10/21/ruby-magic/">Ruby</a></h2>
+</header>
+<section class='post-excerpt'>
+<p>
+排列组合
+arr = [1, 2, 3, 4, 5]
+arr.combination(3).to_a
+ary.each_cons(3).to_a
+
+ruby GIL
+1: Ruby MRI为了线程安全，用了GIL只支持单核。任何时刻只有一个线程在运行：当一个Thread阻塞时（比如IO, sleep等），就会切换到另个一线程。 所以就算用了celluloid, puma自动创建多线程的，MRI下每个进程还是单核。
+而Rubinius，JRuby则没有GIL，支持多核（每个线程分配一个cpu）。
+2
+<a href="/2016/10/21/ruby-magic/" class="read-more">&raquo;</a>
+</p>
+</section>
+<footer class='post-meta'>
+<a href='/author/geniousbar/'>geniousbar</a>
+on <a href='/tag/ruby/'>Ruby</a>
+<time class='post-date' datetime='2016-10-21'>
+21 October 2016
+</time>
+</footer>
+</article>
 <article class='post'>
 <header class='post-header'>
 <h2 class='post-title'><a href="/2016/10/01/javascript-good-part/">Javascript 语言精粹</a></h2>
@@ -91,6 +138,37 @@ delete： 不会触及原型任何对象， 会显露出来原型中的对象属
 on <a href='/tag/javascript/'>javascript</a>
 <time class='post-date' datetime='2016-10-01'>
 01 October 2016
+</time>
+</footer>
+</article>
+<article class='post'>
+<header class='post-header'>
+<h2 class='post-title'><a href="/2016/09/07/ubuntu-abtest/">abtest</a></h2>
+</header>
+<section class='post-excerpt'>
+<p>
+参考
+
+性能测试之ab测试工具
+
+性能测试之ab测试工具-mht
+
+ab测试参数详解：
+-n 测试会话中所执行的请求个数,默认仅执行一个请求
+-c 一次产生的请求个数,即同一时间发出多少个请求,默认为一次一个
+-t 测试所进行的最大秒数,默认为无时间限制....其内部隐含值是[-n 50000],它可以使对服务器的测试限制在一个固定的总时间以内
+-p 包含了需要POST的数据的文件
+-T POST数据所使用的Content-type头信息
+-v 设置显示信息的详细程度
+-w 以HTML表格的形式
+<a href="/2016/09/07/ubuntu-abtest/" class="read-more">&raquo;</a>
+</p>
+</section>
+<footer class='post-meta'>
+<a href='/author/geniousbar/'>geniousbar</a>
+on <a href='/tag/test/'>test</a>
+<time class='post-date' datetime='2016-09-07'>
+07 September 2016
 </time>
 </footer>
 </article>
@@ -132,37 +210,6 @@ on <a href='/tag/linux/'>linux</a>
 </article>
 <article class='post'>
 <header class='post-header'>
-<h2 class='post-title'><a href="/2016/09/07/ubuntu-abtest/">abtest</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-参考
-
-性能测试之ab测试工具
-
-性能测试之ab测试工具-mht
-
-ab测试参数详解：
--n 测试会话中所执行的请求个数,默认仅执行一个请求
--c 一次产生的请求个数,即同一时间发出多少个请求,默认为一次一个
--t 测试所进行的最大秒数,默认为无时间限制....其内部隐含值是[-n 50000],它可以使对服务器的测试限制在一个固定的总时间以内
--p 包含了需要POST的数据的文件
--T POST数据所使用的Content-type头信息
--v 设置显示信息的详细程度
--w 以HTML表格的形式
-<a href="/2016/09/07/ubuntu-abtest/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/test/'>test</a>
-<time class='post-date' datetime='2016-09-07'>
-07 September 2016
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
 <h2 class='post-title'><a href="/2016/09/07/linux-swap/">linux swap</a></h2>
 </header>
 <section class='post-excerpt'>
@@ -192,69 +239,9 @@ on <a href='/tag/linux/'>linux</a>
 </time>
 </footer>
 </article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2016/09/07/linux-tar/">linux tar command</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-zip
-
-zip可能是目前使用得最多的文档压缩格式。
-
-它最大的优点就是在不同的操作系统平台，比如Linux， Windows以及Mac OS上使用。缺点就是支持的压缩率不是很高，而tar.gz和tar.gz2在压缩率方面做得非常好。闲话少说，我们步入正题吧：
-
-我们可以使用下列的命令压缩一个目录：
-zip -r archivename.zip directoryto_compress
-
-下面是如果解压一个zip文档：
-unzip archive_name.zip
-
-tar.gz
-
-这种格式是我
-<a href="/2016/09/07/linux-tar/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/linux/'>linux</a>, <a href='/tag/command/'>command</a>
-<time class='post-date' datetime='2016-09-07'>
-07 September 2016
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2016/07/01/ruby-dsl/">Ruby Dsl</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-
-ruby中的dsl大部分都是利用方法调用，eval代码。 来执行代码, 可以参考rails， 大量的dsl
-
-
-Whenever 代码 DSL
-  bin
-    Whenever::CommandLine.execute(options)
-      -- self.new() &amp;&amp; run
-        -- whenever_cron
-          -- Whenever.corn
-            -- ** Whenever::JobList.new(options).
-<a href="/2016/07/01/ruby-dsl/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/ruby/'>ruby</a>, <a href='/tag/dsl/'>dsl</a>
-<time class='post-date' datetime='2016-07-01'>
-01 July 2016
-</time>
-</footer>
-</article>
 <nav class='pagination' role='pagination'>
 <a href="/" class="newer-posts">← Newer Posts</a>
-<span class='page-number'>Page 2 of 3</span>
+<span class='page-number'>Page 2 of 4</span>
 <a href="/page/3/" class="older-posts">Older Posts →</a>
 </nav>
 

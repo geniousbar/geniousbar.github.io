@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>知识总结: Rails ActiveModel</title>
+<meta content='rails activemodel module ActiveModel extend ActiveSupport::Autoload autoload :AttributeAssignment autoload :AttributeMethods autoload :BlockVali...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='知识总结' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Rails ActiveModel' property='og:title'>
+<meta content='rails activemodel module ActiveModel extend ActiveSupport::Autoload autoload :AttributeAssignment autoload :AttributeMethods autoload :BlockVali...' property='og:description'>
+<meta content='https://geniousbar.github.io/2017/04/25/rails-activemodel/' property='og:url'>
+<meta content='2017-04-25' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Rails ActiveModel' name='twitter:title'>
+<meta content='rails activemodel module ActiveModel extend ActiveSupport::Autoload autoload :AttributeAssignment autoload :AttributeMethods autoload :BlockVali...' name='twitter:description'>
+<meta content='https://geniousbar.github.io/2017/04/25/rails-activemodel/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="/images/favicon.ico" rel="icon" type="image/ico" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+<link href="/stylesheets/application.css" rel="stylesheet" />
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home'>
+<a href='/'>Home</a>
+</li>
+<li class='nav-docker'>
+<a href='/tag/docker'>docker</a>
+</li>
+</ul>
+</div>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Rails ActiveModel</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2017-04-25'>
+25 April 2017
+</time>
+on <a href='/tag/rails/'>rails</a>, <a href='/tag/activemodel/'>activemodel</a>
+</section>
+</header>
+<section class='post-content'><h5>rails activemodel</h5>
+<pre class="highlight ruby"><code>    <span class="k">module</span> <span class="nn">ActiveModel</span>
+      <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Autoload</span>
+
+      <span class="nb">autoload</span> <span class="ss">:AttributeAssignment</span>
+      <span class="nb">autoload</span> <span class="ss">:AttributeMethods</span>
+      <span class="nb">autoload</span> <span class="ss">:BlockValidator</span><span class="p">,</span> <span class="s1">'active_model/validator'</span>
+      <span class="nb">autoload</span> <span class="ss">:Callbacks</span>
+      <span class="nb">autoload</span> <span class="ss">:Conversion</span>
+      <span class="nb">autoload</span> <span class="ss">:Dirty</span>
+      <span class="nb">autoload</span> <span class="ss">:EachValidator</span><span class="p">,</span> <span class="s1">'active_model/validator'</span>
+      <span class="nb">autoload</span> <span class="ss">:ForbiddenAttributesProtection</span>
+      <span class="nb">autoload</span> <span class="ss">:Lint</span>
+      <span class="nb">autoload</span> <span class="ss">:Model</span>
+      <span class="nb">autoload</span> <span class="ss">:Name</span><span class="p">,</span> <span class="s1">'active_model/naming'</span>
+      <span class="nb">autoload</span> <span class="ss">:Naming</span>
+      <span class="nb">autoload</span> <span class="ss">:SecurePassword</span>
+      <span class="nb">autoload</span> <span class="ss">:Serialization</span>
+      <span class="nb">autoload</span> <span class="ss">:TestCase</span>
+      <span class="nb">autoload</span> <span class="ss">:Translation</span>
+      <span class="nb">autoload</span> <span class="ss">:Validations</span>
+      <span class="nb">autoload</span> <span class="ss">:Validator</span>
+
+      <span class="n">eager_autoload</span> <span class="k">do</span>
+        <span class="nb">autoload</span> <span class="ss">:Errors</span>
+        <span class="nb">autoload</span> <span class="ss">:RangeError</span><span class="p">,</span> <span class="s1">'active_model/errors'</span>
+        <span class="nb">autoload</span> <span class="ss">:StrictValidationFailed</span><span class="p">,</span> <span class="s1">'active_model/errors'</span>
+        <span class="nb">autoload</span> <span class="ss">:UnknownAttributeError</span><span class="p">,</span> <span class="s1">'active_model/errors'</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre>
+<h5>attribute_assignment</h5>
+
+<blockquote>
+<p>让任何的ruby对象接受hash赋值，实现是动态的分发, 2. 防止 = ActionController::Parameters 没有调用permit函数</p>
+</blockquote>
+<pre class="highlight ruby"><code>    <span class="k">def</span> <span class="nf">assign_attributes</span><span class="p">(</span><span class="n">new_attributes</span><span class="p">)</span>
+      <span class="k">if</span> <span class="o">!</span><span class="n">new_attributes</span><span class="p">.</span><span class="nf">respond_to?</span><span class="p">(</span><span class="ss">:stringify_keys</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="no">ArgumentError</span><span class="p">,</span> <span class="s2">"When assigning attributes, you must pass a hash as an argument."</span>
+      <span class="k">end</span>
+      <span class="k">return</span> <span class="k">if</span> <span class="n">new_attributes</span><span class="p">.</span><span class="nf">nil?</span> <span class="o">||</span> <span class="n">new_attributes</span><span class="p">.</span><span class="nf">empty?</span>
+
+      <span class="n">attributes</span> <span class="o">=</span> <span class="n">new_attributes</span><span class="p">.</span><span class="nf">stringify_keys</span>
+      <span class="n">_assign_attributes</span><span class="p">(</span><span class="n">sanitize_for_mass_assignment</span><span class="p">(</span><span class="n">attributes</span><span class="p">))</span>
+    <span class="k">end</span>
+
+    <span class="kp">private</span>
+
+    <span class="k">def</span> <span class="nf">_assign_attributes</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+      <span class="n">attributes</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">|</span>
+        <span class="n">_assign_attribute</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">_assign_attribute</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+      <span class="k">if</span> <span class="nb">respond_to?</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="n">k</span><span class="si">}</span><span class="s2">="</span><span class="p">)</span>
+        <span class="n">public_send</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="n">k</span><span class="si">}</span><span class="s2">="</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+      <span class="k">else</span>
+        <span class="k">raise</span> <span class="no">UnknownAttributeError</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre>
+<h5>attribute_methods</h5>
+
+<ol>
+<li><p>源码</p>
+
+<blockquote>
+<p>目的 在方法中添加前缀后缀等(好像没啥用)</p>
+</blockquote>
+<pre class="highlight ruby"><code><span class="k">module</span> <span class="nn">AttributeMethods</span>
+  <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+
+  <span class="no">NAME_COMPILABLE_REGEXP</span> <span class="o">=</span> <span class="sr">/\A[a-zA-Z_]\w*[!?=]?\z/</span>
+  <span class="no">CALL_COMPILABLE_REGEXP</span> <span class="o">=</span> <span class="sr">/\A[a-zA-Z_]\w*[!?]?\z/</span>
+
+  <span class="n">included</span> <span class="k">do</span>
+    <span class="n">class_attribute</span> <span class="ss">:attribute_aliases</span><span class="p">,</span> <span class="ss">:attribute_method_matchers</span><span class="p">,</span> <span class="ss">instance_writer: </span><span class="kp">false</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">attribute_aliases</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">attribute_method_matchers</span> <span class="o">=</span> <span class="p">[</span><span class="no">ClassMethods</span><span class="o">::</span><span class="no">AttributeMethodMatcher</span><span class="p">.</span><span class="nf">new</span><span class="p">]</span>
+  <span class="k">end</span>
+
+  <span class="k">module</span> <span class="nn">ClassMethods</span>
+
+    <span class="k">def</span> <span class="nf">attribute_method_suffix</span><span class="p">(</span><span class="o">*</span><span class="n">suffixes</span><span class="p">)</span>
+      <span class="nb">self</span><span class="p">.</span><span class="nf">attribute_method_matchers</span> <span class="o">+=</span> <span class="n">suffixes</span><span class="p">.</span><span class="nf">map!</span> <span class="p">{</span> <span class="o">|</span><span class="n">suffix</span><span class="o">|</span> <span class="no">AttributeMethodMatcher</span><span class="p">.</span><span class="nf">new</span> <span class="ss">suffix: </span><span class="n">suffix</span> <span class="p">}</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">generated_attribute_methods</span> <span class="c1">#:nodoc:</span>
+      <span class="vi">@generated_attribute_methods</span> <span class="o">||=</span> <span class="no">Module</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span>
+        <span class="kp">extend</span> <span class="no">Mutex_m</span>
+      <span class="p">}.</span><span class="nf">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">mod</span><span class="o">|</span> <span class="kp">include</span> <span class="n">mod</span> <span class="p">}</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">define_attribute_method</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+      <span class="n">attribute_method_matchers</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">matcher</span><span class="o">|</span>
+        <span class="n">method_name</span> <span class="o">=</span> <span class="n">matcher</span><span class="p">.</span><span class="nf">method_name</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+
+        <span class="k">unless</span> <span class="n">instance_method_already_implemented?</span><span class="p">(</span><span class="n">method_name</span><span class="p">)</span>
+          <span class="n">define_proxy_call</span> <span class="kp">true</span><span class="p">,</span> <span class="n">generated_attribute_methods</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">matcher</span><span class="p">.</span><span class="nf">method_missing_target</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">.</span><span class="nf">to_s</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">define_proxy_call</span><span class="p">(</span><span class="n">include_private</span><span class="p">,</span> <span class="n">mod</span><span class="p">,</span> <span class="nb">name</span><span class="p">,</span> <span class="nb">send</span><span class="p">,</span> <span class="o">*</span><span class="n">extra</span><span class="p">)</span> <span class="c1">#:nodoc:</span>
+      <span class="n">defn</span> <span class="o">=</span> <span class="k">if</span> <span class="nb">name</span> <span class="o">=~</span> <span class="no">NAME_COMPILABLE_REGEXP</span>
+        <span class="s2">"def </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">(*args)"</span>
+      <span class="k">else</span>
+        <span class="s2">"define_method(:'</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">') do |*args|"</span>
+      <span class="k">end</span>
+
+      <span class="n">extra</span> <span class="o">=</span> <span class="p">(</span><span class="n">extra</span><span class="p">.</span><span class="nf">map!</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:inspect</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">"*args"</span><span class="p">).</span><span class="nf">join</span><span class="p">(</span><span class="s2">", "</span><span class="p">.</span><span class="nf">freeze</span><span class="p">)</span>
+
+      <span class="n">target</span> <span class="o">=</span> <span class="k">if</span> <span class="nb">send</span> <span class="o">=~</span> <span class="no">CALL_COMPILABLE_REGEXP</span>
+        <span class="s2">"</span><span class="si">#{</span><span class="s2">"self."</span> <span class="k">unless</span> <span class="n">include_private</span><span class="si">}#{</span><span class="nb">send</span><span class="si">}</span><span class="s2">(</span><span class="si">#{</span><span class="n">extra</span><span class="si">}</span><span class="s2">)"</span>
+      <span class="k">else</span>
+        <span class="s2">"send(:'</span><span class="si">#{</span><span class="nb">send</span><span class="si">}</span><span class="s2">', </span><span class="si">#{</span><span class="n">extra</span><span class="si">}</span><span class="s2">)"</span>
+      <span class="k">end</span>
+
+      <span class="n">mod</span><span class="p">.</span><span class="nf">module_eval</span> <span class="o">&lt;&lt;-</span><span class="no">RUBY</span><span class="p">,</span> <span class="kp">__FILE__</span><span class="p">,</span> <span class="kp">__LINE__</span> <span class="o">+</span> <span class="mi">1</span><span class="sh">
+        </span><span class="si">#{</span><span class="n">defn</span><span class="si">}</span><span class="sh">
+          </span><span class="si">#{</span><span class="n">target</span><span class="si">}</span><span class="sh">
+        end
+</span><span class="no">      RUBY</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">AttributeMethodMatcher</span> <span class="c1">#:nodoc:</span>
+      <span class="kp">attr_reader</span> <span class="ss">:prefix</span><span class="p">,</span> <span class="ss">:suffix</span><span class="p">,</span> <span class="ss">:method_missing_target</span>
+
+      <span class="no">AttributeMethodMatch</span> <span class="o">=</span> <span class="no">Struct</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">:target</span><span class="p">,</span> <span class="ss">:attr_name</span><span class="p">,</span> <span class="ss">:method_name</span><span class="p">)</span>
+
+      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+        <span class="vi">@prefix</span><span class="p">,</span> <span class="vi">@suffix</span> <span class="o">=</span> <span class="n">options</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="ss">:prefix</span><span class="p">,</span> <span class="s1">''</span><span class="p">),</span> <span class="n">options</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="ss">:suffix</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+        <span class="vi">@regex</span> <span class="o">=</span> <span class="sr">/^(?:</span><span class="si">#{</span><span class="no">Regexp</span><span class="p">.</span><span class="nf">escape</span><span class="p">(</span><span class="vi">@prefix</span><span class="p">)</span><span class="si">}</span><span class="sr">)(.*)(?:</span><span class="si">#{</span><span class="no">Regexp</span><span class="p">.</span><span class="nf">escape</span><span class="p">(</span><span class="vi">@suffix</span><span class="p">)</span><span class="si">}</span><span class="sr">)$/</span>
+        <span class="vi">@method_missing_target</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@prefix</span><span class="si">}</span><span class="s2">attribute</span><span class="si">#{</span><span class="vi">@suffix</span><span class="si">}</span><span class="s2">"</span>
+        <span class="vi">@method_name</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">%s</span><span class="si">#{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">"</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="n">method_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="vi">@regex</span> <span class="o">=~</span> <span class="n">method_name</span>
+          <span class="no">AttributeMethodMatch</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">method_missing_target</span><span class="p">,</span> <span class="vg">$1</span><span class="p">,</span> <span class="n">method_name</span><span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">method_name</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="vi">@method_name</span> <span class="o">%</span> <span class="n">attr_name</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">plain?</span>
+        <span class="n">prefix</span><span class="p">.</span><span class="nf">empty?</span> <span class="o">&amp;&amp;</span> <span class="n">suffix</span><span class="p">.</span><span class="nf">empty?</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+  <span class="k">end</span>
+</code></pre></li>
+<li><p>调用栈为:</p>
+<pre class="highlight plaintext"><code> attribute_method_affix  prefix: 'reset_'
+ define_attribute_methods :name
+
+ |- attribute_method_affix 的调用产生 一个 AttributeMethodMatcher的数组，维系着 添加前缀后缀的标记
+ |- define_attribute_methods
+  |- attribute_method_matchers.each |matcher|
+    |- define_proxy_call true, generated_attribute_methods, method_name, matcher.method_missing_target, attr_name.to_s
+
+  define_attribute_methods 作用的symbol， 将前缀后缀的标记应用在参数上， 主动定义 prefix_name_sufix 的方法，并将方法的调用分发到 prefix_attribute_sufix函数中.
+</code></pre></li>
+<li><p>值的注意的地方</p>
+<pre class="highlight ruby"><code>  <span class="c1"># @method_name = "prefix_%s", method_name(name) =&gt; prefix_name</span>
+  <span class="k">def</span> <span class="nf">method_name</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+    <span class="vi">@method_name</span> <span class="o">%</span> <span class="n">attr_name</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Module.new 产生新的module 并在当前类中include， 之后 define_proxy_call等都是在这个 module 中进行操作， 包括去除方法等， 保证了，不影响类中的其他代码</span>
+  <span class="k">def</span> <span class="nf">generated_attribute_methods</span> <span class="c1">#:nodoc:</span>
+    <span class="vi">@generated_attribute_methods</span> <span class="o">||=</span> <span class="no">Module</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span>
+      <span class="kp">extend</span> <span class="no">Mutex_m</span>
+    <span class="p">}.</span><span class="nf">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">mod</span><span class="o">|</span> <span class="kp">include</span> <span class="n">mod</span> <span class="p">}</span>
+  <span class="k">end</span>
+</code></pre></li>
+</ol>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/geniousbar/'>geniousbar</a>
+</h4>
+<p></p>
+Read
+<a href='/author/geniousbar/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Rails ActiveModel&amp;amp;url=https://geniousbar.github.io/2017/04/25/rails-activemodel/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=https://geniousbar.github.io/2017/04/25/rails-activemodel/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=https://geniousbar.github.io/2017/04/25/rails-activemodel/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2017/04/20/rails-activerecord/'>
+<section class='post'>
+<h2>Rails ActivRecord源码（未完成）</h2>
+<p>rails activerecord 源码 数据库的连接调用过程 activercord base中的代码 # activerecord/lib/active_record/railtie.rb ActiveSupport.on_load(:active_record) do self.configurations = Rails.application.config.database_configuration begin establish_connection end end # activerecord/lib/base.rb&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>知识总结</a>
+&copy;
+2017
+</section>
+<section class='poweredby'></section>
+</footer>
+</div>
+<script src="/javascripts/application.js"></script>
+</body>
+</html>

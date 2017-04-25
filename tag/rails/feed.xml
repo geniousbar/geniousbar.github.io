@@ -34,4 +34,23 @@ activercord base中的代码
 
 </summary>
   </entry>
+  <entry>
+    <title>Rails ActiveModel</title>
+    <link rel="alternate" href="https://geniousbar.github.io/2017/04/25/rails-activemodel/"/>
+    <id>https://geniousbar.github.io/2017/04/25/rails-activemodel/</id>
+    <published>2017-04-25T08:00:00+08:00</published>
+    <updated>2017-04-25T18:32:37+08:00</updated>
+    <author>
+      <name>geniousbar</name>
+    </author>
+    <summary type="html">rails activemodel
+    module ActiveModel
+      extend ActiveSupport::Autoload
+
+      autoload :AttributeAssignment
+      autoload :AttributeMethods
+      autoload :BlockValidator, 'active_model/validator'
+      autoload :Callbacks
+      autoload :Conversion</summary>
+  </entry>
 </feed>
