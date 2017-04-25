@@ -48,7 +48,7 @@
 <div class='author-meta'>
 <span class='author-stats'>
 <i class='icon-stats'></i>
-16 posts
+18 posts
 </span>
 </div>
 </section>
@@ -60,6 +60,71 @@
 </nav>
 
 </div>
+<article class='post'>
+<header class='post-header'>
+<h2 class='post-title'><a href="/2017/04/20/rails-activerecord/">Rails ActivRecord源码（未完成）</a></h2>
+</header>
+<section class='post-excerpt'>
+<p>
+rails activerecord 源码
+
+数据库的连接调用过程
+
+
+
+activercord base中的代码
+  # activerecord/lib/active_record/railtie.rb
+    ActiveSupport.on_load(:active_record) do
+      self.configurations = Rails.application.config.database_configuration
+
+      begin
+        establish_connection
+
+
+<a href="/2017/04/20/rails-activerecord/" class="read-more">&raquo;</a>
+</p>
+</section>
+<footer class='post-meta'>
+<a href='/author/geniousbar/'>geniousbar</a>
+on <a href='/tag/rails/'>rails</a>, <a href='/tag/sourcecode/'>sourcecode</a>
+<time class='post-date' datetime='2017-04-20'>
+20 April 2017
+</time>
+</footer>
+</article>
+<article class='post'>
+<header class='post-header'>
+<h2 class='post-title'><a href="/2017/04/19/linux-maintain/">linux维护</a></h2>
+</header>
+<section class='post-excerpt'>
+<p>
+二台机器之间同步大文件(拷贝文件到另一台机器)
+
+rsync -rP –rsh=ssh /file/path name@ip:/file/path
+
+建立软连接
+
+ln -s original/file/path soft/file/path
+
+linux后台启动服务
+
+nohup ruby http_server.rb 2&gt;&amp;1 &gt;&gt; log.log 2&gt;&amp;1 /dev/null &amp;
+nohup command &amp;&gt; /dev/null &amp;
+
+linux根据关键字得到pid号
+
+pgrep -f
+<a href="/2017/04/19/linux-maintain/" class="read-more">&raquo;</a>
+</p>
+</section>
+<footer class='post-meta'>
+<a href='/author/geniousbar/'>geniousbar</a>
+on <a href='/tag/linux/'>linux</a>
+<time class='post-date' datetime='2017-04-19'>
+19 April 2017
+</time>
+</footer>
+</article>
 <article class='post'>
 <header class='post-header'>
 <h2 class='post-title'><a href="/2017/02/25/docker/">Docker</a></h2>
@@ -153,71 +218,6 @@ ruby GIL
 on <a href='/tag/ruby/'>Ruby</a>
 <time class='post-date' datetime='2016-10-21'>
 21 October 2016
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2016/10/01/javascript-good-part/">Javascript 语言精粹</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-javascrip 语言精粹
-
-
-假值： false, null, undefined, 0, ‘ ’, NaN
-数据类型： 数字， 字符串， 布尔， null， undefined， 对象
-反射： typeof, hasOwnProperty
-delete： 不会触及原型任何对象， 会显露出来原型中的对象属性
-
-
-函数
-
-
-函数也是对象，只是可以调用
-调用模式： 方法调用模式， 函数调用模式， 构造器调用模式，apply调用模式（在初始化this上存在差异）
-函数调用中， 多余或者不足的形式参
-
-<a href="/2016/10/01/javascript-good-part/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/javascript/'>javascript</a>
-<time class='post-date' datetime='2016-10-01'>
-01 October 2016
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2016/09/07/linux-tar/">linux tar command</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-zip
-
-zip可能是目前使用得最多的文档压缩格式。
-
-它最大的优点就是在不同的操作系统平台，比如Linux， Windows以及Mac OS上使用。缺点就是支持的压缩率不是很高，而tar.gz和tar.gz2在压缩率方面做得非常好。闲话少说，我们步入正题吧：
-
-我们可以使用下列的命令压缩一个目录：
-zip -r archivename.zip directoryto_compress
-
-下面是如果解压一个zip文档：
-unzip archive_name.zip
-
-tar.gz
-
-这种格式是我
-<a href="/2016/09/07/linux-tar/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/linux/'>linux</a>, <a href='/tag/command/'>command</a>
-<time class='post-date' datetime='2016-09-07'>
-07 September 2016
 </time>
 </footer>
 </article>

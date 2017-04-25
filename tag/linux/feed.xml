@@ -87,4 +87,30 @@ linux创建sudo用户
 
 adduser</summary>
   </entry>
+  <entry>
+    <title>linux维护</title>
+    <link rel="alternate" href="https://geniousbar.github.io/2017/04/19/linux-maintain/"/>
+    <id>https://geniousbar.github.io/2017/04/19/linux-maintain/</id>
+    <published>2017-04-19T08:00:00+08:00</published>
+    <updated>2017-04-25T11:31:56+08:00</updated>
+    <author>
+      <name>geniousbar</name>
+    </author>
+    <summary type="html">二台机器之间同步大文件(拷贝文件到另一台机器)
+
+rsync -rP –rsh=ssh /file/path name@ip:/file/path
+
+建立软连接
+
+ln -s original/file/path soft/file/path
+
+linux后台启动服务
+
+nohup ruby http_server.rb 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; log.log 2&amp;gt;&amp;amp;1 /dev/null &amp;amp;
+nohup command &amp;amp;&amp;gt; /dev/null &amp;amp;
+
+linux根据关键字得到pid号
+
+pgrep -f</summary>
+  </entry>
 </feed>

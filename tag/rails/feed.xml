@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>知识总结: rails</title>
+  <subtitle>Posts tagged with rails</subtitle>
+  <id>https://geniousbar.github.io</id>
+  <link href="https://geniousbar.github.io"/>
+  <link href="https://geniousbar.github.io/tag/rails/feed.xml" rel="self"/>
+  <updated>2017-04-20T08:00:00+08:00</updated>
+  <author>
+    <name>geniousbar</name>
+  </author>
+  <entry>
+    <title>Rails ActivRecord源码（未完成）</title>
+    <link rel="alternate" href="https://geniousbar.github.io/2017/04/20/rails-activerecord/"/>
+    <id>https://geniousbar.github.io/2017/04/20/rails-activerecord/</id>
+    <published>2017-04-20T08:00:00+08:00</published>
+    <updated>2017-04-25T11:26:26+08:00</updated>
+    <author>
+      <name>geniousbar</name>
+    </author>
+    <summary type="html">rails activerecord 源码
+
+数据库的连接调用过程
+
+
+
+activercord base中的代码
+  # activerecord/lib/active_record/railtie.rb
+    ActiveSupport.on_load(:active_record) do
+      self.configurations = Rails.application.config.database_configuration
+
+      begin
+        establish_connection
+
+</summary>
+  </entry>
+</feed>

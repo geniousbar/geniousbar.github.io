@@ -47,7 +47,7 @@
 <div class='vertical'>
 <div class='main-header-content inner'>
 <h1 class='page-title'>linux</h1>
-<h2 class='page-description'>A 3-post collection</h2>
+<h2 class='page-description'>A 4-post collection</h2>
 </div>
 </div>
 </header>
@@ -58,6 +58,39 @@
 </nav>
 
 </div>
+<article class='post'>
+<header class='post-header'>
+<h2 class='post-title'><a href="/2017/04/19/linux-maintain/">linux维护</a></h2>
+</header>
+<section class='post-excerpt'>
+<p>
+二台机器之间同步大文件(拷贝文件到另一台机器)
+
+rsync -rP –rsh=ssh /file/path name@ip:/file/path
+
+建立软连接
+
+ln -s original/file/path soft/file/path
+
+linux后台启动服务
+
+nohup ruby http_server.rb 2&gt;&amp;1 &gt;&gt; log.log 2&gt;&amp;1 /dev/null &amp;
+nohup command &amp;&gt; /dev/null &amp;
+
+linux根据关键字得到pid号
+
+pgrep -f
+<a href="/2017/04/19/linux-maintain/" class="read-more">&raquo;</a>
+</p>
+</section>
+<footer class='post-meta'>
+<a href='/author/geniousbar/'>geniousbar</a>
+on <a href='/tag/linux/'>linux</a>
+<time class='post-date' datetime='2017-04-19'>
+19 April 2017
+</time>
+</footer>
+</article>
 <article class='post'>
 <header class='post-header'>
 <h2 class='post-title'><a href="/2016/09/07/linux/">linux</a></h2>
