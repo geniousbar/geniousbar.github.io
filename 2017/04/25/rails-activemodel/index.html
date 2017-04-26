@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>Rails ActiveModel | 日常学习</title><meta description="rails activemodel      module ActiveModel       extend ActiveSupport::Autoload        autoload :AttributeAssignment       autoload :AttributeMethods       autoload :BlockValidator, 'active_model/validator'       autoload :Callbacks       autoload " /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">Rails ActiveModel</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 25, 2017</span></div><div class="tag-labels"><a href="/tags/rails/"><small class="tag-label">rails</small></a><a href="/tags/activemodel/"><small class="tag-label">activemodel</small></a></div><hr class="article-header-separator" /><h5 id="rails-activemodel">rails activemodel</h5>
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>Rails ActiveModel | 日常学习</title><meta description="rails activemodel      module ActiveModel       extend ActiveSupport::Autoload        autoload :AttributeAssignment       autoload :AttributeMethods       autoload :BlockValidator, 'active_model/validator'       autoload :Callbacks       autoload " /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">Rails ActiveModel</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 25, 2017</span></div><div class="tag-labels"><a href="/tags/rails/"><small class="tag-label">rails</small></a><a href="/tags/activemodel/"><small class="tag-label">activemodel</small></a></div><hr class="article-header-separator" /><h2 id="rails-activemodel">rails activemodel</h2>
 
 <pre class="highlight ruby"><code>    <span class="k">module</span> <span class="nn">ActiveModel</span>
       <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Autoload</span>
@@ -30,7 +30,7 @@
       <span class="k">end</span>
     <span class="k">end</span>
 </code></pre>
-<h5 id="attribute_assignment">attribute_assignment</h5>
+<h2 id="attribute_assignment">attribute_assignment</h2>
 <blockquote>
   <p>让任何的ruby对象接受hash赋值，实现是动态的分发, 2. 防止 = ActionController::Parameters 没有调用permit函数</p>
 </blockquote>
@@ -61,366 +61,414 @@
       <span class="k">end</span>
     <span class="k">end</span>
 </code></pre>
-<h5 id="attribute_methods">attribute_methods</h5>
+<h2 id="attribute_methods">attribute_methods</h2>
 <ol>
-  <li>源码<br />
-    &gt; 目的 在方法中添加前缀后缀等(好像没啥用)</li>
+  <li>
+    <p>源码<br />
+    目的 在方法中添加前缀后缀等(好像没啥用)</p>
+
+<pre class="highlight ruby"><code> <span class="k">module</span> <span class="nn">AttributeMethods</span>
+   <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+
+   <span class="no">NAME_COMPILABLE_REGEXP</span> <span class="o">=</span> <span class="sr">/\A[a-zA-Z_]\w*[!?=]?\z/</span>
+   <span class="no">CALL_COMPILABLE_REGEXP</span> <span class="o">=</span> <span class="sr">/\A[a-zA-Z_]\w*[!?]?\z/</span>
+
+   <span class="n">included</span> <span class="k">do</span>
+     <span class="n">class_attribute</span> <span class="ss">:attribute_aliases</span><span class="p">,</span> <span class="ss">:attribute_method_matchers</span><span class="p">,</span> <span class="ss">instance_writer: </span><span class="kp">false</span>
+     <span class="nb">self</span><span class="p">.</span><span class="nf">attribute_aliases</span> <span class="o">=</span> <span class="p">{}</span>
+     <span class="nb">self</span><span class="p">.</span><span class="nf">attribute_method_matchers</span> <span class="o">=</span> <span class="p">[</span><span class="no">ClassMethods</span><span class="o">::</span><span class="no">AttributeMethodMatcher</span><span class="p">.</span><span class="nf">new</span><span class="p">]</span>
+   <span class="k">end</span>
+
+   <span class="k">module</span> <span class="nn">ClassMethods</span>
+
+     <span class="k">def</span> <span class="nf">attribute_method_suffix</span><span class="p">(</span><span class="o">*</span><span class="n">suffixes</span><span class="p">)</span>
+       <span class="nb">self</span><span class="p">.</span><span class="nf">attribute_method_matchers</span> <span class="o">+=</span> <span class="n">suffixes</span><span class="p">.</span><span class="nf">map!</span> <span class="p">{</span> <span class="o">|</span><span class="n">suffix</span><span class="o">|</span> <span class="no">AttributeMethodMatcher</span><span class="p">.</span><span class="nf">new</span> <span class="ss">suffix: </span><span class="n">suffix</span> <span class="p">}</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">generated_attribute_methods</span> <span class="c1">#:nodoc:</span>
+       <span class="vi">@generated_attribute_methods</span> <span class="o">||=</span> <span class="no">Module</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span>
+         <span class="kp">extend</span> <span class="no">Mutex_m</span>
+       <span class="p">}.</span><span class="nf">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">mod</span><span class="o">|</span> <span class="kp">include</span> <span class="n">mod</span> <span class="p">}</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">define_attribute_method</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+       <span class="n">attribute_method_matchers</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">matcher</span><span class="o">|</span>
+         <span class="n">method_name</span> <span class="o">=</span> <span class="n">matcher</span><span class="p">.</span><span class="nf">method_name</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+
+         <span class="k">unless</span> <span class="n">instance_method_already_implemented?</span><span class="p">(</span><span class="n">method_name</span><span class="p">)</span>
+           <span class="n">define_proxy_call</span> <span class="kp">true</span><span class="p">,</span> <span class="n">generated_attribute_methods</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">matcher</span><span class="p">.</span><span class="nf">method_missing_target</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">.</span><span class="nf">to_s</span>
+         <span class="k">end</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">define_proxy_call</span><span class="p">(</span><span class="n">include_private</span><span class="p">,</span> <span class="n">mod</span><span class="p">,</span> <span class="nb">name</span><span class="p">,</span> <span class="nb">send</span><span class="p">,</span> <span class="o">*</span><span class="n">extra</span><span class="p">)</span> <span class="c1">#:nodoc:</span>
+       <span class="n">defn</span> <span class="o">=</span> <span class="k">if</span> <span class="nb">name</span> <span class="o">=~</span> <span class="no">NAME_COMPILABLE_REGEXP</span>
+         <span class="s2">"def </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">(*args)"</span>
+       <span class="k">else</span>
+         <span class="s2">"define_method(:'</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">') do |*args|"</span>
+       <span class="k">end</span>
+
+       <span class="n">extra</span> <span class="o">=</span> <span class="p">(</span><span class="n">extra</span><span class="p">.</span><span class="nf">map!</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:inspect</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">"*args"</span><span class="p">).</span><span class="nf">join</span><span class="p">(</span><span class="s2">", "</span><span class="p">.</span><span class="nf">freeze</span><span class="p">)</span>
+
+       <span class="n">target</span> <span class="o">=</span> <span class="k">if</span> <span class="nb">send</span> <span class="o">=~</span> <span class="no">CALL_COMPILABLE_REGEXP</span>
+         <span class="s2">"</span><span class="si">#{</span><span class="s2">"self."</span> <span class="k">unless</span> <span class="n">include_private</span><span class="si">}#{</span><span class="nb">send</span><span class="si">}</span><span class="s2">(</span><span class="si">#{</span><span class="n">extra</span><span class="si">}</span><span class="s2">)"</span>
+       <span class="k">else</span>
+         <span class="s2">"send(:'</span><span class="si">#{</span><span class="nb">send</span><span class="si">}</span><span class="s2">', </span><span class="si">#{</span><span class="n">extra</span><span class="si">}</span><span class="s2">)"</span>
+       <span class="k">end</span>
+
+       <span class="n">mod</span><span class="p">.</span><span class="nf">module_eval</span> <span class="o">&lt;&lt;-</span><span class="no">RUBY</span><span class="p">,</span> <span class="kp">__FILE__</span><span class="p">,</span> <span class="kp">__LINE__</span> <span class="o">+</span> <span class="mi">1</span><span class="sh">
+         </span><span class="si">#{</span><span class="n">defn</span><span class="si">}</span><span class="sh">
+           </span><span class="si">#{</span><span class="n">target</span><span class="si">}</span><span class="sh">
+         end
+</span><span class="no">       RUBY</span>
+     <span class="k">end</span>
+
+     <span class="k">class</span> <span class="nc">AttributeMethodMatcher</span> <span class="c1">#:nodoc:</span>
+       <span class="kp">attr_reader</span> <span class="ss">:prefix</span><span class="p">,</span> <span class="ss">:suffix</span><span class="p">,</span> <span class="ss">:method_missing_target</span>
+
+       <span class="no">AttributeMethodMatch</span> <span class="o">=</span> <span class="no">Struct</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">:target</span><span class="p">,</span> <span class="ss">:attr_name</span><span class="p">,</span> <span class="ss">:method_name</span><span class="p">)</span>
+
+       <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+         <span class="vi">@prefix</span><span class="p">,</span> <span class="vi">@suffix</span> <span class="o">=</span> <span class="n">options</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="ss">:prefix</span><span class="p">,</span> <span class="s1">''</span><span class="p">),</span> <span class="n">options</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="ss">:suffix</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+         <span class="vi">@regex</span> <span class="o">=</span> <span class="sr">/^(?:</span><span class="si">#{</span><span class="no">Regexp</span><span class="p">.</span><span class="nf">escape</span><span class="p">(</span><span class="vi">@prefix</span><span class="p">)</span><span class="si">}</span><span class="sr">)(.*)(?:</span><span class="si">#{</span><span class="no">Regexp</span><span class="p">.</span><span class="nf">escape</span><span class="p">(</span><span class="vi">@suffix</span><span class="p">)</span><span class="si">}</span><span class="sr">)$/</span>
+         <span class="vi">@method_missing_target</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@prefix</span><span class="si">}</span><span class="s2">attribute</span><span class="si">#{</span><span class="vi">@suffix</span><span class="si">}</span><span class="s2">"</span>
+         <span class="vi">@method_name</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">%s</span><span class="si">#{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">"</span>
+       <span class="k">end</span>
+
+       <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="n">method_name</span><span class="p">)</span>
+         <span class="k">if</span> <span class="vi">@regex</span> <span class="o">=~</span> <span class="n">method_name</span>
+           <span class="no">AttributeMethodMatch</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">method_missing_target</span><span class="p">,</span> <span class="vg">$1</span><span class="p">,</span> <span class="n">method_name</span><span class="p">)</span>
+         <span class="k">end</span>
+       <span class="k">end</span>
+
+       <span class="k">def</span> <span class="nf">method_name</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+         <span class="vi">@method_name</span> <span class="o">%</span> <span class="n">attr_name</span>
+       <span class="k">end</span>
+
+       <span class="k">def</span> <span class="nf">plain?</span>
+         <span class="n">prefix</span><span class="p">.</span><span class="nf">empty?</span> <span class="o">&amp;&amp;</span> <span class="n">suffix</span><span class="p">.</span><span class="nf">empty?</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+
+   <span class="k">end</span>
+</code></pre>  </li>
+  <li>
+    <p>调用栈为:</p>
+
+<pre class="highlight plaintext"><code>  attribute_method_affix  prefix: 'reset_'
+  define_attribute_methods :name
+
+  |- attribute_method_affix 的调用产生 一个 AttributeMethodMatcher的数组，维系着 添加前缀后缀的标记
+  |- define_attribute_methods
+   |- attribute_method_matchers.each |matcher|
+     |- define_proxy_call true, generated_attribute_methods, method_name, matcher.method_missing_target, attr_name.to_s
+
+   define_attribute_methods 作用的symbol， 将前缀后缀的标记应用在参数上， 主动定义 prefix_name_sufix 的方法，并将方法的调用分发到 prefix_attribute_sufix函数中.
+</code></pre>  </li>
+  <li>
+    <p>值的注意的地方</p>
+
+<pre class="highlight ruby"><code>   <span class="c1"># @method_name = "prefix_%s", method_name(name) =&gt; prefix_name</span>
+   <span class="k">def</span> <span class="nf">method_name</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+     <span class="vi">@method_name</span> <span class="o">%</span> <span class="n">attr_name</span>
+   <span class="k">end</span>
+
+   <span class="c1"># Module.new 产生新的module 并在当前类中include， 之后 define_proxy_call等都是在这个 module 中进行操作， 包括去除方法等， 保证了，不影响类中的其他代码</span>
+   <span class="k">def</span> <span class="nf">generated_attribute_methods</span> <span class="c1">#:nodoc:</span>
+     <span class="vi">@generated_attribute_methods</span> <span class="o">||=</span> <span class="no">Module</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span>
+       <span class="kp">extend</span> <span class="no">Mutex_m</span>
+     <span class="p">}.</span><span class="nf">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">mod</span><span class="o">|</span> <span class="kp">include</span> <span class="n">mod</span> <span class="p">}</span>
+   <span class="k">end</span>
+</code></pre>  </li>
 </ol>
 
-<pre class="highlight plaintext"><code>```ruby
-module AttributeMethods
-  extend ActiveSupport::Concern
-
-  NAME_COMPILABLE_REGEXP = /\A[a-zA-Z_]\w*[!?=]?\z/
-  CALL_COMPILABLE_REGEXP = /\A[a-zA-Z_]\w*[!?]?\z/
-
-  included do
-    class_attribute :attribute_aliases, :attribute_method_matchers, instance_writer: false
-    self.attribute_aliases = {}
-    self.attribute_method_matchers = [ClassMethods::AttributeMethodMatcher.new]
-  end
-
-  module ClassMethods
-
-    def attribute_method_suffix(*suffixes)
-      self.attribute_method_matchers += suffixes.map! { |suffix| AttributeMethodMatcher.new suffix: suffix }
-    end
-
-    def generated_attribute_methods #:nodoc:
-      @generated_attribute_methods ||= Module.new {
-        extend Mutex_m
-      }.tap { |mod| include mod }
-    end
-
-    def define_attribute_method(attr_name)
-      attribute_method_matchers.each do |matcher|
-        method_name = matcher.method_name(attr_name)
-
-        unless instance_method_already_implemented?(method_name)
-          define_proxy_call true, generated_attribute_methods, method_name, matcher.method_missing_target, attr_name.to_s
-        end
-      end
-    end
-
-    def define_proxy_call(include_private, mod, name, send, *extra) #:nodoc:
-      defn = if name =~ NAME_COMPILABLE_REGEXP
-        "def #{name}(*args)"
-      else
-        "define_method(:'#{name}') do |*args|"
-      end
-
-      extra = (extra.map!(&amp;:inspect) &lt;&lt; "*args").join(", ".freeze)
-
-      target = if send =~ CALL_COMPILABLE_REGEXP
-        "#{"self." unless include_private}#{send}(#{extra})"
-      else
-        "send(:'#{send}', #{extra})"
-      end
-
-      mod.module_eval &lt;&lt;-RUBY, __FILE__, __LINE__ + 1
-        #{defn}
-          #{target}
-        end
-      RUBY
-    end
-
-    class AttributeMethodMatcher #:nodoc:
-      attr_reader :prefix, :suffix, :method_missing_target
-
-      AttributeMethodMatch = Struct.new(:target, :attr_name, :method_name)
-
-      def initialize(options = {})
-        @prefix, @suffix = options.fetch(:prefix, ''), options.fetch(:suffix, '')
-        @regex = /^(?:#{Regexp.escape(@prefix)})(.*)(?:#{Regexp.escape(@suffix)})$/
-        @method_missing_target = "#{@prefix}attribute#{@suffix}"
-        @method_name = "#{prefix}%s#{suffix}"
-      end
-
-      def match(method_name)
-        if @regex =~ method_name
-          AttributeMethodMatch.new(method_missing_target, $1, method_name)
-        end
-      end
-
-      def method_name(attr_name)
-        @method_name % attr_name
-      end
-
-      def plain?
-        prefix.empty? &amp;&amp; suffix.empty?
-      end
-    end
-
-  end
-```
-</code></pre>
+<h2 id="callback">callback</h2>
 <ol>
-  <li>调用栈为:</li>
-</ol>
+  <li>
+    <p>代码调用</p>
 
-<pre class="highlight plaintext"><code>```
- attribute_method_affix  prefix: 'reset_'
- define_attribute_methods :name
+<pre class="highlight ruby"><code>   <span class="c1">#activesupport</span>
+   <span class="k">class</span> <span class="nc">Record</span>
+     <span class="kp">include</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Callbacks</span>
+     <span class="n">define_callbacks</span> <span class="ss">:save</span>
+     <span class="n">set_callback</span> <span class="ss">:save</span><span class="p">,</span> <span class="ss">:before</span><span class="p">,</span> <span class="ss">:saving_message</span>
 
- |- attribute_method_affix 的调用产生 一个 AttributeMethodMatcher的数组，维系着 添加前缀后缀的标记
- |- define_attribute_methods
-  |- attribute_method_matchers.each |matcher|
-    |- define_proxy_call true, generated_attribute_methods, method_name, matcher.method_missing_target, attr_name.to_s
+     <span class="k">def</span> <span class="nf">saving_message</span>
+       <span class="nb">puts</span> <span class="s2">"saving..."</span>
+     <span class="k">end</span>
 
-  define_attribute_methods 作用的symbol， 将前缀后缀的标记应用在参数上， 主动定义 prefix_name_sufix 的方法，并将方法的调用分发到 prefix_attribute_sufix函数中.
-```
+     <span class="n">set_callback</span> <span class="ss">:save</span><span class="p">,</span> <span class="ss">:after</span> <span class="k">do</span> <span class="o">|</span><span class="n">object</span><span class="o">|</span>
+       <span class="nb">puts</span> <span class="s2">"saved"</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">save</span>
+       <span class="n">run_callbacks</span> <span class="ss">:save</span> <span class="k">do</span>
+         <span class="nb">puts</span> <span class="s2">"- save"</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+   <span class="k">end</span>
+
+   <span class="n">person</span> <span class="o">=</span> <span class="no">PersonRecord</span><span class="p">.</span><span class="nf">new</span>
+   <span class="n">person</span><span class="p">.</span><span class="nf">save</span>
+</code></pre>  </li>
+  <li>
+    <p>调用栈分析</p>
+
+<pre class="highlight plaintext"><code>   # /activesupport/callbacks
+   |- define_callbacks(names)
+     |- class_attribute "_#{name}_callbacks", instance_writer: false
+     |- set_callbacks name, CallbackChain.new(name, options)
+   |- set_callback :save, :before, :saving_message
+     |- callback_chain = get_callbacks(name)
+     |- Callback.build(callback_chain, filter, type, options)
+     |- set_callbacks name, callback_chain
+   |- run_callbacks :save  
+     |- __run_callbacks__(callbacks, &amp;block)
+       |- runner = callbacks.compile
+         |- CallbackChain#compile
+           |- final_sequence = CallbackSequence.new { |env| Filters::ENDING.call(env) }
+           |- @chain.reverse.inject(final_sequence) do |callback_sequence, callback|
+           |-  callback.apply callback_sequence
+           |- end
+       |- runner.call(Filters::Environment.new(self, false, nil block)).value
+       |- e = Filters::Environment.new(self, false, nil, block)
+       |- runner.call(e).value
+</code></pre>  </li>
+  <li>代码
+<pre class="highlight ruby"><code>   <span class="k">def</span> <span class="nf">define_callbacks</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">)</span>
+     <span class="n">options</span> <span class="o">=</span> <span class="n">names</span><span class="p">.</span><span class="nf">extract_options!</span>
+
+     <span class="n">names</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span>
+       <span class="n">class_attribute</span> <span class="s2">"_</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">_callbacks"</span><span class="p">,</span> <span class="ss">instance_writer: </span><span class="kp">false</span>
+       <span class="n">set_callbacks</span> <span class="nb">name</span><span class="p">,</span> <span class="no">CallbackChain</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+
+       <span class="nb">module_eval</span> <span class="o">&lt;&lt;-</span><span class="no">RUBY</span><span class="p">,</span> <span class="kp">__FILE__</span><span class="p">,</span> <span class="kp">__LINE__</span> <span class="o">+</span> <span class="mi">1</span><span class="sh">
+         def _run_</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="sh">_callbacks(&amp;block)
+           __run_callbacks__(_</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="sh">_callbacks, &amp;block)
+         end
+</span><span class="no">       RUBY</span>
+     <span class="k">end</span>
+   <span class="k">end</span>
+   <span class="k">def</span> <span class="nf">set_callback</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="o">*</span><span class="n">filter_list</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+     <span class="n">type</span><span class="p">,</span> <span class="n">filters</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">normalize_callback_params</span><span class="p">(</span><span class="n">filter_list</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+     <span class="n">self_chain</span> <span class="o">=</span> <span class="n">get_callbacks</span> <span class="nb">name</span>
+     <span class="n">mapped</span> <span class="o">=</span> <span class="n">filters</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">filter</span><span class="o">|</span>
+       <span class="no">Callback</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="n">self_chain</span><span class="p">,</span> <span class="n">filter</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+     <span class="k">end</span>
+
+     <span class="n">__update_callbacks</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">target</span><span class="p">,</span> <span class="n">chain</span><span class="o">|</span>
+       <span class="n">options</span><span class="p">[</span><span class="ss">:prepend</span><span class="p">]</span> <span class="p">?</span> <span class="n">chain</span><span class="p">.</span><span class="nf">prepend</span><span class="p">(</span><span class="o">*</span><span class="n">mapped</span><span class="p">)</span> <span class="p">:</span> <span class="n">chain</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="o">*</span><span class="n">mapped</span><span class="p">)</span>
+       <span class="n">target</span><span class="p">.</span><span class="nf">set_callbacks</span> <span class="nb">name</span><span class="p">,</span> <span class="n">chain</span>
+     <span class="k">end</span>
+   <span class="k">end</span>
+
+
+   <span class="k">def</span> <span class="nf">__run_callbacks__</span><span class="p">(</span><span class="n">callbacks</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+     <span class="k">if</span> <span class="n">callbacks</span><span class="p">.</span><span class="nf">empty?</span>
+       <span class="k">yield</span> <span class="k">if</span> <span class="nb">block_given?</span>
+     <span class="k">else</span>
+       <span class="n">runner</span> <span class="o">=</span> <span class="n">callbacks</span><span class="p">.</span><span class="nf">compile</span>
+       <span class="n">e</span> <span class="o">=</span> <span class="no">Filters</span><span class="o">::</span><span class="no">Environment</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="kp">false</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+       <span class="n">runner</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">e</span><span class="p">).</span><span class="nf">value</span>
+     <span class="k">end</span>
+   <span class="k">end</span>
+
+   <span class="k">class</span> <span class="nc">Callback</span> <span class="c1">#:nodoc:#</span>
+     <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">build</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="n">filter</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+       <span class="kp">new</span> <span class="n">chain</span><span class="p">.</span><span class="nf">name</span><span class="p">,</span> <span class="n">filter</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">chain</span><span class="p">.</span><span class="nf">config</span>
+     <span class="k">end</span>
+
+     <span class="kp">attr_accessor</span> <span class="ss">:kind</span><span class="p">,</span> <span class="ss">:name</span>
+     <span class="kp">attr_reader</span> <span class="ss">:chain_config</span>
+
+     <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">filter</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">chain_config</span><span class="p">)</span>
+       <span class="vi">@chain_config</span>  <span class="o">=</span> <span class="n">chain_config</span>
+       <span class="vi">@name</span>    <span class="o">=</span> <span class="nb">name</span>
+       <span class="vi">@kind</span>    <span class="o">=</span> <span class="n">kind</span>
+       <span class="vi">@filter</span>  <span class="o">=</span> <span class="n">filter</span>
+       <span class="vi">@key</span>     <span class="o">=</span> <span class="n">compute_identifier</span> <span class="n">filter</span>
+       <span class="vi">@if</span>      <span class="o">=</span> <span class="no">Array</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="ss">:if</span><span class="p">])</span>
+       <span class="vi">@unless</span>  <span class="o">=</span> <span class="no">Array</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="ss">:unless</span><span class="p">])</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">compile</span>
+       <span class="vi">@callbacks</span> <span class="o">||</span> <span class="vi">@mutex</span><span class="p">.</span><span class="nf">synchronize</span> <span class="k">do</span>
+         <span class="n">final_sequence</span> <span class="o">=</span> <span class="no">CallbackSequence</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">env</span><span class="o">|</span> <span class="no">Filters</span><span class="o">::</span><span class="no">ENDING</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="p">}</span>
+         <span class="vi">@callbacks</span> <span class="o">||=</span> <span class="vi">@chain</span><span class="p">.</span><span class="nf">reverse</span><span class="p">.</span><span class="nf">inject</span><span class="p">(</span><span class="n">final_sequence</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">callback</span><span class="o">|</span>
+           <span class="n">callback</span><span class="p">.</span><span class="nf">apply</span> <span class="n">callback_sequence</span>
+         <span class="k">end</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">)</span>
+       <span class="n">user_conditions</span> <span class="o">=</span> <span class="n">conditions_lambdas</span>
+       <span class="n">user_callback</span> <span class="o">=</span> <span class="n">make_lambda</span> <span class="vi">@filter</span>
+
+       <span class="k">case</span> <span class="n">kind</span>
+       <span class="k">when</span> <span class="ss">:before</span>
+         <span class="no">Filters</span><span class="o">::</span><span class="no">Before</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">user_conditions</span><span class="p">,</span> <span class="n">chain_config</span><span class="p">,</span> <span class="vi">@filter</span><span class="p">)</span>
+       <span class="k">when</span> <span class="ss">:after</span>
+         <span class="no">Filters</span><span class="o">::</span><span class="no">After</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">user_conditions</span><span class="p">,</span> <span class="n">chain_config</span><span class="p">)</span>
+       <span class="k">when</span> <span class="ss">:around</span>
+         <span class="no">Filters</span><span class="o">::</span><span class="no">Around</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">user_conditions</span><span class="p">,</span> <span class="n">chain_config</span><span class="p">)</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+
+   <span class="k">end</span>
+
+   <span class="k">class</span> <span class="nc">CallbackSequence</span>
+     <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">&amp;</span><span class="n">call</span><span class="p">)</span>
+       <span class="vi">@call</span> <span class="o">=</span> <span class="n">call</span>
+       <span class="vi">@before</span> <span class="o">=</span> <span class="p">[]</span>
+       <span class="vi">@after</span> <span class="o">=</span> <span class="p">[]</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">before</span><span class="p">(</span><span class="o">&amp;</span><span class="n">before</span><span class="p">)</span>
+       <span class="vi">@before</span><span class="p">.</span><span class="nf">unshift</span><span class="p">(</span><span class="n">before</span><span class="p">)</span>
+       <span class="nb">self</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">after</span><span class="p">(</span><span class="o">&amp;</span><span class="n">after</span><span class="p">)</span>
+       <span class="vi">@after</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="n">after</span><span class="p">)</span>
+       <span class="nb">self</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">around</span><span class="p">(</span><span class="o">&amp;</span><span class="n">around</span><span class="p">)</span>
+       <span class="no">CallbackSequence</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span>
+         <span class="n">around</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+           <span class="nb">self</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+         <span class="p">}</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+       <span class="vi">@before</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">b</span><span class="o">|</span> <span class="n">b</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="p">}</span>
+       <span class="n">value</span> <span class="o">=</span> <span class="vi">@call</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+       <span class="vi">@after</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">a</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="p">}</span>
+       <span class="n">value</span>
+     <span class="k">end</span>
+   <span class="k">end</span>
+
+     <span class="k">class</span> <span class="nc">Before</span>
+       <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">build</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">user_conditions</span><span class="p">,</span> <span class="n">chain_config</span><span class="p">,</span> <span class="n">filter</span><span class="p">)</span>
+         <span class="n">halted_lambda</span> <span class="o">=</span> <span class="n">chain_config</span><span class="p">[</span><span class="ss">:terminator</span><span class="p">]</span>
+
+         <span class="k">if</span> <span class="n">user_conditions</span><span class="p">.</span><span class="nf">any?</span>
+           <span class="n">halting_and_conditional</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">user_conditions</span><span class="p">,</span> <span class="n">halted_lambda</span><span class="p">,</span> <span class="n">filter</span><span class="p">)</span>
+         <span class="k">else</span>
+           <span class="n">halting</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">halted_lambda</span><span class="p">,</span> <span class="n">filter</span><span class="p">)</span>
+         <span class="k">end</span>
+       <span class="k">end</span>
+
+       <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">halting_and_conditional</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">user_conditions</span><span class="p">,</span> <span class="n">halted_lambda</span><span class="p">,</span> <span class="n">filter</span><span class="p">)</span>
+         <span class="n">callback_sequence</span><span class="p">.</span><span class="nf">before</span> <span class="k">do</span> <span class="o">|</span><span class="n">env</span><span class="o">|</span>
+           <span class="n">target</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">target</span>
+           <span class="n">value</span>  <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">value</span>
+           <span class="n">halted</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">halted</span>
+
+           <span class="k">if</span> <span class="o">!</span><span class="n">halted</span> <span class="o">&amp;&amp;</span> <span class="n">user_conditions</span><span class="p">.</span><span class="nf">all?</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">}</span>
+             <span class="n">result_lambda</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">user_callback</span><span class="p">.</span><span class="nf">call</span> <span class="n">target</span><span class="p">,</span> <span class="n">value</span> <span class="p">}</span>
+             <span class="n">env</span><span class="p">.</span><span class="nf">halted</span> <span class="o">=</span> <span class="n">halted_lambda</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">result_lambda</span><span class="p">)</span>
+             <span class="k">if</span> <span class="n">env</span><span class="p">.</span><span class="nf">halted</span>
+               <span class="n">target</span><span class="p">.</span><span class="nf">send</span> <span class="ss">:halted_callback_hook</span><span class="p">,</span> <span class="n">filter</span>
+             <span class="k">end</span>
+           <span class="k">end</span>
+
+           <span class="n">env</span>
+         <span class="k">end</span>
+       <span class="k">end</span>
+       <span class="nb">private_class_method</span> <span class="ss">:halting_and_conditional</span>
+
+       <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">halting</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">halted_lambda</span><span class="p">,</span> <span class="n">filter</span><span class="p">)</span>
+         <span class="n">callback_sequence</span><span class="p">.</span><span class="nf">before</span> <span class="k">do</span> <span class="o">|</span><span class="n">env</span><span class="o">|</span>
+           <span class="n">target</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">target</span>
+           <span class="n">value</span>  <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">value</span>
+           <span class="n">halted</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">halted</span>
+
+           <span class="k">unless</span> <span class="n">halted</span>
+             <span class="n">result_lambda</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">user_callback</span><span class="p">.</span><span class="nf">call</span> <span class="n">target</span><span class="p">,</span> <span class="n">value</span> <span class="p">}</span>
+             <span class="n">env</span><span class="p">.</span><span class="nf">halted</span> <span class="o">=</span> <span class="n">halted_lambda</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">result_lambda</span><span class="p">)</span>
+
+             <span class="k">if</span> <span class="n">env</span><span class="p">.</span><span class="nf">halted</span>
+               <span class="n">target</span><span class="p">.</span><span class="nf">send</span> <span class="ss">:halted_callback_hook</span><span class="p">,</span> <span class="n">filter</span>
+             <span class="k">end</span>
+           <span class="k">end</span>
+
+           <span class="n">env</span>
+         <span class="k">end</span>
+       <span class="k">end</span>
+       <span class="nb">private_class_method</span> <span class="ss">:halting</span>
+     <span class="k">end</span>
 </code></pre>
-<ol>
-  <li>值的注意的地方</li>
-</ol>
-
-<pre class="highlight plaintext"><code>```ruby
-  # @method_name = "prefix_%s", method_name(name) =&gt; prefix_name
-  def method_name(attr_name)
-    @method_name % attr_name
-  end
-
-  # Module.new 产生新的module 并在当前类中include， 之后 define_proxy_call等都是在这个 module 中进行操作， 包括去除方法等， 保证了，不影响类中的其他代码
-  def generated_attribute_methods #:nodoc:
-    @generated_attribute_methods ||= Module.new {
-      extend Mutex_m
-    }.tap { |mod| include mod }
-  end
-```
-</code></pre>
-<h5 id="callback">callback</h5>
-
-<pre class="highlight ruby"><code>    <span class="c1">#activesupport</span>
-    <span class="k">class</span> <span class="nc">Record</span>
-      <span class="kp">include</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Callbacks</span>
-      <span class="n">define_callbacks</span> <span class="ss">:save</span>
-      <span class="n">set_callback</span> <span class="ss">:save</span><span class="p">,</span> <span class="ss">:before</span><span class="p">,</span> <span class="ss">:saving_message</span>
-
-      <span class="k">def</span> <span class="nf">saving_message</span>
-        <span class="nb">puts</span> <span class="s2">"saving..."</span>
-      <span class="k">end</span>
-
-      <span class="n">set_callback</span> <span class="ss">:save</span><span class="p">,</span> <span class="ss">:after</span> <span class="k">do</span> <span class="o">|</span><span class="n">object</span><span class="o">|</span>
-        <span class="nb">puts</span> <span class="s2">"saved"</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">save</span>
-        <span class="n">run_callbacks</span> <span class="ss">:save</span> <span class="k">do</span>
-          <span class="nb">puts</span> <span class="s2">"- save"</span>
-        <span class="k">end</span>
-      <span class="k">end</span>
-
-    <span class="k">end</span>
-
-    <span class="n">person</span> <span class="o">=</span> <span class="no">PersonRecord</span><span class="p">.</span><span class="nf">new</span>
-    <span class="n">person</span><span class="p">.</span><span class="nf">save</span>
-</code></pre><pre class="highlight plaintext"><code>    # /activesupport/callbacks
-    |- define_callbacks(names)
-      |- class_attribute "_#{name}_callbacks", instance_writer: false
-      |- set_callbacks name, CallbackChain.new(name, options)
-    |- set_callback :save, :before, :saving_message
-      |- callback_chain = get_callbacks(name)
-      |- Callback.build(callback_chain, filter, type, options)
-      |- set_callbacks name, callback_chain
-    |- run_callbacks :save  
-      |- __run_callbacks__(callbacks, &amp;block)
-        |- runner = callbacks.compile
-          |- CallbackChain#compile
-            |- final_sequence = CallbackSequence.new { |env| Filters::ENDING.call(env) }
-            |- @chain.reverse.inject(final_sequence) do |callback_sequence, callback|
-            |-  callback.apply callback_sequence
-            |- end
-        |- runner.call(Filters::Environment.new(self, false, nil block)).value
-        |- e = Filters::Environment.new(self, false, nil, block)
-        |- runner.call(e).value
-</code></pre>
-<pre class="highlight ruby"><code>    <span class="k">def</span> <span class="nf">define_callbacks</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">)</span>
-      <span class="n">options</span> <span class="o">=</span> <span class="n">names</span><span class="p">.</span><span class="nf">extract_options!</span>
-
-      <span class="n">names</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span>
-        <span class="n">class_attribute</span> <span class="s2">"_</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">_callbacks"</span><span class="p">,</span> <span class="ss">instance_writer: </span><span class="kp">false</span>
-        <span class="n">set_callbacks</span> <span class="nb">name</span><span class="p">,</span> <span class="no">CallbackChain</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
-
-        <span class="nb">module_eval</span> <span class="o">&lt;&lt;-</span><span class="no">RUBY</span><span class="p">,</span> <span class="kp">__FILE__</span><span class="p">,</span> <span class="kp">__LINE__</span> <span class="o">+</span> <span class="mi">1</span><span class="sh">
-          def _run_</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="sh">_callbacks(&amp;block)
-            __run_callbacks__(_</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="sh">_callbacks, &amp;block)
-          end
-</span><span class="no">        RUBY</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-    <span class="k">def</span> <span class="nf">set_callback</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="o">*</span><span class="n">filter_list</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-      <span class="n">type</span><span class="p">,</span> <span class="n">filters</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">normalize_callback_params</span><span class="p">(</span><span class="n">filter_list</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
-      <span class="n">self_chain</span> <span class="o">=</span> <span class="n">get_callbacks</span> <span class="nb">name</span>
-      <span class="n">mapped</span> <span class="o">=</span> <span class="n">filters</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">filter</span><span class="o">|</span>
-        <span class="no">Callback</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="n">self_chain</span><span class="p">,</span> <span class="n">filter</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
-      <span class="k">end</span>
-
-      <span class="n">__update_callbacks</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">target</span><span class="p">,</span> <span class="n">chain</span><span class="o">|</span>
-        <span class="n">options</span><span class="p">[</span><span class="ss">:prepend</span><span class="p">]</span> <span class="p">?</span> <span class="n">chain</span><span class="p">.</span><span class="nf">prepend</span><span class="p">(</span><span class="o">*</span><span class="n">mapped</span><span class="p">)</span> <span class="p">:</span> <span class="n">chain</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="o">*</span><span class="n">mapped</span><span class="p">)</span>
-        <span class="n">target</span><span class="p">.</span><span class="nf">set_callbacks</span> <span class="nb">name</span><span class="p">,</span> <span class="n">chain</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-
-
-    <span class="k">def</span> <span class="nf">__run_callbacks__</span><span class="p">(</span><span class="n">callbacks</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-      <span class="k">if</span> <span class="n">callbacks</span><span class="p">.</span><span class="nf">empty?</span>
-        <span class="k">yield</span> <span class="k">if</span> <span class="nb">block_given?</span>
-      <span class="k">else</span>
-        <span class="n">runner</span> <span class="o">=</span> <span class="n">callbacks</span><span class="p">.</span><span class="nf">compile</span>
-        <span class="n">e</span> <span class="o">=</span> <span class="no">Filters</span><span class="o">::</span><span class="no">Environment</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="kp">false</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
-        <span class="n">runner</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">e</span><span class="p">).</span><span class="nf">value</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-
-    <span class="k">class</span> <span class="nc">Callback</span> <span class="c1">#:nodoc:#</span>
-      <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">build</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="n">filter</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
-        <span class="kp">new</span> <span class="n">chain</span><span class="p">.</span><span class="nf">name</span><span class="p">,</span> <span class="n">filter</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">chain</span><span class="p">.</span><span class="nf">config</span>
-      <span class="k">end</span>
-
-      <span class="kp">attr_accessor</span> <span class="ss">:kind</span><span class="p">,</span> <span class="ss">:name</span>
-      <span class="kp">attr_reader</span> <span class="ss">:chain_config</span>
-
-      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">filter</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">chain_config</span><span class="p">)</span>
-        <span class="vi">@chain_config</span>  <span class="o">=</span> <span class="n">chain_config</span>
-        <span class="vi">@name</span>    <span class="o">=</span> <span class="nb">name</span>
-        <span class="vi">@kind</span>    <span class="o">=</span> <span class="n">kind</span>
-        <span class="vi">@filter</span>  <span class="o">=</span> <span class="n">filter</span>
-        <span class="vi">@key</span>     <span class="o">=</span> <span class="n">compute_identifier</span> <span class="n">filter</span>
-        <span class="vi">@if</span>      <span class="o">=</span> <span class="no">Array</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="ss">:if</span><span class="p">])</span>
-        <span class="vi">@unless</span>  <span class="o">=</span> <span class="no">Array</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="ss">:unless</span><span class="p">])</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">compile</span>
-        <span class="vi">@callbacks</span> <span class="o">||</span> <span class="vi">@mutex</span><span class="p">.</span><span class="nf">synchronize</span> <span class="k">do</span>
-          <span class="n">final_sequence</span> <span class="o">=</span> <span class="no">CallbackSequence</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">env</span><span class="o">|</span> <span class="no">Filters</span><span class="o">::</span><span class="no">ENDING</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="p">}</span>
-          <span class="vi">@callbacks</span> <span class="o">||=</span> <span class="vi">@chain</span><span class="p">.</span><span class="nf">reverse</span><span class="p">.</span><span class="nf">inject</span><span class="p">(</span><span class="n">final_sequence</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">callback</span><span class="o">|</span>
-            <span class="n">callback</span><span class="p">.</span><span class="nf">apply</span> <span class="n">callback_sequence</span>
-          <span class="k">end</span>
-        <span class="k">end</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">)</span>
-        <span class="n">user_conditions</span> <span class="o">=</span> <span class="n">conditions_lambdas</span>
-        <span class="n">user_callback</span> <span class="o">=</span> <span class="n">make_lambda</span> <span class="vi">@filter</span>
-
-        <span class="k">case</span> <span class="n">kind</span>
-        <span class="k">when</span> <span class="ss">:before</span>
-          <span class="no">Filters</span><span class="o">::</span><span class="no">Before</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">user_conditions</span><span class="p">,</span> <span class="n">chain_config</span><span class="p">,</span> <span class="vi">@filter</span><span class="p">)</span>
-        <span class="k">when</span> <span class="ss">:after</span>
-          <span class="no">Filters</span><span class="o">::</span><span class="no">After</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">user_conditions</span><span class="p">,</span> <span class="n">chain_config</span><span class="p">)</span>
-        <span class="k">when</span> <span class="ss">:around</span>
-          <span class="no">Filters</span><span class="o">::</span><span class="no">Around</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">user_conditions</span><span class="p">,</span> <span class="n">chain_config</span><span class="p">)</span>
-        <span class="k">end</span>
-      <span class="k">end</span>
-
-    <span class="k">end</span>
-
-    <span class="k">class</span> <span class="nc">CallbackSequence</span>
-      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">&amp;</span><span class="n">call</span><span class="p">)</span>
-        <span class="vi">@call</span> <span class="o">=</span> <span class="n">call</span>
-        <span class="vi">@before</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="vi">@after</span> <span class="o">=</span> <span class="p">[]</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">before</span><span class="p">(</span><span class="o">&amp;</span><span class="n">before</span><span class="p">)</span>
-        <span class="vi">@before</span><span class="p">.</span><span class="nf">unshift</span><span class="p">(</span><span class="n">before</span><span class="p">)</span>
-        <span class="nb">self</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">after</span><span class="p">(</span><span class="o">&amp;</span><span class="n">after</span><span class="p">)</span>
-        <span class="vi">@after</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="n">after</span><span class="p">)</span>
-        <span class="nb">self</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">around</span><span class="p">(</span><span class="o">&amp;</span><span class="n">around</span><span class="p">)</span>
-        <span class="no">CallbackSequence</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span>
-          <span class="n">around</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nb">self</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
-          <span class="p">}</span>
-        <span class="k">end</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
-        <span class="vi">@before</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">b</span><span class="o">|</span> <span class="n">b</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="p">}</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="vi">@call</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
-        <span class="vi">@after</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">a</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="p">}</span>
-        <span class="n">value</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-
-      <span class="k">class</span> <span class="nc">Before</span>
-        <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">build</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">user_conditions</span><span class="p">,</span> <span class="n">chain_config</span><span class="p">,</span> <span class="n">filter</span><span class="p">)</span>
-          <span class="n">halted_lambda</span> <span class="o">=</span> <span class="n">chain_config</span><span class="p">[</span><span class="ss">:terminator</span><span class="p">]</span>
-
-          <span class="k">if</span> <span class="n">user_conditions</span><span class="p">.</span><span class="nf">any?</span>
-            <span class="n">halting_and_conditional</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">user_conditions</span><span class="p">,</span> <span class="n">halted_lambda</span><span class="p">,</span> <span class="n">filter</span><span class="p">)</span>
-          <span class="k">else</span>
-            <span class="n">halting</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">halted_lambda</span><span class="p">,</span> <span class="n">filter</span><span class="p">)</span>
-          <span class="k">end</span>
-        <span class="k">end</span>
-
-        <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">halting_and_conditional</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">user_conditions</span><span class="p">,</span> <span class="n">halted_lambda</span><span class="p">,</span> <span class="n">filter</span><span class="p">)</span>
-          <span class="n">callback_sequence</span><span class="p">.</span><span class="nf">before</span> <span class="k">do</span> <span class="o">|</span><span class="n">env</span><span class="o">|</span>
-            <span class="n">target</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">target</span>
-            <span class="n">value</span>  <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">value</span>
-            <span class="n">halted</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">halted</span>
-
-            <span class="k">if</span> <span class="o">!</span><span class="n">halted</span> <span class="o">&amp;&amp;</span> <span class="n">user_conditions</span><span class="p">.</span><span class="nf">all?</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">}</span>
-              <span class="n">result_lambda</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">user_callback</span><span class="p">.</span><span class="nf">call</span> <span class="n">target</span><span class="p">,</span> <span class="n">value</span> <span class="p">}</span>
-              <span class="n">env</span><span class="p">.</span><span class="nf">halted</span> <span class="o">=</span> <span class="n">halted_lambda</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">result_lambda</span><span class="p">)</span>
-              <span class="k">if</span> <span class="n">env</span><span class="p">.</span><span class="nf">halted</span>
-                <span class="n">target</span><span class="p">.</span><span class="nf">send</span> <span class="ss">:halted_callback_hook</span><span class="p">,</span> <span class="n">filter</span>
-              <span class="k">end</span>
-            <span class="k">end</span>
-
-            <span class="n">env</span>
-          <span class="k">end</span>
-        <span class="k">end</span>
-        <span class="nb">private_class_method</span> <span class="ss">:halting_and_conditional</span>
-
-        <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">halting</span><span class="p">(</span><span class="n">callback_sequence</span><span class="p">,</span> <span class="n">user_callback</span><span class="p">,</span> <span class="n">halted_lambda</span><span class="p">,</span> <span class="n">filter</span><span class="p">)</span>
-          <span class="n">callback_sequence</span><span class="p">.</span><span class="nf">before</span> <span class="k">do</span> <span class="o">|</span><span class="n">env</span><span class="o">|</span>
-            <span class="n">target</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">target</span>
-            <span class="n">value</span>  <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">value</span>
-            <span class="n">halted</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">halted</span>
-
-            <span class="k">unless</span> <span class="n">halted</span>
-              <span class="n">result_lambda</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">user_callback</span><span class="p">.</span><span class="nf">call</span> <span class="n">target</span><span class="p">,</span> <span class="n">value</span> <span class="p">}</span>
-              <span class="n">env</span><span class="p">.</span><span class="nf">halted</span> <span class="o">=</span> <span class="n">halted_lambda</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">result_lambda</span><span class="p">)</span>
-
-              <span class="k">if</span> <span class="n">env</span><span class="p">.</span><span class="nf">halted</span>
-                <span class="n">target</span><span class="p">.</span><span class="nf">send</span> <span class="ss">:halted_callback_hook</span><span class="p">,</span> <span class="n">filter</span>
-              <span class="k">end</span>
-            <span class="k">end</span>
-
-            <span class="n">env</span>
-          <span class="k">end</span>
-        <span class="k">end</span>
-        <span class="nb">private_class_method</span> <span class="ss">:halting</span>
-      <span class="k">end</span>
-</code></pre>
-<ul>
-  <li>大概的调用 调用顺序为, define_callbacks :save 定义callback的名字，初始化CallbackChain, set_callback :save, :before, :save_messsage, 在CallbackChain中添加Callback 的实例, 在最后run_callback 的时候最为重要， 将前面两步做的操作都进行了兑现， 1. 调用CallBackChain#compile, compile 有意思的是初始化了一个CallbackSequence实例， 并对Callback数组进行inject Callback.apply 中最为重要， CallBack.apply 中将 Filters::Before, Filters::After中的其他通用部分， 执行条件(set_callback :save, :before, :do_something if: :xxx?), hook函数(do_something) 进行了lambda化，(条件为conditions_lambdas函数， hook为make_lambda), 并根据 kind(:before, :after, :around)进行了分发， 下降到Filters::Before 中， 则在 hook 的lambda的基础上进行了， 完善，完成了各自 Before, After 等的具体操作，这是最底层的具体到执行逻辑的部分。2. 执行， 上面的lambda化结果， 提供了一个Environment的环境， 包含:halt, :value, :target 等信息，</li>
-</ul>
-
-<ol>
+    <blockquote>
+      <p>大概的调用 调用顺序为, define_callbacks :save 定义callback的名字，初始化CallbackChain, set_callback :save, :before, :save_messsage, 在CallbackChain中添加Callback 的实例, 在最后run_callback 的时候最为重要， 将前面两步做的操作都进行了兑现， 1. 调用CallBackChain#compile, compile 有意思的是初始化了一个CallbackSequence实例， 并对Callback数组进行inject Callback.apply 中最为重要， CallBack.apply 中将 Filters::Before, Filters::After中的其他通用部分， 执行条件(set_callback :save, :before, :do_something if: :xxx?), hook函数(do_something) 进行了lambda化，(条件为conditions_lambdas函数， hook为make_lambda), 并根据 kind(:before, :after, :around)进行了分发， 下降到Filters::Before 中， 则在 hook 的lambda的基础上进行了， 完善，完成了各自 Before, After 等的具体操作，这是最底层的具体到执行逻辑的部分。2. 执行， 上面的lambda化结果， 提供了一个Environment的环境， 包含:halt, :value, :target 等信息，</p>
+    </blockquote>
+  </li>
   <li>
     <p>good-part</p>
 
     <blockquote>
-      <table>
-        <tbody>
-          <tr>
-            <td>代码中使用了，大量的lambda化最为震撼（其中包括 条件执行，hook函数）， 将符号配置， 执行条件配置都lambda化， 变成了一个可以随时执行的代码(compile 的含义很符合)， 存储在一个数组中，hook的执行 变成了执行数组的 each {</td>
-            <td>item</td>
-            <td>item.call}, 其中个个callback如何确定环境（比如是否执行，是否已经callback中断了）通过Environment 对象传递</td>
-          </tr>
-        </tbody>
-      </table>
+      <p>代码中使用了，大量的lambda化最为震撼（其中包括 条件执行，hook函数）， 将符号配置， 执行条件配置都lambda化， 变成了一个可以随时执行的代码(compile 的含义很符合)， 存储在一个数组中，hook的执行 变成了执行数组的 each item.call, 其中个个callback如何确定环境（比如是否执行，是否已经callback中断了）通过Environment 对象传递</p>
     </blockquote>
+  </li>
+  <li>问题<br />
+    <strong>问题为什么需要CallbackChain 到CallbackSequence的转换呢？</strong>
+    <ul>
+      <li>CallbackChain中主要针对Callback的实例数组操作， delete, append, prepend, clear, compile 等, CallbackSequence 也是类似的，存储lambda之后的可执行数组</li>
+    </ul>
   </li>
 </ol>
 
-<pre class="highlight plaintext"><code>1. 问题为什么需要CallbackChain 到CallbackSequence的转换呢？
-  1. CallbackChain中主要针对Callback的实例数组操作， delete, append, prepend, clear, compile 等, CallbackSequence 也是类似的，存储lambda之后的可执行数组
+<h2 id="dirty">Dirty</h2>
+<blockquote>
+  <p>dirty 根据文档的描述是，为了提供一个工具集来跟踪变量变化(之前以为是auto， 用了一些callback， 或者元编程之类的结果不是！！！， 而是提供了一个工具集， 在使用中， 需要手动调用方法)</p>
+</blockquote>
+
+<p>下面的可见一斑:</p>
+
+<ol>
+  <li>在使用的类中 include ActiveModel::Dirty</li>
+  <li>使用define_attribute_methods 设定跟踪的变量</li>
+  <li>在变量变化之前 调用 [attr_name_]will_change!, 例如name, 在name=()中调用name_will_change!</li>
+  <li>调用函数 changes_applied 来”持久化”, 将现有的改动， 复制到之前（previous）中</li>
+</ol>
+
+<pre class="highlight ruby"><code>      <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">AttributeMethods</span>
+
+      <span class="n">included</span> <span class="k">do</span>
+        <span class="n">attribute_method_suffix</span> <span class="s1">'_changed?'</span><span class="p">,</span> <span class="s1">'_change'</span><span class="p">,</span> <span class="s1">'_will_change!'</span><span class="p">,</span> <span class="s1">'_was'</span>
+        <span class="n">attribute_method_suffix</span> <span class="s1">'_previously_changed?'</span><span class="p">,</span> <span class="s1">'_previous_change'</span>
+        <span class="n">attribute_method_affix</span> <span class="ss">prefix: </span><span class="s1">'restore_'</span><span class="p">,</span> <span class="ss">suffix: </span><span class="s1">'!'</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">attribute_will_change!</span><span class="p">(</span><span class="kp">attr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">if</span> <span class="n">attribute_changed?</span><span class="p">(</span><span class="kp">attr</span><span class="p">)</span>
+
+        <span class="k">begin</span>
+          <span class="n">value</span> <span class="o">=</span> <span class="nb">__send__</span><span class="p">(</span><span class="kp">attr</span><span class="p">)</span>
+          <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="nf">duplicable?</span> <span class="p">?</span> <span class="n">value</span><span class="p">.</span><span class="nf">clone</span> <span class="p">:</span> <span class="n">value</span>
+        <span class="k">rescue</span> <span class="no">TypeError</span><span class="p">,</span> <span class="no">NoMethodError</span>
+        <span class="k">end</span>
+
+        <span class="n">set_attribute_was</span><span class="p">(</span><span class="kp">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">changed_attributes</span>
+        <span class="vi">@changed_attributes</span> <span class="o">||=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">HashWithIndifferentAccess</span><span class="p">.</span><span class="nf">new</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">previous_changes</span>
+        <span class="vi">@previously_changed</span> <span class="o">||=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">HashWithIndifferentAccess</span><span class="p">.</span><span class="nf">new</span>
+      <span class="k">end</span>
+
+      <span class="c1"># This is necessary because `changed_attributes` might be overridden in</span>
+      <span class="c1"># other implementations (e.g. in `ActiveRecord`)</span>
+      <span class="kp">alias_method</span> <span class="ss">:attributes_changed_by_setter</span><span class="p">,</span> <span class="ss">:changed_attributes</span> <span class="c1"># :nodoc:</span>
+
+
+      <span class="k">def</span> <span class="nf">changes_applied</span> <span class="c1"># :doc:</span>
+        <span class="vi">@previously_changed</span> <span class="o">=</span> <span class="n">changes</span>
+        <span class="vi">@changed_attributes</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">HashWithIndifferentAccess</span><span class="p">.</span><span class="nf">new</span>
+      <span class="k">end</span>
+
 </code></pre><div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

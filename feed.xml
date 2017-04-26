@@ -13,8 +13,8 @@
     <link rel="alternate" href="http://geniousbar.github.io/2017/04/25/rails-activemodel/"/>
     <id>http://geniousbar.github.io/2017/04/25/rails-activemodel/</id>
     <published>2017-04-25T08:00:00+08:00</published>
-    <updated>2017-04-26T16:20:42+08:00</updated>
-    <summary type="html">&lt;h5 id="rails-activemodel"&gt;rails activemodel&lt;/h5&gt;
+    <updated>2017-04-26T19:13:40+08:00</updated>
+    <summary type="html">&lt;h2 id="rails-activemodel"&gt;rails activemodel&lt;/h2&gt;
 
 &lt;pre class="highlight ruby"&gt;&lt;code&gt;    &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ActiveModel&lt;/span&gt;
       &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Autoload&lt;/span&gt;
@@ -24,7 +24,7 @@
       &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:BlockValidator&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'active_model/validator'&lt;/span&gt;
       &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Callbacks&lt;/span&gt;
       &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;</summary>
-    <content type="html">&lt;h5 id="rails-activemodel"&gt;rails activemodel&lt;/h5&gt;
+    <content type="html">&lt;h2 id="rails-activemodel"&gt;rails activemodel&lt;/h2&gt;
 
 &lt;pre class="highlight ruby"&gt;&lt;code&gt;    &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ActiveModel&lt;/span&gt;
       &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Autoload&lt;/span&gt;
@@ -56,7 +56,7 @@
       &lt;span class="k"&gt;end&lt;/span&gt;
     &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h5 id="attribute_assignment"&gt;attribute_assignment&lt;/h5&gt;
+&lt;h2 id="attribute_assignment"&gt;attribute_assignment&lt;/h2&gt;
 &lt;blockquote&gt;
   &lt;p&gt;让任何的ruby对象接受hash赋值，实现是动态的分发, 2. 防止 = ActionController::Parameters 没有调用permit函数&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -87,368 +87,416 @@
       &lt;span class="k"&gt;end&lt;/span&gt;
     &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h5 id="attribute_methods"&gt;attribute_methods&lt;/h5&gt;
+&lt;h2 id="attribute_methods"&gt;attribute_methods&lt;/h2&gt;
 &lt;ol&gt;
-  &lt;li&gt;源码&lt;br /&gt;
-    &amp;gt; 目的 在方法中添加前缀后缀等(好像没啥用)&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;源码&lt;br /&gt;
+    目的 在方法中添加前缀后缀等(好像没啥用)&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;code&gt; &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;AttributeMethods&lt;/span&gt;
+   &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Concern&lt;/span&gt;
+
+   &lt;span class="no"&gt;NAME_COMPILABLE_REGEXP&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sr"&gt;/\A[a-zA-Z_]\w*[!?=]?\z/&lt;/span&gt;
+   &lt;span class="no"&gt;CALL_COMPILABLE_REGEXP&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sr"&gt;/\A[a-zA-Z_]\w*[!?]?\z/&lt;/span&gt;
+
+   &lt;span class="n"&gt;included&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+     &lt;span class="n"&gt;class_attribute&lt;/span&gt; &lt;span class="ss"&gt;:attribute_aliases&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:attribute_method_matchers&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;instance_writer: &lt;/span&gt;&lt;span class="kp"&gt;false&lt;/span&gt;
+     &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;attribute_aliases&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;
+     &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;attribute_method_matchers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;ClassMethods&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;AttributeMethodMatcher&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ClassMethods&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;attribute_method_suffix&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;suffixes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;attribute_method_matchers&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="n"&gt;suffixes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;map!&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;suffix&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="no"&gt;AttributeMethodMatcher&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt; &lt;span class="ss"&gt;suffix: &lt;/span&gt;&lt;span class="n"&gt;suffix&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;generated_attribute_methods&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+       &lt;span class="vi"&gt;@generated_attribute_methods&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="no"&gt;Module&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+         &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;Mutex_m&lt;/span&gt;
+       &lt;span class="p"&gt;}.&lt;/span&gt;&lt;span class="nf"&gt;tap&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;mod&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="n"&gt;mod&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;define_attribute_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;attr_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="n"&gt;attribute_method_matchers&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;matcher&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+         &lt;span class="n"&gt;method_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;matcher&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;attr_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+         &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="n"&gt;instance_method_already_implemented?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+           &lt;span class="n"&gt;define_proxy_call&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;generated_attribute_methods&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;matcher&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;method_missing_target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;attr_name&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_s&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;define_proxy_call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;include_private&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mod&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;send&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;extra&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+       &lt;span class="n"&gt;defn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=~&lt;/span&gt; &lt;span class="no"&gt;NAME_COMPILABLE_REGEXP&lt;/span&gt;
+         &lt;span class="s2"&gt;"def &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;(*args)"&lt;/span&gt;
+       &lt;span class="k"&gt;else&lt;/span&gt;
+         &lt;span class="s2"&gt;"define_method(:'&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;') do |*args|"&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+
+       &lt;span class="n"&gt;extra&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;extra&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;map!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="ss"&gt;:inspect&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s2"&gt;"*args"&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;", "&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;freeze&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+       &lt;span class="n"&gt;target&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;send&lt;/span&gt; &lt;span class="o"&gt;=~&lt;/span&gt; &lt;span class="no"&gt;CALL_COMPILABLE_REGEXP&lt;/span&gt;
+         &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="s2"&gt;"self."&lt;/span&gt; &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="n"&gt;include_private&lt;/span&gt;&lt;span class="si"&gt;}#{&lt;/span&gt;&lt;span class="nb"&gt;send&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;(&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;extra&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;)"&lt;/span&gt;
+       &lt;span class="k"&gt;else&lt;/span&gt;
+         &lt;span class="s2"&gt;"send(:'&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;send&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;', &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;extra&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;)"&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+
+       &lt;span class="n"&gt;mod&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;module_eval&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;-&lt;/span&gt;&lt;span class="no"&gt;RUBY&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;__FILE__&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;__LINE__&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="sh"&gt;
+         &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;defn&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="sh"&gt;
+           &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="sh"&gt;
+         end
+&lt;/span&gt;&lt;span class="no"&gt;       RUBY&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;AttributeMethodMatcher&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+       &lt;span class="kp"&gt;attr_reader&lt;/span&gt; &lt;span class="ss"&gt;:prefix&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:suffix&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:method_missing_target&lt;/span&gt;
+
+       &lt;span class="no"&gt;AttributeMethodMatch&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Struct&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:attr_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:method_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+       &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
+         &lt;span class="vi"&gt;@prefix&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="vi"&gt;@suffix&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;fetch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:prefix&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;''&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;fetch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:suffix&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;''&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="vi"&gt;@regex&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sr"&gt;/^(?:&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="no"&gt;Regexp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;escape&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="vi"&gt;@prefix&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="sr"&gt;)(.*)(?:&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="no"&gt;Regexp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;escape&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="vi"&gt;@suffix&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="sr"&gt;)$/&lt;/span&gt;
+         &lt;span class="vi"&gt;@method_missing_target&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="vi"&gt;@prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;attribute&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="vi"&gt;@suffix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+         &lt;span class="vi"&gt;@method_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;%s&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;suffix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+
+       &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;match&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vi"&gt;@regex&lt;/span&gt; &lt;span class="o"&gt;=~&lt;/span&gt; &lt;span class="n"&gt;method_name&lt;/span&gt;
+           &lt;span class="no"&gt;AttributeMethodMatch&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;method_missing_target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="vg"&gt;$1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+
+       &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;attr_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="vi"&gt;@method_name&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;attr_name&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+
+       &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;plain?&lt;/span&gt;
+         &lt;span class="n"&gt;prefix&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;empty?&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;suffix&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;empty?&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;调用栈为:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;  attribute_method_affix  prefix: 'reset_'
+  define_attribute_methods :name
+
+  |- attribute_method_affix 的调用产生 一个 AttributeMethodMatcher的数组，维系着 添加前缀后缀的标记
+  |- define_attribute_methods
+   |- attribute_method_matchers.each |matcher|
+     |- define_proxy_call true, generated_attribute_methods, method_name, matcher.method_missing_target, attr_name.to_s
+
+   define_attribute_methods 作用的symbol， 将前缀后缀的标记应用在参数上， 主动定义 prefix_name_sufix 的方法，并将方法的调用分发到 prefix_attribute_sufix函数中.
+&lt;/code&gt;&lt;/pre&gt;  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;值的注意的地方&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;   &lt;span class="c1"&gt;# @method_name = "prefix_%s", method_name(name) =&amp;gt; prefix_name&lt;/span&gt;
+   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;attr_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="vi"&gt;@method_name&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;attr_name&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="c1"&gt;# Module.new 产生新的module 并在当前类中include， 之后 define_proxy_call等都是在这个 module 中进行操作， 包括去除方法等， 保证了，不影响类中的其他代码&lt;/span&gt;
+   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;generated_attribute_methods&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+     &lt;span class="vi"&gt;@generated_attribute_methods&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="no"&gt;Module&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+       &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;Mutex_m&lt;/span&gt;
+     &lt;span class="p"&gt;}.&lt;/span&gt;&lt;span class="nf"&gt;tap&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;mod&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="n"&gt;mod&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;```ruby
-module AttributeMethods
-  extend ActiveSupport::Concern
-
-  NAME_COMPILABLE_REGEXP = /\A[a-zA-Z_]\w*[!?=]?\z/
-  CALL_COMPILABLE_REGEXP = /\A[a-zA-Z_]\w*[!?]?\z/
-
-  included do
-    class_attribute :attribute_aliases, :attribute_method_matchers, instance_writer: false
-    self.attribute_aliases = {}
-    self.attribute_method_matchers = [ClassMethods::AttributeMethodMatcher.new]
-  end
-
-  module ClassMethods
-
-    def attribute_method_suffix(*suffixes)
-      self.attribute_method_matchers += suffixes.map! { |suffix| AttributeMethodMatcher.new suffix: suffix }
-    end
-
-    def generated_attribute_methods #:nodoc:
-      @generated_attribute_methods ||= Module.new {
-        extend Mutex_m
-      }.tap { |mod| include mod }
-    end
-
-    def define_attribute_method(attr_name)
-      attribute_method_matchers.each do |matcher|
-        method_name = matcher.method_name(attr_name)
-
-        unless instance_method_already_implemented?(method_name)
-          define_proxy_call true, generated_attribute_methods, method_name, matcher.method_missing_target, attr_name.to_s
-        end
-      end
-    end
-
-    def define_proxy_call(include_private, mod, name, send, *extra) #:nodoc:
-      defn = if name =~ NAME_COMPILABLE_REGEXP
-        "def #{name}(*args)"
-      else
-        "define_method(:'#{name}') do |*args|"
-      end
-
-      extra = (extra.map!(&amp;amp;:inspect) &amp;lt;&amp;lt; "*args").join(", ".freeze)
-
-      target = if send =~ CALL_COMPILABLE_REGEXP
-        "#{"self." unless include_private}#{send}(#{extra})"
-      else
-        "send(:'#{send}', #{extra})"
-      end
-
-      mod.module_eval &amp;lt;&amp;lt;-RUBY, __FILE__, __LINE__ + 1
-        #{defn}
-          #{target}
-        end
-      RUBY
-    end
-
-    class AttributeMethodMatcher #:nodoc:
-      attr_reader :prefix, :suffix, :method_missing_target
-
-      AttributeMethodMatch = Struct.new(:target, :attr_name, :method_name)
-
-      def initialize(options = {})
-        @prefix, @suffix = options.fetch(:prefix, ''), options.fetch(:suffix, '')
-        @regex = /^(?:#{Regexp.escape(@prefix)})(.*)(?:#{Regexp.escape(@suffix)})$/
-        @method_missing_target = "#{@prefix}attribute#{@suffix}"
-        @method_name = "#{prefix}%s#{suffix}"
-      end
-
-      def match(method_name)
-        if @regex =~ method_name
-          AttributeMethodMatch.new(method_missing_target, $1, method_name)
-        end
-      end
-
-      def method_name(attr_name)
-        @method_name % attr_name
-      end
-
-      def plain?
-        prefix.empty? &amp;amp;&amp;amp; suffix.empty?
-      end
-    end
-
-  end
-```
-&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="callback"&gt;callback&lt;/h2&gt;
 &lt;ol&gt;
-  &lt;li&gt;调用栈为:&lt;/li&gt;
-&lt;/ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;代码调用&lt;/p&gt;
 
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;```
- attribute_method_affix  prefix: 'reset_'
- define_attribute_methods :name
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;   &lt;span class="c1"&gt;#activesupport&lt;/span&gt;
+   &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Record&lt;/span&gt;
+     &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Callbacks&lt;/span&gt;
+     &lt;span class="n"&gt;define_callbacks&lt;/span&gt; &lt;span class="ss"&gt;:save&lt;/span&gt;
+     &lt;span class="n"&gt;set_callback&lt;/span&gt; &lt;span class="ss"&gt;:save&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:before&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:saving_message&lt;/span&gt;
 
- |- attribute_method_affix 的调用产生 一个 AttributeMethodMatcher的数组，维系着 添加前缀后缀的标记
- |- define_attribute_methods
-  |- attribute_method_matchers.each |matcher|
-    |- define_proxy_call true, generated_attribute_methods, method_name, matcher.method_missing_target, attr_name.to_s
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;saving_message&lt;/span&gt;
+       &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;"saving..."&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
 
-  define_attribute_methods 作用的symbol， 将前缀后缀的标记应用在参数上， 主动定义 prefix_name_sufix 的方法，并将方法的调用分发到 prefix_attribute_sufix函数中.
-```
+     &lt;span class="n"&gt;set_callback&lt;/span&gt; &lt;span class="ss"&gt;:save&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:after&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+       &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;"saved"&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;save&lt;/span&gt;
+       &lt;span class="n"&gt;run_callbacks&lt;/span&gt; &lt;span class="ss"&gt;:save&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+         &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;"- save"&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="n"&gt;person&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;PersonRecord&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;
+   &lt;span class="n"&gt;person&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;save&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;调用栈分析&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   # /activesupport/callbacks
+   |- define_callbacks(names)
+     |- class_attribute "_#{name}_callbacks", instance_writer: false
+     |- set_callbacks name, CallbackChain.new(name, options)
+   |- set_callback :save, :before, :saving_message
+     |- callback_chain = get_callbacks(name)
+     |- Callback.build(callback_chain, filter, type, options)
+     |- set_callbacks name, callback_chain
+   |- run_callbacks :save  
+     |- __run_callbacks__(callbacks, &amp;amp;block)
+       |- runner = callbacks.compile
+         |- CallbackChain#compile
+           |- final_sequence = CallbackSequence.new { |env| Filters::ENDING.call(env) }
+           |- @chain.reverse.inject(final_sequence) do |callback_sequence, callback|
+           |-  callback.apply callback_sequence
+           |- end
+       |- runner.call(Filters::Environment.new(self, false, nil block)).value
+       |- e = Filters::Environment.new(self, false, nil, block)
+       |- runner.call(e).value
+&lt;/code&gt;&lt;/pre&gt;  &lt;/li&gt;
+  &lt;li&gt;代码
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;define_callbacks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;extract_options!&lt;/span&gt;
+
+     &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+       &lt;span class="n"&gt;class_attribute&lt;/span&gt; &lt;span class="s2"&gt;"_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;_callbacks"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;instance_writer: &lt;/span&gt;&lt;span class="kp"&gt;false&lt;/span&gt;
+       &lt;span class="n"&gt;set_callbacks&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;CallbackChain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+       &lt;span class="nb"&gt;module_eval&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;-&lt;/span&gt;&lt;span class="no"&gt;RUBY&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;__FILE__&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;__LINE__&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="sh"&gt;
+         def _run_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="sh"&gt;_callbacks(&amp;amp;block)
+           __run_callbacks__(_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="sh"&gt;_callbacks, &amp;amp;block)
+         end
+&lt;/span&gt;&lt;span class="no"&gt;       RUBY&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;set_callback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;filter_list&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filters&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;normalize_callback_params&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filter_list&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="n"&gt;self_chain&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_callbacks&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;
+     &lt;span class="n"&gt;mapped&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;filters&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;map&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+       &lt;span class="no"&gt;Callback&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self_chain&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="n"&gt;__update_callbacks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+       &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:prepend&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;?&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;prepend&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;mapped&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;mapped&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;set_callbacks&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+
+   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__run_callbacks__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callbacks&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;callbacks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;empty?&lt;/span&gt;
+       &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;block_given?&lt;/span&gt;
+     &lt;span class="k"&gt;else&lt;/span&gt;
+       &lt;span class="n"&gt;runner&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;callbacks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;compile&lt;/span&gt;
+       &lt;span class="n"&gt;e&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Environment&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;nil&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="n"&gt;runner&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;value&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Callback&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:#&lt;/span&gt;
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="kp"&gt;new&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;config&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="kp"&gt;attr_accessor&lt;/span&gt; &lt;span class="ss"&gt;:kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:name&lt;/span&gt;
+     &lt;span class="kp"&gt;attr_reader&lt;/span&gt; &lt;span class="ss"&gt;:chain_config&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="vi"&gt;@chain_config&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;
+       &lt;span class="vi"&gt;@name&lt;/span&gt;    &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;
+       &lt;span class="vi"&gt;@kind&lt;/span&gt;    &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;
+       &lt;span class="vi"&gt;@filter&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;
+       &lt;span class="vi"&gt;@key&lt;/span&gt;     &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;compute_identifier&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;
+       &lt;span class="vi"&gt;@if&lt;/span&gt;      &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:if&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+       &lt;span class="vi"&gt;@unless&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:unless&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;compile&lt;/span&gt;
+       &lt;span class="vi"&gt;@callbacks&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="vi"&gt;@mutex&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;synchronize&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+         &lt;span class="n"&gt;final_sequence&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CallbackSequence&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;ENDING&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+         &lt;span class="vi"&gt;@callbacks&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="vi"&gt;@chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;reverse&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;inject&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;final_sequence&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+           &lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;apply&lt;/span&gt; &lt;span class="n"&gt;callback_sequence&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="n"&gt;user_conditions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;conditions_lambdas&lt;/span&gt;
+       &lt;span class="n"&gt;user_callback&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;make_lambda&lt;/span&gt; &lt;span class="vi"&gt;@filter&lt;/span&gt;
+
+       &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;
+       &lt;span class="k"&gt;when&lt;/span&gt; &lt;span class="ss"&gt;:before&lt;/span&gt;
+         &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Before&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="vi"&gt;@filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;when&lt;/span&gt; &lt;span class="ss"&gt;:after&lt;/span&gt;
+         &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;After&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;when&lt;/span&gt; &lt;span class="ss"&gt;:around&lt;/span&gt;
+         &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Around&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CallbackSequence&lt;/span&gt;
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;call&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="vi"&gt;@call&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;call&lt;/span&gt;
+       &lt;span class="vi"&gt;@before&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+       &lt;span class="vi"&gt;@after&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;before&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;before&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="vi"&gt;@before&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;unshift&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;before&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="nb"&gt;self&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;after&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;after&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="vi"&gt;@after&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;push&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;after&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="nb"&gt;self&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;around&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;around&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="no"&gt;CallbackSequence&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+         &lt;span class="n"&gt;around&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+           &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="p"&gt;}&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="vi"&gt;@before&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+       &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="vi"&gt;@call&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="vi"&gt;@after&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+       &lt;span class="n"&gt;value&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Before&lt;/span&gt;
+       &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="n"&gt;halted_lambda&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:terminator&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+         &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;any?&lt;/span&gt;
+           &lt;span class="n"&gt;halting_and_conditional&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="k"&gt;else&lt;/span&gt;
+           &lt;span class="n"&gt;halting&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+
+       &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halting_and_conditional&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;before&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+           &lt;span class="n"&gt;target&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;target&lt;/span&gt;
+           &lt;span class="n"&gt;value&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;value&lt;/span&gt;
+           &lt;span class="n"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt;
+
+           &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;all?&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+             &lt;span class="n"&gt;result_lambda&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt; &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+             &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;result_lambda&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+             &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt;
+               &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;send&lt;/span&gt; &lt;span class="ss"&gt;:halted_callback_hook&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;
+             &lt;span class="k"&gt;end&lt;/span&gt;
+           &lt;span class="k"&gt;end&lt;/span&gt;
+
+           &lt;span class="n"&gt;env&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="nb"&gt;private_class_method&lt;/span&gt; &lt;span class="ss"&gt;:halting_and_conditional&lt;/span&gt;
+
+       &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halting&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;before&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+           &lt;span class="n"&gt;target&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;target&lt;/span&gt;
+           &lt;span class="n"&gt;value&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;value&lt;/span&gt;
+           &lt;span class="n"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt;
+
+           &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="n"&gt;halted&lt;/span&gt;
+             &lt;span class="n"&gt;result_lambda&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt; &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+             &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;result_lambda&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+             &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt;
+               &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;send&lt;/span&gt; &lt;span class="ss"&gt;:halted_callback_hook&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;
+             &lt;span class="k"&gt;end&lt;/span&gt;
+           &lt;span class="k"&gt;end&lt;/span&gt;
+
+           &lt;span class="n"&gt;env&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="nb"&gt;private_class_method&lt;/span&gt; &lt;span class="ss"&gt;:halting&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;ol&gt;
-  &lt;li&gt;值的注意的地方&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;```ruby
-  # @method_name = "prefix_%s", method_name(name) =&amp;gt; prefix_name
-  def method_name(attr_name)
-    @method_name % attr_name
-  end
-
-  # Module.new 产生新的module 并在当前类中include， 之后 define_proxy_call等都是在这个 module 中进行操作， 包括去除方法等， 保证了，不影响类中的其他代码
-  def generated_attribute_methods #:nodoc:
-    @generated_attribute_methods ||= Module.new {
-      extend Mutex_m
-    }.tap { |mod| include mod }
-  end
-```
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h5 id="callback"&gt;callback&lt;/h5&gt;
-
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;    &lt;span class="c1"&gt;#activesupport&lt;/span&gt;
-    &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Record&lt;/span&gt;
-      &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Callbacks&lt;/span&gt;
-      &lt;span class="n"&gt;define_callbacks&lt;/span&gt; &lt;span class="ss"&gt;:save&lt;/span&gt;
-      &lt;span class="n"&gt;set_callback&lt;/span&gt; &lt;span class="ss"&gt;:save&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:before&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:saving_message&lt;/span&gt;
-
-      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;saving_message&lt;/span&gt;
-        &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;"saving..."&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="n"&gt;set_callback&lt;/span&gt; &lt;span class="ss"&gt;:save&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:after&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-        &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;"saved"&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;save&lt;/span&gt;
-        &lt;span class="n"&gt;run_callbacks&lt;/span&gt; &lt;span class="ss"&gt;:save&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-          &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;"- save"&lt;/span&gt;
-        &lt;span class="k"&gt;end&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="n"&gt;person&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;PersonRecord&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;
-    &lt;span class="n"&gt;person&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;save&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;    # /activesupport/callbacks
-    |- define_callbacks(names)
-      |- class_attribute "_#{name}_callbacks", instance_writer: false
-      |- set_callbacks name, CallbackChain.new(name, options)
-    |- set_callback :save, :before, :saving_message
-      |- callback_chain = get_callbacks(name)
-      |- Callback.build(callback_chain, filter, type, options)
-      |- set_callbacks name, callback_chain
-    |- run_callbacks :save  
-      |- __run_callbacks__(callbacks, &amp;amp;block)
-        |- runner = callbacks.compile
-          |- CallbackChain#compile
-            |- final_sequence = CallbackSequence.new { |env| Filters::ENDING.call(env) }
-            |- @chain.reverse.inject(final_sequence) do |callback_sequence, callback|
-            |-  callback.apply callback_sequence
-            |- end
-        |- runner.call(Filters::Environment.new(self, false, nil block)).value
-        |- e = Filters::Environment.new(self, false, nil, block)
-        |- runner.call(e).value
-&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;define_callbacks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;extract_options!&lt;/span&gt;
-
-      &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-        &lt;span class="n"&gt;class_attribute&lt;/span&gt; &lt;span class="s2"&gt;"_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;_callbacks"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;instance_writer: &lt;/span&gt;&lt;span class="kp"&gt;false&lt;/span&gt;
-        &lt;span class="n"&gt;set_callbacks&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;CallbackChain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-        &lt;span class="nb"&gt;module_eval&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;-&lt;/span&gt;&lt;span class="no"&gt;RUBY&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;__FILE__&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;__LINE__&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="sh"&gt;
-          def _run_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="sh"&gt;_callbacks(&amp;amp;block)
-            __run_callbacks__(_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="sh"&gt;_callbacks, &amp;amp;block)
-          end
-&lt;/span&gt;&lt;span class="no"&gt;        RUBY&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;set_callback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;filter_list&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filters&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;normalize_callback_params&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filter_list&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="n"&gt;self_chain&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_callbacks&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;
-      &lt;span class="n"&gt;mapped&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;filters&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;map&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-        &lt;span class="no"&gt;Callback&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self_chain&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="n"&gt;__update_callbacks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-        &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:prepend&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;?&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;prepend&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;mapped&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;mapped&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;set_callbacks&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__run_callbacks__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callbacks&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;callbacks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;empty?&lt;/span&gt;
-        &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;block_given?&lt;/span&gt;
-      &lt;span class="k"&gt;else&lt;/span&gt;
-        &lt;span class="n"&gt;runner&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;callbacks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;compile&lt;/span&gt;
-        &lt;span class="n"&gt;e&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Environment&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;nil&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="n"&gt;runner&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;value&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Callback&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:#&lt;/span&gt;
-      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="kp"&gt;new&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;config&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="kp"&gt;attr_accessor&lt;/span&gt; &lt;span class="ss"&gt;:kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:name&lt;/span&gt;
-      &lt;span class="kp"&gt;attr_reader&lt;/span&gt; &lt;span class="ss"&gt;:chain_config&lt;/span&gt;
-
-      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="vi"&gt;@chain_config&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;
-        &lt;span class="vi"&gt;@name&lt;/span&gt;    &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;
-        &lt;span class="vi"&gt;@kind&lt;/span&gt;    &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;
-        &lt;span class="vi"&gt;@filter&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;
-        &lt;span class="vi"&gt;@key&lt;/span&gt;     &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;compute_identifier&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;
-        &lt;span class="vi"&gt;@if&lt;/span&gt;      &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:if&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-        &lt;span class="vi"&gt;@unless&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:unless&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;compile&lt;/span&gt;
-        &lt;span class="vi"&gt;@callbacks&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="vi"&gt;@mutex&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;synchronize&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-          &lt;span class="n"&gt;final_sequence&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CallbackSequence&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;ENDING&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-          &lt;span class="vi"&gt;@callbacks&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="vi"&gt;@chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;reverse&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;inject&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;final_sequence&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-            &lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;apply&lt;/span&gt; &lt;span class="n"&gt;callback_sequence&lt;/span&gt;
-          &lt;span class="k"&gt;end&lt;/span&gt;
-        &lt;span class="k"&gt;end&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="n"&gt;user_conditions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;conditions_lambdas&lt;/span&gt;
-        &lt;span class="n"&gt;user_callback&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;make_lambda&lt;/span&gt; &lt;span class="vi"&gt;@filter&lt;/span&gt;
-
-        &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;
-        &lt;span class="k"&gt;when&lt;/span&gt; &lt;span class="ss"&gt;:before&lt;/span&gt;
-          &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Before&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="vi"&gt;@filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="k"&gt;when&lt;/span&gt; &lt;span class="ss"&gt;:after&lt;/span&gt;
-          &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;After&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="k"&gt;when&lt;/span&gt; &lt;span class="ss"&gt;:around&lt;/span&gt;
-          &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Around&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="k"&gt;end&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CallbackSequence&lt;/span&gt;
-      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;call&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="vi"&gt;@call&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;call&lt;/span&gt;
-        &lt;span class="vi"&gt;@before&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
-        &lt;span class="vi"&gt;@after&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;before&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;before&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="vi"&gt;@before&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;unshift&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;before&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="nb"&gt;self&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;after&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;after&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="vi"&gt;@after&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;push&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;after&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="nb"&gt;self&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;around&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;around&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="no"&gt;CallbackSequence&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-          &lt;span class="n"&gt;around&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-          &lt;span class="p"&gt;}&lt;/span&gt;
-        &lt;span class="k"&gt;end&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="vi"&gt;@before&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-        &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="vi"&gt;@call&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="vi"&gt;@after&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-        &lt;span class="n"&gt;value&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Before&lt;/span&gt;
-        &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-          &lt;span class="n"&gt;halted_lambda&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:terminator&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-
-          &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;any?&lt;/span&gt;
-            &lt;span class="n"&gt;halting_and_conditional&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-          &lt;span class="k"&gt;else&lt;/span&gt;
-            &lt;span class="n"&gt;halting&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-          &lt;span class="k"&gt;end&lt;/span&gt;
-        &lt;span class="k"&gt;end&lt;/span&gt;
-
-        &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halting_and_conditional&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-          &lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;before&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-            &lt;span class="n"&gt;target&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;target&lt;/span&gt;
-            &lt;span class="n"&gt;value&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;value&lt;/span&gt;
-            &lt;span class="n"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt;
-
-            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;all?&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-              &lt;span class="n"&gt;result_lambda&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt; &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-              &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;result_lambda&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-              &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt;
-                &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;send&lt;/span&gt; &lt;span class="ss"&gt;:halted_callback_hook&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;
-              &lt;span class="k"&gt;end&lt;/span&gt;
-            &lt;span class="k"&gt;end&lt;/span&gt;
-
-            &lt;span class="n"&gt;env&lt;/span&gt;
-          &lt;span class="k"&gt;end&lt;/span&gt;
-        &lt;span class="k"&gt;end&lt;/span&gt;
-        &lt;span class="nb"&gt;private_class_method&lt;/span&gt; &lt;span class="ss"&gt;:halting_and_conditional&lt;/span&gt;
-
-        &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halting&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-          &lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;before&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-            &lt;span class="n"&gt;target&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;target&lt;/span&gt;
-            &lt;span class="n"&gt;value&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;value&lt;/span&gt;
-            &lt;span class="n"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt;
-
-            &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="n"&gt;halted&lt;/span&gt;
-              &lt;span class="n"&gt;result_lambda&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt; &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-              &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;result_lambda&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-              &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt;
-                &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;send&lt;/span&gt; &lt;span class="ss"&gt;:halted_callback_hook&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;
-              &lt;span class="k"&gt;end&lt;/span&gt;
-            &lt;span class="k"&gt;end&lt;/span&gt;
-
-            &lt;span class="n"&gt;env&lt;/span&gt;
-          &lt;span class="k"&gt;end&lt;/span&gt;
-        &lt;span class="k"&gt;end&lt;/span&gt;
-        &lt;span class="nb"&gt;private_class_method&lt;/span&gt; &lt;span class="ss"&gt;:halting&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;ul&gt;
-  &lt;li&gt;大概的调用 调用顺序为, define_callbacks :save 定义callback的名字，初始化CallbackChain, set_callback :save, :before, :save_messsage, 在CallbackChain中添加Callback 的实例, 在最后run_callback 的时候最为重要， 将前面两步做的操作都进行了兑现， 1. 调用CallBackChain#compile, compile 有意思的是初始化了一个CallbackSequence实例， 并对Callback数组进行inject Callback.apply 中最为重要， CallBack.apply 中将 Filters::Before, Filters::After中的其他通用部分， 执行条件(set_callback :save, :before, :do_something if: :xxx?), hook函数(do_something) 进行了lambda化，(条件为conditions_lambdas函数， hook为make_lambda), 并根据 kind(:before, :after, :around)进行了分发， 下降到Filters::Before 中， 则在 hook 的lambda的基础上进行了， 完善，完成了各自 Before, After 等的具体操作，这是最底层的具体到执行逻辑的部分。2. 执行， 上面的lambda化结果， 提供了一个Environment的环境， 包含:halt, :value, :target 等信息，&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;大概的调用 调用顺序为, define_callbacks :save 定义callback的名字，初始化CallbackChain, set_callback :save, :before, :save_messsage, 在CallbackChain中添加Callback 的实例, 在最后run_callback 的时候最为重要， 将前面两步做的操作都进行了兑现， 1. 调用CallBackChain#compile, compile 有意思的是初始化了一个CallbackSequence实例， 并对Callback数组进行inject Callback.apply 中最为重要， CallBack.apply 中将 Filters::Before, Filters::After中的其他通用部分， 执行条件(set_callback :save, :before, :do_something if: :xxx?), hook函数(do_something) 进行了lambda化，(条件为conditions_lambdas函数， hook为make_lambda), 并根据 kind(:before, :after, :around)进行了分发， 下降到Filters::Before 中， 则在 hook 的lambda的基础上进行了， 完善，完成了各自 Before, After 等的具体操作，这是最底层的具体到执行逻辑的部分。2. 执行， 上面的lambda化结果， 提供了一个Environment的环境， 包含:halt, :value, :target 等信息，&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;good-part&lt;/p&gt;
 
     &lt;blockquote&gt;
-      &lt;table&gt;
-        &lt;tbody&gt;
-          &lt;tr&gt;
-            &lt;td&gt;代码中使用了，大量的lambda化最为震撼（其中包括 条件执行，hook函数）， 将符号配置， 执行条件配置都lambda化， 变成了一个可以随时执行的代码(compile 的含义很符合)， 存储在一个数组中，hook的执行 变成了执行数组的 each {&lt;/td&gt;
-            &lt;td&gt;item&lt;/td&gt;
-            &lt;td&gt;item.call}, 其中个个callback如何确定环境（比如是否执行，是否已经callback中断了）通过Environment 对象传递&lt;/td&gt;
-          &lt;/tr&gt;
-        &lt;/tbody&gt;
-      &lt;/table&gt;
+      &lt;p&gt;代码中使用了，大量的lambda化最为震撼（其中包括 条件执行，hook函数）， 将符号配置， 执行条件配置都lambda化， 变成了一个可以随时执行的代码(compile 的含义很符合)， 存储在一个数组中，hook的执行 变成了执行数组的 each item.call, 其中个个callback如何确定环境（比如是否执行，是否已经callback中断了）通过Environment 对象传递&lt;/p&gt;
     &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;问题&lt;br /&gt;
+    &lt;strong&gt;问题为什么需要CallbackChain 到CallbackSequence的转换呢？&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;CallbackChain中主要针对Callback的实例数组操作， delete, append, prepend, clear, compile 等, CallbackSequence 也是类似的，存储lambda之后的可执行数组&lt;/li&gt;
+    &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;1. 问题为什么需要CallbackChain 到CallbackSequence的转换呢？
-  1. CallbackChain中主要针对Callback的实例数组操作， delete, append, prepend, clear, compile 等, CallbackSequence 也是类似的，存储lambda之后的可执行数组
+&lt;h2 id="dirty"&gt;Dirty&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;dirty 根据文档的描述是，为了提供一个工具集来跟踪变量变化(之前以为是auto， 用了一些callback， 或者元编程之类的结果不是！！！， 而是提供了一个工具集， 在使用中， 需要手动调用方法)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;下面的可见一斑:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;在使用的类中 include ActiveModel::Dirty&lt;/li&gt;
+  &lt;li&gt;使用define_attribute_methods 设定跟踪的变量&lt;/li&gt;
+  &lt;li&gt;在变量变化之前 调用 [attr_name_]will_change!, 例如name, 在name=()中调用name_will_change!&lt;/li&gt;
+  &lt;li&gt;调用函数 changes_applied 来”持久化”, 将现有的改动， 复制到之前（previous）中&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;      &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;ActiveModel&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;AttributeMethods&lt;/span&gt;
+
+      &lt;span class="n"&gt;included&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+        &lt;span class="n"&gt;attribute_method_suffix&lt;/span&gt; &lt;span class="s1"&gt;'_changed?'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'_change'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'_will_change!'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'_was'&lt;/span&gt;
+        &lt;span class="n"&gt;attribute_method_suffix&lt;/span&gt; &lt;span class="s1"&gt;'_previously_changed?'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'_previous_change'&lt;/span&gt;
+        &lt;span class="n"&gt;attribute_method_affix&lt;/span&gt; &lt;span class="ss"&gt;prefix: &lt;/span&gt;&lt;span class="s1"&gt;'restore_'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;suffix: &lt;/span&gt;&lt;span class="s1"&gt;'!'&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;attribute_will_change!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;attr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;attribute_changed?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;attr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+        &lt;span class="k"&gt;begin&lt;/span&gt;
+          &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;__send__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;attr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+          &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;duplicable?&lt;/span&gt; &lt;span class="p"&gt;?&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;clone&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;
+        &lt;span class="k"&gt;rescue&lt;/span&gt; &lt;span class="no"&gt;TypeError&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;NoMethodError&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+
+        &lt;span class="n"&gt;set_attribute_was&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;attr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;changed_attributes&lt;/span&gt;
+        &lt;span class="vi"&gt;@changed_attributes&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;HashWithIndifferentAccess&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;previous_changes&lt;/span&gt;
+        &lt;span class="vi"&gt;@previously_changed&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;HashWithIndifferentAccess&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="c1"&gt;# This is necessary because `changed_attributes` might be overridden in&lt;/span&gt;
+      &lt;span class="c1"&gt;# other implementations (e.g. in `ActiveRecord`)&lt;/span&gt;
+      &lt;span class="kp"&gt;alias_method&lt;/span&gt; &lt;span class="ss"&gt;:attributes_changed_by_setter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:changed_attributes&lt;/span&gt; &lt;span class="c1"&gt;# :nodoc:&lt;/span&gt;
+
+
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;changes_applied&lt;/span&gt; &lt;span class="c1"&gt;# :doc:&lt;/span&gt;
+        &lt;span class="vi"&gt;@previously_changed&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;changes&lt;/span&gt;
+        &lt;span class="vi"&gt;@changed_attributes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;HashWithIndifferentAccess&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
 &lt;/code&gt;&lt;/pre&gt;</content>
   </entry>
   <entry>
