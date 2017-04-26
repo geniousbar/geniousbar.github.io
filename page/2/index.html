@@ -1,221 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>知识总结</title>
-<meta content='日常知识总结' name='description'>
-<meta charset='utf-8'>
-<meta content='width=device-width, initial-scale=1.0' name='viewport'>
-<meta content='IE=edge' http-equiv='X-UA-Compatible'>
-<meta content='True' name='HandheldFriendly'>
-<meta content='知识总结' property='og:site_name'>
-<meta content='website' property='og:type'>
-<meta content='日常知识总结' property='og:description'>
-<meta content='https://geniousbar.github.io/page/2/' property='og:url'>
-<meta content='summary' name='twitter:card'>
-<meta content='日常知识总结' name='twitter:description'>
-<meta content='https://geniousbar.github.io/page/2/' name='twitter:url'>
-<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
-<link href="/images/favicon.ico" rel="icon" type="image/ico" />
-<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
-<link href="/stylesheets/application.css" rel="stylesheet" />
-</head>
-<body class='paged nav-closed'>
-<div class='nav'>
-<h3 class='nav-title'>Menu</h3>
-<a class='nav-close' href='#'>
-<span class='hidden'>Close</span>
-</a>
-<ul>
-<li class='nav-home'>
-<a href='/'>Home</a>
-</li>
-<li class='nav-docker'>
-<a href='/tag/docker'>docker</a>
-</li>
-</ul>
-</div>
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>日常学习</title><meta description="geniousbar 日常知识总结" /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title"><a href="/2016/09/07/linux-tar/">linux tar command</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">September 07, 2016</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/command/"><small class="tag-label">command</small></a></div><hr class="article-header-separator" /><h1 id="zip">zip</h1>
+<p>zip可能是目前使用得最多的文档压缩格式。</p>
 
-<div class='site-wrapper'>
-<header class='main-header no-cover'>
-<nav class='main-nav overlay clearfix'>
-<a class='menu-button icon-menu' href='#'>
-<span class='word'>Menu</span>
-</a>
-</nav>
-<div class='vertical'>
-<div class='main-header-content inner'>
-<h1 class='page-title'>知识总结</h1>
-<h2 class='page-description'>日常知识总结</h2>
-</div>
-</div>
-<a class='scroll-down icon-arrow-left' data-offset='-45' href='#content'>
-<span class='hidden'>Scroll Down</span>
-</a>
-</header>
-<main class='content' id='content' role='main'>
-<div class='extra-pagination inner'>
-<nav class='pagination' role='pagination'>
-<a href="/" class="newer-posts">← Newer Posts</a>
-<span class='page-number'>Page 2 of 4</span>
-<a href="/page/3/" class="older-posts">Older Posts →</a>
-</nav>
+<p>它最大的优点就是在不同的操作系统平台，比如Linux， Windows以及Mac OS上使用。缺点就是支持的压缩率不是很高，而tar.gz和tar.gz2在压缩率方面做得非常好。闲话少说，我们步入正题吧：</p>
 
-</div>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2016/11/11/firefox/">Firefox</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-如何才能使用非签名的附加组件？（高级用户）
+<p>我们可以使用下列的命令压缩一个目录：<br>
+zip -r archive_name.zip directory_to_compress</p>
 
-Firefox ESR 45版，以及 开发者版 和 Nightly 版，将允许通过改变偏好来屏蔽增强的附加组件签名要求，请在 Firefox 配置编辑器（about:config 页）将 xpinstall.signatures.required 的值改为 false。还有其它一些山寨版的 Firefox 也允许此项屏蔽。更多内容，参阅 MozillaWiki 文章 附加组件/扩展签名。
+<p>下面是如果解压一个zip文档：<br>
+unzip archive_name.zip</p>
 
-<a href="/2016/11/11/firefox/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/firefox/'>Firefox</a>
-<time class='post-date' datetime='2016-11-11'>
-11 November 2016
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2016/10/21/ruby-magic/">Ruby</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-排列组合
-arr = [1, 2, 3, 4, 5]
-arr.combination(3).to_a
-ary.each_cons(3).to_a
-
-ruby GIL
-1: Ruby MRI为了线程安全，用了GIL只支持单核。任何时刻只有一个线程在运行：当一个Thread阻塞时（比如IO, sleep等），就会切换到另个一线程。 所以就算用了celluloid, puma自动创建多线程的，MRI下每个进程还是单核。
-而Rubinius，JRuby则没有GIL，支持多核（每个线程分配一个cpu）。
-2
-<a href="/2016/10/21/ruby-magic/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/ruby/'>Ruby</a>
-<time class='post-date' datetime='2016-10-21'>
-21 October 2016
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2016/10/01/javascript-good-part/">Javascript 语言精粹</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-javascrip 语言精粹
-
-
-假值： false, null, undefined, 0, ‘ ’, NaN
-数据类型： 数字， 字符串， 布尔， null， undefined， 对象
-反射： typeof, hasOwnProperty
-delete： 不会触及原型任何对象， 会显露出来原型中的对象属性
-
-
-函数
-
-
-函数也是对象，只是可以调用
-调用模式： 方法调用模式， 函数调用模式， 构造器调用模式，apply调用模式（在初始化this上存在差异）
-函数调用中， 多余或者不足的形式参
-
-<a href="/2016/10/01/javascript-good-part/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/javascript/'>javascript</a>
-<time class='post-date' datetime='2016-10-01'>
-01 October 2016
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2016/09/07/ubuntu-abtest/">abtest</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-参考
-
-性能测试之ab测试工具
-
-性能测试之ab测试工具-mht
-
-ab测试参数详解：
--n 测试会话中所执行的请求个数,默认仅执行一个请求
--c 一次产生的请求个数,即同一时间发出多少个请求,默认为一次一个
--t 测试所进行的最大秒数,默认为无时间限制....其内部隐含值是[-n 50000],它可以使对服务器的测试限制在一个固定的总时间以内
--p 包含了需要POST的数据的文件
--T POST数据所使用的Content-type头信息
--v 设置显示信息的详细程度
--w 以HTML表格的形式
-<a href="/2016/09/07/ubuntu-abtest/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/test/'>test</a>
-<time class='post-date' datetime='2016-09-07'>
-07 September 2016
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2016/09/07/linux/">linux</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-二台机器之间同步大文件(拷贝文件到另一台机器)
-
-rsync -rP –rsh=ssh /file/path name@ip:/file/path
-
-建立软连接
-
-ln -s original/file/path soft/file/path
-
-linux后台启动服务
-
-nohup ruby http_server.rb 2&gt;&amp;1 &gt;&gt; log.log 2&gt;&amp;1 /dev/null &amp;
-
-linux根据关键字得到pid号
-
-pgrep -f keyword
-
-linux创建sudo用户
-
-adduser
-<a href="/2016/09/07/linux/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/linux/'>linux</a>
-<time class='post-date' datetime='2016-09-07'>
-07 September 2016
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2016/09/07/linux-swap/">linux swap</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-Ubuntu增加虚拟内存
-Swap作为交换区，太有用了，功能类似windows下的虚拟内存，就是利用硬盘空间来扩展内存。
+<h1 id="targz">tar.gz</h1>
+<p>这种格...</p><div class="read-more"><a href="/2016/09/07/linux-tar/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/09/07/linux-swap/">linux swap</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">September 07, 2016</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a></div><hr class="article-header-separator" /><h3 id="ubuntu增加虚拟内存">Ubuntu增加虚拟内存</h3>
+<pre class="highlight plaintext"><code>Swap作为交换区，太有用了，功能类似windows下的虚拟内存，就是利用硬盘空间来扩展内存。
 
 阿里云的系统默认都不使用swap，为了让你多买内存，而内存是最贵的一项。
 
@@ -227,36 +23,115 @@ Swap作为交换区，太有用了，功能类似windows下的虚拟内存，就
 
 首先移除关闭swap的选项，否则后面的设置会在重启后失效，在/etc/rc.local文件中移除swapoff -a 行。
 
-然后在根目录创建swap
-<a href="/2016/09/07/linux-swap/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/linux/'>linux</a>
-<time class='post-date' datetime='2016-09-07'>
-07 September 2016
-</time>
-</footer>
-</article>
-<nav class='pagination' role='pagination'>
-<a href="/" class="newer-posts">← Newer Posts</a>
-<span class='page-number'>Page 2 of 4</span>
-<a href="/page/3/" class="older-posts">Older Posts →</a>
-</nav>
+然后在根目录创...</code></pre><div class="read-more"><a href="/2016/09/07/linux-swap/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/09/07/linux/">linux</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">September 07, 2016</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a></div><hr class="article-header-separator" /><h3 id="二台机器之间同步大文件拷贝文件到另一台机器">二台机器之间同步大文件(拷贝文件到另一台机器)</h3>
+<p>rsync -rP –rsh=ssh /file/path name@ip:/file/path</p>
+<h3 id="建立软连接">建立软连接</h3>
+<p>ln -s original/file/path soft/file/path</p>
+<h3 id="linux后台启动服务">linux后台启动服务</h3>
+<p>nohup ruby http_server.rb 2&gt;&amp;1 » log.log 2&gt;&amp;1 /dev/null &amp;</p>
+<h3 id="linux根据关键字得到pid号">linux根据关键字得到pid号</h3>
+<p>pgrep -f keyword</p>
+<h3 id="linux创建sudo用户">linux创建sudo用户</h3>
+<p>adduser username</p><div class="read-more"><a href="/2016/09/07/linux/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/07/01/ruby-dsl/">Ruby Dsl</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">July 01, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">ruby</small></a><a href="/tags/dsl/"><small class="tag-label">dsl</small></a></div><hr class="article-header-separator" /><blockquote>
+  <p>ruby中的dsl大部分都是利用方法调用，eval代码。 来执行代码, 可以参考rails， 大量的dsl</p>
+</blockquote>
 
+<h4 id="whenever-代码-dsl">Whenever 代码 DSL</h4>
+<pre class="highlight ruby"><code>  <span class="n">bin</span>
+    <span class="no">Whenever</span><span class="o">::</span><span class="no">CommandLine</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+      <span class="o">--</span> <span class="nb">self</span><span class="p">.</span><span class="nf">new</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">run</span>
+        <span class="o">--</span> <span class="n">whenever_cron</span>
+          <span class="o">--</span> <span class="no">Whenever</span><span class="p">.</span><span class="nf">corn</span>
+            <span class="o">--</span> <span class="o">**</span> <span class="no">Whenever</span><span class="o">::</span><span class="no">JobList</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">options</span></code></pre><div class="read-more"><a href="/2016/07/01/ruby-dsl/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/03/12/ruby-red-book/">Ruby 面向对象语言描述</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">March 12, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">ruby</small></a></div><hr class="article-header-separator" /><h2 id="面向对象设计实践指南ruby语言描述">面向对象设计实践指南Ruby语言描述</h2>
+<blockquote>
+  <p>问题比答案更重要， 下面的章节中会关注与问题的提问，然后才是问题的解决方案</p>
+</blockquote>
 
-</main>
+<h3 id="面向对象设计">面向对象设计</h3>
+<ol>
+  <li>设计的目的（要解决的问题）
+    <ol>
+      <li>应对变化</li>
+      <li>变化困难的原因（建立了太多的依赖关系，对周围的环境期望太多）</li>
+      <li>设计良好的大型程序必须由设计良好的小程序演变而来， 不存在设计错误小程序演变为设计良好的大型程序（当然大量的重构和重新设计也不无可能，然而存在的可能性太小）</li>
+      <li>实用的设计不回去预测未来将要发生什...</li>
+</ol>
+</li>
+</ol><div class="read-more"><a href="/2016/03/12/ruby-red-book/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/01/10/how-to-became-a-mind-person/">如何变得有思想</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">January 10, 2016</span></div><div class="tag-labels"><a href="/tags/book/"><small class="tag-label">book</small></a><a href="/tags/mind/"><small class="tag-label">mind</small></a><a href="/tags/poem/"><small class="tag-label">poem</small></a></div><hr class="article-header-separator" /><h2 id="如何变得有思想">如何变得有思想</h2>
 
-<footer class='site-footer clearfix'>
-<section class='copyright'>
-<a href='/'>知识总结</a>
-&copy;
-2017
-</section>
-<section class='poweredby'></section>
-</footer>
-</div>
-<script src="/javascripts/application.js"></script>
-</body>
-</html>
+<h4 id="观点">观点</h4>
+
+<ol>
+  <li>
+    <p>如何变得有思想</p>
+
+    <blockquote>
+      <p>事实 + 前提 + 逻辑 = 观点（这其中经常包含一些隐藏的我们不宜察觉的前提、假设， 以及因为个人观点出发而带有个人色彩的事实）</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>人生有900 个月</p>
+
+    <blockquote>
+      <p>作者提倡自己做一个30X30 的表格，并要求每个月划掉一个方格， 以此来证明时间的短暂。我曾经亲自尝试过，结果感觉效果不太理想，原因有2, 1： 900 实在是太多 2. 每个月划掉一个，时间太长，不太可能...</p>
+</blockquote>
+</li>
+</ol><div class="read-more"><a href="/2016/01/10/how-to-became-a-mind-person/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/01/10/dark-time-books/">暗时间-推荐书目</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">January 10, 2016</span></div><div class="tag-labels"><a href="/tags/book/"><small class="tag-label">book</small></a><a href="/tags/mind/"><small class="tag-label">mind</small></a><a href="/tags/dark-time/"><small class="tag-label">dark-time</small></a></div><hr class="article-header-separator" /><h2 id="暗时间中作者提到或者参考的数目">暗时间中作者提到或者参考的数目</h2>
+<ul>
+  <li>《how we decide》 从神经学的角度介绍了人类作出决策的思维机制以及漏洞，有很多的有趣例子和心理学实验（讨厌心理学实验）</li>
+  <li>《数学领域中的发明心理学》 思维体力//不用考虑</li>
+  <li>《Searching For Memory》 第一本关于人类记忆的系统性著作</li>
+  <li>《像外行一样思考， 像内行一样时间–科研成功之路》 作者金出武雄， 书中提到了思维体力（专注力）</li>
+  <li>《人性的优点》 卡耐基， 大量篇幅的介绍如何克服焦虑，焦虑对思维体力造成很大影响</li>
+...</ul><div class="read-more"><a href="/2016/01/10/dark-time-books/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/01/10/dark-time-three/">暗时间 第三章</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">January 10, 2016</span></div><div class="tag-labels"><a href="/tags/book/"><small class="tag-label">book</small></a><a href="/tags/mind/"><small class="tag-label">mind</small></a><a href="/tags/dark-time/"><small class="tag-label">dark-time</small></a></div><hr class="article-header-separator" /><h2 id="跟波利亚学解题">跟波利亚学解题</h2>
+<ul>
+  <li>
+    <p>跟波利亚学解题<br>
+** 波利亚的三本书 《how to solve it》 《数学的发现》 《数学与猜想》**<br>
+大部分的书籍只是证明求解，而没有真实的求证过程</p>
+
+    <p>一些方法（解决题目，解决生活问题、生活决策）</p>
+    <ol>
+      <li>时刻不忘位置变量</li>
+      <li>用特例启发思考</li>
+      <li>反过来推导（由结论反过来推导条件）</li>
+      <li>试错 （枚举所有可能解）</li>
+      <li>调整题目条件（改变环境变量， 环境可以理解为生活中的）</li>
+      <li>类似问题（将问...</li>
+</ol>
+</li>
+</ul><div class="read-more"><a href="/2016/01/10/dark-time-three/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2015/12/24/dark-time-two/">暗时间 第二章</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">December 24, 2015</span></div><div class="tag-labels"><a href="/tags/book/"><small class="tag-label">book</small></a><a href="/tags/mind/"><small class="tag-label">mind</small></a><a href="/tags/dark-time/"><small class="tag-label">dark-time</small></a></div><hr class="article-header-separator" /><h2 id="思维改变生活">思维改变生活</h2>
+
+<ul>
+  <li>逃出你的肖申克
+    <ol>
+      <li>为什么只有亲身经历了才能明白
+        <ol>
+          <li>不能够切身体验</li>
+          <li>世界时复杂的，未来是不确定的</li>
+          <li>不能够很好的抓住事物的本质、触类旁通，将道理推广到表面不相似但本质一样的</li>
+          <li>认知失调、自我辩护， 根据认知失调理论，我们也会竭力的为自己辩护，又由于世界时复杂的（事情的表面现象并不能够真正的相似）， 又由于缺少将表面现象提取出本质的能力，所以我们总能为自己找到借...</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul><div class="read-more"><a href="/2015/12/24/dark-time-two/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2015/12/20/dark-time-one/">暗时间 第一章</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">December 20, 2015</span></div><div class="tag-labels"><a href="/tags/book/"><small class="tag-label">book</small></a><a href="/tags/mind/"><small class="tag-label">mind</small></a><a href="/tags/dark-time/"><small class="tag-label">dark-time</small></a></div><hr class="article-header-separator" /><h2 id="暗时间">暗时间</h2>
+
+<ul>
+  <li>
+    <p>暗时间</p>
+
+<pre class="highlight plaintext"><code>      能够充分利用暗时间的人将无形中多出一大块
+      能够迅速的进入到专注状态，以及能够长时间保持专注（沉浸在其中），是高效学习的两个重要习惯
+      在有干扰的环境中看书时非常锻炼专注能力的一个非常有效的办法
+</code></pre>  </li>
+  <li>
+    <p>设计你自己的进度条</p>
+
+    <ul>
+      <li>不要过早的退出循环（高德纳：过早退出是一切失败的根源）#简单的理解为需要克服困难</li>
+      <li>需要专注的兴趣（兴趣遍地都是，需要专注）</li>
+      <li>保持勇敢（诸如好面...</li>
+</ul>
+</li>
+</ul><div class="read-more"><a href="/2015/12/20/dark-time-one/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><div class="paginate-wrapper"><div class="previous-page"><a href="/"><i class="fa fa-arrow-left"></i> Previous Page</a></div><div class="next-page"><a href="/page/3/"><i class="fa fa-arrow-right"></i> Next Page</a></div></div><div class="page-number">Page 2 of 3</div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

@@ -1,67 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>知识总结: Ruby Dsl</title>
-<meta content=' ruby中的dsl大部分都是利用方法调用，eval代码。 来执行代码, 可以参考rails， 大量的dsl Whenever 代码 DSL bin Whenever::CommandLine.execute(options) -- self.new() &amp;amp;&amp;amp; run -...' name='description'>
-<meta charset='utf-8'>
-<meta content='width=device-width, initial-scale=1.0' name='viewport'>
-<meta content='IE=edge' http-equiv='X-UA-Compatible'>
-<meta content='True' name='HandheldFriendly'>
-<meta content='知识总结' property='og:site_name'>
-<meta content='article' property='og:type'>
-<meta content='Ruby Dsl' property='og:title'>
-<meta content=' ruby中的dsl大部分都是利用方法调用，eval代码。 来执行代码, 可以参考rails， 大量的dsl Whenever 代码 DSL bin Whenever::CommandLine.execute(options) -- self.new() &amp;amp;&amp;amp; run -...' property='og:description'>
-<meta content='https://geniousbar.github.io/2016/07/01/ruby-dsl/' property='og:url'>
-<meta content='2016-07-01' property='article:published_time'>
-<meta content='summary' name='twitter:card'>
-<meta content='Ruby Dsl' name='twitter:title'>
-<meta content=' ruby中的dsl大部分都是利用方法调用，eval代码。 来执行代码, 可以参考rails， 大量的dsl Whenever 代码 DSL bin Whenever::CommandLine.execute(options) -- self.new() &amp;amp;&amp;amp; run -...' name='twitter:description'>
-<meta content='https://geniousbar.github.io/2016/07/01/ruby-dsl/' name='twitter:url'>
-<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
-<link href="/images/favicon.ico" rel="icon" type="image/ico" />
-<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
-<link href="/stylesheets/application.css" rel="stylesheet" />
-</head>
-<body class='post-template nav-closed'>
-<div class='nav'>
-<h3 class='nav-title'>Menu</h3>
-<a class='nav-close' href='#'>
-<span class='hidden'>Close</span>
-</a>
-<ul>
-<li class='nav-home'>
-<a href='/'>Home</a>
-</li>
-<li class='nav-docker'>
-<a href='/tag/docker'>docker</a>
-</li>
-</ul>
-</div>
-
-<div class='site-wrapper'>
-<header class='main-header no-cover post-head'>
-<nav class='main-nav clearfix'>
-<a class='menu-button icon-menu' href='#'>
-<span class='word'>Menu</span>
-</a>
-</nav>
-</header>
-<main class='content' role='main'>
-<article class='post'>
-<header class='post-header'>
-<h1 class='post-title'>Ruby Dsl</h1>
-<section class='post-meta'>
-<time class='post-date' datetime='2016-07-01'>
-01 July 2016
-</time>
-on <a href='/tag/ruby/'>ruby</a>, <a href='/tag/dsl/'>dsl</a>
-</section>
-</header>
-<section class='post-content'><blockquote>
-<p>ruby中的dsl大部分都是利用方法调用，eval代码。 来执行代码, 可以参考rails， 大量的dsl</p>
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>Ruby Dsl | 日常学习</title><meta description="   ruby中的dsl大部分都是利用方法调用，eval代码。 来执行代码, 可以参考rails， 大量的dsl   Whenever 代码 DSL   bin     Whenever::CommandLine.execute(options)       -- self.new() &amp;&amp; run         -- whenever_cron           -- Whenever.corn             -- ** Whenever::JobList.new(options" /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">Ruby Dsl</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">July 01, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">ruby</small></a><a href="/tags/dsl/"><small class="tag-label">dsl</small></a></div><hr class="article-header-separator" /><blockquote>
+  <p>ruby中的dsl大部分都是利用方法调用，eval代码。 来执行代码, 可以参考rails， 大量的dsl</p>
 </blockquote>
 
-<h4>Whenever 代码 DSL</h4>
+<h4 id="whenever-代码-dsl">Whenever 代码 DSL</h4>
 <pre class="highlight ruby"><code>  <span class="n">bin</span>
     <span class="no">Whenever</span><span class="o">::</span><span class="no">CommandLine</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
       <span class="o">--</span> <span class="nb">self</span><span class="p">.</span><span class="nf">new</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">run</span>
@@ -71,11 +12,12 @@ on <a href='/tag/ruby/'>ruby</a>, <a href='/tag/dsl/'>dsl</a>
               <span class="o">--</span> <span class="n">read</span> <span class="n">file</span> <span class="o">&amp;&amp;</span> <span class="nb">instance_eval</span>
                 <span class="o">--</span> <span class="err">所以</span><span class="no">JobList</span><span class="err">中设定了</span><span class="n">dsl</span><span class="err">，</span>
 </code></pre>
-<h4>Jbuilder 代码 DSL</h4>
+<h4 id="jbuilder-代码-dsl">Jbuilder 代码 DSL</h4>
 
 <ul>
-<li>jbuilder 中使用了method_missing 来定义全部的方法</li>
+  <li>jbuilder 中使用了method_missing 来定义全部的方法</li>
 </ul>
+
 <pre class="highlight ruby"><code>    <span class="k">def</span> <span class="nf">_scope</span>
       <span class="n">parent_attributes</span><span class="p">,</span> <span class="n">parent_formatter</span> <span class="o">=</span> <span class="vi">@attributes</span><span class="p">,</span> <span class="vi">@key_formatter</span>
       <span class="vi">@attributes</span> <span class="o">=</span> <span class="no">BLANK</span>
@@ -85,116 +27,76 @@ on <a href='/tag/ruby/'>ruby</a>, <a href='/tag/dsl/'>dsl</a>
       <span class="vi">@attributes</span><span class="p">,</span> <span class="vi">@key_formatter</span> <span class="o">=</span> <span class="n">parent_attributes</span><span class="p">,</span> <span class="n">parent_formatter</span>
     <span class="k">end</span>
 
-</code></pre><pre class="highlight plaintext"><code>&gt; jbuilder 中最具有价值的是， 对嵌套循环的处理，其中会对 scope 的处理， 其中的大概的思想是， 保证保证自身@attributes变量的不变，并在自身环境中执行， 执行之后结果保存在@attributes中， 代码中的ensure特性，比较奇特， 保证的代码的最后执行
-</code></pre><pre class="highlight ruby"><code>    <span class="vi">@name</span> <span class="o">=</span> <span class="s1">'xxxxxx'</span>
+</code></pre>
+<pre class="highlight plaintext"><code>&gt; jbuilder 中最具有价值的是， 对嵌套循环的处理，其中会对 scope 的处理， 其中的大概的思想是， 保证保证自身@attributes变量的不变，并在自身环境中执行， 执行之后结果保存在@attributes中， 代码中的ensure特性，比较奇特， 保证的代码的最后执行
+</code></pre>
+<pre class="highlight ruby"><code>    <span class="vi">@name</span> <span class="o">=</span> <span class="s1">'xxxxxx'</span>
     <span class="k">def</span> <span class="nf">names</span>
-        <span class="vi">@name</span>
-        <span class="k">ensure</span>
-            <span class="vi">@name</span> <span class="o">=</span> <span class="s1">'111111'</span>
+    	<span class="vi">@name</span>
+    	<span class="k">ensure</span>
+    		<span class="vi">@name</span> <span class="o">=</span> <span class="s1">'111111'</span>
     <span class="k">end</span>
     <span class="nb">p</span> <span class="n">names</span>
     <span class="nb">p</span> <span class="vi">@name</span>
 </code></pre>
-<h4>mina 部署pum 总结</h4>
+<h4 id="mina-部署pum-总结">mina 部署pum 总结</h4>
 
 <ol>
-<li> mina文档， puma文档(mina-puma 文档中需要在setup中添加一些配置 )</li>
+  <li>mina文档， puma文档(mina-puma 文档中需要在setup中添加一些配置 )</li>
 </ol>
+
 <pre class="highlight ruby"><code>     <span class="n">queue!</span> <span class="sx">%(mkdir -p "#{deploy_to}/#{shared_path}/tmp/sockets")</span>
      <span class="n">queue!</span> <span class="sx">%(chmod g+rx,u+rwx "#{deploy_to}/#{shared_path}/tmp/sockets")</span>
      <span class="n">queue!</span> <span class="sx">%(mkdir -p "#{deploy_to}/#{shared_path}/tmp/pids")</span>
      <span class="n">queue!</span> <span class="sx">%(chmod g+rx,u+rwx "#{deploy_to}/#{shared_path}/tmp/pids")</span>
-</code></pre>
-<p>deploy 中添加</p>
+</code></pre><p>deploy 中添加</p>
+
 <pre class="highlight ruby"><code>       <span class="n">invoke</span> <span class="ss">:'puma:phased_restart'</span>
 </code></pre>
 <ol>
-<li>mina setup</li>
-<li>建立puma.rb</li>
-<li><p>mina deploy</p>
+  <li>mina setup</li>
+  <li>建立puma.rb</li>
+  <li>
+    <p>mina deploy</p>
 
-<blockquote>
-<p>其中遇到问题可以使用 queue shell命令来调试，主要为PATH， rbenv的ruby版本</p>
-</blockquote></li>
+    <blockquote>
+      <p>其中遇到问题可以使用 queue shell命令来调试，主要为PATH， rbenv的ruby版本</p>
+    </blockquote>
+  </li>
 </ol>
 
 <p>在过程总遇到的问题有：</p>
 
 <ol>
-<li><p>rbenv 配置信息, server中所有用户使用一个rbenv，  invoke :&lsquo;rbenv:reload&rsquo;, 导致创建了 ~/.rbenv 目录结构 其中有shime, version， 导致执行 queue &lsquo;rbenv versions&rsquo; 没有之前安装的ruby版本， 跟在terminal中完全不一样</p>
+  <li>rbenv 配置信息, server中所有用户使用一个rbenv，  invoke :’rbenv:reload’, 导致创建了 ~/.rbenv 目录结构 其中有shime, version， 导致执行 queue ‘rbenv versions’ 没有之前安装的ruby版本， 跟在terminal中完全不一样</li>
+</ol>
 
-<p>解决方法： 手动set一些变量解决</p>
-<pre class="highlight ruby"><code>   <span class="n">queue</span> <span class="sx">%{
+<pre class="highlight plaintext"><code> 解决方法： 手动set一些变量解决
+
+ ```ruby
+   queue %{
      #{echo_cmd %{export PATH="#{rbenv_path}/bin:$PATH"}}
      #{echo_cmd %{export PATH="#{rbenv_path}/shims:$PATH"}}
      #{echo_cmd %{export RBENV_ROOT="#{rbenv_path}"}}
-   %}</span>
-   <span class="n">queue</span> <span class="s1">'rbenv local 2.3.1'</span>
-</code></pre>
-<p>. rbenv 推荐使用user安装rbenv，而不是使用全局的</p></li>
-<li><p>mina 脚本ssh deploy登录问题， 因为之前使用root登录， 使用deploy ssh登录需要密码，而在mina terminal中输入密码十分困难， 然后解决密码登录问题。
-sshd 中的sshd_config 中的配置修改</p>
+   %}
+   queue 'rbenv local 2.3.1'
+ ```
 
-<p>man sshd 中并没有如此的文档</p>
-<pre class="highlight plaintext"><code>   AuthorizedKeysFile   %h/.ssh/authorized_keys
-   AllowUsers kaws root
+. rbenv 推荐使用user安装rbenv，而不是使用全局的
 </code></pre>
-<blockquote>
-<p>%h替换为当前登录用户的家目录， 所以所有用户可以通过在~/.ssh/authorized_keys中配置可以登录的用户pubkey
-   AllowUsers 控制那个用户可以通过ssh登录
-   至此所有的ssh控制登录的操作都可以了</p>
-</blockquote></li>
+<ol>
+  <li>mina 脚本ssh deploy登录问题， 因为之前使用root登录， 使用deploy ssh登录需要密码，而在mina terminal中输入密码十分困难， 然后解决密码登录问题。<br />
+   sshd 中的sshd_config 中的配置修改</li>
 </ol>
-</section>
-<footer class='post-footer'>
-<section class='author'>
-<h4>
-<a href='/author/geniousbar/'>geniousbar</a>
-</h4>
-<p></p>
-Read
-<a href='/author/geniousbar/'>more posts</a>
-by this author.
-</section>
-<section class='share'>
-<h4>Share this post</h4>
-<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Ruby Dsl&amp;amp;url=https://geniousbar.github.io/2016/07/01/ruby-dsl/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-<span class='hidden'>Twitter</span>
-</a>
-<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=https://geniousbar.github.io/2016/07/01/ruby-dsl/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-<span class='hidden'>Facebook</span>
-</a>
-<a class='icon-google-plus' href='https://plus.google.com/share?url=https://geniousbar.github.io/2016/07/01/ruby-dsl/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-<span class='hidden'>Google+</span>
-</a>
-</section>
-</footer>
-</article>
-</main>
-<aside class='read-next'>
-<a class='no-cover read-next-story' href='/2016/03/12/ruby-red-book/'>
-<section class='post'>
-<h2>Ruby 面向对象语言描述</h2>
-<p>面向对象设计实践指南Ruby语言描述 问题比答案更重要， 下面的章节中会关注与问题的提问，然后才是问题的解决方案 面向对象设计 设计的目的（要解决的问题） 应对变化 变化困难的原因（建立了太多的依赖关系，对周围的环境期望太多） 设计良好的大型程序必须由设计良好的小程序演变而来， 不存在设计错误小程序演变为设计良好的大型程序（当然大量的重构和重新设计也不无可能，然而存在的可能性太小） 实用的设计不回去预测未来将要发生什么 设计的目的时为了将来进行设计（应对变化）， 首要目的： 降低变化所来成本 工程师的目的：权衡 现在设计、 现在不设计+将来改动成本，之间的权重比较 设计的工具 solid原则（Single Responsibility、Open-Closed&hellip;</p>
-</section>
-</a>
-<a class='no-cover prev read-next-story' href='/2016/09/07/linux-tar/'>
-<section class='post'>
-<h2>linux tar command</h2>
-<p>zip zip可能是目前使用得最多的文档压缩格式。 它最大的优点就是在不同的操作系统平台，比如Linux， Windows以及Mac OS上使用。缺点就是支持的压缩率不是很高，而tar.gz和tar.gz2在压缩率方面做得非常好。闲话少说，我们步入正题吧： 我们可以使用下列的命令压缩一个目录： zip -r archivename.zip directoryto_compress 下面是如果解压一个zip文档： unzip archive_name.zip tar.gz 这种格式是我使用得最多的压缩格式。它在压缩时不会占用太多CPU的，而且可以得到一个非常理想的压缩率。 使用下面这种格式去压缩一个目录： tar -zcvf archivename.tar.gz&hellip;</p>
-</section>
-</a>
-</aside>
 
-<footer class='site-footer clearfix'>
-<section class='copyright'>
-<a href='/'>知识总结</a>
-&copy;
-2017
-</section>
-<section class='poweredby'></section>
-</footer>
-</div>
-<script src="/javascripts/application.js"></script>
-</body>
-</html>
+<pre class="highlight plaintext"><code> man sshd 中并没有如此的文档
+
+ ```
+   AuthorizedKeysFile	%h/.ssh/authorized_keys
+   AllowUsers kaws root
+ ```
+ &gt;
+   %h替换为当前登录用户的家目录， 所以所有用户可以通过在~/.ssh/authorized_keys中配置可以登录的用户pubkey
+   AllowUsers 控制那个用户可以通过ssh登录
+   至此所有的ssh控制登录的操作都可以了
+</code></pre><div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

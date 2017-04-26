@@ -1,149 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>知识总结: linux tar command</title>
-<meta content='zip zip可能是目前使用得最多的文档压缩格式。 它最大的优点就是在不同的操作系统平台，比如Linux， Windows以及Mac OS上使用。缺点就是支持的压缩率不是很高，而tar.gz和tar.gz2在压缩率方面做得非常好。闲话少说，我们步入正题吧： 我们可以使用下列的命令压缩一个...' name='description'>
-<meta charset='utf-8'>
-<meta content='width=device-width, initial-scale=1.0' name='viewport'>
-<meta content='IE=edge' http-equiv='X-UA-Compatible'>
-<meta content='True' name='HandheldFriendly'>
-<meta content='知识总结' property='og:site_name'>
-<meta content='article' property='og:type'>
-<meta content='linux tar command' property='og:title'>
-<meta content='zip zip可能是目前使用得最多的文档压缩格式。 它最大的优点就是在不同的操作系统平台，比如Linux， Windows以及Mac OS上使用。缺点就是支持的压缩率不是很高，而tar.gz和tar.gz2在压缩率方面做得非常好。闲话少说，我们步入正题吧： 我们可以使用下列的命令压缩一个...' property='og:description'>
-<meta content='https://geniousbar.github.io/2016/09/07/linux-tar/' property='og:url'>
-<meta content='2016-09-07' property='article:published_time'>
-<meta content='summary' name='twitter:card'>
-<meta content='linux tar command' name='twitter:title'>
-<meta content='zip zip可能是目前使用得最多的文档压缩格式。 它最大的优点就是在不同的操作系统平台，比如Linux， Windows以及Mac OS上使用。缺点就是支持的压缩率不是很高，而tar.gz和tar.gz2在压缩率方面做得非常好。闲话少说，我们步入正题吧： 我们可以使用下列的命令压缩一个...' name='twitter:description'>
-<meta content='https://geniousbar.github.io/2016/09/07/linux-tar/' name='twitter:url'>
-<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
-<link href="/images/favicon.ico" rel="icon" type="image/ico" />
-<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
-<link href="/stylesheets/application.css" rel="stylesheet" />
-</head>
-<body class='post-template nav-closed'>
-<div class='nav'>
-<h3 class='nav-title'>Menu</h3>
-<a class='nav-close' href='#'>
-<span class='hidden'>Close</span>
-</a>
-<ul>
-<li class='nav-home'>
-<a href='/'>Home</a>
-</li>
-<li class='nav-docker'>
-<a href='/tag/docker'>docker</a>
-</li>
-</ul>
-</div>
-
-<div class='site-wrapper'>
-<header class='main-header no-cover post-head'>
-<nav class='main-nav clearfix'>
-<a class='menu-button icon-menu' href='#'>
-<span class='word'>Menu</span>
-</a>
-</nav>
-</header>
-<main class='content' role='main'>
-<article class='post'>
-<header class='post-header'>
-<h1 class='post-title'>linux tar command</h1>
-<section class='post-meta'>
-<time class='post-date' datetime='2016-09-07'>
-07 September 2016
-</time>
-on <a href='/tag/linux/'>linux</a>, <a href='/tag/command/'>command</a>
-</section>
-</header>
-<section class='post-content'><h1>zip</h1>
-
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>linux tar command | 日常学习</title><meta description="zip zip可能是目前使用得最多的文档压缩格式。  它最大的优点就是在不同的操作系统平台，比如Linux， Windows以及Mac OS上使用。缺点就是支持的压缩率不是很高，而tar.gz和tar.gz2在压缩率方面做得非常好。闲话少说，我们步入正题吧：  我们可以使用下列的命令压缩一个目录： zip -r archive_name.zip directory_to_compress  下面是如果解压一个zip文档： unzip archive_name.zip  tar.gz 这种格..." /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">linux tar command</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">September 07, 2016</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/command/"><small class="tag-label">command</small></a></div><hr class="article-header-separator" /><h1 id="zip">zip</h1>
 <p>zip可能是目前使用得最多的文档压缩格式。</p>
 
 <p>它最大的优点就是在不同的操作系统平台，比如Linux， Windows以及Mac OS上使用。缺点就是支持的压缩率不是很高，而tar.gz和tar.gz2在压缩率方面做得非常好。闲话少说，我们步入正题吧：</p>
 
-<p>我们可以使用下列的命令压缩一个目录：
-zip -r archive<em>name.zip directory</em>to_compress</p>
+<p>我们可以使用下列的命令压缩一个目录：<br />
+zip -r archive_name.zip directory_to_compress</p>
 
-<p>下面是如果解压一个zip文档：
+<p>下面是如果解压一个zip文档：<br />
 unzip archive_name.zip</p>
 
-<h1>tar.gz</h1>
+<h1 id="targz">tar.gz</h1>
+<p>这种格式是我使用得最多的压缩格式。它在压缩时不会占用太多CPU的，而且可以得到一个非常理想的压缩率。<br />
+使用下面这种格式去压缩一个目录：<br />
+tar -zcvf archive_name.tar.gz directory_to_compress</p>
 
-<p>这种格式是我使用得最多的压缩格式。它在压缩时不会占用太多CPU的，而且可以得到一个非常理想的压缩率。
-使用下面这种格式去压缩一个目录：
-tar -zcvf archive<em>name.tar.gz directory</em>to_compress</p>
-
-<p>解压缩：
+<p>解压缩：<br />
 tar -zxvf archive_name.tar.gz</p>
 
 <p>上面这个解包命令将会将文档解开在当前目录下面。</p>
 
-<p>当然，你也可以用这个命令来捏住解包的路径：
-tar -zxvf archive<em>name.tar.gz -C /tmp/extract</em>here/</p>
+<p>当然，你也可以用这个命令来捏住解包的路径：<br />
+tar -zxvf archive_name.tar.gz -C /tmp/extract_here/</p>
 
-<h1>tar.bz2</h1>
-
+<h1 id="tarbz2">tar.bz2</h1>
 <p>这种压缩格式是我们提到的所有方式中压缩率最好的。当然，这也就意味着，它比前面的方式要占用更多的CPU与时间。</p>
 
-<p>这个就是你如何使用tar.bz2进行压缩:
-tar -jcvf archive<em>name.tar.bz2 directory</em>to_compress</p>
+<p>这个就是你如何使用tar.bz2进行压缩:<br />
+tar -jcvf archive_name.tar.bz2 directory_to_compress</p>
 
 <p>上面这个解包命令将会将文档解开在当前目录下面。</p>
 
-<p>当然，你也可以用这个命令来捏住解包的路径：
-tar -jxvf archive<em>name.tar.bz2 -C /tmp/extract</em>here/</p>
-</section>
-<footer class='post-footer'>
-<section class='author'>
-<h4>
-<a href='/author/geniousbar/'>geniousbar</a>
-</h4>
-<p></p>
-Read
-<a href='/author/geniousbar/'>more posts</a>
-by this author.
-</section>
-<section class='share'>
-<h4>Share this post</h4>
-<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=linux tar command&amp;amp;url=https://geniousbar.github.io/2016/09/07/linux-tar/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-<span class='hidden'>Twitter</span>
-</a>
-<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=https://geniousbar.github.io/2016/09/07/linux-tar/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-<span class='hidden'>Facebook</span>
-</a>
-<a class='icon-google-plus' href='https://plus.google.com/share?url=https://geniousbar.github.io/2016/09/07/linux-tar/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-<span class='hidden'>Google+</span>
-</a>
-</section>
-</footer>
-</article>
-</main>
-<aside class='read-next'>
-<a class='no-cover read-next-story' href='/2016/07/01/ruby-dsl/'>
-<section class='post'>
-<h2>Ruby Dsl</h2>
-<p>ruby中的dsl大部分都是利用方法调用，eval代码。 来执行代码, 可以参考rails， 大量的dsl Whenever 代码 DSL bin Whenever::CommandLine.execute(options) -- self.new() &amp;&amp; run -- whenever_cron -- Whenever.corn -- **&hellip;</p>
-</section>
-</a>
-<a class='no-cover prev read-next-story' href='/2016/10/01/javascript-good-part/'>
-<section class='post'>
-<h2>Javascript 语言精粹</h2>
-<p>javascrip 语言精粹 假值： false, null, undefined, 0, &lsquo; &rsquo;, NaN 数据类型： 数字， 字符串， 布尔， null， undefined， 对象 反射： typeof,&hellip;</p>
-</section>
-</a>
-</aside>
-
-<footer class='site-footer clearfix'>
-<section class='copyright'>
-<a href='/'>知识总结</a>
-&copy;
-2017
-</section>
-<section class='poweredby'></section>
-</footer>
-</div>
-<script src="/javascripts/application.js"></script>
-</body>
-</html>
+<p>当然，你也可以用这个命令来捏住解包的路径：<br />
+tar -jxvf archive_name.tar.bz2 -C /tmp/extract_here/</p>
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

@@ -1,339 +1,244 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>知识总结: Ruby 面向对象语言描述</title>
-<meta content='面向对象设计实践指南Ruby语言描述 问题比答案更重要， 下面的章节中会关注与问题的提问，然后才是问题的解决方案 面向对象设计 设计的目的（要解决的问题） 应对变化 变化困难的原因（建立了太多的依赖关系，对周围的环境期望太多） 设计良好的大型程序必须由设计良好的小程序演变而来， 不存在设...' name='description'>
-<meta charset='utf-8'>
-<meta content='width=device-width, initial-scale=1.0' name='viewport'>
-<meta content='IE=edge' http-equiv='X-UA-Compatible'>
-<meta content='True' name='HandheldFriendly'>
-<meta content='知识总结' property='og:site_name'>
-<meta content='article' property='og:type'>
-<meta content='Ruby 面向对象语言描述' property='og:title'>
-<meta content='面向对象设计实践指南Ruby语言描述 问题比答案更重要， 下面的章节中会关注与问题的提问，然后才是问题的解决方案 面向对象设计 设计的目的（要解决的问题） 应对变化 变化困难的原因（建立了太多的依赖关系，对周围的环境期望太多） 设计良好的大型程序必须由设计良好的小程序演变而来， 不存在设...' property='og:description'>
-<meta content='https://geniousbar.github.io/2016/03/12/ruby-red-book/' property='og:url'>
-<meta content='2016-03-12' property='article:published_time'>
-<meta content='summary' name='twitter:card'>
-<meta content='Ruby 面向对象语言描述' name='twitter:title'>
-<meta content='面向对象设计实践指南Ruby语言描述 问题比答案更重要， 下面的章节中会关注与问题的提问，然后才是问题的解决方案 面向对象设计 设计的目的（要解决的问题） 应对变化 变化困难的原因（建立了太多的依赖关系，对周围的环境期望太多） 设计良好的大型程序必须由设计良好的小程序演变而来， 不存在设...' name='twitter:description'>
-<meta content='https://geniousbar.github.io/2016/03/12/ruby-red-book/' name='twitter:url'>
-<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
-<link href="/images/favicon.ico" rel="icon" type="image/ico" />
-<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
-<link href="/stylesheets/application.css" rel="stylesheet" />
-</head>
-<body class='post-template nav-closed'>
-<div class='nav'>
-<h3 class='nav-title'>Menu</h3>
-<a class='nav-close' href='#'>
-<span class='hidden'>Close</span>
-</a>
-<ul>
-<li class='nav-home'>
-<a href='/'>Home</a>
-</li>
-<li class='nav-docker'>
-<a href='/tag/docker'>docker</a>
-</li>
-</ul>
-</div>
-
-<div class='site-wrapper'>
-<header class='main-header no-cover post-head'>
-<nav class='main-nav clearfix'>
-<a class='menu-button icon-menu' href='#'>
-<span class='word'>Menu</span>
-</a>
-</nav>
-</header>
-<main class='content' role='main'>
-<article class='post'>
-<header class='post-header'>
-<h1 class='post-title'>Ruby 面向对象语言描述</h1>
-<section class='post-meta'>
-<time class='post-date' datetime='2016-03-12'>
-12 March 2016
-</time>
-on <a href='/tag/ruby/'>ruby</a>
-</section>
-</header>
-<section class='post-content'><h2>面向对象设计实践指南Ruby语言描述</h2>
-
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>Ruby 面向对象语言描述 | 日常学习</title><meta description="面向对象设计实践指南Ruby语言描述    问题比答案更重要， 下面的章节中会关注与问题的提问，然后才是问题的解决方案   面向对象设计    设计的目的（要解决的问题）            应对变化       变化困难的原因（建立了太多的依赖关系，对周围的环境期望太多）       设计良好的大型程序必须由设计良好的小程序演变而来， 不存在设计错误小程序演变为设计良好的大型程序（当然大量的重构和重新设计也不无可能，然而存在的可能性太小）       实用的设计不回去预测未来将要发生什...   " /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">Ruby 面向对象语言描述</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">March 12, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">ruby</small></a></div><hr class="article-header-separator" /><h2 id="面向对象设计实践指南ruby语言描述">面向对象设计实践指南Ruby语言描述</h2>
 <blockquote>
-<p>问题比答案更重要， 下面的章节中会关注与问题的提问，然后才是问题的解决方案</p>
+  <p>问题比答案更重要， 下面的章节中会关注与问题的提问，然后才是问题的解决方案</p>
 </blockquote>
 
-<h3>面向对象设计</h3>
-
+<h3 id="面向对象设计">面向对象设计</h3>
 <ol>
-<li>设计的目的（要解决的问题）
+  <li>设计的目的（要解决的问题）
+    <ol>
+      <li>应对变化</li>
+      <li>变化困难的原因（建立了太多的依赖关系，对周围的环境期望太多）</li>
+      <li>设计良好的大型程序必须由设计良好的小程序演变而来， 不存在设计错误小程序演变为设计良好的大型程序（当然大量的重构和重新设计也不无可能，然而存在的可能性太小）</li>
+      <li>实用的设计不回去预测未来将要发生什么</li>
+      <li>设计的目的时为了将来进行设计（应对变化）， 首要目的： 降低变化所来成本</li>
+      <li>工程师的目的：权衡 现在设计、 现在不设计+将来改动成本，之间的权重比较</li>
+    </ol>
+  </li>
+  <li>设计的工具
+    <ol>
+      <li>solid原则（Single Responsibility、Open-Closed Principle、Liskov Substitution、Interface Segregation、 Dependency Inversion、 DRY）</li>
+      <li>设计模式</li>
+    </ol>
+  </li>
+  <li>设计实践
+    <ol>
+      <li>设计失败的原因：没有足够的经验和设计反思（不懂设计、懂设计但是讲过多的设计套用）</li>
+      <li>设计的时机： 反复的应用，不进行大规模的预先设计，设计应该发生在项目的过程中，不断的迭代的一个过程</li>
+      <li>设计评判：1. 设计需要代价 2. 设计的盈亏点依赖于工程师（时间表、能力）
+        <blockquote>
+          <p>实践是检验真理的唯一标准， 实践会弄脏你的双手、是充满选择的。</p>
+        </blockquote>
 
-<ol>
-<li>应对变化</li>
-<li>变化困难的原因（建立了太多的依赖关系，对周围的环境期望太多）</li>
-<li>设计良好的大型程序必须由设计良好的小程序演变而来， 不存在设计错误小程序演变为设计良好的大型程序（当然大量的重构和重新设计也不无可能，然而存在的可能性太小）</li>
-<li>实用的设计不回去预测未来将要发生什么</li>
-<li>设计的目的时为了将来进行设计（应对变化）， 首要目的： 降低变化所来成本</li>
-<li>工程师的目的：权衡 现在设计、 现在不设计+将来改动成本，之间的权重比较</li>
-</ol></li>
-<li>设计的工具
-
-<ol>
-<li>solid原则（Single Responsibility、Open-Closed Principle、Liskov Substitution、Interface Segregation、 Dependency Inversion、 DRY）</li>
-<li>设计模式</li>
-</ol></li>
-<li><p>设计实践</p>
-
-<ol>
-<li>设计失败的原因：没有足够的经验和设计反思（不懂设计、懂设计但是讲过多的设计套用）</li>
-<li>设计的时机： 反复的应用，不进行大规模的预先设计，设计应该发生在项目的过程中，不断的迭代的一个过程</li>
-<li><p>设计评判：1. 设计需要代价 2. 设计的盈亏点依赖于工程师（时间表、能力）</p>
-
-<blockquote>
-<p>实践是检验真理的唯一标准， 实践会弄脏你的双手、是充满选择的。</p>
-</blockquote>
 <pre class="highlight plaintext"><code>面向对象设计问题是----------需求的变化。
 面向对象设计本质是----------依赖关系的管理
 警示：小的坏的程序不太可能形成好的大的程序（当然可以通过重构来实现， 但是不应该期待谁能重构它）
 </code></pre></li>
-</ol></li>
+    </ol>
+  </li>
 </ol>
 
-<h3>设计单一职责</h3>
-
+<h3 id="设计单一职责">设计单一职责</h3>
 <ol>
-<li>如何确定一个类是否具有单一职责
-  &gt; 1. 将类的每个方法都改述为一个问题（例如：齿轮请问你的直径多大） 2. 尝试使用一句话描述方法做的事情，这件事情的描述应该很简单。而不是需要使用 “和” 这样的字眼。</li>
-<li><p>解决问题的方法</p>
+  <li>如何确定一个类是否具有单一职责
+    <blockquote>
+      <ol>
+        <li>将类的每个方法都改述为一个问题（例如：齿轮请问你的直径多大） 2. 尝试使用一句话描述方法做的事情，这件事情的描述应该很简单。而不是需要使用 “和” 这样的字眼。</li>
+      </ol>
+    </blockquote>
+  </li>
+  <li>解决问题的方法
+    <ol>
+      <li>依赖行为而不是数据（变量） // ruby中对这样的支持非常好， att_accessor 等元编程</li>
+      <li>隐藏数据结构。</li>
+    </ol>
 
-<ol>
-<li>依赖行为而不是数据（变量） // ruby中对这样的支持非常好， att_accessor 等元编程</li>
-<li>隐藏数据结构。</li>
-</ol>
-<pre class="highlight ruby"><code>     <span class="c1"># 代码示例</span>
-     <span class="k">class</span> <span class="nc">Example</span>
-        <span class="kp">attr_reader</span> <span class="ss">:data</span>
-        <span class="c1"># data 的数据结构应该为[[one, two], [three, four]]</span>
-        <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-            <span class="vi">@data</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">end</span>
+    <p>```ruby<br />
+   # 代码示例<br />
+   class Example<br />
+      attr_reader :data<br />
+      # data 的数据结构应该为[[one, two], [three, four]]<br />
+      def initialize(data)<br />
+          @data = data<br />
+      end</p>
 
-        <span class="k">def</span> <span class="nf">sum</span>
-            <span class="n">data</span><span class="p">.</span><span class="nf">inject</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">item</span><span class="o">|</span>
-                <span class="n">sum</span> <span class="o">+=</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">end</span>
-        <span class="k">end</span>
-     <span class="k">end</span>
-      <span class="c1"># 重构之后的代码 （这里使用了额外的类，来隔离具体的数据结构）</span>
-     <span class="k">class</span> <span class="nc">Example</span>
-        <span class="n">attr_read</span> <span class="ss">:data</span>
-        <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-            <span class="vi">@data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
-                <span class="no">Infer</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="k">end</span>
-        <span class="k">end</span>
-        <span class="k">def</span> <span class="nf">sum</span>
-            <span class="vi">@data</span><span class="p">.</span><span class="nf">inject</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span><span class="ss">:product</span>
-        <span class="k">end</span>
-     <span class="k">end</span>
-
-     <span class="k">class</span> <span class="nc">Infer</span>
-        <span class="kp">attr_reader</span> <span class="ss">:one</span><span class="p">,</span> <span class="ss">:two</span>
-        <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">two</span><span class="p">)</span>
-            <span class="vi">@one</span><span class="p">,</span> <span class="vi">@two</span> <span class="o">=</span> <span class="n">one</span><span class="p">,</span> <span class="n">two</span>
-        <span class="k">end</span>
-
-        <span class="k">def</span> <span class="nf">product</span>
-            <span class="n">one</span> <span class="o">*</span> <span class="n">two</span>
-        <span class="k">end</span>
-     <span class="k">end</span>
+<pre class="highlight plaintext"><code>  def sum
+      data.inject(0) do |sum, item|
+          sum += item[0] * item[1]
+      end
+  end    end
+# 重构之后的代码 （这里使用了额外的类，来隔离具体的数据结构）    class Example
+  attr_read :data
+  def initialize(data)
+      @data = data.map do |item|
+          Infer.new(item[0], item[1])
+      end
+  end
+  def sum
+      @data.inject(0) &amp;:product
+  end    end
 </code></pre>
-<ol>
-<li>将外在的依赖关系尽量的隔离开来
-&gt; 将经常重复的代码封装，将对外在的依赖尽量隔离在一个地方（建立单独的方法，统一隔离对外在的依赖关系，思想类似与 依赖方法而不是数据）</li>
-</ol></li>
+    <p>class Infer<br />
+      attr_reader :one, :two<br />
+      def initialize(one, two)<br />
+          @one, @two = one, two<br />
+      end</p>
+
+<pre class="highlight plaintext"><code>  def product
+      one * two
+  end    end
+ ```
+</code></pre></li>
 </ol>
 
-<h3>管理依赖关系</h3>
-
+<pre class="highlight plaintext"><code> 3. 将外在的依赖关系尽量的隔离开来
+ &gt; 将经常重复的代码封装，将对外在的依赖尽量隔离在一个地方（建立单独的方法，统一隔离对外在的依赖关系，思想类似与 依赖方法而不是数据）
+</code></pre>
+<h3 id="管理依赖关系">管理依赖关系</h3>
 <blockquote>
-<p>消息的三中类型， 1. 自身实现 2. 继承 3. 依赖（指代发送消息）</p>
+  <p>消息的三中类型， 1. 自身实现 2. 继承 3. 依赖（指代发送消息）</p>
 </blockquote>
 
 <ol>
-<li>问题： 什么是依赖关系（个人认为3. 4 没有太多用处，虽然ruby中可以广泛的应用hash传递参数，但是依然没有避免参数的依赖）
+  <li>问题： 什么是依赖关系（个人认为3. 4 没有太多用处，虽然ruby中可以广泛的应用hash传递参数，但是依然没有避免参数的依赖）
+    <ol>
+      <li>另一个类的名字。 代表自身期待另一个类的存在</li>
+      <li>消息的名字。</li>
+      <li>消息所需要的参数。</li>
+      <li>参数的顺序</li>
+    </ol>
+  </li>
+  <li>解决依赖关系的方法
+    <ol>
+      <li>注入依赖关系（依赖注入）</li>
+    </ol>
 
-<ol>
-<li>另一个类的名字。 代表自身期待另一个类的存在</li>
-<li>消息的名字。</li>
-<li>消息所需要的参数。</li>
-<li>参数的顺序</li>
-</ol></li>
-<li><p>解决依赖关系的方法</p>
+<pre class="highlight ruby"><code>  <span class="k">class</span> <span class="nc">Gear</span>
+      <span class="kp">attr_reader</span> <span class="ss">:chainring</span><span class="p">,</span> <span class="ss">:cog</span><span class="p">,</span> <span class="ss">:rim</span><span class="p">,</span> <span class="ss">:tire</span>
+      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">chainring</span><span class="p">,</span> <span class="n">cog</span><span class="p">,</span> <span class="n">rim</span><span class="p">,</span> <span class="n">trie</span><span class="p">)</span>
+          <span class="vi">@chaining</span> <span class="o">=</span> <span class="n">chainring</span>
+          <span class="vi">@cog</span> <span class="o">=</span> <span class="n">cog</span>
+          <span class="vi">@rim</span> <span class="o">=</span> <span class="n">rim</span>
+          <span class="vi">@tire</span> <span class="o">=</span> <span class="n">tire</span>
+      <span class="k">end</span>
 
-<ol>
-<li>注入依赖关系（依赖注入）</li>
-</ol>
-<pre class="highlight ruby"><code>   <span class="k">class</span> <span class="nc">Gear</span>
-       <span class="kp">attr_reader</span> <span class="ss">:chainring</span><span class="p">,</span> <span class="ss">:cog</span><span class="p">,</span> <span class="ss">:rim</span><span class="p">,</span> <span class="ss">:tire</span>
-       <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">chainring</span><span class="p">,</span> <span class="n">cog</span><span class="p">,</span> <span class="n">rim</span><span class="p">,</span> <span class="n">trie</span><span class="p">)</span>
-           <span class="vi">@chaining</span> <span class="o">=</span> <span class="n">chainring</span>
+      <span class="k">def</span> <span class="nf">gear_inches</span>
+       <span class="n">ratio</span> <span class="o">*</span> <span class="no">Wheel</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">rim</span><span class="p">,</span> <span class="n">tire</span><span class="p">).</span><span class="nf">diameter</span>
+      <span class="k">end</span>
+  <span class="k">end</span>
+  <span class="no">Gear</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">).</span><span class="nf">gear_inches</span>
+
+  <span class="c1"># 重构之后代码</span>
+   <span class="k">class</span> <span class="nc">Gear</span>
+       <span class="kp">attr_reader</span> <span class="ss">:chainring</span><span class="p">,</span> <span class="ss">:cog</span><span class="p">,</span> <span class="ss">:wheel</span>
+       <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">chainring</span><span class="p">,</span> <span class="n">cog</span><span class="p">,</span> <span class="n">wheel</span><span class="p">)</span>
+           <span class="vi">@chainring</span> <span class="o">=</span> <span class="n">chanring</span>
            <span class="vi">@cog</span> <span class="o">=</span> <span class="n">cog</span>
-           <span class="vi">@rim</span> <span class="o">=</span> <span class="n">rim</span>
-           <span class="vi">@tire</span> <span class="o">=</span> <span class="n">tire</span>
+           <span class="vi">@wheel</span> <span class="o">=</span> <span class="n">wheel</span>
        <span class="k">end</span>
-
-       <span class="k">def</span> <span class="nf">gear_inches</span>
-        <span class="n">ratio</span> <span class="o">*</span> <span class="no">Wheel</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">rim</span><span class="p">,</span> <span class="n">tire</span><span class="p">).</span><span class="nf">diameter</span>
+       <span class="k">def</span> <span class="nf">get_inches</span>
+           <span class="n">ratio</span> <span class="o">*</span> <span class="n">wheel</span><span class="p">.</span><span class="nf">diameter</span>
        <span class="k">end</span>
    <span class="k">end</span>
-   <span class="no">Gear</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">).</span><span class="nf">gear_inches</span>
-
-   <span class="c1"># 重构之后代码</span>
-    <span class="k">class</span> <span class="nc">Gear</span>
-        <span class="kp">attr_reader</span> <span class="ss">:chainring</span><span class="p">,</span> <span class="ss">:cog</span><span class="p">,</span> <span class="ss">:wheel</span>
-        <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">chainring</span><span class="p">,</span> <span class="n">cog</span><span class="p">,</span> <span class="n">wheel</span><span class="p">)</span>
-            <span class="vi">@chainring</span> <span class="o">=</span> <span class="n">chanring</span>
-            <span class="vi">@cog</span> <span class="o">=</span> <span class="n">cog</span>
-            <span class="vi">@wheel</span> <span class="o">=</span> <span class="n">wheel</span>
-        <span class="k">end</span>
-        <span class="k">def</span> <span class="nf">get_inches</span>
-            <span class="n">ratio</span> <span class="o">*</span> <span class="n">wheel</span><span class="p">.</span><span class="nf">diameter</span>
-        <span class="k">end</span>
-    <span class="k">end</span>
-    <span class="no">Gear</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="no">Wheel</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">)).</span><span class="nf">gear_inches</span>
+   <span class="no">Gear</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="no">Wheel</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">)).</span><span class="nf">gear_inches</span>
 </code></pre></li>
-<li><p>隔离脆弱的外部信息</p>
-<pre class="highlight ruby"><code><span class="k">def</span> <span class="nf">gear_inches</span>
-    <span class="n">ratio</span> <span class="o">*</span> <span class="n">wheel</span><span class="p">.</span><span class="nf">diameter</span>
-<span class="k">end</span>
-
-<span class="k">def</span> <span class="nf">gear_inches</span>
-    <span class="sr">//</span> <span class="p">.</span><span class="nf">.</span><span class="p">.</span><span class="nf">.</span><span class="p">.</span><span class="nf">.</span>
-    <span class="n">wheel</span><span class="p">.</span><span class="nf">diameter</span>
-    <span class="sr">//</span><span class="p">.</span><span class="nf">.</span><span class="p">.</span><span class="nf">.</span><span class="p">.</span><span class="nf">.</span>
-<span class="k">end</span>
-<span class="c1"># 现在对wheel.diameter的引用嵌入在一个复杂的应用过程中， 这样做会变得更加脆弱</span>
-<span class="k">def</span> <span class="nf">gear_inches</span>
-    <span class="sr">//</span><span class="p">.</span><span class="nf">.</span><span class="p">.</span><span class="nf">.</span><span class="p">.</span>
-    <span class="nf">diameter</span>
-    <span class="sr">//</span><span class="p">.</span><span class="nf">.</span><span class="p">.</span><span class="nf">.</span><span class="p">.</span>
-<span class="nf">end</span>
-
-<span class="k">def</span> <span class="nf">diameter</span>
-    <span class="n">wheel</span><span class="p">.</span><span class="nf">diameter</span>
-<span class="k">end</span>
-<span class="c1">#移除依赖关系，并将其封装在自己的某个方法中</span>
-
-</code></pre></li>
+  <li>隔离脆弱的外部信息</li>
 </ol>
 
+<pre class="highlight plaintext"><code>```ruby
+def gear_inches
+    ratio * wheel.diameter
+end
+
+def gear_inches
+    // ......
+    wheel.diameter
+    //......
+end
+# 现在对wheel.diameter的引用嵌入在一个复杂的应用过程中， 这样做会变得更加脆弱
+def gear_inches
+    //.....
+    diameter
+    //.....
+end
+
+def diameter
+    wheel.diameter
+end
+#移除依赖关系，并将其封装在自己的某个方法中
+
+```
+</code></pre>
 <blockquote>
-<p>当一个类包含了对某个可能发生变化的消息的嵌入引用时，这样的技术变得非常有用。另一种方法为：将依赖关系反转（后面）
-  3. 为什么需要管理依赖关系：
-     1. 依赖关系是可以被改变的（通过函数的参数改变）
-     2. 依赖关系的方向的选择会对未来的变化产生影响
-  4. 选择依赖方向：
-     1. 有些类比其他类更容易发生变化
-     2. 具体类比抽象类更容易发生变化（例如ruby中方法参数建立在抽象上，java建立在具体类上）
-     3. 更改拥有多的依赖关系的类会造成广泛的影响
-     &gt; 依赖于那些变化情况比你所做的更改还要少的事情
-  5. 总结：</p>
+  <p>当一个类包含了对某个可能发生变化的消息的嵌入引用时，这样的技术变得非常有用。另一种方法为：将依赖关系反转（后面）</p>
+  <ol>
+    <li>为什么需要管理依赖关系：
+      <ol>
+        <li>依赖关系是可以被改变的（通过函数的参数改变）</li>
+        <li>依赖关系的方向的选择会对未来的变化产生影响</li>
+      </ol>
+    </li>
+    <li>选择依赖方向：
+      <ol>
+        <li>有些类比其他类更容易发生变化</li>
+        <li>具体类比抽象类更容易发生变化（例如ruby中方法参数建立在抽象上，java建立在具体类上）</li>
+        <li>更改拥有多的依赖关系的类会造成广泛的影响
+          <blockquote>
+            <p>依赖于那些变化情况比你所做的更改还要少的事情</p>
+          </blockquote>
+        </li>
+      </ol>
+    </li>
+    <li>总结：</li>
+  </ol>
 </blockquote>
+
 <pre class="highlight plaintext"><code>  对依赖关系的管理时创建面向未来的应用程序的核心。
   1. 依赖注入 可以建立松耦合的依赖关系
   2. 依赖于抽象 可以降低面对变化的可能行（建立在更高层次的抽象上）
   3. 管理依赖的关键时管理依赖的方向（依赖于更不容易变化的对象）
 </code></pre>
-<h3>创建灵活的接口（类里面的接口）</h3>
+<h3 id="创建灵活的接口类里面的接口">创建灵活的接口（类里面的接口）</h3>
 
 <ol>
-<li>什么是接口
-
-<ol>
-<li>暴露了其主要职责</li>
-<li>期望被其他对象调用</li>
-<li>不容易改变</li>
-<li>对其他依赖它的对象来说是安全的</li>
-<li>在测试里面被详尽描述的
-&gt; 找出并定义公共接口是一种艺术，它呈现出一种设计挑战，因为这里没有现成的规则可以使用。并且很难从错误中学习</li>
-</ol></li>
-<li>更好的找出接口
-  &gt; 关注消息，而非领域对象。绘制时序图来明确消息的传递，并提问做什么，而不是如何做！
-  &gt; 使用时序图，描述对象之间的消息，来确定类之间需要暴露的接口，从而创建更小的接口，更最小上下文的依赖关系。松耦合的设计。
-总结：
-   应用程序有消息来定义而成， 而非类。而设计时的提问方式为 “我需要什么，谁来做” 而不是 “告诉接收者如何做”，
-   使用时序图来暴露消息。</li>
+  <li>什么是接口
+    <ol>
+      <li>暴露了其主要职责</li>
+      <li>期望被其他对象调用</li>
+      <li>不容易改变</li>
+      <li>对其他依赖它的对象来说是安全的</li>
+      <li>在测试里面被详尽描述的
+        <blockquote>
+          <p>找出并定义公共接口是一种艺术，它呈现出一种设计挑战，因为这里没有现成的规则可以使用。并且很难从错误中学习</p>
+        </blockquote>
+      </li>
+    </ol>
+  </li>
+  <li>更好的找出接口
+    <blockquote>
+      <p>关注消息，而非领域对象。绘制时序图来明确消息的传递，并提问做什么，而不是如何做！<br />
+使用时序图，描述对象之间的消息，来确定类之间需要暴露的接口，从而创建更小的接口，更最小上下文的依赖关系。松耦合的设计。<br />
+   总结：<br />
+ 应用程序有消息来定义而成， 而非类。而设计时的提问方式为 “我需要什么，谁来做” 而不是 “告诉接收者如何做”，<br />
+ 使用时序图来暴露消息。</p>
+    </blockquote>
+  </li>
 </ol>
 
-<h3>使用鸭子类型技术降低成本</h3>
-
+<h3 id="使用鸭子类型技术降低成本">使用鸭子类型技术降低成本</h3>
 <ol>
-<li>使用ruby的鸭子类型设计，可以创建出灵活、更结构化的设计，也可能创建出混乱不堪的设计</li>
-<li>具体化与抽象化之间的取舍，是面向对象设计的基础内容</li>
-<li>识别鸭子类型，kind<em>of? is</em>a? responds_to?</li>
-<li>记录鸭子类型（做好测试）</li>
+  <li>使用ruby的鸭子类型设计，可以创建出灵活、更结构化的设计，也可能创建出混乱不堪的设计</li>
+  <li>具体化与抽象化之间的取舍，是面向对象设计的基础内容</li>
+  <li>识别鸭子类型，kind_of? is_a? responds_to?</li>
+  <li>记录鸭子类型（做好测试）</li>
 </ol>
 
-<h3>通过继承获得行为</h3>
-
+<h3 id="通过继承获得行为">通过继承获得行为</h3>
 <ol>
-<li>继承的核心为：自动的消息委托</li>
-<li>建立继承的时机以及方法： 在需要第三种同种类型的时候（在拥有更多的抽象信息的时候）， 应当尽力推迟继承的抽象。</li>
-<li>继承抽象的方法： 从下往上， 先将方法下降至具体类型，抽象出更高层次的继承体系，不断的重构，将方法提升（将方法下降到具体层次的代价更高）</li>
-<li>设计的决策（或者任何事情的）： 1. 错误成本， 2： 实现成本。 抽象继承的方法采用 从下向上的原因在于从上往下的成本过高。</li>
-<li>使用模板方法有助于解耦合父子类之间的关系，但是也仅仅限于父子两个层次之间的关系。（这样的解决子类的初始化问题，在于，Ruby的设计问题，不应该使用这样的方法给语言打补丁）</li>
+  <li>继承的核心为：自动的消息委托</li>
+  <li>建立继承的时机以及方法： 在需要第三种同种类型的时候（在拥有更多的抽象信息的时候）， 应当尽力推迟继承的抽象。</li>
+  <li>继承抽象的方法： 从下往上， 先将方法下降至具体类型，抽象出更高层次的继承体系，不断的重构，将方法提升（将方法下降到具体层次的代价更高）</li>
+  <li>设计的决策（或者任何事情的）： 1. 错误成本， 2： 实现成本。 抽象继承的方法采用 从下向上的原因在于从上往下的成本过高。</li>
+  <li>使用模板方法有助于解耦合父子类之间的关系，但是也仅仅限于父子两个层次之间的关系。（这样的解决子类的初始化问题，在于，Ruby的设计问题，不应该使用这样的方法给语言打补丁）</li>
 </ol>
-</section>
-<footer class='post-footer'>
-<section class='author'>
-<h4>
-<a href='/author/geniousbar/'>geniousbar</a>
-</h4>
-<p></p>
-Read
-<a href='/author/geniousbar/'>more posts</a>
-by this author.
-</section>
-<section class='share'>
-<h4>Share this post</h4>
-<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Ruby 面向对象语言描述&amp;amp;url=https://geniousbar.github.io/2016/03/12/ruby-red-book/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-<span class='hidden'>Twitter</span>
-</a>
-<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=https://geniousbar.github.io/2016/03/12/ruby-red-book/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-<span class='hidden'>Facebook</span>
-</a>
-<a class='icon-google-plus' href='https://plus.google.com/share?url=https://geniousbar.github.io/2016/03/12/ruby-red-book/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-<span class='hidden'>Google+</span>
-</a>
-</section>
-</footer>
-</article>
-</main>
-<aside class='read-next'>
-<a class='no-cover read-next-story' href='/2016/01/10/how-to-became-a-mind-person/'>
-<section class='post'>
-<h2>如何变得有思想</h2>
-<p>如何变得有思想 观点 如何变得有思想 事实 + 前提 + 逻辑 = 观点（这其中经常包含一些隐藏的我们不宜察觉的前提、假设， 以及因为个人观点出发而带有个人色彩的事实） 人生有900 个月 作者提倡自己做一个30X30 的表格，并要求每个月划掉一个方格， 以此来证明时间的短暂。我曾经亲自尝试过，结果感觉效果不太理想，原因有2, 1： 900 实在是太多&hellip;</p>
-</section>
-</a>
-<a class='no-cover prev read-next-story' href='/2016/07/01/ruby-dsl/'>
-<section class='post'>
-<h2>Ruby Dsl</h2>
-<p>ruby中的dsl大部分都是利用方法调用，eval代码。 来执行代码, 可以参考rails， 大量的dsl Whenever 代码 DSL bin Whenever::CommandLine.execute(options) -- self.new() &amp;&amp; run -- whenever_cron -- Whenever.corn -- **&hellip;</p>
-</section>
-</a>
-</aside>
-
-<footer class='site-footer clearfix'>
-<section class='copyright'>
-<a href='/'>知识总结</a>
-&copy;
-2017
-</section>
-<section class='poweredby'></section>
-</footer>
-</div>
-<script src="/javascripts/application.js"></script>
-</body>
-</html>
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

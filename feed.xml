@@ -1,135 +1,1086 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>知识总结</title>
-  <subtitle>日常知识总结</subtitle>
-  <id>https://geniousbar.github.io</id>
-  <link href="https://geniousbar.github.io"/>
-  <link href="https://geniousbar.github.io/feed.xml" rel="self"/>
+  <title>日常学习</title>
+  <id>http://geniousbar.github.io</id>
+  <link href="http://geniousbar.github.io"/>
+  <link href="http://geniousbar.github.io/feed.xml" rel="self"/>
   <updated>2017-04-25T08:00:00+08:00</updated>
   <author>
     <name>geniousbar</name>
   </author>
   <entry>
     <title>Rails ActiveModel</title>
-    <link rel="alternate" href="https://geniousbar.github.io/2017/04/25/rails-activemodel/"/>
-    <id>https://geniousbar.github.io/2017/04/25/rails-activemodel/</id>
+    <link rel="alternate" href="http://geniousbar.github.io/2017/04/25/rails-activemodel/"/>
+    <id>http://geniousbar.github.io/2017/04/25/rails-activemodel/</id>
     <published>2017-04-25T08:00:00+08:00</published>
-    <updated>2017-04-25T18:32:37+08:00</updated>
-    <author>
-      <name>geniousbar</name>
-    </author>
-    <summary type="html">rails activemodel
-    module ActiveModel
-      extend ActiveSupport::Autoload
+    <updated>2017-04-26T16:20:42+08:00</updated>
+    <summary type="html">&lt;h5 id="rails-activemodel"&gt;rails activemodel&lt;/h5&gt;
 
-      autoload :AttributeAssignment
-      autoload :AttributeMethods
-      autoload :BlockValidator, 'active_model/validator'
-      autoload :Callbacks
-      autoload :Conversion</summary>
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;    &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ActiveModel&lt;/span&gt;
+      &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Autoload&lt;/span&gt;
+
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:AttributeAssignment&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:AttributeMethods&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:BlockValidator&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'active_model/validator'&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Callbacks&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;</summary>
+    <content type="html">&lt;h5 id="rails-activemodel"&gt;rails activemodel&lt;/h5&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;    &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ActiveModel&lt;/span&gt;
+      &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Autoload&lt;/span&gt;
+
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:AttributeAssignment&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:AttributeMethods&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:BlockValidator&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'active_model/validator'&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Callbacks&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Conversion&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Dirty&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:EachValidator&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'active_model/validator'&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:ForbiddenAttributesProtection&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Lint&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Model&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'active_model/naming'&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Naming&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:SecurePassword&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Serialization&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:TestCase&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Translation&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Validations&lt;/span&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Validator&lt;/span&gt;
+
+      &lt;span class="n"&gt;eager_autoload&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+        &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Errors&lt;/span&gt;
+        &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:RangeError&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'active_model/errors'&lt;/span&gt;
+        &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:StrictValidationFailed&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'active_model/errors'&lt;/span&gt;
+        &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:UnknownAttributeError&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'active_model/errors'&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id="attribute_assignment"&gt;attribute_assignment&lt;/h5&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;让任何的ruby对象接受hash赋值，实现是动态的分发, 2. 防止 = ActionController::Parameters 没有调用permit函数&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;assign_attributes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;new_attributes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;new_attributes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;respond_to?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:stringify_keys&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="no"&gt;ArgumentError&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"When assigning attributes, you must pass a hash as an argument."&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+      &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;new_attributes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;nil?&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;new_attributes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;empty?&lt;/span&gt;
+
+      &lt;span class="n"&gt;attributes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;new_attributes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;stringify_keys&lt;/span&gt;
+      &lt;span class="n"&gt;_assign_attributes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sanitize_for_mass_assignment&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;attributes&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="kp"&gt;private&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;_assign_attributes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;attributes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="n"&gt;attributes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+        &lt;span class="n"&gt;_assign_attribute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;_assign_attribute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;respond_to?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;="&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;public_send&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;="&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;else&lt;/span&gt;
+        &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="no"&gt;UnknownAttributeError&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id="attribute_methods"&gt;attribute_methods&lt;/h5&gt;
+&lt;ol&gt;
+  &lt;li&gt;源码&lt;br /&gt;
+    &amp;gt; 目的 在方法中添加前缀后缀等(好像没啥用)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;```ruby
+module AttributeMethods
+  extend ActiveSupport::Concern
+
+  NAME_COMPILABLE_REGEXP = /\A[a-zA-Z_]\w*[!?=]?\z/
+  CALL_COMPILABLE_REGEXP = /\A[a-zA-Z_]\w*[!?]?\z/
+
+  included do
+    class_attribute :attribute_aliases, :attribute_method_matchers, instance_writer: false
+    self.attribute_aliases = {}
+    self.attribute_method_matchers = [ClassMethods::AttributeMethodMatcher.new]
+  end
+
+  module ClassMethods
+
+    def attribute_method_suffix(*suffixes)
+      self.attribute_method_matchers += suffixes.map! { |suffix| AttributeMethodMatcher.new suffix: suffix }
+    end
+
+    def generated_attribute_methods #:nodoc:
+      @generated_attribute_methods ||= Module.new {
+        extend Mutex_m
+      }.tap { |mod| include mod }
+    end
+
+    def define_attribute_method(attr_name)
+      attribute_method_matchers.each do |matcher|
+        method_name = matcher.method_name(attr_name)
+
+        unless instance_method_already_implemented?(method_name)
+          define_proxy_call true, generated_attribute_methods, method_name, matcher.method_missing_target, attr_name.to_s
+        end
+      end
+    end
+
+    def define_proxy_call(include_private, mod, name, send, *extra) #:nodoc:
+      defn = if name =~ NAME_COMPILABLE_REGEXP
+        "def #{name}(*args)"
+      else
+        "define_method(:'#{name}') do |*args|"
+      end
+
+      extra = (extra.map!(&amp;amp;:inspect) &amp;lt;&amp;lt; "*args").join(", ".freeze)
+
+      target = if send =~ CALL_COMPILABLE_REGEXP
+        "#{"self." unless include_private}#{send}(#{extra})"
+      else
+        "send(:'#{send}', #{extra})"
+      end
+
+      mod.module_eval &amp;lt;&amp;lt;-RUBY, __FILE__, __LINE__ + 1
+        #{defn}
+          #{target}
+        end
+      RUBY
+    end
+
+    class AttributeMethodMatcher #:nodoc:
+      attr_reader :prefix, :suffix, :method_missing_target
+
+      AttributeMethodMatch = Struct.new(:target, :attr_name, :method_name)
+
+      def initialize(options = {})
+        @prefix, @suffix = options.fetch(:prefix, ''), options.fetch(:suffix, '')
+        @regex = /^(?:#{Regexp.escape(@prefix)})(.*)(?:#{Regexp.escape(@suffix)})$/
+        @method_missing_target = "#{@prefix}attribute#{@suffix}"
+        @method_name = "#{prefix}%s#{suffix}"
+      end
+
+      def match(method_name)
+        if @regex =~ method_name
+          AttributeMethodMatch.new(method_missing_target, $1, method_name)
+        end
+      end
+
+      def method_name(attr_name)
+        @method_name % attr_name
+      end
+
+      def plain?
+        prefix.empty? &amp;amp;&amp;amp; suffix.empty?
+      end
+    end
+
+  end
+```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol&gt;
+  &lt;li&gt;调用栈为:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;```
+ attribute_method_affix  prefix: 'reset_'
+ define_attribute_methods :name
+
+ |- attribute_method_affix 的调用产生 一个 AttributeMethodMatcher的数组，维系着 添加前缀后缀的标记
+ |- define_attribute_methods
+  |- attribute_method_matchers.each |matcher|
+    |- define_proxy_call true, generated_attribute_methods, method_name, matcher.method_missing_target, attr_name.to_s
+
+  define_attribute_methods 作用的symbol， 将前缀后缀的标记应用在参数上， 主动定义 prefix_name_sufix 的方法，并将方法的调用分发到 prefix_attribute_sufix函数中.
+```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol&gt;
+  &lt;li&gt;值的注意的地方&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;```ruby
+  # @method_name = "prefix_%s", method_name(name) =&amp;gt; prefix_name
+  def method_name(attr_name)
+    @method_name % attr_name
+  end
+
+  # Module.new 产生新的module 并在当前类中include， 之后 define_proxy_call等都是在这个 module 中进行操作， 包括去除方法等， 保证了，不影响类中的其他代码
+  def generated_attribute_methods #:nodoc:
+    @generated_attribute_methods ||= Module.new {
+      extend Mutex_m
+    }.tap { |mod| include mod }
+  end
+```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id="callback"&gt;callback&lt;/h5&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;    &lt;span class="c1"&gt;#activesupport&lt;/span&gt;
+    &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Record&lt;/span&gt;
+      &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Callbacks&lt;/span&gt;
+      &lt;span class="n"&gt;define_callbacks&lt;/span&gt; &lt;span class="ss"&gt;:save&lt;/span&gt;
+      &lt;span class="n"&gt;set_callback&lt;/span&gt; &lt;span class="ss"&gt;:save&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:before&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:saving_message&lt;/span&gt;
+
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;saving_message&lt;/span&gt;
+        &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;"saving..."&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="n"&gt;set_callback&lt;/span&gt; &lt;span class="ss"&gt;:save&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:after&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+        &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;"saved"&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;save&lt;/span&gt;
+        &lt;span class="n"&gt;run_callbacks&lt;/span&gt; &lt;span class="ss"&gt;:save&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+          &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;"- save"&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="n"&gt;person&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;PersonRecord&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;
+    &lt;span class="n"&gt;person&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;save&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;    # /activesupport/callbacks
+    |- define_callbacks(names)
+      |- class_attribute "_#{name}_callbacks", instance_writer: false
+      |- set_callbacks name, CallbackChain.new(name, options)
+    |- set_callback :save, :before, :saving_message
+      |- callback_chain = get_callbacks(name)
+      |- Callback.build(callback_chain, filter, type, options)
+      |- set_callbacks name, callback_chain
+    |- run_callbacks :save  
+      |- __run_callbacks__(callbacks, &amp;amp;block)
+        |- runner = callbacks.compile
+          |- CallbackChain#compile
+            |- final_sequence = CallbackSequence.new { |env| Filters::ENDING.call(env) }
+            |- @chain.reverse.inject(final_sequence) do |callback_sequence, callback|
+            |-  callback.apply callback_sequence
+            |- end
+        |- runner.call(Filters::Environment.new(self, false, nil block)).value
+        |- e = Filters::Environment.new(self, false, nil, block)
+        |- runner.call(e).value
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;define_callbacks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;extract_options!&lt;/span&gt;
+
+      &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+        &lt;span class="n"&gt;class_attribute&lt;/span&gt; &lt;span class="s2"&gt;"_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;_callbacks"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;instance_writer: &lt;/span&gt;&lt;span class="kp"&gt;false&lt;/span&gt;
+        &lt;span class="n"&gt;set_callbacks&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;CallbackChain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+        &lt;span class="nb"&gt;module_eval&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;-&lt;/span&gt;&lt;span class="no"&gt;RUBY&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;__FILE__&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;__LINE__&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="sh"&gt;
+          def _run_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="sh"&gt;_callbacks(&amp;amp;block)
+            __run_callbacks__(_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="sh"&gt;_callbacks, &amp;amp;block)
+          end
+&lt;/span&gt;&lt;span class="no"&gt;        RUBY&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;set_callback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;filter_list&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filters&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;normalize_callback_params&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filter_list&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="n"&gt;self_chain&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_callbacks&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;
+      &lt;span class="n"&gt;mapped&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;filters&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;map&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+        &lt;span class="no"&gt;Callback&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self_chain&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="n"&gt;__update_callbacks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+        &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:prepend&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;?&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;prepend&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;mapped&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;mapped&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;set_callbacks&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__run_callbacks__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callbacks&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;callbacks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;empty?&lt;/span&gt;
+        &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;block_given?&lt;/span&gt;
+      &lt;span class="k"&gt;else&lt;/span&gt;
+        &lt;span class="n"&gt;runner&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;callbacks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;compile&lt;/span&gt;
+        &lt;span class="n"&gt;e&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Environment&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;nil&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;runner&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;value&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Callback&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:#&lt;/span&gt;
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="kp"&gt;new&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;config&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="kp"&gt;attr_accessor&lt;/span&gt; &lt;span class="ss"&gt;:kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:name&lt;/span&gt;
+      &lt;span class="kp"&gt;attr_reader&lt;/span&gt; &lt;span class="ss"&gt;:chain_config&lt;/span&gt;
+
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="vi"&gt;@chain_config&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;
+        &lt;span class="vi"&gt;@name&lt;/span&gt;    &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;
+        &lt;span class="vi"&gt;@kind&lt;/span&gt;    &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;
+        &lt;span class="vi"&gt;@filter&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;
+        &lt;span class="vi"&gt;@key&lt;/span&gt;     &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;compute_identifier&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;
+        &lt;span class="vi"&gt;@if&lt;/span&gt;      &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:if&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+        &lt;span class="vi"&gt;@unless&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:unless&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;compile&lt;/span&gt;
+        &lt;span class="vi"&gt;@callbacks&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="vi"&gt;@mutex&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;synchronize&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+          &lt;span class="n"&gt;final_sequence&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CallbackSequence&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;ENDING&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+          &lt;span class="vi"&gt;@callbacks&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="vi"&gt;@chain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;reverse&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;inject&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;final_sequence&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+            &lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;apply&lt;/span&gt; &lt;span class="n"&gt;callback_sequence&lt;/span&gt;
+          &lt;span class="k"&gt;end&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;user_conditions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;conditions_lambdas&lt;/span&gt;
+        &lt;span class="n"&gt;user_callback&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;make_lambda&lt;/span&gt; &lt;span class="vi"&gt;@filter&lt;/span&gt;
+
+        &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;
+        &lt;span class="k"&gt;when&lt;/span&gt; &lt;span class="ss"&gt;:before&lt;/span&gt;
+          &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Before&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="vi"&gt;@filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;when&lt;/span&gt; &lt;span class="ss"&gt;:after&lt;/span&gt;
+          &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;After&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;when&lt;/span&gt; &lt;span class="ss"&gt;:around&lt;/span&gt;
+          &lt;span class="no"&gt;Filters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Around&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CallbackSequence&lt;/span&gt;
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;call&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="vi"&gt;@call&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;call&lt;/span&gt;
+        &lt;span class="vi"&gt;@before&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+        &lt;span class="vi"&gt;@after&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;before&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;before&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="vi"&gt;@before&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;unshift&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;before&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="nb"&gt;self&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;after&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;after&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="vi"&gt;@after&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;push&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;after&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="nb"&gt;self&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;around&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;around&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="no"&gt;CallbackSequence&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+          &lt;span class="n"&gt;around&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+          &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="vi"&gt;@before&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="vi"&gt;@call&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="vi"&gt;@after&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="n"&gt;value&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Before&lt;/span&gt;
+        &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+          &lt;span class="n"&gt;halted_lambda&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;chain_config&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:terminator&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+          &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;any?&lt;/span&gt;
+            &lt;span class="n"&gt;halting_and_conditional&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+          &lt;span class="k"&gt;else&lt;/span&gt;
+            &lt;span class="n"&gt;halting&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+          &lt;span class="k"&gt;end&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+
+        &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halting_and_conditional&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+          &lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;before&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+            &lt;span class="n"&gt;target&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;target&lt;/span&gt;
+            &lt;span class="n"&gt;value&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;value&lt;/span&gt;
+            &lt;span class="n"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt;
+
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;user_conditions&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;all?&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+              &lt;span class="n"&gt;result_lambda&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt; &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+              &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;result_lambda&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+              &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt;
+                &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;send&lt;/span&gt; &lt;span class="ss"&gt;:halted_callback_hook&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;
+              &lt;span class="k"&gt;end&lt;/span&gt;
+            &lt;span class="k"&gt;end&lt;/span&gt;
+
+            &lt;span class="n"&gt;env&lt;/span&gt;
+          &lt;span class="k"&gt;end&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+        &lt;span class="nb"&gt;private_class_method&lt;/span&gt; &lt;span class="ss"&gt;:halting_and_conditional&lt;/span&gt;
+
+        &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halting&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+          &lt;span class="n"&gt;callback_sequence&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;before&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+            &lt;span class="n"&gt;target&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;target&lt;/span&gt;
+            &lt;span class="n"&gt;value&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;value&lt;/span&gt;
+            &lt;span class="n"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt;
+
+            &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="n"&gt;halted&lt;/span&gt;
+              &lt;span class="n"&gt;result_lambda&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;user_callback&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt; &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+              &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;halted_lambda&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;result_lambda&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+              &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;halted&lt;/span&gt;
+                &lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;send&lt;/span&gt; &lt;span class="ss"&gt;:halted_callback_hook&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;
+              &lt;span class="k"&gt;end&lt;/span&gt;
+            &lt;span class="k"&gt;end&lt;/span&gt;
+
+            &lt;span class="n"&gt;env&lt;/span&gt;
+          &lt;span class="k"&gt;end&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+        &lt;span class="nb"&gt;private_class_method&lt;/span&gt; &lt;span class="ss"&gt;:halting&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+  &lt;li&gt;大概的调用 调用顺序为, define_callbacks :save 定义callback的名字，初始化CallbackChain, set_callback :save, :before, :save_messsage, 在CallbackChain中添加Callback 的实例, 在最后run_callback 的时候最为重要， 将前面两步做的操作都进行了兑现， 1. 调用CallBackChain#compile, compile 有意思的是初始化了一个CallbackSequence实例， 并对Callback数组进行inject Callback.apply 中最为重要， CallBack.apply 中将 Filters::Before, Filters::After中的其他通用部分， 执行条件(set_callback :save, :before, :do_something if: :xxx?), hook函数(do_something) 进行了lambda化，(条件为conditions_lambdas函数， hook为make_lambda), 并根据 kind(:before, :after, :around)进行了分发， 下降到Filters::Before 中， 则在 hook 的lambda的基础上进行了， 完善，完成了各自 Before, After 等的具体操作，这是最底层的具体到执行逻辑的部分。2. 执行， 上面的lambda化结果， 提供了一个Environment的环境， 包含:halt, :value, :target 等信息，&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;good-part&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;table&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;
+            &lt;td&gt;代码中使用了，大量的lambda化最为震撼（其中包括 条件执行，hook函数）， 将符号配置， 执行条件配置都lambda化， 变成了一个可以随时执行的代码(compile 的含义很符合)， 存储在一个数组中，hook的执行 变成了执行数组的 each {&lt;/td&gt;
+            &lt;td&gt;item&lt;/td&gt;
+            &lt;td&gt;item.call}, 其中个个callback如何确定环境（比如是否执行，是否已经callback中断了）通过Environment 对象传递&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;1. 问题为什么需要CallbackChain 到CallbackSequence的转换呢？
+  1. CallbackChain中主要针对Callback的实例数组操作， delete, append, prepend, clear, compile 等, CallbackSequence 也是类似的，存储lambda之后的可执行数组
+&lt;/code&gt;&lt;/pre&gt;</content>
   </entry>
   <entry>
     <title>docker 入门</title>
-    <link rel="alternate" href="https://geniousbar.github.io/2017/04/25/docker-abc/"/>
-    <id>https://geniousbar.github.io/2017/04/25/docker-abc/</id>
+    <link rel="alternate" href="http://geniousbar.github.io/2017/04/25/docker-abc/"/>
+    <id>http://geniousbar.github.io/2017/04/25/docker-abc/</id>
     <published>2017-04-25T08:00:00+08:00</published>
-    <updated>2017-04-25T11:39:14+08:00</updated>
-    <author>
-      <name>geniousbar</name>
-    </author>
-    <summary type="html">docker
+    <updated>2017-04-26T16:20:04+08:00</updated>
+    <summary type="html">&lt;h4 id="docker"&gt;docker&lt;/h4&gt;
 
-概念
+&lt;h4 id="概念"&gt;概念&lt;/h4&gt;
+&lt;p&gt;image(景象), container(容器),volume（数据卷）&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;    镜像(Image)和容器(Container)的关系,就像是面向对象程序设计中 的 类 和 实例 一样,镜像是静态的定义,容器是镜像运行时的实体。容器可以被 创建、启动、停止、删除、暂停等。
+    容器的实质是进程,但与直接在宿主执行的进程不同,容器进程运行于属于自己的 独立的 命名空间。因此容器可以拥有自己的 root 文件系统、自己的网络配置、 自己的进程空间,甚至自己的用户 ID...&lt;/code&gt;&lt;/pre&gt;</summary>
+    <content type="html">&lt;h4 id="docker"&gt;docker&lt;/h4&gt;
 
-image(景象), container(容器),volume（数据卷）
-  
-    镜像(Image)和容器(Container)的关系,就像是面向对象程序设计中 的 类 和 实例 一样,镜像是静态的定义,容器是镜像运行时的实体。容器可以被 创建、启动、停止、删除、暂停等。
-    容器的实质是进程,但与直接在宿主执行的进程不同,容器进程运行于属于自己的 独立的 命名空间。因此容器可以拥有自己的 root 文件系统、自己的网络配置、 自己的进程空间,甚至自己的用户 ID</summary>
+&lt;h4 id="概念"&gt;概念&lt;/h4&gt;
+&lt;p&gt;image(景象), container(容器),volume（数据卷）&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;    镜像(Image)和容器(Container)的关系,就像是面向对象程序设计中 的 类 和 实例 一样,镜像是静态的定义,容器是镜像运行时的实体。容器可以被 创建、启动、停止、删除、暂停等。
+    容器的实质是进程,但与直接在宿主执行的进程不同,容器进程运行于属于自己的 独立的 命名空间。因此容器可以拥有自己的 root 文件系统、自己的网络配置、 自己的进程空间,甚至自己的用户 ID 空间
+    每一个容器运行时,是以镜像为 基础层,在其上创建一个当前容器的存储层,我们可以称这个为容器运行时读写而 准备的存储层为容器存储层。
+    容器不应该向其存储层内写入任何数据,容器存储 层要保持无状态化。所有的文件写入操作,都应该使用 数据卷(Volume)、或者 绑定宿主目录,在这些位置的读写会跳过容器存储层,直接对宿主(或网络存储)发 生读写,其性能和稳定性更高。
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+  &lt;p&gt;容器是景象的基础， 容器的启动运行按照 存储曾 的概念运行， 但是在容器消亡时候，数据也随之消失， 数据卷随之而出，&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id="一些常用命令"&gt;一些常用命令&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;docker pull nginx:latest&lt;/li&gt;
+  &lt;li&gt;docker run -d -p 80:80 –name webserver nginx, docker stop webserver, docker rm webserver&lt;/li&gt;
+  &lt;li&gt;docker run -it(一个是 -i :交互式操作,一个是 -t 终端) –rm(这个参数是说容器退出后随之将其删除)&lt;/li&gt;
+  &lt;li&gt;docker images&lt;/li&gt;
+  &lt;li&gt;docker commit [选项] &lt;容器ID或容器名&gt; [&lt;仓库名&gt;[:&lt;标签&gt;]] # 提交产生新的景象
+&lt;/标签&gt;&lt;/仓库名&gt;&lt;/容器ID或容器名&gt;    &lt;h4 id="使用-dockerfile-定制镜像"&gt;使用 Dockerfile 定制镜像&lt;/h4&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用 Dockerfile 定制镜像&lt;br /&gt;
+    ```&lt;br /&gt;
+ mkdir mynginx&lt;br /&gt;
+ cd mynginx&lt;br /&gt;
+ touch Dockerfile&lt;/p&gt;
+
+    &lt;p&gt;FROM nginx&lt;br /&gt;
+ RUN echo ‘&amp;lt;h1&amp;gt;Hello, Docker!&amp;lt;/h1&amp;gt;’ &amp;gt; /usr/share/nginx/html/index.html&lt;br /&gt;
+    ```&lt;br /&gt;
+    2. 编写Dockerfile的常用命令&lt;br /&gt;
+    &amp;gt; Dockerfile 中每一个指令都会建立一层, RUN 也不例外。每一个 RUN 的行为,就和刚才我们手工建立镜像的过程一样:新建立一层,在其上执行 这些命令,执行结束后, commit 这一层的修改,构成新的镜像。&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;run
+        &lt;blockquote&gt;
+          &lt;p&gt;RUN echo ‘&amp;lt;h1&amp;gt;Hello, Docker!&amp;lt;/h1&amp;gt;’ &amp;gt; /usr/share/nginx/html/index.html&lt;/p&gt;
+        &lt;/blockquote&gt;
+      &lt;/li&gt;
+      &lt;li&gt;copy, copy package.json /usr/src/app/, 注意执行的context， copy 的源文件只能是相对路径，并且是在context下的才行， 超出context docker并不知道是否存在&lt;/li&gt;
+      &lt;li&gt;cmd命令， 容器启动时候的默认命令， 可以在run 之后加参数取代掉， 文件中存在多个cmd， 使用最后的cmd&lt;/li&gt;
+      &lt;li&gt;ENTRYPOINT 可以配合cmd，让cmd接受参数，&lt;/li&gt;
+      &lt;li&gt;ENV 设置环境变量
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;ENV VERSION=1.0 DEBUG=on \
+    NAME="Happy Feet"
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+      &lt;li&gt;ARG 构建参数,  ARG 所设置的 构建环境的环境变量,在将来容器运行时是不会存在这些环境变量的&lt;/li&gt;
+      &lt;li&gt;VOLUME 定义匿名卷, VOLUME /data&lt;/li&gt;
+      &lt;li&gt;WORKDIR 指定工作目录,
+        &lt;blockquote&gt;
+          &lt;p&gt;使用 WORKDIR 指令可以来指定工作目录(或者称为当前目录),以后各层的当前 目录就被改为指定的目录,如该目录不存在, WORKDIR 会帮你建立目录。&lt;br /&gt;
+错误示例：&lt;br /&gt;
+RUN cd /app&lt;br /&gt;
+RUN echo “hello” &amp;gt; world.txt&lt;br /&gt;
+Dockerfile 中,这两行 RUN 命令的执行环境根本不同,是两个完全不同的容器。 这就是对 Dokerfile 构建分层存储的概念不了解所导致的错误。&lt;br /&gt;
+之前说过每一个 都是启动一个容器、执行命令、然后提交存储层文件变更。 第一层 的执行仅仅是当前进程的工作目录变更,一个内存上的变 化而已,其结果不会造成任何文件变更。而到第二层的时候,启动的是一个全新的 容器,跟第一层的容器更完全没关系,自然不可能继承前一层构建过程中的内存变 化。&lt;br /&gt;
+因此如果需要改变以后各层的工作目录的位置,那么应该使用 WORKDIR 指令。&lt;/p&gt;
+        &lt;/blockquote&gt;
+      &lt;/li&gt;
+      &lt;li&gt;USER 指定当前用户&lt;/li&gt;
+      &lt;li&gt;ONBUILD 为他人做嫁衣裳
+        &lt;blockquote&gt;
+          &lt;p&gt;只有当以当前镜像为基础镜像,去 构建下一级镜像的时候才会被执行。&lt;br /&gt;
+   Dockerfile 中的其它指令都是为了定制当前镜像而准备的,唯有 ONBUILD 是 为了帮助别人定制自己而准备的。&lt;/p&gt;
+        &lt;/blockquote&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;3. docker build -t nginx:v3 .
+  &amp;gt; 镜像构建上下文(Context)， 中的概念比较重要，一般情况下就是指的执行目录. docker会降目录夏的所有文件上传，可以使用类似.gitignore中的.dockerignore来忽略context中不需要的文件
+
+4. 容器的重要概念理解
+  &amp;gt; 对于容器而言,其启动程序就是容器应用进程,容器就是为了主进程而存在的,主 进程退出,容器就失去了存在的意义,从而退出,其它辅助进程不是它需要关心的东西
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id="操作-docker-容器"&gt;操作 Docker 容器&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;概念&lt;br /&gt;
+    &amp;gt; 容器是独立运行的一个或一组应用,以及它们的运行态环境。, 容器可以是一组应用吗?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;启动&lt;br /&gt;
+    docker start
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt; 当利用 docker run 来创建容器时,Docker 在后台运行的标准操作包括: 检查本地是否存在指定的镜像,不存在就从公有仓库下载
+    ￼￼101
+    启动
+    ￼利用镜像创建并启动一个容器 分配一个文件系统,并在只读的镜像层外面挂载一层可读写层 从宿主主机配置的网桥接口中桥接一个虚拟接口到容器中去 从地址池配置一个 ip 地址给容器
+    执行用户指定的应用程序
+    执行完毕后容器被终止
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+  &lt;li&gt;docker stop&lt;/li&gt;
+  &lt;li&gt;后台运行(background)&lt;br /&gt;
+    &amp;gt; 更多的时候,需要让 Docker在后台运行而不是直接把执行命令的结果输出在当前&lt;br /&gt;
+宿主机下。此时,可以通过添加 -d 参数来实现。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;&amp;gt; 容器是否会长久运行,是和docker run指定的命令有关,和 -d 参数无关。
+
+```
+将当前的日志输出到 屏幕上
+sudo docker run ubuntu:14.04 /bin/sh -c "while true; do echo h
+  ello world; sleep 1; done"
+  hello world
+  hello world
+  hello world
+  hello world
+
+  sudo docker run -d ubuntu:14.04 /bin/sh -c "while true; do ech
+  o hello world; sleep 1; done"
+
+  sudo docker logs [container ID or NAMES]
+  hello world
+  hello world
+  hello world
+```
+
+5. 进入容器
+  ```
+  attach 命令
+    docker attach 是Docker自带的命令。下面示例如何使用该命令。
+    $ sudo docker run -idt ubuntu
+    243c32535da7d142fb0e6df616a3c3ada0b8ab417937c853a9e1c251f499f550
+    $ sudo docker ps
+    CONTAINER ID
+    TED
+    243c32535da7
+    econds ago
+    c_hypatia
+    $sudo docker attach nostalgic_hypatia
+    root@243c32535da7:/#
+  ```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id="docker-数据管理数据卷-数据卷容器-data-volumes-data-volume-containers"&gt;docker 数据管理(数据卷， 数据卷容器, Data volumes, Data volume containers)&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;数据卷特征：&lt;br /&gt;
+    1. 数据卷可以在容器之间共享和重用&lt;br /&gt;
+    2. 对数据卷的修改会即时生效&lt;br /&gt;
+    3. 对数据卷的更新不会影响镜像&lt;br /&gt;
+    4. 数据卷一直存在即便容器被删除&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;&amp;gt; *注意:数据卷的使用,类似于 Linux 下对目录或文件进行 mount,镜像中的被指定 为挂载点的目录中的文件会隐藏掉,能显示看的是挂载的数据卷。*
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;创建数据卷，  docker run -v 标记创建一个数据卷并挂在到容器中， 可以挂在多个数据卷&lt;br /&gt;
+    &amp;gt; sudo docker run -d -P –name web -v /webapp training/webapp py thon app.py&lt;br /&gt;
+    也可以在Dockerfile中使用VOLUME添加数据卷到容器&lt;br /&gt;
+   sudo docker run -d -P –name web -v /src/webapp:/opt/webapp tr aining/webapp python app.py&lt;br /&gt;
+   使用命令挂载主机的 /src/webapp/ 到容器的/opt/webapp 中， 本地目录必须是绝对路径， Dockerfile中不能使用绝对路径， 因为分线出去不同操作系统不一样， 不支持&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;查看数据卷的具体信息&lt;br /&gt;
+    docker inspect web 从中找到数据卷相关的部分&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</content>
   </entry>
   <entry>
     <title>Rails ActivRecord源码（未完成）</title>
-    <link rel="alternate" href="https://geniousbar.github.io/2017/04/20/rails-activerecord/"/>
-    <id>https://geniousbar.github.io/2017/04/20/rails-activerecord/</id>
+    <link rel="alternate" href="http://geniousbar.github.io/2017/04/20/rails-activerecord/"/>
+    <id>http://geniousbar.github.io/2017/04/20/rails-activerecord/</id>
     <published>2017-04-20T08:00:00+08:00</published>
-    <updated>2017-04-25T11:26:26+08:00</updated>
-    <author>
-      <name>geniousbar</name>
-    </author>
-    <summary type="html">rails activerecord 源码
+    <updated>2017-04-26T16:20:00+08:00</updated>
+    <summary type="html">&lt;h4 id="rails-activerecord-源码"&gt;rails activerecord 源码&lt;/h4&gt;
 
-数据库的连接调用过程
+&lt;h6 id="数据库的连接调用过程"&gt;数据库的连接调用过程&lt;/h6&gt;
 
+&lt;ol&gt;
+  &lt;li&gt;activercord base中的代码&lt;/li&gt;
+&lt;/ol&gt;
 
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;``` ruby
+  # activerecord/lib/active_record/railtie.rb
+    ActiveSupport.on_load(:active_record) do
+      self.configurations = Rails.application.config.database_configuration
 
-activercord base中的代码
+      begin...&lt;/code&gt;&lt;/pre&gt;</summary>
+    <content type="html">&lt;h4 id="rails-activerecord-源码"&gt;rails activerecord 源码&lt;/h4&gt;
+
+&lt;h6 id="数据库的连接调用过程"&gt;数据库的连接调用过程&lt;/h6&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;activercord base中的代码&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;``` ruby
   # activerecord/lib/active_record/railtie.rb
     ActiveSupport.on_load(:active_record) do
       self.configurations = Rails.application.config.database_configuration
 
       begin
         establish_connection
+      end
+    end
 
-</summary>
+  # activerecord/lib/base.rb
+  class Base
+    extend ConnectionHandling
+    extend Core
+  end
+
+  # activerecord/lib/active_record/core.rb
+  module ActiveRecord
+    module Core
+      extend ActiveSupport::Concern
+      included do
+        def self.configurations=(config)
+          @@configurations = ActiveRecord::ConnectionHandling::MergeAndResolveDefaultUrlConfig.new(config).resolve
+        end
+      end
+    end
+  end
+
+  # activerecord/lib/active_record/connectioin_handing.rb
+  module ActiveRecord
+    module ConnectionHandling
+      def establish_connection
+      end
+
+      class MergeAndResolveDefaultUrlConfig
+        def resolve
+          ConnectionAdapters::ConnectionSpecification::Resolver.new(config).resolve_all
+        end
+      end
+    end
+  end
+
+  # activerecord/lib/active_record/connectioin_adapter/connection_specification.rb
+  module ActiveRecord
+    module ConnectionAdapters
+      class ConnectionSpecification #:nodoc:
+        class Resolver
+          def resolve(config)
+            if config
+              resolve_connection config
+            elsif env = ActiveRecord::ConnectionHandling::RAILS_ENV.call
+              resolve_symbol_connection env.to_sym
+            else
+              raise AdapterNotSpecified
+            end
+          end
+
+          # Expands each key in @configurations hash into fully resolved hash
+          def resolve_all
+            config = configurations.dup
+            config.each do |key, value|
+              config[key] = resolve(value) if value
+            end
+            config
+          end
+        end
+      end
+    end
+  end
+```
+
+调用链从上至下， base 中extend ConnectionHandlere, Core, 在core中通过configration=函数， 将database.yml 中的数据传递给 ConnectionHandling 进行配置的解析，合并等，　降低到Resolver中， 为具体实现的策略、算法。然后再代用establish_connection 调用connnection_handling文件中的 establish_connection 的方法, 通过connection_handler.establish_connection 建立数据库连接。 到此数据库建立连接成功。
+
+&amp;lt;em&amp;gt; 在查看代码的时候需要连续的挑选文件， 查找函数， 而没有统一的累死java中interface中的概念，导致看起来，module之间的连接非常脆弱， 不是显而易见。&amp;lt;/em&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol&gt;
+  &lt;li&gt;active record ConnectionSpecification&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;1. 调用方法
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h6 id="数据库迁移"&gt;数据库迁移&lt;/h6&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;调用链&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;```
+  |- task :migrate
+    |- DatabaseTask.migrate
+      |- Migrator.migrate(migrations_paths, version || nil ) {|migration| scope.blank? ||| scope == migration.scope}
+        |- Migrator.migrate(migrations_paths, target_version, &amp;amp;block)
+          |- Migrator.up | Migrator.down
+            |- new(:up | :down, migrations, target_version).migrate
+              |- migrate_without_lock
+                |- runnable.each {|migration| execute_migration_in_transaction(migration, direction)} # runnable 寻找没有执行的migration
+                  |- execute_migration_in_transaction(migrations)
+                    |- migration.migrate(direction) # migration -&amp;gt; MigrationProxy
+                      |- Migration.instance.migrate(direction)
+                        |- exec_migration(conn, direction)
+                          |- send(:direction) # 因为 AddColumnToVariants &amp;lt; ActiveRecord::Migration
+                            |- add_column :variants, :part_number, :string
+                              |- method_missing
+                                |- connection.send(:add_column, [:variants, :part_number, :string], &amp;amp;block)
+                                  |- ActiveRecord::ConnectionHandling::ConnectionAdapters::SQLite3Adapter
+
+ ```
+
+  ```ruby
+    def add_column(table_name, column_name, type, options = {}) #:nodoc:
+      if valid_alter_table_type?(type)
+        super(table_name, column_name, type, options)
+      else
+        alter_table(table_name) do |definition|
+          definition.column(column_name, type, options)
+        end
+      end
+    end
+
+    def alter_table(table_name, options = {}) #:nodoc:
+      altered_table_name = "a#{table_name}"
+      caller = lambda {|definition| yield definition if block_given?}
+
+      transaction do
+        move_table(table_name, altered_table_name,
+          options.merge(:temporary =&amp;gt; true))
+        move_table(altered_table_name, table_name, &amp;amp;caller)
+      end
+    end
+
+    def move_table(from, to, options = {}, &amp;amp;block) #:nodoc:
+      copy_table(from, to, options, &amp;amp;block)
+      drop_table(from)
+    end
+
+    def copy_table(from, to, options = {}) #:nodoc:
+      from_primary_key = primary_key(from)
+      options[:id] = false
+      create_table(to, options) do |definition|
+        @definition = definition
+        @definition.primary_key(from_primary_key) if from_primary_key.present?
+        columns(from).each do |column|
+          column_name = options[:rename] ?
+            (options[:rename][column.name] ||
+             options[:rename][column.name.to_sym] ||
+             column.name) : column.name
+          next if column_name == from_primary_key
+
+          @definition.column(column_name, column.type,
+            :limit =&amp;gt; column.limit, :default =&amp;gt; column.default,
+            :precision =&amp;gt; column.precision, :scale =&amp;gt; column.scale,
+            :null =&amp;gt; column.null, collation: column.collation)
+        end
+        yield @definition if block_given?
+      end
+      copy_table_indexes(from, to, options[:rename] || {})
+      copy_table_contents(from, to,
+        @definition.columns.map(&amp;amp;:name),
+        options[:rename] || {})
+    end
+
+    #其中的方式处理的比较奇怪，  是copy之后然后 drop, copy现有表 到中间表 然后 删除现有表，最后copy 中间表到 现有表表名， 其中每个步骤都涉及到 copy content, copy index, copy table schema 等, 其中会涉及到性能的问题吗？比如大量的数据插入？？？？？
+  ```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol&gt;
+  &lt;li&gt;总结一下流的顺序&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;rake --&amp;gt; Migrator.migrate -&amp;gt; up/down ---&amp;gt; new(direction, migrations).migrate --&amp;gt; runnable.each {|item| execute_migration_in_transaction(item)} -&amp;gt; migration_proxy.migrate(direction) -&amp;gt; Migration.instance.migrate -&amp;gt; Migration.instance.exec_migration() -&amp;gt; 调用迁移文件的up/down/change ---&amp;gt; 泗洪method_missing hook add_column, remove_column 等发送到connection, connection 为各种数据库adapter
+
+&amp;gt; 借鉴的地方， 1. 使用MigrationProxy代替真是的文件， 比较轻，可以实现一些version，时间戳等比较方法 , 实现将文件系统转换为ruby对象， 接入到系统内部。2. 使用method_missing 来进行委托，将数据库connection中具有的方法实现到 Migration
+&lt;/code&gt;&lt;/pre&gt;</content>
   </entry>
   <entry>
     <title>linux维护</title>
-    <link rel="alternate" href="https://geniousbar.github.io/2017/04/19/linux-maintain/"/>
-    <id>https://geniousbar.github.io/2017/04/19/linux-maintain/</id>
+    <link rel="alternate" href="http://geniousbar.github.io/2017/04/19/linux-maintain/"/>
+    <id>http://geniousbar.github.io/2017/04/19/linux-maintain/</id>
     <published>2017-04-19T08:00:00+08:00</published>
-    <updated>2017-04-25T11:31:56+08:00</updated>
-    <author>
-      <name>geniousbar</name>
-    </author>
-    <summary type="html">二台机器之间同步大文件(拷贝文件到另一台机器)
+    <updated>2017-04-26T16:19:56+08:00</updated>
+    <summary type="html">&lt;h3 id="二台机器之间同步大文件拷贝文件到另一台机器"&gt;二台机器之间同步大文件(拷贝文件到另一台机器)&lt;/h3&gt;
+&lt;p&gt;rsync -rP –rsh=ssh /file/path name@ip:/file/path&lt;/p&gt;
+&lt;h3 id="建立软连接"&gt;建立软连接&lt;/h3&gt;
+&lt;p&gt;ln -s original/file/path soft/file/path&lt;/p&gt;
+&lt;h3 id="linux后台启动服务"&gt;linux后台启动服务&lt;/h3&gt;
+&lt;p&gt;nohup ruby http_server.rb 2&amp;gt;&amp;amp;1 » log.log 2&amp;gt;&amp;amp;1 /dev/null &amp;amp;&lt;br&gt;
+nohup command &amp;amp;&amp;gt; /dev/null &amp;amp;&lt;/p&gt;
+&lt;h3 id="linux根据关键字得到pid号"&gt;linux根据关键字得到pid号&lt;/h3&gt;
+&lt;p&gt;pgrep -f keyword&lt;/p&gt;</summary>
+    <content type="html">&lt;h3 id="二台机器之间同步大文件拷贝文件到另一台机器"&gt;二台机器之间同步大文件(拷贝文件到另一台机器)&lt;/h3&gt;
+&lt;p&gt;rsync -rP –rsh=ssh /file/path name@ip:/file/path&lt;/p&gt;
+&lt;h3 id="建立软连接"&gt;建立软连接&lt;/h3&gt;
+&lt;p&gt;ln -s original/file/path soft/file/path&lt;/p&gt;
+&lt;h3 id="linux后台启动服务"&gt;linux后台启动服务&lt;/h3&gt;
+&lt;p&gt;nohup ruby http_server.rb 2&amp;gt;&amp;amp;1 » log.log 2&amp;gt;&amp;amp;1 /dev/null &amp;amp;&lt;br /&gt;
+nohup command &amp;amp;&amp;gt; /dev/null &amp;amp;&lt;/p&gt;
+&lt;h3 id="linux根据关键字得到pid号"&gt;linux根据关键字得到pid号&lt;/h3&gt;
+&lt;p&gt;pgrep -f keyword&lt;/p&gt;
+&lt;h3 id="linux创建sudo用户"&gt;linux创建sudo用户&lt;/h3&gt;
+&lt;p&gt;adduser username&lt;br /&gt;
+usermod -aG sudo username&lt;/p&gt;
+&lt;h3 id="sudo免密码"&gt;sudo免密码&lt;/h3&gt;
+&lt;p&gt;vi /etc/sudoers&lt;br /&gt;
+root    ALL=(ALL:ALL) ALL&lt;br /&gt;
+deployer ALL=(ALL) NOPASSWD: ALL&lt;br /&gt;
+%admin ALL=(ALL) NOPASSWD: ALL&lt;br /&gt;
+%sudo   ALL=(ALL:ALL) NOPASSWD: ALL&lt;/p&gt;
+&lt;h3 id="virtualbox安装vboxlinuxadditions"&gt;virtualbox安装VboxLinuxAdditions&lt;/h3&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;# prepare
+$ sudo apt-get install -y linux-headers-generic build-essential dkms
+# get the right ISO from http://download.virtualbox.org/virtualbox/
+$ wget http://download.virtualbox.org/virtualbox/5.1.6/VBoxGuestAdditions_5.1.6.iso
+# create a mount folder
+$ sudo mkdir /media/VBoxGuestAdditions
+# mount the ISO
+$ sudo mount -o loop,ro VBoxGuestAdditions_5.1.6.iso /media/VBoxGuestAdditions
+# install the guest additions
+$ sudo sh /media/VBoxGuestAdditions/VBoxLinuxAdditions.run
+# remove the ISO
+$ rm VBoxGuestAdditions_5.1.6.iso
+# unmount the ISO
+$ sudo umount /media/VBoxGuestAdditions
+# remove the mount folder
+$ sudo rmdir /media/VBoxGuestAdditions
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="ubuntu增加虚拟内存"&gt;Ubuntu增加虚拟内存&lt;/h3&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;docker run --name caravel -d -p 8088:8088 amancevice/caravel
+docker exec -it caravel demo
 
-rsync -rP –rsh=ssh /file/path name@ip:/file/path
+设置swappiness的值
+swappiness 可以具有介于 0 和 100 之间的值
+swappiness = 0 告诉内核尽可能长时间避免交换物理内存的过程
+swappiness = 100 告诉内核积极交换物理内存的进程，并将它们交换缓存移动
+cat /proc/sys/vm/swappiness
+sudo sysctl vm.swappiness=66
+sudo vi /etc/sysctl.conf
+文档的尾部追加:
+vm.swappiness=66
 
-建立软连接
+增加虚拟内存
+dd if=/dev/zero of=/swap/swapadd bs=1024 count=2097152  # 2GB
+mkswap /swap/swapadd
+swapon /swap/swapadd
 
-ln -s original/file/path soft/file/path
+change conf file /etc/fstab
+/swap/swapadd none swap sw 0 0
 
-linux后台启动服务
+关闭虚拟内存服务
+swapoff -v /swap/swapadd
 
-nohup ruby http_server.rb 2&amp;gt;&amp;amp;1 &amp;gt;&amp;gt; log.log 2&amp;gt;&amp;amp;1 /dev/null &amp;amp;
-nohup command &amp;amp;&amp;gt; /dev/null &amp;amp;
+如果当前的虚存所在的磁盘空间不够，可以首先关闭虚存服务，将其移动到别的磁盘，再启用即可。
+swapoff -v /swap/swapadd
+mv /swap/swapadd /mnt/swap
+swapon /swap/swapadd
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="supervisor使用"&gt;supervisor使用&lt;/h3&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;sudo pip install supervisor
+conf file: /etc/supervisord.conf
+$ supervisorctl status
+$ supervisorctl stop usercenter
+$ supervisorctl start usercenter
+$ supervisorctl restart usercenter
+$ supervisorctl reread
+$ supervisorctl update
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="linux手动释放内存"&gt;linux手动释放内存&lt;/h3&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;释放前最好sync一下，防止丢数据。
+cache释放：
+To free pagecache:
+echo 1 &amp;gt; /proc/sys/vm/drop_caches
 
-linux根据关键字得到pid号
+To free dentries and inodes:
+echo 2 &amp;gt; /proc/sys/vm/drop_caches
 
-pgrep -f</summary>
+To free pagecache, dentries and inodes:
+echo 3 &amp;gt; /proc/sys/vm/drop_caches
+&lt;/code&gt;&lt;/pre&gt;</content>
   </entry>
   <entry>
     <title>Docker</title>
-    <link rel="alternate" href="https://geniousbar.github.io/2017/02/25/docker/"/>
-    <id>https://geniousbar.github.io/2017/02/25/docker/</id>
+    <link rel="alternate" href="http://geniousbar.github.io/2017/02/25/docker/"/>
+    <id>http://geniousbar.github.io/2017/02/25/docker/</id>
     <published>2017-02-25T08:00:00+08:00</published>
-    <updated>2017-04-13T18:12:29+08:00</updated>
-    <author>
-      <name>geniousbar</name>
-    </author>
-    <summary type="html">安装docker
-阿里云的安装脚本
+    <updated>2017-04-26T16:19:51+08:00</updated>
+    <summary type="html">&lt;h3 id="安装docker"&gt;安装docker&lt;/h3&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;阿里云的安装脚本
 curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh -
 使用脚本自动安装
 Docker 官方为了简化安装流程，提供了一套安装脚本，CentOS 系统上可以使用这套脚本安装：
 curl -sSL https://get.docker.com/ | sh
 
 DaoCloud 的安装脚本
-curl -sSL https://get.daocloud</summary>
+curl -sSL https://get...&lt;/code&gt;&lt;/pre&gt;</summary>
+    <content type="html">&lt;h3 id="安装docker"&gt;安装docker&lt;/h3&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;阿里云的安装脚本
+curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh -
+使用脚本自动安装
+Docker 官方为了简化安装流程，提供了一套安装脚本，CentOS 系统上可以使用这套脚本安装：
+curl -sSL https://get.docker.com/ | sh
+
+DaoCloud 的安装脚本
+curl -sSL https://get.daocloud.io/docker | sh
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="my-docker-on-road-dev"&gt;My Docker On Road Dev&lt;/h3&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;mysql:
+  docker run --name dev_mysql -p 3306:3306 -v /sun/docker_data/mysql:/sun -e MYSQL_ROOT_PASSWORD=sun -d mysql:latest
+redis:
+  docker run -p 6379:6379 -v /sun/docker_data/redis:/sun -v /sun/docker_data/redis/redis.conf:/usr/local/etc/redis/redis.conf --name dev_redis -d redis:latest redis-server /sun/redis.conf
+rails5:
+  docker run -t -i -p 3000:3000 -v /sun/phantom/rails5:/sun/rails5 --name dev_rails5 -d rails:latest /bin/bash
+rails:
+  docker run -t -i -p 3000:3000 -v /sun:/sun --name dev_rails -d rails:latest /bin/bash
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="重新安装docker"&gt;重新安装docker&lt;/h3&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;$ sudo apt-get autoremove --purge docker-engine
+
+# Nothing worked until I added this step
+$ sudo rm -rfv /var/lib/docker
+
+# Reboot here
+
+$ sudo apt-get update
+$ sudo apt-get install docker-engine
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="docker导入和导出"&gt;Docker导入和导出&lt;/h3&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;Export命令用于持久化容器
+docker export &amp;lt;CONTAINER ID&amp;gt; &amp;gt; /home/export.tar
+Save命令用于持久化镜像
+docker save busybox-1 &amp;gt; /home/save.tar
+导入export.tar文件
+cat /home/export.tar | docker import - busybox-1-export:latest
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="docker开发"&gt;Docker开发&lt;/h3&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;mysql:
+  docker run --name mysql -p 3306:3306 -v /sun/docker_data/mysql:/sun -e MYSQL_ROOT_PASSWORD=sun -d mysql:latest
+  docker run -d --name mysql -v /tmp/db:/var/lib/mysql -p 3309:3306 -e MYSQL_ROOT_PASSWORD=sun mysql
+postgres:
+  docker run --name postgres -p 5432:5432 -v /sun/docker_data/postgres:/sun -e POSTGRES_PASSWORD=sun -d postgres:latest
+redis:
+  docker run -p 6379:6379 -v /sun/docker_data/redis:/sun -v /sun/docker_data/redis/redis.conf:/usr/local/etc/redis/redis.conf --name redis -d redis:latest redis-server /sun/redis.conf
+rails5:
+  docker run -t -i -p 3000:3000 -v /sun/phantom/rails5:/sun/rails5 --name rails5 -d rails:latest /bin/bash
+rails:
+  docker run -t -i -p 3000:3000 -v /sun:/sun --name rails -d rails:latest /bin/bash
+golang:
+  docker run -t -i -p 8899:8899 -v /sun/go:/go --name golang -d golang:latest /bin/bash
+gogs:
+  docker run -t -i -p 10022:22 -p 10080:3000 -v /sun/phantom/gogs:/data --name=gogs gogs/gogs
+birt:
+  docker run -t -i --name birt -p 9000:8080 -v /sun/birt:/var/lib/tomcat7/webapps/birt/reports -d lavadiablo/docker-birt-host
+memcached:
+  docker run --name memcached -p 11211:11211 -d memcached:latest
+storm:
+  docker run -t -i -p 6666:6666 -v /sun/phantom/storm:/sun/storm --name storm -d storm:latest /bin/bash
+java:
+  docker run -t -i -p 8888:8888 -v /sun/phantom/storm:/sun/storm --name java -d java:latest /bin/bash
+jruby:
+  docker run -t -i -p 6666:6666 -v /sun/jruby:/sun/jruby --name jruby -d jruby:latest /bin/bash
+caravel:
+  docker run --name caravel -d -p 8088:8088 amancevice/caravel
+  docker exec -it caravel demo
+
+docker export &amp;lt;container id&amp;gt; &amp;gt; /sun/docker_data/docker_image/dev_golang_image_20161127.tar
+&lt;/code&gt;&lt;/pre&gt;</content>
   </entry>
   <entry>
     <title>Postgres</title>
-    <link rel="alternate" href="https://geniousbar.github.io/2017/01/13/postgres/"/>
-    <id>https://geniousbar.github.io/2017/01/13/postgres/</id>
+    <link rel="alternate" href="http://geniousbar.github.io/2017/01/13/postgres/"/>
+    <id>http://geniousbar.github.io/2017/01/13/postgres/</id>
     <published>2017-01-13T08:00:00+08:00</published>
-    <updated>2017-04-13T18:16:28+08:00</updated>
-    <author>
-      <name>geniousbar</name>
-    </author>
-    <summary type="html">pg创建只读用户
-SELECT date_trunc('minute', dd) :: TIMESTAMP
+    <updated>2017-04-26T16:19:48+08:00</updated>
+    <summary type="html">&lt;h3 id="pg创建只读用户"&gt;pg创建只读用户&lt;/h3&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;SELECT date_trunc('minute', dd) :: TIMESTAMP
 FROM generate_series('2016-10-01' :: TIMESTAMP, '2016-12-31' :: TIMESTAMP, '10 minute' :: INTERVAL) dd;
 
 CREATE USER read_from_pg WITH ENCRYPTED PASSWORD '...';
-GRANT CONNECT ON DATABASE test to read_from_pg</summary>
+GRANT CONNECT ON DATABASE test to...&lt;/code&gt;&lt;/pre&gt;</summary>
+    <content type="html">&lt;h3 id="pg创建只读用户"&gt;pg创建只读用户&lt;/h3&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;SELECT date_trunc('minute', dd) :: TIMESTAMP
+FROM generate_series('2016-10-01' :: TIMESTAMP, '2016-12-31' :: TIMESTAMP, '10 minute' :: INTERVAL) dd;
+
+CREATE USER read_from_pg WITH ENCRYPTED PASSWORD '...';
+GRANT CONNECT ON DATABASE test to read_from_pg;
+\c test
+GRANT USAGE ON SCHEMA public to read_from_pg;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO read_from_pg;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO read_from_pg;
+
+select * from empsalary;
+update empsalary set salary=9999 where empno=10;
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="幻腾pg表结构"&gt;幻腾pg表结构&lt;/h3&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;select column_name, data_type, character_maximum_length
+from INFORMATION_SCHEMA.COLUMNS where table_name = 'logs';
+
+INSERT into big_logs (id, time, ip, device_ip, teleport_addr,op_code, params, dir,device_online,teleport_online) (
+  SELECT * from logs where time &amp;gt; '2017-02-17 00:00:00'
+);
+
+create table big_logs (id bigint, time timestamp, ip inet, device_ip integer, teleport_addr integer, op_code varchar(255), params varchar(1024), dir integer, device_online boolean, teleport_online boolean)
+SELECT setval('big_logs_id_seq', 2147483646);
+
+logs	index_logs_on_op_code	op_code
+logs	index_logs_on_teleport_addr	teleport_addr
+logs	index_logs_on_teleport_addr_and_time	teleport_addr
+logs	index_logs_on_teleport_addr_and_time	time
+logs	index_logs_on_time	time
+logs	logs_pkey	id
+
+CREATE INDEX index_big_logs_on_device_ip ON big_logs (device_ip);
+-- CREATE INDEX index_logs_on_teleport_addr ON big_logs (teleport_addr);
+CREATE INDEX index_big_logs_on_time ON big_logs (time);
+CREATE INDEX index_big_logs_on_time_and_device_ip ON big_logs (time, device_ip);
+CREATE INDEX index_big_logs_on_teleport_addr ON big_logs (teleport_addr);
+CREATE INDEX index_big_logs_on_time_and_teleport_addr ON big_logs (time, teleport_addr);
+CREATE INDEX big_logs_pkey ON big_logs (id);
+
+
+select
+ t.relname as table_name,
+ i.relname as index_name,
+ a.attname as column_name
+from
+ pg_class t,
+ pg_class i,
+ pg_index ix,
+ pg_attribute a
+where
+ t.oid = ix.indrelid
+ and i.oid = ix.indexrelid
+ and a.attrelid = t.oid
+ and a.attnum = ANY(ix.indkey)
+ and t.relkind = 'r'
+ and t.relname like '%big_logs%'
+order by
+ t.relname,
+ i.relname;
+&lt;/code&gt;&lt;/pre&gt;</content>
   </entry>
 </feed>

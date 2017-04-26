@@ -1,247 +1,83 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>知识总结</title>
-<meta content='日常知识总结' name='description'>
-<meta charset='utf-8'>
-<meta content='width=device-width, initial-scale=1.0' name='viewport'>
-<meta content='IE=edge' http-equiv='X-UA-Compatible'>
-<meta content='True' name='HandheldFriendly'>
-<meta content='知识总结' property='og:site_name'>
-<meta content='website' property='og:type'>
-<meta content='日常知识总结' property='og:description'>
-<meta content='https://geniousbar.github.io/' property='og:url'>
-<meta content='summary' name='twitter:card'>
-<meta content='日常知识总结' name='twitter:description'>
-<meta content='https://geniousbar.github.io/' name='twitter:url'>
-<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
-<link href="/images/favicon.ico" rel="icon" type="image/ico" />
-<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
-<link href="/stylesheets/application.css" rel="stylesheet" />
-</head>
-<body class='home-template nav-closed'>
-<div class='nav'>
-<h3 class='nav-title'>Menu</h3>
-<a class='nav-close' href='#'>
-<span class='hidden'>Close</span>
-</a>
-<ul>
-<li class='nav-home nav-current'>
-<a href='/'>Home</a>
-</li>
-<li class='nav-docker'>
-<a href='/tag/docker'>docker</a>
-</li>
-</ul>
-</div>
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>日常学习</title><meta description="geniousbar 日常知识总结" /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title"><a href="/2017/04/25/rails-activemodel/">Rails ActiveModel</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 25, 2017</span></div><div class="tag-labels"><a href="/tags/rails/"><small class="tag-label">rails</small></a><a href="/tags/activemodel/"><small class="tag-label">activemodel</small></a></div><hr class="article-header-separator" /><h5 id="rails-activemodel">rails activemodel</h5>
 
-<div class='site-wrapper'>
-<header class='main-header no-cover'>
-<nav class='main-nav overlay clearfix'>
-<a class='menu-button icon-menu' href='#'>
-<span class='word'>Menu</span>
-</a>
-</nav>
-<div class='vertical'>
-<div class='main-header-content inner'>
-<h1 class='page-title'>知识总结</h1>
-<h2 class='page-description'>日常知识总结</h2>
-</div>
-</div>
-<a class='scroll-down icon-arrow-left' data-offset='-45' href='#content'>
-<span class='hidden'>Scroll Down</span>
-</a>
-</header>
-<main class='content' id='content' role='main'>
-<div class='extra-pagination inner'>
-<nav class='pagination' role='pagination'>
-<span class='page-number'>Page 1 of 4</span>
-<a href="/page/2/" class="older-posts">Older Posts →</a>
-</nav>
+<pre class="highlight ruby"><code>    <span class="k">module</span> <span class="nn">ActiveModel</span>
+      <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Autoload</span>
 
-</div>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2017/04/25/rails-activemodel/">Rails ActiveModel</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-rails activemodel
-    module ActiveModel
-      extend ActiveSupport::Autoload
+      <span class="nb">autoload</span> <span class="ss">:AttributeAssignment</span>
+      <span class="nb">autoload</span> <span class="ss">:AttributeMethods</span>
+      <span class="nb">autoload</span> <span class="ss">:BlockValidator</span><span class="p">,</span> <span class="s1">'active_model/validator'</span>
+      <span class="nb">autoload</span> <span class="ss">:Callbacks</span>
+      <span class="nb">autoload</span> </code></pre><div class="read-more"><a href="/2017/04/25/rails-activemodel/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/04/25/docker-abc/">docker 入门</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 25, 2017</span></div><div class="tag-labels"><a href="/tags/docker/"><small class="tag-label">docker</small></a></div><hr class="article-header-separator" /><h4 id="docker">docker</h4>
 
-      autoload :AttributeAssignment
-      autoload :AttributeMethods
-      autoload :BlockValidator, 'active_model/validator'
-      autoload :Callbacks
-      autoload :Conversion
-<a href="/2017/04/25/rails-activemodel/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/rails/'>rails</a>, <a href='/tag/activemodel/'>activemodel</a>
-<time class='post-date' datetime='2017-04-25'>
-25 April 2017
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2017/04/25/docker-abc/">docker 入门</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-docker
+<h4 id="概念">概念</h4>
+<p>image(景象), container(容器),volume（数据卷）</p>
+<pre class="highlight plaintext"><code>    镜像(Image)和容器(Container)的关系,就像是面向对象程序设计中 的 类 和 实例 一样,镜像是静态的定义,容器是镜像运行时的实体。容器可以被 创建、启动、停止、删除、暂停等。
+    容器的实质是进程,但与直接在宿主执行的进程不同,容器进程运行于属于自己的 独立的 命名空间。因此容器可以拥有自己的 root 文件系统、自己的网络配置、 自己的进程空间,甚至自己的用户 ID...</code></pre><div class="read-more"><a href="/2017/04/25/docker-abc/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/04/20/rails-activerecord/">Rails ActivRecord源码（未完成）</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 20, 2017</span></div><div class="tag-labels"><a href="/tags/rails/"><small class="tag-label">rails</small></a><a href="/tags/sourcecode/"><small class="tag-label">sourcecode</small></a></div><hr class="article-header-separator" /><h4 id="rails-activerecord-源码">rails activerecord 源码</h4>
 
-概念
+<h6 id="数据库的连接调用过程">数据库的连接调用过程</h6>
 
-image(景象), container(容器),volume（数据卷）
-  
-    镜像(Image)和容器(Container)的关系,就像是面向对象程序设计中 的 类 和 实例 一样,镜像是静态的定义,容器是镜像运行时的实体。容器可以被 创建、启动、停止、删除、暂停等。
-    容器的实质是进程,但与直接在宿主执行的进程不同,容器进程运行于属于自己的 独立的 命名空间。因此容器可以拥有自己的 root 文件系统、自己的网络配置、 自己的进程空间,甚至自己的用户 ID
-<a href="/2017/04/25/docker-abc/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/docker/'>docker</a>
-<time class='post-date' datetime='2017-04-25'>
-25 April 2017
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2017/04/20/rails-activerecord/">Rails ActivRecord源码（未完成）</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-rails activerecord 源码
+<ol>
+  <li>activercord base中的代码</li>
+</ol>
 
-数据库的连接调用过程
-
-
-
-activercord base中的代码
+<pre class="highlight plaintext"><code>``` ruby
   # activerecord/lib/active_record/railtie.rb
     ActiveSupport.on_load(:active_record) do
       self.configurations = Rails.application.config.database_configuration
 
-      begin
-        establish_connection
-
-
-<a href="/2017/04/20/rails-activerecord/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/rails/'>rails</a>, <a href='/tag/sourcecode/'>sourcecode</a>
-<time class='post-date' datetime='2017-04-20'>
-20 April 2017
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2017/04/19/linux-maintain/">linux维护</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-二台机器之间同步大文件(拷贝文件到另一台机器)
-
-rsync -rP –rsh=ssh /file/path name@ip:/file/path
-
-建立软连接
-
-ln -s original/file/path soft/file/path
-
-linux后台启动服务
-
-nohup ruby http_server.rb 2&gt;&amp;1 &gt;&gt; log.log 2&gt;&amp;1 /dev/null &amp;
-nohup command &amp;&gt; /dev/null &amp;
-
-linux根据关键字得到pid号
-
-pgrep -f
-<a href="/2017/04/19/linux-maintain/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/linux/'>linux</a>
-<time class='post-date' datetime='2017-04-19'>
-19 April 2017
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2017/02/25/docker/">Docker</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-安装docker
-阿里云的安装脚本
+      begin...</code></pre><div class="read-more"><a href="/2017/04/20/rails-activerecord/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/04/19/linux-maintain/">linux维护</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a></div><hr class="article-header-separator" /><h3 id="二台机器之间同步大文件拷贝文件到另一台机器">二台机器之间同步大文件(拷贝文件到另一台机器)</h3>
+<p>rsync -rP –rsh=ssh /file/path name@ip:/file/path</p>
+<h3 id="建立软连接">建立软连接</h3>
+<p>ln -s original/file/path soft/file/path</p>
+<h3 id="linux后台启动服务">linux后台启动服务</h3>
+<p>nohup ruby http_server.rb 2&gt;&amp;1 » log.log 2&gt;&amp;1 /dev/null &amp;<br>
+nohup command &amp;&gt; /dev/null &amp;</p>
+<h3 id="linux根据关键字得到pid号">linux根据关键字得到pid号</h3>
+<p>pgrep -f keyword</p><div class="read-more"><a href="/2017/04/19/linux-maintain/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/02/25/docker/">Docker</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">February 25, 2017</span></div><div class="tag-labels"><a href="/tags/docker/"><small class="tag-label">Docker</small></a></div><hr class="article-header-separator" /><h3 id="安装docker">安装docker</h3>
+<pre class="highlight plaintext"><code>阿里云的安装脚本
 curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh -
 使用脚本自动安装
 Docker 官方为了简化安装流程，提供了一套安装脚本，CentOS 系统上可以使用这套脚本安装：
 curl -sSL https://get.docker.com/ | sh
 
 DaoCloud 的安装脚本
-curl -sSL https://get.daocloud
-<a href="/2017/02/25/docker/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/docker/'>Docker</a>
-<time class='post-date' datetime='2017-02-25'>
-25 February 2017
-</time>
-</footer>
-</article>
-<article class='post'>
-<header class='post-header'>
-<h2 class='post-title'><a href="/2017/01/13/postgres/">Postgres</a></h2>
-</header>
-<section class='post-excerpt'>
-<p>
-pg创建只读用户
-SELECT date_trunc('minute', dd) :: TIMESTAMP
+curl -sSL https://get...</code></pre><div class="read-more"><a href="/2017/02/25/docker/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/01/13/postgres/">Postgres</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">January 13, 2017</span></div><div class="tag-labels"><a href="/tags/database/"><small class="tag-label">database</small></a><a href="/tags/postgres/"><small class="tag-label">postgres</small></a></div><hr class="article-header-separator" /><h3 id="pg创建只读用户">pg创建只读用户</h3>
+<pre class="highlight plaintext"><code>SELECT date_trunc('minute', dd) :: TIMESTAMP
 FROM generate_series('2016-10-01' :: TIMESTAMP, '2016-12-31' :: TIMESTAMP, '10 minute' :: INTERVAL) dd;
 
 CREATE USER read_from_pg WITH ENCRYPTED PASSWORD '...';
-GRANT CONNECT ON DATABASE test to read_from_pg
-<a href="/2017/01/13/postgres/" class="read-more">&raquo;</a>
-</p>
-</section>
-<footer class='post-meta'>
-<a href='/author/geniousbar/'>geniousbar</a>
-on <a href='/tag/database/'>database</a>, <a href='/tag/postgres/'>postgres</a>
-<time class='post-date' datetime='2017-01-13'>
-13 January 2017
-</time>
-</footer>
-</article>
-<nav class='pagination' role='pagination'>
-<span class='page-number'>Page 1 of 4</span>
-<a href="/page/2/" class="older-posts">Older Posts →</a>
-</nav>
+GRANT CONNECT ON DATABASE test to...</code></pre><div class="read-more"><a href="/2017/01/13/postgres/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/11/11/firefox/">Firefox</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">November 11, 2016</span></div><div class="tag-labels"><a href="/tags/firefox/"><small class="tag-label">Firefox</small></a></div><hr class="article-header-separator" /><h3 id="如何才能使用非签名的附加组件高级用户">如何才能使用非签名的附加组件？（高级用户）</h3>
 
+<p>Firefox ESR 45版，以及 开发者版 和 Nightly 版，将允许通过改变偏好来屏蔽增强的附加组件签名要求，请在 Firefox 配置编辑器（about:config 页）将 xpinstall.signatures.required 的值改为 false。还有其它一些山寨版的 Firefox 也允许此项屏蔽。更多内容，参阅 MozillaWiki 文章 附加组件/扩展签名。</p>
+<div class="read-more"><a href="/2016/11/11/firefox/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/10/21/ruby-magic/">Ruby</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">October 21, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">Ruby</small></a></div><hr class="article-header-separator" /><h3 id="排列组合">排列组合</h3>
+<pre class="highlight plaintext"><code>arr = [1, 2, 3, 4, 5]
+arr.combination(3).to_a
+ary.each_cons(3).to_a
+</code></pre><h3 id="ruby-gil">ruby GIL</h3>
+<pre class="highlight plaintext"><code>1: Ruby MRI为了线程安全，用了GIL只支持单核。任何时刻只有一个线程在运行：当一个Thread阻塞时（比如IO, sleep等），就会切换到另个一线程。 所以就算用了celluloid, puma自动创建多线程的，MRI下每个进程还是单核。
+而Rubinius，JRuby则没有GIL，支持多核（每个线程分配一个cpu）...</code></pre><div class="read-more"><a href="/2016/10/21/ruby-magic/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/10/01/javascript-good-part/">Javascript 语言精粹</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">October 01, 2016</span></div><div class="tag-labels"><a href="/tags/javascript/"><small class="tag-label">javascript</small></a></div><hr class="article-header-separator" /><h3 id="javascrip-语言精粹">javascrip 语言精粹</h3>
 
-</main>
+<ul>
+  <li>假值： false, null, undefined, 0, ‘ ‘, NaN</li>
+  <li>数据类型： 数字， 字符串， 布尔， null， undefined， 对象</li>
+  <li>反射： typeof, hasOwnProperty</li>
+  <li>delete： 不会触及原型任何对象， 会显露出来原型中的对象属性</li>
+</ul>
 
-<footer class='site-footer clearfix'>
-<section class='copyright'>
-<a href='/'>知识总结</a>
-&copy;
-2017
-</section>
-<section class='poweredby'></section>
-</footer>
-</div>
-<script src="/javascripts/application.js"></script>
-</body>
-</html>
+<h5 id="函数">函数</h5>
+
+<ul>
+  <li>函数也是对象，只是可以调用</li>
+  <li>调用模式： 方法调用模式， 函数调用模式， 构造器调用模式，apply调用模式（在初始化this上存在差异）</li>
+  </ul><div class="read-more"><a href="/2016/10/01/javascript-good-part/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/09/07/ubuntu-abtest/">abtest</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">September 07, 2016</span></div><div class="tag-labels"><a href="/tags/test/"><small class="tag-label">test</small></a></div><hr class="article-header-separator" /><h2 id="参考">参考</h2>
+<p><a href="http://www.makmong.com/1314.html">性能测试之ab测试工具</a></p>
+
+<p><a href="ab_test.mht">性能测试之ab测试工具-mht</a></p>
+<h3 id="ab测试参数详解">ab测试参数详解：</h3>
+<pre class="highlight plaintext"><code>-n 测试会话中所执行的请求个数,默认仅执行一个请求
+-c 一次产生的请求个数,即同一时间发出多少个请求,默认为一次一个
+-t 测试所进行的最大秒数,默认为无时间限制....其内部隐含值是[-n 50000],它可以使对服务器的测试限制在一个固定的总时间以内
+-p 包含了需要POST的数据的文件
+-T POST数据所使用的Content-type头信息
+-v 设置显示信息的详细程度
+-w 以HTML表格的形...</code></pre><div class="read-more"><a href="/2016/09/07/ubuntu-abtest/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><div class="paginate-wrapper"><div class="next-page"><a href="/page/2/"><i class="fa fa-arrow-right"></i> Next Page</a></div></div><div class="page-number">Page 1 of 3</div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>
