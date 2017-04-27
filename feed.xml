@@ -13,18 +13,24 @@
     <link rel="alternate" href="http://geniousbar.github.io/2017/04/25/rails-activemodel/"/>
     <id>http://geniousbar.github.io/2017/04/25/rails-activemodel/</id>
     <published>2017-04-25T08:00:00+08:00</published>
-    <updated>2017-04-26T19:13:40+08:00</updated>
-    <summary type="html">&lt;h2 id="rails-activemodel"&gt;rails activemodel&lt;/h2&gt;
+    <updated>2017-04-27T16:26:11+08:00</updated>
+    <summary type="html">&lt;p&gt;&lt;a href="#attribute_assignment"&gt;AttributeAssignment&lt;/a&gt;&lt;br&gt;
+&lt;a href="#callbacks"&gt;Callbacks&lt;/a&gt;&lt;br&gt;
+&lt;a href="#dirty"&gt;Dirty&lt;/a&gt;&lt;br&gt;
+&lt;a href="#validations"&gt;Validations&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="rails-activemodel"&gt;rails activemodel&lt;/h2&gt;
 
 &lt;pre class="highlight ruby"&gt;&lt;code&gt;    &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ActiveModel&lt;/span&gt;
       &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Autoload&lt;/span&gt;
 
       &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:AttributeAssignment&lt;/span&gt;
       &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:AttributeMethods&lt;/span&gt;
-      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:BlockValidator&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'active_model/validator'&lt;/span&gt;
-      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:Callbacks&lt;/span&gt;
-      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;</summary>
-    <content type="html">&lt;h2 id="rails-activemodel"&gt;rails activemodel&lt;/h2&gt;
+      &lt;span class="nb"&gt;autoload&lt;/span&gt; &lt;span class="ss"&gt;:BlockValidator&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'active_model/validator...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;</summary>
+    <content type="html">&lt;p&gt;&lt;a href="#attribute_assignment"&gt;AttributeAssignment&lt;/a&gt;&lt;br /&gt;
+&lt;a href="#callbacks"&gt;Callbacks&lt;/a&gt;&lt;br /&gt;
+&lt;a href="#dirty"&gt;Dirty&lt;/a&gt;&lt;br /&gt;
+&lt;a href="#validations"&gt;Validations&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="rails-activemodel"&gt;rails activemodel&lt;/h2&gt;
 
 &lt;pre class="highlight ruby"&gt;&lt;code&gt;    &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ActiveModel&lt;/span&gt;
       &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Autoload&lt;/span&gt;
@@ -208,7 +214,7 @@
 &lt;/code&gt;&lt;/pre&gt;  &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2 id="callback"&gt;callback&lt;/h2&gt;
+&lt;h2 id="callbacks"&gt;callbacks&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;代码调用&lt;/p&gt;
@@ -445,7 +451,7 @@
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2 id="dirty"&gt;Dirty&lt;/h2&gt;
+&lt;h2 id="dirty"&gt;dirty&lt;/h2&gt;
 &lt;blockquote&gt;
   &lt;p&gt;dirty 根据文档的描述是，为了提供一个工具集来跟踪变量变化(之前以为是auto， 用了一些callback， 或者元编程之类的结果不是！！！， 而是提供了一个工具集， 在使用中， 需要手动调用方法)&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -496,8 +502,188 @@
         &lt;span class="vi"&gt;@previously_changed&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;changes&lt;/span&gt;
         &lt;span class="vi"&gt;@changed_attributes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;HashWithIndifferentAccess&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;
       &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="validations"&gt;validations&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;示例代码&lt;/p&gt;
 
-&lt;/code&gt;&lt;/pre&gt;</content>
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;   &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Person&lt;/span&gt;
+     &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;ActiveModel&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Validations&lt;/span&gt;
+     &lt;span class="n"&gt;validates_with&lt;/span&gt; &lt;span class="no"&gt;MyValidator&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MyValidator&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActiveModel&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Validator&lt;/span&gt;
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;validate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;record&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;some_complex_logic&lt;/span&gt;
+         &lt;span class="n"&gt;record&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:base&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"This record is invalid"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="kp"&gt;private&lt;/span&gt;
+       &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;some_complex_logic&lt;/span&gt;
+         &lt;span class="c1"&gt;# ...&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;调用栈分析&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   # validation 中的代码
+     define_callbacks :validate, scope: :name
+     class_attribute :_validators, instance_writer: false
+
+   |- validates_with MyValidator
+     |- options = args.extract_options!
+     |- validator = klass.new(options, &amp;amp;block)
+     |- validator.attributes.each {|attribute| _validators[attribute.to_sym] &amp;lt;&amp;lt; validator }
+     |- validate(validator, options)
+       |- set_callback(:validate, *args, &amp;amp;block)
+
+   # 一些内置的validator, 例如PresenceValidator
+   |- validates_presence_of(*attr_names)
+     |- validates_with PresenceValidator, _merge_attributes(attr_names)
+
+   |- valid?(context = nil)
+     |- run_validations!
+       |- _run_validate_callbacks
+       .......
+       |- validate(record)
+         |- validate_each(record, attribute, value)
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;p&gt;&lt;strong&gt;一个主要的数据流走向为:&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;blockquote&gt;
+          &lt;p&gt;在include  Validator 时候， define_callbacks :validate, scope: :name。 设定callback， scope: :name 的作用为调用 一个instance callback时候调用的方法, 在 define_callbacks :save, MyValidator, :before, scope: [:kind, :name], 在执行callback时候调用 MyValidator#before_save, Callback#apply 中存在&lt;/p&gt;
+        &lt;/blockquote&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;blockquote&gt;
+          &lt;p&gt;validates_with Class, options, 构造实例， 调用validate， 调用set_callback设定 callback时候的lambda, 2. 存在一些内置的校验器, validates_presence_of :name， 通过统一的调用 validate_with Class, options&lt;/p&gt;
+        &lt;/blockquote&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;blockquote&gt;
+          &lt;p&gt;valid?, 执行callback 中的lambda校验， 其中有意思的是valid?(context = nil), valid?的调用存在一个 context参数， 可以传递 在 validate_with Class, on: :save，的参数， 来决定执行特定环境中的validate， 所以猜想贯穿到 ActiveRecord#.save 时候的调用，应该存在类似的 valid?(:save)代码逻辑, 执行个个validator实例中的validate函数， 通过 继承EachValidator 分发到validate_each&lt;/p&gt;
+        &lt;/blockquote&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;code&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;EachValidator&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Validator&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+   &lt;span class="kp"&gt;attr_reader&lt;/span&gt; &lt;span class="ss"&gt;:attributes&lt;/span&gt;
+
+   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="vi"&gt;@attributes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:attributes&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+     &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="no"&gt;ArgumentError&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;":attributes cannot be blank"&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vi"&gt;@attributes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;empty?&lt;/span&gt;
+     &lt;span class="k"&gt;super&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+ &lt;span class="k"&gt;end&lt;/span&gt;
+
+ &lt;span class="c1"&gt;# active_model/validation.rb&lt;/span&gt;
+ &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ActiveModel&lt;/span&gt;
+   &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Validations&lt;/span&gt;
+     &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Concern&lt;/span&gt;
+
+     &lt;span class="n"&gt;included&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+       &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;ActiveModel&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Callbacks&lt;/span&gt;
+       &lt;span class="kp"&gt;extend&lt;/span&gt;  &lt;span class="no"&gt;HelperMethods&lt;/span&gt;
+       &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;HelperMethods&lt;/span&gt;
+
+       &lt;span class="kp"&gt;attr_accessor&lt;/span&gt; &lt;span class="ss"&gt;:validation_context&lt;/span&gt;
+       &lt;span class="kp"&gt;private&lt;/span&gt; &lt;span class="ss"&gt;:validation_context&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;
+       &lt;span class="n"&gt;define_callbacks&lt;/span&gt; &lt;span class="ss"&gt;:validate&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;scope: :name&lt;/span&gt;
+
+       &lt;span class="n"&gt;class_attribute&lt;/span&gt; &lt;span class="ss"&gt;:_validators&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;instance_writer: &lt;/span&gt;&lt;span class="kp"&gt;false&lt;/span&gt;
+       &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;_validators&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Hash&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;h&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ClassMethods&lt;/span&gt;
+       &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;validate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;extract_options!&lt;/span&gt;
+         &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;key?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:on&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+           &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;dup&lt;/span&gt;
+           &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:if&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:if&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+           &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:if&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nf"&gt;unshift&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+             &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="no"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:on&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="no"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;validation_context&lt;/span&gt;&lt;span class="p"&gt;)).&lt;/span&gt;&lt;span class="nf"&gt;empty?&lt;/span&gt;
+           &lt;span class="p"&gt;}&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+
+         &lt;span class="n"&gt;args&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;
+         &lt;span class="n"&gt;set_callback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:validate&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+ &lt;span class="k"&gt;end&lt;/span&gt;
+
+ &lt;span class="c1"&gt;# active_model/validations/with.rb&lt;/span&gt;
+ &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ActiveModel&lt;/span&gt;
+   &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Validations&lt;/span&gt;
+     &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ClassMethods&lt;/span&gt;
+       &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;validates_with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;extract_options!&lt;/span&gt;
+         &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:class&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;self&lt;/span&gt;
+
+         &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;klass&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+           &lt;span class="n"&gt;validator&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;klass&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+           &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;validator&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;respond_to?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:attributes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;validator&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;attributes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;empty?&lt;/span&gt;
+             &lt;span class="n"&gt;validator&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;attributes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;attribute&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+               &lt;span class="n"&gt;_validators&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;attribute&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_sym&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;validator&lt;/span&gt;
+             &lt;span class="k"&gt;end&lt;/span&gt;
+           &lt;span class="k"&gt;else&lt;/span&gt;
+             &lt;span class="n"&gt;_validators&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kp"&gt;nil&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;validator&lt;/span&gt;
+           &lt;span class="k"&gt;end&lt;/span&gt;
+
+           &lt;span class="n"&gt;validate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;validator&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+ &lt;span class="k"&gt;end&lt;/span&gt;
+
+ &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ActiveModel&lt;/span&gt;
+
+   &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Validations&lt;/span&gt;
+     &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;PresenceValidator&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;EachValidator&lt;/span&gt; &lt;span class="c1"&gt;# :nodoc:&lt;/span&gt;
+       &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;validate_each&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;record&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;attr_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="n"&gt;record&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;attr_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:blank&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;blank?&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;HelperMethods&lt;/span&gt;
+       &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;validates_presence_of&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;attr_names&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="n"&gt;validates_with&lt;/span&gt; &lt;span class="no"&gt;PresenceValidator&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_merge_attributes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;attr_names&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+ &lt;span class="k"&gt;end&lt;/span&gt;
+
+
+
+ &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;EachValidator&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Validator&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+   &lt;span class="kp"&gt;attr_reader&lt;/span&gt; &lt;span class="ss"&gt;:attributes&lt;/span&gt;
+
+   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="vi"&gt;@attributes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:attributes&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+     &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="no"&gt;ArgumentError&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;":attributes cannot be blank"&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vi"&gt;@attributes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;empty?&lt;/span&gt;
+     &lt;span class="k"&gt;super&lt;/span&gt;
+     &lt;span class="n"&gt;check_validity!&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;validate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;record&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="n"&gt;attributes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;attribute&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+       &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;record&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;read_attribute_for_validation&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;attribute&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;next&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;nil?&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:allow_nil&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;blank?&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:allow_blank&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+       &lt;span class="n"&gt;validate_each&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;record&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;attribute&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+ &lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;  &lt;/li&gt;
+&lt;/ol&gt;
+</content>
   </entry>
   <entry>
     <title>docker 入门</title>
