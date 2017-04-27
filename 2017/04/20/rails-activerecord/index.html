@@ -1,180 +1,184 @@
-<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>Rails ActivRecord源码（未完成） | 日常学习</title><meta description="rails activerecord 源码  数据库的连接调用过程     activercord base中的代码   ``` ruby   # activerecord/lib/active_record/railtie.rb     ActiveSupport.on_load(:active_record) do       self.configurations = Rails.application.config.database_configuration        begin..." /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">Rails ActivRecord源码（未完成）</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 20, 2017</span></div><div class="tag-labels"><a href="/tags/rails/"><small class="tag-label">rails</small></a><a href="/tags/sourcecode/"><small class="tag-label">sourcecode</small></a></div><hr class="article-header-separator" /><h4 id="rails-activerecord-源码">rails activerecord 源码</h4>
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>Rails ActivRecord源码（未完成） | 日常学习</title><meta description="rails activerecord 源码  数据库的连接调用过程          activercord base中的代码     # activerecord/lib/active_record/railtie.rb      ActiveSupport.on_load(:active_record) do        self.configurations = Rails.application.config.database_configuration         begin  " /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">Rails ActivRecord源码（未完成）</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 20, 2017</span></div><div class="tag-labels"><a href="/tags/rails/"><small class="tag-label">rails</small></a><a href="/tags/sourcecode/"><small class="tag-label">sourcecode</small></a></div><hr class="article-header-separator" /><h2 id="rails-activerecord-源码">rails activerecord 源码</h2>
 
-<h6 id="数据库的连接调用过程">数据库的连接调用过程</h6>
+<h2 id="数据库的连接调用过程">数据库的连接调用过程</h2>
 
 <ol>
-  <li>activercord base中的代码</li>
+  <li>
+    <p>activercord base中的代码</p>
+
+<pre class="highlight ruby"><code>   <span class="c1"># activerecord/lib/active_record/railtie.rb</span>
+     <span class="no">ActiveSupport</span><span class="p">.</span><span class="nf">on_load</span><span class="p">(</span><span class="ss">:active_record</span><span class="p">)</span> <span class="k">do</span>
+       <span class="nb">self</span><span class="p">.</span><span class="nf">configurations</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">database_configuration</span>
+
+       <span class="k">begin</span>
+         <span class="n">establish_connection</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+
+   <span class="c1"># activerecord/lib/base.rb</span>
+   <span class="k">class</span> <span class="nc">Base</span>
+     <span class="kp">extend</span> <span class="no">ConnectionHandling</span>
+     <span class="kp">extend</span> <span class="no">Core</span>
+   <span class="k">end</span>
+
+   <span class="c1"># activerecord/lib/active_record/core.rb</span>
+   <span class="k">module</span> <span class="nn">ActiveRecord</span>
+     <span class="k">module</span> <span class="nn">Core</span>
+       <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+       <span class="n">included</span> <span class="k">do</span>
+         <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">configurations</span><span class="o">=</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+           <span class="vc">@@configurations</span> <span class="o">=</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">ConnectionHandling</span><span class="o">::</span><span class="no">MergeAndResolveDefaultUrlConfig</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">config</span><span class="p">).</span><span class="nf">resolve</span>
+         <span class="k">end</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+   <span class="k">end</span>
+
+   <span class="c1"># activerecord/lib/active_record/connectioin_handing.rb</span>
+   <span class="k">module</span> <span class="nn">ActiveRecord</span>
+     <span class="k">module</span> <span class="nn">ConnectionHandling</span>
+       <span class="k">def</span> <span class="nf">establish_connection</span>
+       <span class="k">end</span>
+
+       <span class="k">class</span> <span class="nc">MergeAndResolveDefaultUrlConfig</span>
+         <span class="k">def</span> <span class="nf">resolve</span>
+           <span class="no">ConnectionAdapters</span><span class="o">::</span><span class="no">ConnectionSpecification</span><span class="o">::</span><span class="no">Resolver</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">config</span><span class="p">).</span><span class="nf">resolve_all</span>
+         <span class="k">end</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+   <span class="k">end</span>
+
+   <span class="c1"># activerecord/lib/active_record/connectioin_adapter/connection_specification.rb</span>
+   <span class="k">module</span> <span class="nn">ActiveRecord</span>
+     <span class="k">module</span> <span class="nn">ConnectionAdapters</span>
+       <span class="k">class</span> <span class="nc">ConnectionSpecification</span> <span class="c1">#:nodoc:</span>
+         <span class="k">class</span> <span class="nc">Resolver</span>
+           <span class="k">def</span> <span class="nf">resolve</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+             <span class="k">if</span> <span class="n">config</span>
+               <span class="n">resolve_connection</span> <span class="n">config</span>
+             <span class="k">elsif</span> <span class="n">env</span> <span class="o">=</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">ConnectionHandling</span><span class="o">::</span><span class="no">RAILS_ENV</span><span class="p">.</span><span class="nf">call</span>
+               <span class="n">resolve_symbol_connection</span> <span class="n">env</span><span class="p">.</span><span class="nf">to_sym</span>
+             <span class="k">else</span>
+               <span class="k">raise</span> <span class="no">AdapterNotSpecified</span>
+             <span class="k">end</span>
+           <span class="k">end</span>
+
+           <span class="c1"># Expands each key in @configurations hash into fully resolved hash</span>
+           <span class="k">def</span> <span class="nf">resolve_all</span>
+             <span class="n">config</span> <span class="o">=</span> <span class="n">configurations</span><span class="p">.</span><span class="nf">dup</span>
+             <span class="n">config</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+               <span class="n">config</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">resolve</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">value</span>
+             <span class="k">end</span>
+             <span class="n">config</span>
+           <span class="k">end</span>
+         <span class="k">end</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+   <span class="k">end</span>
+</code></pre>  </li>
 </ol>
 
-<pre class="highlight plaintext"><code>``` ruby
-  # activerecord/lib/active_record/railtie.rb
-    ActiveSupport.on_load(:active_record) do
-      self.configurations = Rails.application.config.database_configuration
+<blockquote>
+  <p>调用链从上至下， base 中extend ConnectionHandlere, Core, 在core中通过configration=函数， 将database.yml 中的数据传递给 ConnectionHandling 进行配置的解析，合并等，　降低到Resolver中， 为具体实现的策略、算法。然后再代用establish_connection 调用connnection_handling文件中的 establish_connection 的方法, 通过connection_handler.establish_connection 建立数据库连接。 到此数据库建立连接成功。</p>
+</blockquote>
 
-      begin
-        establish_connection
-      end
-    end
+<p><strong>在查看代码的时候需要连续的挑选文件， 查找函数， 而没有统一的累死java中interface中的概念，导致看起来，module之间的连接非常脆弱， 不是显而易见。</strong></p>
 
-  # activerecord/lib/base.rb
-  class Base
-    extend ConnectionHandling
-    extend Core
-  end
-
-  # activerecord/lib/active_record/core.rb
-  module ActiveRecord
-    module Core
-      extend ActiveSupport::Concern
-      included do
-        def self.configurations=(config)
-          @@configurations = ActiveRecord::ConnectionHandling::MergeAndResolveDefaultUrlConfig.new(config).resolve
-        end
-      end
-    end
-  end
-
-  # activerecord/lib/active_record/connectioin_handing.rb
-  module ActiveRecord
-    module ConnectionHandling
-      def establish_connection
-      end
-
-      class MergeAndResolveDefaultUrlConfig
-        def resolve
-          ConnectionAdapters::ConnectionSpecification::Resolver.new(config).resolve_all
-        end
-      end
-    end
-  end
-
-  # activerecord/lib/active_record/connectioin_adapter/connection_specification.rb
-  module ActiveRecord
-    module ConnectionAdapters
-      class ConnectionSpecification #:nodoc:
-        class Resolver
-          def resolve(config)
-            if config
-              resolve_connection config
-            elsif env = ActiveRecord::ConnectionHandling::RAILS_ENV.call
-              resolve_symbol_connection env.to_sym
-            else
-              raise AdapterNotSpecified
-            end
-          end
-
-          # Expands each key in @configurations hash into fully resolved hash
-          def resolve_all
-            config = configurations.dup
-            config.each do |key, value|
-              config[key] = resolve(value) if value
-            end
-            config
-          end
-        end
-      end
-    end
-  end
-```
-
-调用链从上至下， base 中extend ConnectionHandlere, Core, 在core中通过configration=函数， 将database.yml 中的数据传递给 ConnectionHandling 进行配置的解析，合并等，　降低到Resolver中， 为具体实现的策略、算法。然后再代用establish_connection 调用connnection_handling文件中的 establish_connection 的方法, 通过connection_handler.establish_connection 建立数据库连接。 到此数据库建立连接成功。
-
-&lt;em&gt; 在查看代码的时候需要连续的挑选文件， 查找函数， 而没有统一的累死java中interface中的概念，导致看起来，module之间的连接非常脆弱， 不是显而易见。&lt;/em&gt;
-</code></pre>
 <ol>
   <li>active record ConnectionSpecification</li>
 </ol>
 
 <pre class="highlight plaintext"><code>1. 调用方法
 </code></pre>
-<h6 id="数据库迁移">数据库迁移</h6>
+<h2 id="数据库迁移">数据库迁移</h2>
 
 <ol>
-  <li>调用链</li>
-</ol>
+  <li>
+    <p>调用链</p>
 
-<pre class="highlight plaintext"><code>```
-  |- task :migrate
-    |- DatabaseTask.migrate
-      |- Migrator.migrate(migrations_paths, version || nil ) {|migration| scope.blank? ||| scope == migration.scope}
-        |- Migrator.migrate(migrations_paths, target_version, &amp;block)
-          |- Migrator.up | Migrator.down
-            |- new(:up | :down, migrations, target_version).migrate
-              |- migrate_without_lock
-                |- runnable.each {|migration| execute_migration_in_transaction(migration, direction)} # runnable 寻找没有执行的migration
-                  |- execute_migration_in_transaction(migrations)
-                    |- migration.migrate(direction) # migration -&gt; MigrationProxy
-                      |- Migration.instance.migrate(direction)
-                        |- exec_migration(conn, direction)
-                          |- send(:direction) # 因为 AddColumnToVariants &lt; ActiveRecord::Migration
-                            |- add_column :variants, :part_number, :string
-                              |- method_missing
-                                |- connection.send(:add_column, [:variants, :part_number, :string], &amp;block)
-                                  |- ActiveRecord::ConnectionHandling::ConnectionAdapters::SQLite3Adapter
+<pre class="highlight plaintext"><code>   |- task :migrate
+     |- DatabaseTask.migrate
+       |- Migrator.migrate(migrations_paths, version || nil ) {|migration| scope.blank? ||| scope == migration.scope}
+         |- Migrator.migrate(migrations_paths, target_version, &amp;block)
+           |- Migrator.up | Migrator.down
+             |- new(:up | :down, migrations, target_version).migrate
+               |- migrate_without_lock
+                 |- runnable.each {|migration| execute_migration_in_transaction(migration, direction)} # runnable 寻找没有执行的migration
+                   |- execute_migration_in_transaction(migrations)
+                     |- migration.migrate(direction) # migration -&gt; MigrationProxy
+                       |- Migration.instance.migrate(direction)
+                         |- exec_migration(conn, direction)
+                           |- send(:direction) # 因为 AddColumnToVariants &lt; ActiveRecord::Migration
+                             |- add_column :variants, :part_number, :string
+                               |- method_missing
+                                 |- connection.send(:add_column, [:variants, :part_number, :string], &amp;block)
+                                   |- ActiveRecord::ConnectionHandling::ConnectionAdapters::SQLite3Adapter
 
- ```
+</code></pre>  </li>
+  <li>
+    <p>总结一下流的顺序</p>
 
-  ```ruby
-    def add_column(table_name, column_name, type, options = {}) #:nodoc:
-      if valid_alter_table_type?(type)
-        super(table_name, column_name, type, options)
-      else
-        alter_table(table_name) do |definition|
-          definition.column(column_name, type, options)
-        end
-      end
-    end
-
-    def alter_table(table_name, options = {}) #:nodoc:
-      altered_table_name = "a#{table_name}"
-      caller = lambda {|definition| yield definition if block_given?}
-
-      transaction do
-        move_table(table_name, altered_table_name,
-          options.merge(:temporary =&gt; true))
-        move_table(altered_table_name, table_name, &amp;caller)
-      end
-    end
-
-    def move_table(from, to, options = {}, &amp;block) #:nodoc:
-      copy_table(from, to, options, &amp;block)
-      drop_table(from)
-    end
-
-    def copy_table(from, to, options = {}) #:nodoc:
-      from_primary_key = primary_key(from)
-      options[:id] = false
-      create_table(to, options) do |definition|
-        @definition = definition
-        @definition.primary_key(from_primary_key) if from_primary_key.present?
-        columns(from).each do |column|
-          column_name = options[:rename] ?
-            (options[:rename][column.name] ||
-             options[:rename][column.name.to_sym] ||
-             column.name) : column.name
-          next if column_name == from_primary_key
-
-          @definition.column(column_name, column.type,
-            :limit =&gt; column.limit, :default =&gt; column.default,
-            :precision =&gt; column.precision, :scale =&gt; column.scale,
-            :null =&gt; column.null, collation: column.collation)
-        end
-        yield @definition if block_given?
-      end
-      copy_table_indexes(from, to, options[:rename] || {})
-      copy_table_contents(from, to,
-        @definition.columns.map(&amp;:name),
-        options[:rename] || {})
-    end
-
-    #其中的方式处理的比较奇怪，  是copy之后然后 drop, copy现有表 到中间表 然后 删除现有表，最后copy 中间表到 现有表表名， 其中每个步骤都涉及到 copy content, copy index, copy table schema 等, 其中会涉及到性能的问题吗？比如大量的数据插入？？？？？
-  ```
+<pre class="highlight plaintext"><code>   rake --&gt; Migrator.migrate -&gt; up/down ---&gt; new(direction, migrations).migrate --&gt; runnable.each {|item| execute_migration_in_transaction(item)} -&gt; migration_proxy.migrate(direction) -&gt; Migration.instance.migrate -&gt; Migration.instance.exec_migration() -&gt; 调用迁移文件的up/down/change ---&gt; 泗洪method_missing hook add_column, remove_column 等发送到connection, connection 为各种数据库adapter
 </code></pre>
-<ol>
-  <li>总结一下流的顺序</li>
+    <blockquote>
+      <p>借鉴的地方， 1. 使用MigrationProxy代替真是的文件， 比较轻，可以实现一些version，时间戳等比较方法 , 实现将文件系统转换为ruby对象， 接入到系统内部。2. 使用method_missing 来进行委托，将数据库connection中具有的方法实现到 Migration</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>代码</p>
+
+<pre class="highlight ruby"><code>     <span class="k">def</span> <span class="nf">add_column</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{})</span> <span class="c1">#:nodoc:</span>
+       <span class="k">if</span> <span class="n">valid_alter_table_type?</span><span class="p">(</span><span class="n">type</span><span class="p">)</span>
+         <span class="k">super</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+       <span class="k">else</span>
+         <span class="n">alter_table</span><span class="p">(</span><span class="n">table_name</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">definition</span><span class="o">|</span>
+           <span class="n">definition</span><span class="p">.</span><span class="nf">column</span><span class="p">(</span><span class="n">column_name</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+         <span class="k">end</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">alter_table</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{})</span> <span class="c1">#:nodoc:</span>
+       <span class="n">altered_table_name</span> <span class="o">=</span> <span class="s2">"a</span><span class="si">#{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">"</span>
+       <span class="nb">caller</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span><span class="o">|</span><span class="n">definition</span><span class="o">|</span> <span class="k">yield</span> <span class="n">definition</span> <span class="k">if</span> <span class="nb">block_given?</span><span class="p">}</span>
+
+       <span class="n">transaction</span> <span class="k">do</span>
+         <span class="n">move_table</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">altered_table_name</span><span class="p">,</span>
+           <span class="n">options</span><span class="p">.</span><span class="nf">merge</span><span class="p">(</span><span class="ss">:temporary</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">))</span>
+         <span class="n">move_table</span><span class="p">(</span><span class="n">altered_table_name</span><span class="p">,</span> <span class="n">table_name</span><span class="p">,</span> <span class="o">&amp;</span><span class="nb">caller</span><span class="p">)</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">move_table</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{},</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span> <span class="c1">#:nodoc:</span>
+       <span class="n">copy_table</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+       <span class="n">drop_table</span><span class="p">(</span><span class="n">from</span><span class="p">)</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">copy_table</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{})</span> <span class="c1">#:nodoc:</span>
+       <span class="n">from_primary_key</span> <span class="o">=</span> <span class="n">primary_key</span><span class="p">(</span><span class="n">from</span><span class="p">)</span>
+       <span class="n">options</span><span class="p">[</span><span class="ss">:id</span><span class="p">]</span> <span class="o">=</span> <span class="kp">false</span>
+       <span class="n">create_table</span><span class="p">(</span><span class="n">to</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">definition</span><span class="o">|</span>
+         <span class="vi">@definition</span> <span class="o">=</span> <span class="n">definition</span>
+         <span class="vi">@definition</span><span class="p">.</span><span class="nf">primary_key</span><span class="p">(</span><span class="n">from_primary_key</span><span class="p">)</span> <span class="k">if</span> <span class="n">from_primary_key</span><span class="p">.</span><span class="nf">present?</span>
+         <span class="n">columns</span><span class="p">(</span><span class="n">from</span><span class="p">).</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">column</span><span class="o">|</span>
+           <span class="n">column_name</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="ss">:rename</span><span class="p">]</span> <span class="p">?</span>
+             <span class="p">(</span><span class="n">options</span><span class="p">[:</span><span class="n">rename</span><span class="p">][</span><span class="n">column</span><span class="p">.</span><span class="nf">name</span><span class="p">]</span> <span class="o">||</span>
+              <span class="n">options</span><span class="p">[</span><span class="ss">:rename</span><span class="p">][</span><span class="n">column</span><span class="p">.</span><span class="nf">name</span><span class="p">.</span><span class="nf">to_sym</span><span class="p">]</span> <span class="o">||</span>
+              <span class="n">column</span><span class="p">.</span><span class="nf">name</span><span class="p">)</span> <span class="p">:</span> <span class="n">column</span><span class="p">.</span><span class="nf">name</span>
+           <span class="k">next</span> <span class="k">if</span> <span class="n">column_name</span> <span class="o">==</span> <span class="n">from_primary_key</span>
+
+           <span class="vi">@definition</span><span class="p">.</span><span class="nf">column</span><span class="p">(</span><span class="n">column_name</span><span class="p">,</span> <span class="n">column</span><span class="p">.</span><span class="nf">type</span><span class="p">,</span>
+             <span class="ss">:limit</span> <span class="o">=&gt;</span> <span class="n">column</span><span class="p">.</span><span class="nf">limit</span><span class="p">,</span> <span class="ss">:default</span> <span class="o">=&gt;</span> <span class="n">column</span><span class="p">.</span><span class="nf">default</span><span class="p">,</span>
+             <span class="ss">:precision</span> <span class="o">=&gt;</span> <span class="n">column</span><span class="p">.</span><span class="nf">precision</span><span class="p">,</span> <span class="ss">:scale</span> <span class="o">=&gt;</span> <span class="n">column</span><span class="p">.</span><span class="nf">scale</span><span class="p">,</span>
+             <span class="ss">:null</span> <span class="o">=&gt;</span> <span class="n">column</span><span class="p">.</span><span class="nf">null</span><span class="p">,</span> <span class="ss">collation: </span><span class="n">column</span><span class="p">.</span><span class="nf">collation</span><span class="p">)</span>
+         <span class="k">end</span>
+         <span class="k">yield</span> <span class="vi">@definition</span> <span class="k">if</span> <span class="nb">block_given?</span>
+       <span class="k">end</span>
+       <span class="n">copy_table_indexes</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">options</span><span class="p">[</span><span class="ss">:rename</span><span class="p">]</span> <span class="o">||</span> <span class="p">{})</span>
+       <span class="n">copy_table_contents</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span>
+         <span class="vi">@definition</span><span class="p">.</span><span class="nf">columns</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:name</span><span class="p">),</span>
+         <span class="n">options</span><span class="p">[</span><span class="ss">:rename</span><span class="p">]</span> <span class="o">||</span> <span class="p">{})</span>
+     <span class="k">end</span>
+
+     <span class="c1">#其中的方式处理的比较奇怪，  是copy之后然后 drop, copy现有表 到中间表 然后 删除现有表，最后copy 中间表到 现有表表名， 其中每个步骤都涉及到 copy content, copy index, copy table schema 等, 其中会涉及到性能的问题吗？比如大量的数据插入？？？？？</span>
+</code></pre>  </li>
 </ol>
-
-<pre class="highlight plaintext"><code>rake --&gt; Migrator.migrate -&gt; up/down ---&gt; new(direction, migrations).migrate --&gt; runnable.each {|item| execute_migration_in_transaction(item)} -&gt; migration_proxy.migrate(direction) -&gt; Migration.instance.migrate -&gt; Migration.instance.exec_migration() -&gt; 调用迁移文件的up/down/change ---&gt; 泗洪method_missing hook add_column, remove_column 等发送到connection, connection 为各种数据库adapter
-
-&gt; 借鉴的地方， 1. 使用MigrationProxy代替真是的文件， 比较轻，可以实现一些version，时间戳等比较方法 , 实现将文件系统转换为ruby对象， 接入到系统内部。2. 使用method_missing 来进行委托，将数据库connection中具有的方法实现到 Migration
-</code></pre><div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

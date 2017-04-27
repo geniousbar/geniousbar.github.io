@@ -14,20 +14,21 @@
 <h4 id="概念">概念</h4>
 <p>image(景象), container(容器),volume（数据卷）</p>
 <pre class="highlight plaintext"><code>    镜像(Image)和容器(Container)的关系,就像是面向对象程序设计中 的 类 和 实例 一样,镜像是静态的定义,容器是镜像运行时的实体。容器可以被 创建、启动、停止、删除、暂停等。
-    容器的实质是进程,但与直接在宿主执行的进程不同,容器进程运行于属于自己的 独立的 命名空间。因此容器可以拥有自己的 root 文件系统、自己的网络配置、 自己的进程空间,甚至自己的用户 ID...</code></pre><div class="read-more"><a href="/2017/04/25/docker-abc/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/04/20/rails-activerecord/">Rails ActivRecord源码（未完成）</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 20, 2017</span></div><div class="tag-labels"><a href="/tags/rails/"><small class="tag-label">rails</small></a><a href="/tags/sourcecode/"><small class="tag-label">sourcecode</small></a></div><hr class="article-header-separator" /><h4 id="rails-activerecord-源码">rails activerecord 源码</h4>
+    容器的实质是进程,但与直接在宿主执行的进程不同,容器进程运行于属于自己的 独立的 命名空间。因此容器可以拥有自己的 root 文件系统、自己的网络配置、 自己的进程空间,甚至自己的用户 ID...</code></pre><div class="read-more"><a href="/2017/04/25/docker-abc/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/04/20/rails-activerecord/">Rails ActivRecord源码（未完成）</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 20, 2017</span></div><div class="tag-labels"><a href="/tags/rails/"><small class="tag-label">rails</small></a><a href="/tags/sourcecode/"><small class="tag-label">sourcecode</small></a></div><hr class="article-header-separator" /><h2 id="rails-activerecord-源码">rails activerecord 源码</h2>
 
-<h6 id="数据库的连接调用过程">数据库的连接调用过程</h6>
+<h2 id="数据库的连接调用过程">数据库的连接调用过程</h2>
 
 <ol>
-  <li>activercord base中的代码</li>
-</ol>
+  <li>
+    <p>activercord base中的代码</p>
 
-<pre class="highlight plaintext"><code>``` ruby
-  # activerecord/lib/active_record/railtie.rb
-    ActiveSupport.on_load(:active_record) do
-      self.configurations = Rails.application.config.database_configuration
+<pre class="highlight ruby"><code>   <span class="c1"># activerecord/lib/active_record/railtie.rb</span>
+     <span class="no">ActiveSupport</span><span class="p">.</span><span class="nf">on_load</span><span class="p">(</span><span class="ss">:active_record</span><span class="p">)</span> <span class="k">do</span>
+       <span class="nb">self</span><span class="p">.</span><span class="nf">configurations</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">database_configuration</span>
 
-      begin...</code></pre><div class="read-more"><a href="/2017/04/20/rails-activerecord/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/04/19/linux-maintain/">linux维护</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a></div><hr class="article-header-separator" /><h3 id="二台机器之间同步大文件拷贝文件到另一台机器">二台机器之间同步大文件(拷贝文件到另一台机器)</h3>
+       <span class="k">begin</span></code></pre>
+</li>
+</ol><div class="read-more"><a href="/2017/04/20/rails-activerecord/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/04/19/linux-maintain/">linux维护</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a></div><hr class="article-header-separator" /><h3 id="二台机器之间同步大文件拷贝文件到另一台机器">二台机器之间同步大文件(拷贝文件到另一台机器)</h3>
 <p>rsync -rP –rsh=ssh /file/path name@ip:/file/path</p>
 <h3 id="建立软连接">建立软连接</h3>
 <p>ln -s original/file/path soft/file/path</p>

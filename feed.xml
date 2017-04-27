@@ -13,7 +13,7 @@
     <link rel="alternate" href="http://geniousbar.github.io/2017/04/25/rails-activemodel/"/>
     <id>http://geniousbar.github.io/2017/04/25/rails-activemodel/</id>
     <published>2017-04-25T08:00:00+08:00</published>
-    <updated>2017-04-27T16:26:11+08:00</updated>
+    <updated>2017-04-27T17:35:38+08:00</updated>
     <summary type="html">&lt;p&gt;&lt;a href="#attribute_assignment"&gt;AttributeAssignment&lt;/a&gt;&lt;br&gt;
 &lt;a href="#callbacks"&gt;Callbacks&lt;/a&gt;&lt;br&gt;
 &lt;a href="#dirty"&gt;Dirty&lt;/a&gt;&lt;br&gt;
@@ -436,6 +436,77 @@
       &lt;p&gt;大概的调用 调用顺序为, define_callbacks :save 定义callback的名字，初始化CallbackChain, set_callback :save, :before, :save_messsage, 在CallbackChain中添加Callback 的实例, 在最后run_callback 的时候最为重要， 将前面两步做的操作都进行了兑现， 1. 调用CallBackChain#compile, compile 有意思的是初始化了一个CallbackSequence实例， 并对Callback数组进行inject Callback.apply 中最为重要， CallBack.apply 中将 Filters::Before, Filters::After中的其他通用部分， 执行条件(set_callback :save, :before, :do_something if: :xxx?), hook函数(do_something) 进行了lambda化，(条件为conditions_lambdas函数， hook为make_lambda), 并根据 kind(:before, :after, :around)进行了分发， 下降到Filters::Before 中， 则在 hook 的lambda的基础上进行了， 完善，完成了各自 Before, After 等的具体操作，这是最底层的具体到执行逻辑的部分。2. 执行， 上面的lambda化结果， 提供了一个Environment的环境， 包含:halt, :value, :target 等信息，&lt;/p&gt;
     &lt;/blockquote&gt;
   &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;active_model 中的 callback&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;active_model 中封装了， activesupport 中设定callback的繁琐步骤，而是通过 define_model_callbacks 来设定&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   |- define_model_callbacks :save
+     |- define_callbacks(callback, options)
+     |- send("_define_#{type}_model_callback", self, callback)
+       |-  klass.define_singleton_method("before_#{callback}") do |*args, &amp;amp;block|
+       |-    set_callback(:"#{callback}", :before, *args, &amp;amp;block)
+       |-  end
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt; &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ActiveModel&lt;/span&gt;
+   &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Callbacks&lt;/span&gt;
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;extended&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;base&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+       &lt;span class="n"&gt;base&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;class_eval&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+         &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Callbacks&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;define_model_callbacks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;callbacks&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;callbacks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;extract_options!&lt;/span&gt;
+       &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+         &lt;span class="ss"&gt;terminator: &lt;/span&gt;&lt;span class="n"&gt;deprecated_false_terminator&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+         &lt;span class="ss"&gt;skip_after_callbacks_if_terminated: &lt;/span&gt;&lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+         &lt;span class="ss"&gt;scope: &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:name&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+         &lt;span class="ss"&gt;only: &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:before&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:around&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:after&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+       &lt;span class="p"&gt;}.&lt;/span&gt;&lt;span class="nf"&gt;merge!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+       &lt;span class="n"&gt;types&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:only&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+       &lt;span class="n"&gt;callbacks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+         &lt;span class="n"&gt;define_callbacks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="n"&gt;types&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+           &lt;span class="nb"&gt;send&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"_define_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;_model_callback"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="kp"&gt;private&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;_define_before_model_callback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;klass&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+       &lt;span class="n"&gt;klass&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;define_singleton_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"before_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+         &lt;span class="n"&gt;set_callback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="ss"&gt;"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:before&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;_define_around_model_callback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;klass&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+       &lt;span class="n"&gt;klass&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;define_singleton_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"around_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+         &lt;span class="n"&gt;set_callback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="ss"&gt;"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:around&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;_define_after_model_callback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;klass&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+       &lt;span class="n"&gt;klass&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;define_singleton_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"after_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+         &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;extract_options!&lt;/span&gt;
+         &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:prepend&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;
+         &lt;span class="n"&gt;conditional&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Callbacks&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Conditionals&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Value&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+           &lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="kp"&gt;false&lt;/span&gt;
+         &lt;span class="p"&gt;}&lt;/span&gt;
+         &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:if&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:if&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;conditional&lt;/span&gt;
+         &lt;span class="n"&gt;set_callback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;callback&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="ss"&gt;"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:after&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+ &lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;  &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;good-part&lt;/p&gt;
 
@@ -862,201 +933,206 @@ sudo docker run ubuntu:14.04 /bin/sh -c "while true; do echo h
     <link rel="alternate" href="http://geniousbar.github.io/2017/04/20/rails-activerecord/"/>
     <id>http://geniousbar.github.io/2017/04/20/rails-activerecord/</id>
     <published>2017-04-20T08:00:00+08:00</published>
-    <updated>2017-04-26T16:20:00+08:00</updated>
-    <summary type="html">&lt;h4 id="rails-activerecord-源码"&gt;rails activerecord 源码&lt;/h4&gt;
+    <updated>2017-04-27T16:55:30+08:00</updated>
+    <summary type="html">&lt;h2 id="rails-activerecord-源码"&gt;rails activerecord 源码&lt;/h2&gt;
 
-&lt;h6 id="数据库的连接调用过程"&gt;数据库的连接调用过程&lt;/h6&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;activercord base中的代码&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;``` ruby
-  # activerecord/lib/active_record/railtie.rb
-    ActiveSupport.on_load(:active_record) do
-      self.configurations = Rails.application.config.database_configuration
-
-      begin...&lt;/code&gt;&lt;/pre&gt;</summary>
-    <content type="html">&lt;h4 id="rails-activerecord-源码"&gt;rails activerecord 源码&lt;/h4&gt;
-
-&lt;h6 id="数据库的连接调用过程"&gt;数据库的连接调用过程&lt;/h6&gt;
+&lt;h2 id="数据库的连接调用过程"&gt;数据库的连接调用过程&lt;/h2&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;activercord base中的代码&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;activercord base中的代码&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;   &lt;span class="c1"&gt;# activerecord/lib/active_record/railtie.rb&lt;/span&gt;
+     &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;on_load&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:active_record&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+       &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configurations&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Rails&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;application&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;database_configuration&lt;/span&gt;
+
+       &lt;span class="k"&gt;begin&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    <content type="html">&lt;h2 id="rails-activerecord-源码"&gt;rails activerecord 源码&lt;/h2&gt;
+
+&lt;h2 id="数据库的连接调用过程"&gt;数据库的连接调用过程&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;activercord base中的代码&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;   &lt;span class="c1"&gt;# activerecord/lib/active_record/railtie.rb&lt;/span&gt;
+     &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;on_load&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:active_record&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+       &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configurations&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Rails&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;application&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;database_configuration&lt;/span&gt;
+
+       &lt;span class="k"&gt;begin&lt;/span&gt;
+         &lt;span class="n"&gt;establish_connection&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="c1"&gt;# activerecord/lib/base.rb&lt;/span&gt;
+   &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Base&lt;/span&gt;
+     &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;ConnectionHandling&lt;/span&gt;
+     &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;Core&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="c1"&gt;# activerecord/lib/active_record/core.rb&lt;/span&gt;
+   &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ActiveRecord&lt;/span&gt;
+     &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Core&lt;/span&gt;
+       &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Concern&lt;/span&gt;
+       &lt;span class="n"&gt;included&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+         &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configurations&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+           &lt;span class="vc"&gt;@@configurations&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;ActiveRecord&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;ConnectionHandling&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;MergeAndResolveDefaultUrlConfig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;resolve&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="c1"&gt;# activerecord/lib/active_record/connectioin_handing.rb&lt;/span&gt;
+   &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ActiveRecord&lt;/span&gt;
+     &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ConnectionHandling&lt;/span&gt;
+       &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;establish_connection&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+
+       &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MergeAndResolveDefaultUrlConfig&lt;/span&gt;
+         &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;resolve&lt;/span&gt;
+           &lt;span class="no"&gt;ConnectionAdapters&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;ConnectionSpecification&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Resolver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;resolve_all&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="c1"&gt;# activerecord/lib/active_record/connectioin_adapter/connection_specification.rb&lt;/span&gt;
+   &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ActiveRecord&lt;/span&gt;
+     &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ConnectionAdapters&lt;/span&gt;
+       &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ConnectionSpecification&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+         &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Resolver&lt;/span&gt;
+           &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;resolve&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+             &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;
+               &lt;span class="n"&gt;resolve_connection&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;
+             &lt;span class="k"&gt;elsif&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;ActiveRecord&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;ConnectionHandling&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;RAILS_ENV&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;
+               &lt;span class="n"&gt;resolve_symbol_connection&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_sym&lt;/span&gt;
+             &lt;span class="k"&gt;else&lt;/span&gt;
+               &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="no"&gt;AdapterNotSpecified&lt;/span&gt;
+             &lt;span class="k"&gt;end&lt;/span&gt;
+           &lt;span class="k"&gt;end&lt;/span&gt;
+
+           &lt;span class="c1"&gt;# Expands each key in @configurations hash into fully resolved hash&lt;/span&gt;
+           &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;resolve_all&lt;/span&gt;
+             &lt;span class="n"&gt;config&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;configurations&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;dup&lt;/span&gt;
+             &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+               &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;resolve&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;
+             &lt;span class="k"&gt;end&lt;/span&gt;
+             &lt;span class="n"&gt;config&lt;/span&gt;
+           &lt;span class="k"&gt;end&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;``` ruby
-  # activerecord/lib/active_record/railtie.rb
-    ActiveSupport.on_load(:active_record) do
-      self.configurations = Rails.application.config.database_configuration
+&lt;blockquote&gt;
+  &lt;p&gt;调用链从上至下， base 中extend ConnectionHandlere, Core, 在core中通过configration=函数， 将database.yml 中的数据传递给 ConnectionHandling 进行配置的解析，合并等，　降低到Resolver中， 为具体实现的策略、算法。然后再代用establish_connection 调用connnection_handling文件中的 establish_connection 的方法, 通过connection_handler.establish_connection 建立数据库连接。 到此数据库建立连接成功。&lt;/p&gt;
+&lt;/blockquote&gt;
 
-      begin
-        establish_connection
-      end
-    end
+&lt;p&gt;&lt;strong&gt;在查看代码的时候需要连续的挑选文件， 查找函数， 而没有统一的累死java中interface中的概念，导致看起来，module之间的连接非常脆弱， 不是显而易见。&lt;/strong&gt;&lt;/p&gt;
 
-  # activerecord/lib/base.rb
-  class Base
-    extend ConnectionHandling
-    extend Core
-  end
-
-  # activerecord/lib/active_record/core.rb
-  module ActiveRecord
-    module Core
-      extend ActiveSupport::Concern
-      included do
-        def self.configurations=(config)
-          @@configurations = ActiveRecord::ConnectionHandling::MergeAndResolveDefaultUrlConfig.new(config).resolve
-        end
-      end
-    end
-  end
-
-  # activerecord/lib/active_record/connectioin_handing.rb
-  module ActiveRecord
-    module ConnectionHandling
-      def establish_connection
-      end
-
-      class MergeAndResolveDefaultUrlConfig
-        def resolve
-          ConnectionAdapters::ConnectionSpecification::Resolver.new(config).resolve_all
-        end
-      end
-    end
-  end
-
-  # activerecord/lib/active_record/connectioin_adapter/connection_specification.rb
-  module ActiveRecord
-    module ConnectionAdapters
-      class ConnectionSpecification #:nodoc:
-        class Resolver
-          def resolve(config)
-            if config
-              resolve_connection config
-            elsif env = ActiveRecord::ConnectionHandling::RAILS_ENV.call
-              resolve_symbol_connection env.to_sym
-            else
-              raise AdapterNotSpecified
-            end
-          end
-
-          # Expands each key in @configurations hash into fully resolved hash
-          def resolve_all
-            config = configurations.dup
-            config.each do |key, value|
-              config[key] = resolve(value) if value
-            end
-            config
-          end
-        end
-      end
-    end
-  end
-```
-
-调用链从上至下， base 中extend ConnectionHandlere, Core, 在core中通过configration=函数， 将database.yml 中的数据传递给 ConnectionHandling 进行配置的解析，合并等，　降低到Resolver中， 为具体实现的策略、算法。然后再代用establish_connection 调用connnection_handling文件中的 establish_connection 的方法, 通过connection_handler.establish_connection 建立数据库连接。 到此数据库建立连接成功。
-
-&amp;lt;em&amp;gt; 在查看代码的时候需要连续的挑选文件， 查找函数， 而没有统一的累死java中interface中的概念，导致看起来，module之间的连接非常脆弱， 不是显而易见。&amp;lt;/em&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
 &lt;ol&gt;
   &lt;li&gt;active record ConnectionSpecification&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;pre class="highlight plaintext"&gt;&lt;code&gt;1. 调用方法
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h6 id="数据库迁移"&gt;数据库迁移&lt;/h6&gt;
+&lt;h2 id="数据库迁移"&gt;数据库迁移&lt;/h2&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;调用链&lt;/li&gt;
-&lt;/ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;调用链&lt;/p&gt;
 
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;```
-  |- task :migrate
-    |- DatabaseTask.migrate
-      |- Migrator.migrate(migrations_paths, version || nil ) {|migration| scope.blank? ||| scope == migration.scope}
-        |- Migrator.migrate(migrations_paths, target_version, &amp;amp;block)
-          |- Migrator.up | Migrator.down
-            |- new(:up | :down, migrations, target_version).migrate
-              |- migrate_without_lock
-                |- runnable.each {|migration| execute_migration_in_transaction(migration, direction)} # runnable 寻找没有执行的migration
-                  |- execute_migration_in_transaction(migrations)
-                    |- migration.migrate(direction) # migration -&amp;gt; MigrationProxy
-                      |- Migration.instance.migrate(direction)
-                        |- exec_migration(conn, direction)
-                          |- send(:direction) # 因为 AddColumnToVariants &amp;lt; ActiveRecord::Migration
-                            |- add_column :variants, :part_number, :string
-                              |- method_missing
-                                |- connection.send(:add_column, [:variants, :part_number, :string], &amp;amp;block)
-                                  |- ActiveRecord::ConnectionHandling::ConnectionAdapters::SQLite3Adapter
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   |- task :migrate
+     |- DatabaseTask.migrate
+       |- Migrator.migrate(migrations_paths, version || nil ) {|migration| scope.blank? ||| scope == migration.scope}
+         |- Migrator.migrate(migrations_paths, target_version, &amp;amp;block)
+           |- Migrator.up | Migrator.down
+             |- new(:up | :down, migrations, target_version).migrate
+               |- migrate_without_lock
+                 |- runnable.each {|migration| execute_migration_in_transaction(migration, direction)} # runnable 寻找没有执行的migration
+                   |- execute_migration_in_transaction(migrations)
+                     |- migration.migrate(direction) # migration -&amp;gt; MigrationProxy
+                       |- Migration.instance.migrate(direction)
+                         |- exec_migration(conn, direction)
+                           |- send(:direction) # 因为 AddColumnToVariants &amp;lt; ActiveRecord::Migration
+                             |- add_column :variants, :part_number, :string
+                               |- method_missing
+                                 |- connection.send(:add_column, [:variants, :part_number, :string], &amp;amp;block)
+                                   |- ActiveRecord::ConnectionHandling::ConnectionAdapters::SQLite3Adapter
 
- ```
+&lt;/code&gt;&lt;/pre&gt;  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;总结一下流的顺序&lt;/p&gt;
 
-  ```ruby
-    def add_column(table_name, column_name, type, options = {}) #:nodoc:
-      if valid_alter_table_type?(type)
-        super(table_name, column_name, type, options)
-      else
-        alter_table(table_name) do |definition|
-          definition.column(column_name, type, options)
-        end
-      end
-    end
-
-    def alter_table(table_name, options = {}) #:nodoc:
-      altered_table_name = "a#{table_name}"
-      caller = lambda {|definition| yield definition if block_given?}
-
-      transaction do
-        move_table(table_name, altered_table_name,
-          options.merge(:temporary =&amp;gt; true))
-        move_table(altered_table_name, table_name, &amp;amp;caller)
-      end
-    end
-
-    def move_table(from, to, options = {}, &amp;amp;block) #:nodoc:
-      copy_table(from, to, options, &amp;amp;block)
-      drop_table(from)
-    end
-
-    def copy_table(from, to, options = {}) #:nodoc:
-      from_primary_key = primary_key(from)
-      options[:id] = false
-      create_table(to, options) do |definition|
-        @definition = definition
-        @definition.primary_key(from_primary_key) if from_primary_key.present?
-        columns(from).each do |column|
-          column_name = options[:rename] ?
-            (options[:rename][column.name] ||
-             options[:rename][column.name.to_sym] ||
-             column.name) : column.name
-          next if column_name == from_primary_key
-
-          @definition.column(column_name, column.type,
-            :limit =&amp;gt; column.limit, :default =&amp;gt; column.default,
-            :precision =&amp;gt; column.precision, :scale =&amp;gt; column.scale,
-            :null =&amp;gt; column.null, collation: column.collation)
-        end
-        yield @definition if block_given?
-      end
-      copy_table_indexes(from, to, options[:rename] || {})
-      copy_table_contents(from, to,
-        @definition.columns.map(&amp;amp;:name),
-        options[:rename] || {})
-    end
-
-    #其中的方式处理的比较奇怪，  是copy之后然后 drop, copy现有表 到中间表 然后 删除现有表，最后copy 中间表到 现有表表名， 其中每个步骤都涉及到 copy content, copy index, copy table schema 等, 其中会涉及到性能的问题吗？比如大量的数据插入？？？？？
-  ```
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   rake --&amp;gt; Migrator.migrate -&amp;gt; up/down ---&amp;gt; new(direction, migrations).migrate --&amp;gt; runnable.each {|item| execute_migration_in_transaction(item)} -&amp;gt; migration_proxy.migrate(direction) -&amp;gt; Migration.instance.migrate -&amp;gt; Migration.instance.exec_migration() -&amp;gt; 调用迁移文件的up/down/change ---&amp;gt; 泗洪method_missing hook add_column, remove_column 等发送到connection, connection 为各种数据库adapter
 &lt;/code&gt;&lt;/pre&gt;
-&lt;ol&gt;
-  &lt;li&gt;总结一下流的顺序&lt;/li&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;借鉴的地方， 1. 使用MigrationProxy代替真是的文件， 比较轻，可以实现一些version，时间戳等比较方法 , 实现将文件系统转换为ruby对象， 接入到系统内部。2. 使用method_missing 来进行委托，将数据库connection中具有的方法实现到 Migration&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;代码&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;add_column&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;table_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;column_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+       &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;valid_alter_table_type?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="k"&gt;super&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;table_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;column_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;else&lt;/span&gt;
+         &lt;span class="n"&gt;alter_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;table_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;definition&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+           &lt;span class="n"&gt;definition&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;column&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;column_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;alter_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;table_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+       &lt;span class="n"&gt;altered_table_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"a&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;table_name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+       &lt;span class="nb"&gt;caller&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;lambda&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;definition&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="n"&gt;definition&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;block_given?&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+
+       &lt;span class="n"&gt;transaction&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+         &lt;span class="n"&gt;move_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;table_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;altered_table_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+           &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;merge&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:temporary&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+         &lt;span class="n"&gt;move_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;altered_table_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;table_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="nb"&gt;caller&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;move_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;from&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{},&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+       &lt;span class="n"&gt;copy_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;from&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="n"&gt;drop_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;from&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;copy_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;from&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+       &lt;span class="n"&gt;from_primary_key&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;primary_key&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;from&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:id&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;false&lt;/span&gt;
+       &lt;span class="n"&gt;create_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;definition&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+         &lt;span class="vi"&gt;@definition&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;definition&lt;/span&gt;
+         &lt;span class="vi"&gt;@definition&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;primary_key&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;from_primary_key&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;from_primary_key&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;present?&lt;/span&gt;
+         &lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;from&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+           &lt;span class="n"&gt;column_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:rename&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;?&lt;/span&gt;
+             &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="n"&gt;rename&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;name&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt;
+              &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:rename&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;name&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_sym&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt;
+              &lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;name&lt;/span&gt;
+           &lt;span class="k"&gt;next&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;column_name&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;from_primary_key&lt;/span&gt;
+
+           &lt;span class="vi"&gt;@definition&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;column&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;column_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;type&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+             &lt;span class="ss"&gt;:limit&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;limit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:default&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;default&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+             &lt;span class="ss"&gt;:precision&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;precision&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:scale&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;scale&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+             &lt;span class="ss"&gt;:null&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;null&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;collation: &lt;/span&gt;&lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;collation&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+         &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="vi"&gt;@definition&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;block_given?&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+       &lt;span class="n"&gt;copy_table_indexes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;from&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:rename&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
+       &lt;span class="n"&gt;copy_table_contents&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;from&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+         &lt;span class="vi"&gt;@definition&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;columns&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="ss"&gt;:name&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+         &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:rename&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="c1"&gt;#其中的方式处理的比较奇怪，  是copy之后然后 drop, copy现有表 到中间表 然后 删除现有表，最后copy 中间表到 现有表表名， 其中每个步骤都涉及到 copy content, copy index, copy table schema 等, 其中会涉及到性能的问题吗？比如大量的数据插入？？？？？&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/li&gt;
 &lt;/ol&gt;
-
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;rake --&amp;gt; Migrator.migrate -&amp;gt; up/down ---&amp;gt; new(direction, migrations).migrate --&amp;gt; runnable.each {|item| execute_migration_in_transaction(item)} -&amp;gt; migration_proxy.migrate(direction) -&amp;gt; Migration.instance.migrate -&amp;gt; Migration.instance.exec_migration() -&amp;gt; 调用迁移文件的up/down/change ---&amp;gt; 泗洪method_missing hook add_column, remove_column 等发送到connection, connection 为各种数据库adapter
-
-&amp;gt; 借鉴的地方， 1. 使用MigrationProxy代替真是的文件， 比较轻，可以实现一些version，时间戳等比较方法 , 实现将文件系统转换为ruby对象， 接入到系统内部。2. 使用method_missing 来进行委托，将数据库connection中具有的方法实现到 Migration
-&lt;/code&gt;&lt;/pre&gt;</content>
+</content>
   </entry>
   <entry>
     <title>linux维护</title>
