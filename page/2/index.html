@@ -32,17 +32,20 @@ unzip archive_name.zip</p>
 <h3 id="linux根据关键字得到pid号">linux根据关键字得到pid号</h3>
 <p>pgrep -f keyword</p>
 <h3 id="linux创建sudo用户">linux创建sudo用户</h3>
-<p>adduser username</p><div class="read-more"><a href="/2016/09/07/linux/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/07/01/ruby-dsl/">Ruby Dsl</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">July 01, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">ruby</small></a><a href="/tags/dsl/"><small class="tag-label">dsl</small></a></div><hr class="article-header-separator" /><blockquote>
+<p>adduser username</p><div class="read-more"><a href="/2016/09/07/linux/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/07/01/ruby-dsl/">Ruby Dsl</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">July 01, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">ruby</small></a><a href="/tags/dsl/"><small class="tag-label">dsl</small></a></div><hr class="article-header-separator" /><h2 id="ruby-dsl">ruby dsl</h2>
+
+<blockquote>
   <p>ruby中的dsl大部分都是利用方法调用，eval代码。 来执行代码, 可以参考rails， 大量的dsl</p>
 </blockquote>
 
-<h4 id="whenever-代码-dsl">Whenever 代码 DSL</h4>
+<h2 id="whenever-代码-dsl">Whenever 代码 DSL</h2>
+
 <pre class="highlight ruby"><code>  <span class="n">bin</span>
     <span class="no">Whenever</span><span class="o">::</span><span class="no">CommandLine</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
       <span class="o">--</span> <span class="nb">self</span><span class="p">.</span><span class="nf">new</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">run</span>
         <span class="o">--</span> <span class="n">whenever_cron</span>
           <span class="o">--</span> <span class="no">Whenever</span><span class="p">.</span><span class="nf">corn</span>
-            <span class="o">--</span> <span class="o">**</span> <span class="no">Whenever</span><span class="o">::</span><span class="no">JobList</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">options</span></code></pre><div class="read-more"><a href="/2016/07/01/ruby-dsl/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/03/12/ruby-red-book/">Ruby 面向对象语言描述</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">March 12, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">ruby</small></a></div><hr class="article-header-separator" /><h2 id="面向对象设计实践指南ruby语言描述">面向对象设计实践指南Ruby语言描述</h2>
+            <span class="o">--</span> <span class="o">**</span> <span class="no">Whenever</span><span class="o">::</span><span class="no">JobList</span></code></pre><div class="read-more"><a href="/2016/07/01/ruby-dsl/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/03/12/ruby-red-book/">Ruby 面向对象语言描述</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">March 12, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">ruby</small></a></div><hr class="article-header-separator" /><h2 id="面向对象设计实践指南ruby语言描述">面向对象设计实践指南Ruby语言描述</h2>
 <blockquote>
   <p>问题比答案更重要， 下面的章节中会关注与问题的提问，然后才是问题的解决方案</p>
 </blockquote>
