@@ -239,8 +239,7 @@
     5. 这里在halt的实现方式上就有对比了， Rails vs Sinatra， rails中的callback实现的方式为每次检查Environment的变量， sinatra中为抛出异常， 传统认为抛出异常的代价是很高的。<br />
     6. sinatra中的invoke抽象的非常好， invoke是执行block然后将结果保存到body， status，response中<br />
     7. error 中的管理方法同路由中的一样，保存在类变量中， error =&gt; @error, :get, :put =&gt; @route,<br />
-    8. 其中的Delegator的设定， 可以避免代码污染，污染全局空间，将委托方法放在一个module中<br />
-    9. generate_method</p>
+    8. 其中的Delegator的设定， 可以避免代码污染，污染全局空间，将委托方法放在一个module中</p>
   </li>
 </ol>
 <div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

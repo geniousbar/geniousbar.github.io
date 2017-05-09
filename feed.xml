@@ -13,7 +13,7 @@
     <link rel="alternate" href="http://geniousbar.github.io/2017/05/08/sinatra/"/>
     <id>http://geniousbar.github.io/2017/05/08/sinatra/</id>
     <published>2017-05-08T08:00:00+08:00</published>
-    <updated>2017-05-09T15:37:49+08:00</updated>
+    <updated>2017-05-09T15:46:14+08:00</updated>
     <summary type="html">&lt;h2 id="sinatra"&gt;Sinatra&lt;/h2&gt;
 
 &lt;blockquote&gt;
@@ -277,8 +277,7 @@
     5. 这里在halt的实现方式上就有对比了， Rails vs Sinatra， rails中的callback实现的方式为每次检查Environment的变量， sinatra中为抛出异常， 传统认为抛出异常的代价是很高的。&lt;br /&gt;
     6. sinatra中的invoke抽象的非常好， invoke是执行block然后将结果保存到body， status，response中&lt;br /&gt;
     7. error 中的管理方法同路由中的一样，保存在类变量中， error =&amp;gt; @error, :get, :put =&amp;gt; @route,&lt;br /&gt;
-    8. 其中的Delegator的设定， 可以避免代码污染，污染全局空间，将委托方法放在一个module中&lt;br /&gt;
-    9. generate_method&lt;/p&gt;
+    8. 其中的Delegator的设定， 可以避免代码污染，污染全局空间，将委托方法放在一个module中&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 </content>
