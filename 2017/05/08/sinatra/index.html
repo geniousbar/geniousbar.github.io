@@ -1,0 +1,246 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>Sinatra | 日常学习</title><meta description="Sinatra     Sinatra 是ruby中最为简单的server框架，提供了一系列的dsl，来供构建server使用   目录结构概览    从目录结构看起， base.rb 中最为重要代码行数最多， 其中涵盖了所有的Sinatra重要代码， Response, Request, CommonLogger, NotFound, Helpers, Templates, Base   从调用逻辑看起          调用代码     require 'sinatra'     get  " /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">Sinatra</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">May 08, 2017</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">ruby</small></a><a href="/tags/sinatra/"><small class="tag-label">sinatra</small></a><a href="/tags/rails/"><small class="tag-label">rails</small></a></div><hr class="article-header-separator" /><h2 id="sinatra">Sinatra</h2>
+
+<blockquote>
+  <p>Sinatra 是ruby中最为简单的server框架，提供了一系列的dsl，来供构建server使用</p>
+</blockquote>
+
+<h4 id="目录结构概览">目录结构概览</h4>
+<blockquote>
+  <p>从目录结构看起， base.rb 中最为重要代码行数最多， 其中涵盖了所有的Sinatra重要代码， Response, Request, CommonLogger, NotFound, Helpers, Templates, Base</p>
+</blockquote>
+
+<h4 id="从调用逻辑看起">从调用逻辑看起</h4>
+
+<ol>
+  <li>
+    <p>调用代码</p>
+
+<pre class="highlight ruby"><code>   <span class="nb">require</span> <span class="s1">'sinatra'</span>
+
+   <span class="n">get</span> <span class="s1">'/'</span> <span class="k">do</span>
+     <span class="s1">'Hello world!1'</span>
+   <span class="k">end</span>
+
+   <span class="n">get</span> <span class="s1">'/car'</span> <span class="k">do</span>
+   <span class="k">end</span>
+
+   <span class="n">get</span> <span class="s1">'/car/info/:id'</span> <span class="k">do</span> <span class="o">|</span><span class="nb">id</span><span class="o">|</span>
+     <span class="nb">p</span> <span class="s1">'/car/info/:id ----'</span>
+     <span class="n">body</span> <span class="s1">'/car/info'</span>
+     <span class="n">status</span> <span class="mi">200</span>
+   <span class="k">end</span>
+
+   <span class="n">get</span> <span class="s1">'/car/info'</span> <span class="k">do</span>
+     <span class="n">body</span> <span class="s1">'/car/info'</span>
+     <span class="n">status</span> <span class="mi">200</span>
+   <span class="k">end</span>
+
+   <span class="c1"># main.rb</span>
+   <span class="kp">extend</span> <span class="no">Sinatra</span><span class="o">::</span><span class="no">Delegator</span>
+
+   <span class="n">call</span>
+</code></pre>  </li>
+  <li>
+    <p>代码调用栈</p>
+
+<pre class="highlight plaintext"><code>   |- extend Sinatra::Delegator
+     |- delegate [:get, :put ...] :register
+       |- Delegator.delegate(Application)
+         |- define_method :get do
+         |-  Application.send(get, *args, &amp;block)
+           |- Application &lt; Base
+           |- Base.get(path, opts, &amp;block)
+             |- route('GET', path, opts, &amp;block)
+               |- (@routes[verb] || []) &lt;&lt; compile!('GET', path, block, options)
+
+
+   |- call
+     |- call!(env)
+       |- @request  = Request.new(env)
+       |- @response = Response.new
+       |- invoke { dispatch! }
+       |- invoke { error_block!(response.status) }
+         |- res = catch(:halt) { yield }
+         |- body res
+           |- route!("GET", '/car/info', options, &amp;block)
+             |- routes.each do |pattern, keys, conditions, block|
+             |-  returned_pass_block = process_route(pattern, keys, conditions) do |*args|
+             |-    env['sinatra.route'] = block.instance_variable_get(:@route_name)
+             |-    route_eval { block[*args] }
+             |-  end
+               |- return unless match = pattern.match(route)
+               |- block ? block[self, values] : yield(self, values)
+</code></pre>
+    <blockquote>
+      <p>第一个步骤， 将 :get, :put 等方法， 委托给Application, Application 继承Base，拿get举例， get 的调用在@routes中添加 将proc 取消binding的 可执行proc(不知道为什么需要这样，详细见 generate_method, 而且method_name 还可以是 “{ver} ${path}”), Regrex 对象等</p>
+    </blockquote>
+
+    <blockquote>
+      <p>第二个执行， rack 中中间件调用call， 构建了response, Request.new(env), invoke 为一个接住halt异常，并且记录返回数据到response 的函数， dispatch!则更为重要， 在其中执行了route!, route！的目的为执行路由，寻找匹配的路由，然后执行其中的可执行proc， process_route, 使用存在routes中的正则匹配路径是否命中，命中则执行对应的proc，</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>代码</p>
+
+<pre class="highlight ruby"><code>   <span class="k">module</span> <span class="nn">Delegator</span> <span class="c1">#:nodoc:</span>
+     <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">delegate</span><span class="p">(</span><span class="o">*</span><span class="nb">methods</span><span class="p">)</span>
+
+       <span class="nb">methods</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">method_name</span><span class="o">|</span>
+         <span class="n">define_method</span><span class="p">(</span><span class="n">method_name</span><span class="p">)</span> <span class="k">do</span> <span class="o">|*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="o">|</span>
+           <span class="k">return</span> <span class="k">super</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span> <span class="k">if</span> <span class="nb">respond_to?</span> <span class="n">method_name</span>
+           <span class="no">Delegator</span><span class="p">.</span><span class="nf">target</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">method_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+         <span class="k">end</span>
+         <span class="kp">private</span> <span class="n">method_name</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+
+     <span class="n">delegate</span> <span class="ss">:get</span><span class="p">,</span> <span class="ss">:patch</span><span class="p">,</span> <span class="ss">:put</span><span class="p">,</span> <span class="ss">:post</span><span class="p">,</span> <span class="ss">:delete</span><span class="p">,</span> <span class="ss">:head</span><span class="p">,</span> <span class="ss">:options</span><span class="p">,</span> <span class="ss">:link</span><span class="p">,</span> <span class="ss">:unlink</span><span class="p">,</span>
+              <span class="ss">:template</span><span class="p">,</span> <span class="ss">:layout</span><span class="p">,</span> <span class="ss">:before</span><span class="p">,</span> <span class="ss">:after</span><span class="p">,</span> <span class="ss">:error</span><span class="p">,</span> <span class="ss">:not_found</span><span class="p">,</span> <span class="ss">:configure</span><span class="p">,</span>
+              <span class="ss">:set</span><span class="p">,</span> <span class="ss">:mime_type</span><span class="p">,</span> <span class="ss">:enable</span><span class="p">,</span> <span class="ss">:disable</span><span class="p">,</span> <span class="ss">:use</span><span class="p">,</span> <span class="ss">:development?</span><span class="p">,</span> <span class="ss">:test?</span><span class="p">,</span>
+              <span class="ss">:production?</span><span class="p">,</span> <span class="ss">:helpers</span><span class="p">,</span> <span class="ss">:settings</span><span class="p">,</span> <span class="ss">:register</span>
+
+     <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+       <span class="kp">attr_accessor</span> <span class="ss">:target</span>
+     <span class="k">end</span>
+
+     <span class="nb">self</span><span class="p">.</span><span class="nf">target</span> <span class="o">=</span> <span class="no">Application</span>
+   <span class="k">end</span>
+
+   <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="no">Base</span><span class="p">;</span> <span class="k">end</span>
+
+   <span class="k">class</span> <span class="nc">Base</span>
+     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">opts</span> <span class="o">=</span> <span class="p">{},</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+       <span class="n">conditions</span> <span class="o">=</span> <span class="vi">@conditions</span><span class="p">.</span><span class="nf">dup</span>
+       <span class="n">route</span><span class="p">(</span><span class="s1">'GET'</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">opts</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+
+       <span class="vi">@conditions</span> <span class="o">=</span> <span class="n">conditions</span>
+       <span class="n">route</span><span class="p">(</span><span class="s1">'HEAD'</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">opts</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">route</span><span class="p">(</span><span class="n">verb</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{},</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+       <span class="c1"># Because of self.options.host</span>
+       <span class="n">signature</span> <span class="o">=</span> <span class="n">compile!</span><span class="p">(</span><span class="n">verb</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+       <span class="p">(</span><span class="vi">@routes</span><span class="p">[</span><span class="n">verb</span><span class="p">]</span> <span class="o">||=</span> <span class="p">[])</span> <span class="o">&lt;&lt;</span> <span class="n">signature</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">compile!</span><span class="p">(</span><span class="n">verb</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+       <span class="n">method_name</span>             <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">verb</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="s2">"</span>
+       <span class="n">unbound_method</span>          <span class="o">=</span> <span class="n">generate_method</span><span class="p">(</span><span class="n">method_name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+       <span class="n">pattern</span><span class="p">,</span> <span class="n">keys</span>           <span class="o">=</span> <span class="n">compile</span> <span class="n">path</span>
+       <span class="n">conditions</span><span class="p">,</span> <span class="vi">@conditions</span> <span class="o">=</span> <span class="vi">@conditions</span><span class="p">,</span> <span class="p">[]</span>
+
+       <span class="n">wrapper</span>                 <span class="o">=</span> <span class="n">block</span><span class="p">.</span><span class="nf">arity</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">?</span>
+         <span class="nb">proc</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="nb">p</span><span class="o">|</span> <span class="n">unbound_method</span><span class="p">.</span><span class="nf">bind</span><span class="p">(</span><span class="n">a</span><span class="p">).</span><span class="nf">call</span><span class="p">(</span><span class="o">*</span><span class="nb">p</span><span class="p">)</span> <span class="p">}</span> <span class="p">:</span>
+         <span class="nb">proc</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="nb">p</span><span class="o">|</span> <span class="n">unbound_method</span><span class="p">.</span><span class="nf">bind</span><span class="p">(</span><span class="n">a</span><span class="p">).</span><span class="nf">call</span> <span class="p">}</span>
+       <span class="p">[</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">conditions</span><span class="p">,</span> <span class="n">wrapper</span> <span class="p">]</span>
+     <span class="k">end</span>
+
+     <span class="k">def</span> <span class="nf">generate_method</span><span class="p">(</span><span class="n">method_name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+       <span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span><span class="p">.</span><span class="nf">to_sym</span>
+       <span class="n">define_method</span><span class="p">(</span><span class="n">method_name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+       <span class="nb">method</span> <span class="o">=</span> <span class="nb">instance_method</span> <span class="n">method_name</span>
+       <span class="n">remove_method</span> <span class="n">method_name</span>
+       <span class="nb">method</span>
+     <span class="k">end</span>
+   <span class="k">end</span>
+
+
+   <span class="k">def</span> <span class="nf">call!</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="c1"># :nodoc:</span>
+     <span class="vi">@env</span>      <span class="o">=</span> <span class="n">env</span>
+     <span class="vi">@request</span>  <span class="o">=</span> <span class="no">Request</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+     <span class="vi">@response</span> <span class="o">=</span> <span class="no">Response</span><span class="p">.</span><span class="nf">new</span>
+     <span class="vi">@response</span><span class="p">[</span><span class="s1">'Content-Type'</span><span class="p">]</span> <span class="o">=</span> <span class="kp">nil</span>
+     <span class="n">invoke</span> <span class="p">{</span> <span class="n">dispatch!</span> <span class="p">}</span>
+     <span class="n">invoke</span> <span class="p">{</span> <span class="n">error_block!</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">status</span><span class="p">)</span> <span class="p">}</span> <span class="k">unless</span> <span class="vi">@env</span><span class="p">[</span><span class="s1">'sinatra.error'</span><span class="p">]</span>
+
+     <span class="k">unless</span> <span class="vi">@response</span><span class="p">[</span><span class="s1">'Content-Type'</span><span class="p">]</span>
+       <span class="k">if</span> <span class="no">Array</span> <span class="o">===</span> <span class="n">body</span> <span class="n">and</span> <span class="n">body</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nf">respond_to?</span> <span class="ss">:content_type</span>
+         <span class="n">content_type</span> <span class="n">body</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nf">content_type</span>
+       <span class="k">else</span>
+         <span class="n">content_type</span> <span class="ss">:html</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+
+     <span class="vi">@response</span><span class="p">.</span><span class="nf">finish</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">invoke</span>
+     <span class="n">res</span> <span class="o">=</span> <span class="kp">catch</span><span class="p">(</span><span class="ss">:halt</span><span class="p">)</span> <span class="p">{</span> <span class="k">yield</span> <span class="p">}</span>
+     <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">res</span><span class="p">]</span> <span class="k">if</span> <span class="no">Integer</span> <span class="o">===</span> <span class="n">res</span> <span class="n">or</span> <span class="no">String</span> <span class="o">===</span> <span class="n">res</span>
+     <span class="n">body</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+   <span class="k">end</span>
+
+
+   <span class="k">def</span> <span class="nf">dispatch!</span>
+
+     <span class="n">invoke</span> <span class="k">do</span>
+       <span class="n">static!</span> <span class="k">if</span> <span class="n">settings</span><span class="p">.</span><span class="nf">static?</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="nf">get?</span> <span class="o">||</span> <span class="n">request</span><span class="p">.</span><span class="nf">head?</span><span class="p">)</span>
+       <span class="n">filter!</span> <span class="ss">:before</span>
+       <span class="n">route!</span>
+     <span class="k">end</span>
+   <span class="k">rescue</span> <span class="o">::</span><span class="no">Exception</span> <span class="o">=&gt;</span> <span class="n">boom</span>
+     <span class="n">invoke</span> <span class="p">{</span> <span class="n">handle_exception!</span><span class="p">(</span><span class="n">boom</span><span class="p">)</span> <span class="p">}</span>
+   <span class="k">ensure</span>
+     <span class="k">begin</span>
+       <span class="n">filter!</span> <span class="ss">:after</span> <span class="k">unless</span> <span class="n">env</span><span class="p">[</span><span class="s1">'sinatra.static_file'</span><span class="p">]</span>
+     <span class="k">rescue</span> <span class="o">::</span><span class="no">Exception</span> <span class="o">=&gt;</span> <span class="n">boom</span>
+       <span class="n">invoke</span> <span class="p">{</span> <span class="n">handle_exception!</span><span class="p">(</span><span class="n">boom</span><span class="p">)</span> <span class="p">}</span> <span class="k">unless</span> <span class="vi">@env</span><span class="p">[</span><span class="s1">'sinatra.error'</span><span class="p">]</span>
+     <span class="k">end</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">route!</span><span class="p">(</span><span class="n">base</span> <span class="o">=</span> <span class="n">settings</span><span class="p">,</span> <span class="n">pass_block</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
+     <span class="k">if</span> <span class="n">routes</span> <span class="o">=</span> <span class="n">base</span><span class="p">.</span><span class="nf">routes</span><span class="p">[</span><span class="vi">@request</span><span class="p">.</span><span class="nf">request_method</span><span class="p">]</span>
+       <span class="n">routes</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">pattern</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">conditions</span><span class="p">,</span> <span class="n">block</span><span class="o">|</span>
+         <span class="n">returned_pass_block</span> <span class="o">=</span> <span class="n">process_route</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">conditions</span><span class="p">)</span> <span class="k">do</span> <span class="o">|*</span><span class="n">args</span><span class="o">|</span>
+           <span class="n">env</span><span class="p">[</span><span class="s1">'sinatra.route'</span><span class="p">]</span> <span class="o">=</span> <span class="n">block</span><span class="p">.</span><span class="nf">instance_variable_get</span><span class="p">(</span><span class="ss">:@route_name</span><span class="p">)</span>
+           <span class="n">route_eval</span> <span class="p">{</span> <span class="n">block</span><span class="p">[</span><span class="o">*</span><span class="n">args</span><span class="p">]</span> <span class="p">}</span>
+         <span class="k">end</span>
+         <span class="c1"># don't wipe out pass_block in superclass</span>
+         <span class="n">pass_block</span> <span class="o">=</span> <span class="n">returned_pass_block</span> <span class="k">if</span> <span class="n">returned_pass_block</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+
+     <span class="c1"># Run routes defined in superclass.</span>
+     <span class="k">if</span> <span class="n">base</span><span class="p">.</span><span class="nf">superclass</span><span class="p">.</span><span class="nf">respond_to?</span><span class="p">(</span><span class="ss">:routes</span><span class="p">)</span>
+       <span class="k">return</span> <span class="n">route!</span><span class="p">(</span><span class="n">base</span><span class="p">.</span><span class="nf">superclass</span><span class="p">,</span> <span class="n">pass_block</span><span class="p">)</span>
+     <span class="k">end</span>
+
+     <span class="n">route_eval</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pass_block</span><span class="p">)</span> <span class="k">if</span> <span class="n">pass_block</span>
+     <span class="n">route_missing</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">process_route</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">conditions</span><span class="p">,</span> <span class="n">block</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[])</span>
+     <span class="n">route</span> <span class="o">=</span> <span class="vi">@request</span><span class="p">.</span><span class="nf">path_info</span>
+     <span class="n">route</span> <span class="o">=</span> <span class="s1">'/'</span> <span class="k">if</span> <span class="n">route</span><span class="p">.</span><span class="nf">empty?</span> <span class="n">and</span> <span class="n">not</span> <span class="n">settings</span><span class="p">.</span><span class="nf">empty_path_info?</span>
+     <span class="k">return</span> <span class="k">unless</span> <span class="n">match</span> <span class="o">=</span> <span class="n">pattern</span><span class="p">.</span><span class="nf">match</span><span class="p">(</span><span class="n">route</span><span class="p">)</span>
+
+     <span class="n">values</span> <span class="o">+=</span> <span class="n">match</span><span class="p">.</span><span class="nf">captures</span><span class="p">.</span><span class="nf">map!</span> <span class="p">{</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="n">force_encoding</span> <span class="no">URI_INSTANCE</span><span class="p">.</span><span class="nf">unescape</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="n">v</span> <span class="p">}</span>
+
+     <span class="k">if</span> <span class="n">values</span><span class="p">.</span><span class="nf">any?</span>
+       <span class="n">original</span><span class="p">,</span> <span class="vi">@params</span> <span class="o">=</span> <span class="n">params</span><span class="p">,</span> <span class="n">params</span><span class="p">.</span><span class="nf">merge</span><span class="p">(</span><span class="s1">'splat'</span> <span class="o">=&gt;</span> <span class="p">[],</span> <span class="s1">'captures'</span> <span class="o">=&gt;</span> <span class="n">values</span><span class="p">)</span>
+       <span class="n">keys</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span> <span class="no">Array</span> <span class="o">===</span> <span class="vi">@params</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="p">?</span> <span class="vi">@params</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">v</span> <span class="p">:</span> <span class="vi">@params</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span> <span class="k">if</span> <span class="n">v</span> <span class="p">}</span>
+     <span class="k">end</span>
+
+     <span class="kp">catch</span><span class="p">(</span><span class="ss">:pass</span><span class="p">)</span> <span class="k">do</span>
+       <span class="n">conditions</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="kp">throw</span> <span class="ss">:pass</span> <span class="k">if</span> <span class="n">c</span><span class="p">.</span><span class="nf">bind</span><span class="p">(</span><span class="nb">self</span><span class="p">).</span><span class="nf">call</span> <span class="o">==</span> <span class="kp">false</span> <span class="p">}</span>
+
+       <span class="n">block</span> <span class="p">?</span> <span class="n">block</span><span class="p">[</span><span class="nb">self</span><span class="p">,</span> <span class="n">values</span><span class="p">]</span> <span class="p">:</span> <span class="k">yield</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+     <span class="k">end</span>
+   <span class="k">ensure</span>
+     <span class="vi">@params</span> <span class="o">=</span> <span class="n">original</span> <span class="k">if</span> <span class="n">original</span>
+   <span class="k">end</span>
+</code></pre>  </li>
+  <li>
+    <p>总结<br />
+    1. DSL中通过将用户的block， 解除bind，执行bind来达到更换执行环境的问题，用这种方法实现的有 :get, :error 等, filter<br />
+    2. sinatra提供的一下halt, pass 等，是采用throw :halt, 等来实现的， throw异常 然后中断正常处理，从而由sinatra接管<br />
+    3. sinatra在路由匹配上每次都会将所有的现有的路由，首先通过verb(get, post, put) 等，过滤， 然后 循环匹配，<br />
+    4. 关于渲染模板中如何将实例变量(@name=’xx’) 带入到模板中去， sinatra使用的为tilt， 在render的时候 将Sinatra::Application 实例传递进去， 使tilt在Application的实例变量中渲染模板(get 获得的代码块在Application实例中执行， 所以实例变量等都会副职在 其中， 而渲染模板的环境也在Application中，保证能够正常执行）<br />
+    5. 这里在halt的实现方式上就有对比了， Rails vs Sinatra， rails中的callback实现的方式为每次检查Environment的变量， sinatra中为抛出异常， 传统认为抛出异常的代价是很高的。<br />
+    6. sinatra中的invoke抽象的非常好， invoke是执行block然后将结果保存到body， status，response中<br />
+    7. error 中的管理方法同路由中的一样，保存在类变量中， error =&gt; @error, :get, :put =&gt; @route,<br />
+    8. 其中的Delegator的设定， 可以避免代码污染，污染全局空间，将委托方法放在一个module中<br />
+    9. generate_method</p>
+  </li>
+</ol>
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

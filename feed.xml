@@ -4,10 +4,285 @@
   <id>http://geniousbar.github.io</id>
   <link href="http://geniousbar.github.io"/>
   <link href="http://geniousbar.github.io/feed.xml" rel="self"/>
-  <updated>2017-04-25T08:00:00+08:00</updated>
+  <updated>2017-05-08T08:00:00+08:00</updated>
   <author>
     <name>geniousbar</name>
   </author>
+  <entry>
+    <title>Sinatra</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2017/05/08/sinatra/"/>
+    <id>http://geniousbar.github.io/2017/05/08/sinatra/</id>
+    <published>2017-05-08T08:00:00+08:00</published>
+    <updated>2017-05-09T15:37:49+08:00</updated>
+    <summary type="html">&lt;h2 id="sinatra"&gt;Sinatra&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Sinatra 是ruby中最为简单的server框架，提供了一系列的dsl，来供构建server使用&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id="目录结构概览"&gt;目录结构概览&lt;/h4&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;从目录结构看起， base.rb 中最为重要代码行数最多， 其中涵盖了所有的Sinatra重要代码， Response, Request, CommonLogger, NotFound, Helpers, Templates, Base&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id="从调用逻辑看起"&gt;从调用逻辑看起&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;调用代码&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;   &lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;'sinatra'&lt;/span&gt;
+
+   &lt;span class="n"&gt;get&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    <content type="html">&lt;h2 id="sinatra"&gt;Sinatra&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Sinatra 是ruby中最为简单的server框架，提供了一系列的dsl，来供构建server使用&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id="目录结构概览"&gt;目录结构概览&lt;/h4&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;从目录结构看起， base.rb 中最为重要代码行数最多， 其中涵盖了所有的Sinatra重要代码， Response, Request, CommonLogger, NotFound, Helpers, Templates, Base&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id="从调用逻辑看起"&gt;从调用逻辑看起&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;调用代码&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;   &lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;'sinatra'&lt;/span&gt;
+
+   &lt;span class="n"&gt;get&lt;/span&gt; &lt;span class="s1"&gt;'/'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+     &lt;span class="s1"&gt;'Hello world!1'&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="n"&gt;get&lt;/span&gt; &lt;span class="s1"&gt;'/car'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="n"&gt;get&lt;/span&gt; &lt;span class="s1"&gt;'/car/info/:id'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+     &lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="s1"&gt;'/car/info/:id ----'&lt;/span&gt;
+     &lt;span class="n"&gt;body&lt;/span&gt; &lt;span class="s1"&gt;'/car/info'&lt;/span&gt;
+     &lt;span class="n"&gt;status&lt;/span&gt; &lt;span class="mi"&gt;200&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="n"&gt;get&lt;/span&gt; &lt;span class="s1"&gt;'/car/info'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+     &lt;span class="n"&gt;body&lt;/span&gt; &lt;span class="s1"&gt;'/car/info'&lt;/span&gt;
+     &lt;span class="n"&gt;status&lt;/span&gt; &lt;span class="mi"&gt;200&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="c1"&gt;# main.rb&lt;/span&gt;
+   &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;Sinatra&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Delegator&lt;/span&gt;
+
+   &lt;span class="n"&gt;call&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;代码调用栈&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   |- extend Sinatra::Delegator
+     |- delegate [:get, :put ...] :register
+       |- Delegator.delegate(Application)
+         |- define_method :get do
+         |-  Application.send(get, *args, &amp;amp;block)
+           |- Application &amp;lt; Base
+           |- Base.get(path, opts, &amp;amp;block)
+             |- route('GET', path, opts, &amp;amp;block)
+               |- (@routes[verb] || []) &amp;lt;&amp;lt; compile!('GET', path, block, options)
+
+
+   |- call
+     |- call!(env)
+       |- @request  = Request.new(env)
+       |- @response = Response.new
+       |- invoke { dispatch! }
+       |- invoke { error_block!(response.status) }
+         |- res = catch(:halt) { yield }
+         |- body res
+           |- route!("GET", '/car/info', options, &amp;amp;block)
+             |- routes.each do |pattern, keys, conditions, block|
+             |-  returned_pass_block = process_route(pattern, keys, conditions) do |*args|
+             |-    env['sinatra.route'] = block.instance_variable_get(:@route_name)
+             |-    route_eval { block[*args] }
+             |-  end
+               |- return unless match = pattern.match(route)
+               |- block ? block[self, values] : yield(self, values)
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;第一个步骤， 将 :get, :put 等方法， 委托给Application, Application 继承Base，拿get举例， get 的调用在@routes中添加 将proc 取消binding的 可执行proc(不知道为什么需要这样，详细见 generate_method, 而且method_name 还可以是 “{ver} ${path}”), Regrex 对象等&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;第二个执行， rack 中中间件调用call， 构建了response, Request.new(env), invoke 为一个接住halt异常，并且记录返回数据到response 的函数， dispatch!则更为重要， 在其中执行了route!, route！的目的为执行路由，寻找匹配的路由，然后执行其中的可执行proc， process_route, 使用存在routes中的正则匹配路径是否命中，命中则执行对应的proc，&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;代码&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;   &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Delegator&lt;/span&gt; &lt;span class="c1"&gt;#:nodoc:&lt;/span&gt;
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;delegate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nb"&gt;methods&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+       &lt;span class="nb"&gt;methods&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;method_name&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+         &lt;span class="n"&gt;define_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+           &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;super&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;respond_to?&lt;/span&gt; &lt;span class="n"&gt;method_name&lt;/span&gt;
+           &lt;span class="no"&gt;Delegator&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;target&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;send&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+         &lt;span class="kp"&gt;private&lt;/span&gt; &lt;span class="n"&gt;method_name&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="n"&gt;delegate&lt;/span&gt; &lt;span class="ss"&gt;:get&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:patch&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:put&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:post&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:delete&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:head&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:options&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:link&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:unlink&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+              &lt;span class="ss"&gt;:template&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:layout&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:before&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:after&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:error&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:not_found&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:configure&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+              &lt;span class="ss"&gt;:set&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:mime_type&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:enable&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:disable&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:use&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:development?&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:test?&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+              &lt;span class="ss"&gt;:production?&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:helpers&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:settings&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:register&lt;/span&gt;
+
+     &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="nb"&gt;self&lt;/span&gt;
+       &lt;span class="kp"&gt;attr_accessor&lt;/span&gt; &lt;span class="ss"&gt;:target&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;target&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Application&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Application&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Base&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Base&lt;/span&gt;
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;opts&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{},&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="n"&gt;conditions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="vi"&gt;@conditions&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;dup&lt;/span&gt;
+       &lt;span class="n"&gt;route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'GET'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;opts&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+       &lt;span class="vi"&gt;@conditions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;conditions&lt;/span&gt;
+       &lt;span class="n"&gt;route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'HEAD'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;opts&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;verb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{},&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="c1"&gt;# Because of self.options.host&lt;/span&gt;
+       &lt;span class="n"&gt;signature&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;compile!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;verb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="vi"&gt;@routes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;verb&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;signature&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;compile!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;verb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
+       &lt;span class="n"&gt;method_name&lt;/span&gt;             &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;verb&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+       &lt;span class="n"&gt;unbound_method&lt;/span&gt;          &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;generate_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="n"&gt;pattern&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;keys&lt;/span&gt;           &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;compile&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;
+       &lt;span class="n"&gt;conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="vi"&gt;@conditions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="vi"&gt;@conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+
+       &lt;span class="n"&gt;wrapper&lt;/span&gt;                 &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;arity&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;?&lt;/span&gt;
+         &lt;span class="nb"&gt;proc&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nb"&gt;p&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;unbound_method&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;bind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nb"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;
+         &lt;span class="nb"&gt;proc&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nb"&gt;p&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;unbound_method&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;bind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+       &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;pattern&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;keys&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;wrapper&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;generate_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="n"&gt;method_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_sym&lt;/span&gt;
+       &lt;span class="n"&gt;define_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="nb"&gt;method&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;instance_method&lt;/span&gt; &lt;span class="n"&gt;method_name&lt;/span&gt;
+       &lt;span class="n"&gt;remove_method&lt;/span&gt; &lt;span class="n"&gt;method_name&lt;/span&gt;
+       &lt;span class="nb"&gt;method&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+
+   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;call!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# :nodoc:&lt;/span&gt;
+     &lt;span class="vi"&gt;@env&lt;/span&gt;      &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;
+     &lt;span class="vi"&gt;@request&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Request&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="vi"&gt;@response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Response&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;
+     &lt;span class="vi"&gt;@response&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'Content-Type'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;nil&lt;/span&gt;
+     &lt;span class="n"&gt;invoke&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;dispatch!&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+     &lt;span class="n"&gt;invoke&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;error_block!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;status&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="vi"&gt;@env&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'sinatra.error'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+     &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="vi"&gt;@response&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'Content-Type'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+       &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="no"&gt;Array&lt;/span&gt; &lt;span class="o"&gt;===&lt;/span&gt; &lt;span class="n"&gt;body&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt; &lt;span class="n"&gt;body&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nf"&gt;respond_to?&lt;/span&gt; &lt;span class="ss"&gt;:content_type&lt;/span&gt;
+         &lt;span class="n"&gt;content_type&lt;/span&gt; &lt;span class="n"&gt;body&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nf"&gt;content_type&lt;/span&gt;
+       &lt;span class="k"&gt;else&lt;/span&gt;
+         &lt;span class="n"&gt;content_type&lt;/span&gt; &lt;span class="ss"&gt;:html&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="vi"&gt;@response&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;finish&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;invoke&lt;/span&gt;
+     &lt;span class="n"&gt;res&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;catch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:halt&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+     &lt;span class="n"&gt;res&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;res&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="no"&gt;Integer&lt;/span&gt; &lt;span class="o"&gt;===&lt;/span&gt; &lt;span class="n"&gt;res&lt;/span&gt; &lt;span class="n"&gt;or&lt;/span&gt; &lt;span class="no"&gt;String&lt;/span&gt; &lt;span class="o"&gt;===&lt;/span&gt; &lt;span class="n"&gt;res&lt;/span&gt;
+     &lt;span class="n"&gt;body&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;res&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+
+   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;dispatch!&lt;/span&gt;
+
+     &lt;span class="n"&gt;invoke&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+       &lt;span class="n"&gt;static!&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;static?&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;get?&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;head?&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="n"&gt;filter!&lt;/span&gt; &lt;span class="ss"&gt;:before&lt;/span&gt;
+       &lt;span class="n"&gt;route!&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;rescue&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Exception&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;boom&lt;/span&gt;
+     &lt;span class="n"&gt;invoke&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;handle_exception!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;boom&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+   &lt;span class="k"&gt;ensure&lt;/span&gt;
+     &lt;span class="k"&gt;begin&lt;/span&gt;
+       &lt;span class="n"&gt;filter!&lt;/span&gt; &lt;span class="ss"&gt;:after&lt;/span&gt; &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'sinatra.static_file'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+     &lt;span class="k"&gt;rescue&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Exception&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;boom&lt;/span&gt;
+       &lt;span class="n"&gt;invoke&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;handle_exception!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;boom&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="vi"&gt;@env&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'sinatra.error'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;route!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;base&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pass_block&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;nil&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;routes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;base&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;routes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="vi"&gt;@request&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;request_method&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+       &lt;span class="n"&gt;routes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;pattern&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;keys&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+         &lt;span class="n"&gt;returned_pass_block&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;process_route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pattern&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;keys&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;conditions&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+           &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'sinatra.route'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;instance_variable_get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:@route_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+           &lt;span class="n"&gt;route_eval&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+         &lt;span class="k"&gt;end&lt;/span&gt;
+         &lt;span class="c1"&gt;# don't wipe out pass_block in superclass&lt;/span&gt;
+         &lt;span class="n"&gt;pass_block&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;returned_pass_block&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;returned_pass_block&lt;/span&gt;
+       &lt;span class="k"&gt;end&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="c1"&gt;# Run routes defined in superclass.&lt;/span&gt;
+     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;base&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;superclass&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;respond_to?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:routes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;route!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;base&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;superclass&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pass_block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="n"&gt;route_eval&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;pass_block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;pass_block&lt;/span&gt;
+     &lt;span class="n"&gt;route_missing&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;process_route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pattern&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;keys&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;conditions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;nil&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;values&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
+     &lt;span class="n"&gt;route&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="vi"&gt;@request&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;path_info&lt;/span&gt;
+     &lt;span class="n"&gt;route&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'/'&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;empty?&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt; &lt;span class="n"&gt;not&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;empty_path_info?&lt;/span&gt;
+     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="n"&gt;match&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pattern&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;match&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;route&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+     &lt;span class="n"&gt;values&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="n"&gt;match&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;captures&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;map!&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;force_encoding&lt;/span&gt; &lt;span class="no"&gt;URI_INSTANCE&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;unescape&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+
+     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;any?&lt;/span&gt;
+       &lt;span class="n"&gt;original&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="vi"&gt;@params&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;merge&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'splat'&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s1"&gt;'captures'&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="n"&gt;keys&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="no"&gt;Array&lt;/span&gt; &lt;span class="o"&gt;===&lt;/span&gt; &lt;span class="vi"&gt;@params&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;?&lt;/span&gt; &lt;span class="vi"&gt;@params&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="vi"&gt;@params&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+
+     &lt;span class="kp"&gt;catch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:pass&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+       &lt;span class="n"&gt;conditions&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="kp"&gt;throw&lt;/span&gt; &lt;span class="ss"&gt;:pass&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;bind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="kp"&gt;false&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+
+       &lt;span class="n"&gt;block&lt;/span&gt; &lt;span class="p"&gt;?&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;yield&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="k"&gt;end&lt;/span&gt;
+   &lt;span class="k"&gt;ensure&lt;/span&gt;
+     &lt;span class="vi"&gt;@params&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;original&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;original&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;总结&lt;br /&gt;
+    1. DSL中通过将用户的block， 解除bind，执行bind来达到更换执行环境的问题，用这种方法实现的有 :get, :error 等, filter&lt;br /&gt;
+    2. sinatra提供的一下halt, pass 等，是采用throw :halt, 等来实现的， throw异常 然后中断正常处理，从而由sinatra接管&lt;br /&gt;
+    3. sinatra在路由匹配上每次都会将所有的现有的路由，首先通过verb(get, post, put) 等，过滤， 然后 循环匹配，&lt;br /&gt;
+    4. 关于渲染模板中如何将实例变量(@name=’xx’) 带入到模板中去， sinatra使用的为tilt， 在render的时候 将Sinatra::Application 实例传递进去， 使tilt在Application的实例变量中渲染模板(get 获得的代码块在Application实例中执行， 所以实例变量等都会副职在 其中， 而渲染模板的环境也在Application中，保证能够正常执行）&lt;br /&gt;
+    5. 这里在halt的实现方式上就有对比了， Rails vs Sinatra， rails中的callback实现的方式为每次检查Environment的变量， sinatra中为抛出异常， 传统认为抛出异常的代价是很高的。&lt;br /&gt;
+    6. sinatra中的invoke抽象的非常好， invoke是执行block然后将结果保存到body， status，response中&lt;br /&gt;
+    7. error 中的管理方法同路由中的一样，保存在类变量中， error =&amp;gt; @error, :get, :put =&amp;gt; @route,&lt;br /&gt;
+    8. 其中的Delegator的设定， 可以避免代码污染，污染全局空间，将委托方法放在一个module中&lt;br /&gt;
+    9. generate_method&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</content>
+  </entry>
   <entry>
     <title>Rails ActiveModel</title>
     <link rel="alternate" href="http://geniousbar.github.io/2017/04/25/rails-activemodel/"/>
@@ -1318,79 +1593,6 @@ caravel:
   docker exec -it caravel demo
 
 docker export &amp;lt;container id&amp;gt; &amp;gt; /sun/docker_data/docker_image/dev_golang_image_20161127.tar
-&lt;/code&gt;&lt;/pre&gt;</content>
-  </entry>
-  <entry>
-    <title>Postgres</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2017/01/13/postgres/"/>
-    <id>http://geniousbar.github.io/2017/01/13/postgres/</id>
-    <published>2017-01-13T08:00:00+08:00</published>
-    <updated>2017-04-26T16:19:48+08:00</updated>
-    <summary type="html">&lt;h3 id="pg创建只读用户"&gt;pg创建只读用户&lt;/h3&gt;
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;SELECT date_trunc('minute', dd) :: TIMESTAMP
-FROM generate_series('2016-10-01' :: TIMESTAMP, '2016-12-31' :: TIMESTAMP, '10 minute' :: INTERVAL) dd;
-
-CREATE USER read_from_pg WITH ENCRYPTED PASSWORD '...';
-GRANT CONNECT ON DATABASE test to...&lt;/code&gt;&lt;/pre&gt;</summary>
-    <content type="html">&lt;h3 id="pg创建只读用户"&gt;pg创建只读用户&lt;/h3&gt;
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;SELECT date_trunc('minute', dd) :: TIMESTAMP
-FROM generate_series('2016-10-01' :: TIMESTAMP, '2016-12-31' :: TIMESTAMP, '10 minute' :: INTERVAL) dd;
-
-CREATE USER read_from_pg WITH ENCRYPTED PASSWORD '...';
-GRANT CONNECT ON DATABASE test to read_from_pg;
-\c test
-GRANT USAGE ON SCHEMA public to read_from_pg;
-GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO read_from_pg;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO read_from_pg;
-
-select * from empsalary;
-update empsalary set salary=9999 where empno=10;
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="幻腾pg表结构"&gt;幻腾pg表结构&lt;/h3&gt;
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;select column_name, data_type, character_maximum_length
-from INFORMATION_SCHEMA.COLUMNS where table_name = 'logs';
-
-INSERT into big_logs (id, time, ip, device_ip, teleport_addr,op_code, params, dir,device_online,teleport_online) (
-  SELECT * from logs where time &amp;gt; '2017-02-17 00:00:00'
-);
-
-create table big_logs (id bigint, time timestamp, ip inet, device_ip integer, teleport_addr integer, op_code varchar(255), params varchar(1024), dir integer, device_online boolean, teleport_online boolean)
-SELECT setval('big_logs_id_seq', 2147483646);
-
-logs	index_logs_on_op_code	op_code
-logs	index_logs_on_teleport_addr	teleport_addr
-logs	index_logs_on_teleport_addr_and_time	teleport_addr
-logs	index_logs_on_teleport_addr_and_time	time
-logs	index_logs_on_time	time
-logs	logs_pkey	id
-
-CREATE INDEX index_big_logs_on_device_ip ON big_logs (device_ip);
--- CREATE INDEX index_logs_on_teleport_addr ON big_logs (teleport_addr);
-CREATE INDEX index_big_logs_on_time ON big_logs (time);
-CREATE INDEX index_big_logs_on_time_and_device_ip ON big_logs (time, device_ip);
-CREATE INDEX index_big_logs_on_teleport_addr ON big_logs (teleport_addr);
-CREATE INDEX index_big_logs_on_time_and_teleport_addr ON big_logs (time, teleport_addr);
-CREATE INDEX big_logs_pkey ON big_logs (id);
-
-
-select
- t.relname as table_name,
- i.relname as index_name,
- a.attname as column_name
-from
- pg_class t,
- pg_class i,
- pg_index ix,
- pg_attribute a
-where
- t.oid = ix.indrelid
- and i.oid = ix.indexrelid
- and a.attrelid = t.oid
- and a.attnum = ANY(ix.indkey)
- and t.relkind = 'r'
- and t.relname like '%big_logs%'
-order by
- t.relname,
- i.relname;
 &lt;/code&gt;&lt;/pre&gt;</content>
   </entry>
 </feed>
