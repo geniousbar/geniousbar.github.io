@@ -4,7 +4,7 @@
 <a href="#validations">Validations</a></p>
 <h2 id="rails-activemodel">rails activemodel</h2>
 
-<pre class="highlight ruby"><code>    <span class="k">module</span> <span class="nn">ActiveModel</span>
+<div class="highlight"><pre class="highlight ruby"><code>    <span class="k">module</span> <span class="nn">ActiveModel</span>
       <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Autoload</span>
 
       <span class="nb">autoload</span> <span class="ss">:AttributeAssignment</span>
@@ -33,13 +33,13 @@
         <span class="nb">autoload</span> <span class="ss">:UnknownAttributeError</span><span class="p">,</span> <span class="s1">'active_model/errors'</span>
       <span class="k">end</span>
     <span class="k">end</span>
-</code></pre>
+</code></pre></div>
 <h2 id="attribute_assignment">attribute_assignment</h2>
 <blockquote>
   <p>让任何的ruby对象接受hash赋值，实现是动态的分发, 2. 防止 = ActionController::Parameters 没有调用permit函数</p>
 </blockquote>
 
-<pre class="highlight ruby"><code>    <span class="k">def</span> <span class="nf">assign_attributes</span><span class="p">(</span><span class="n">new_attributes</span><span class="p">)</span>
+<div class="highlight"><pre class="highlight ruby"><code>    <span class="k">def</span> <span class="nf">assign_attributes</span><span class="p">(</span><span class="n">new_attributes</span><span class="p">)</span>
       <span class="k">if</span> <span class="o">!</span><span class="n">new_attributes</span><span class="p">.</span><span class="nf">respond_to?</span><span class="p">(</span><span class="ss">:stringify_keys</span><span class="p">)</span>
         <span class="k">raise</span> <span class="no">ArgumentError</span><span class="p">,</span> <span class="s2">"When assigning attributes, you must pass a hash as an argument."</span>
       <span class="k">end</span>
@@ -64,14 +64,14 @@
         <span class="k">raise</span> <span class="no">UnknownAttributeError</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
       <span class="k">end</span>
     <span class="k">end</span>
-</code></pre>
+</code></pre></div>
 <h2 id="attribute_methods">attribute_methods</h2>
 <ol>
   <li>
     <p>源码<br />
     目的 在方法中添加前缀后缀等(好像没啥用)</p>
 
-<pre class="highlight ruby"><code> <span class="k">module</span> <span class="nn">AttributeMethods</span>
+<div class="highlight"><pre class="highlight ruby"><code> <span class="k">module</span> <span class="nn">AttributeMethods</span>
    <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
 
    <span class="no">NAME_COMPILABLE_REGEXP</span> <span class="o">=</span> <span class="sr">/\A[a-zA-Z_]\w*[!?=]?\z/</span>
@@ -128,7 +128,7 @@
      <span class="k">end</span>
 
      <span class="k">class</span> <span class="nc">AttributeMethodMatcher</span> <span class="c1">#:nodoc:</span>
-       <span class="kp">attr_reader</span> <span class="ss">:prefix</span><span class="p">,</span> <span class="ss">:suffix</span><span class="p">,</span> <span class="ss">:method_missing_target</span>
+       <span class="nb">attr_reader</span> <span class="ss">:prefix</span><span class="p">,</span> <span class="ss">:suffix</span><span class="p">,</span> <span class="ss">:method_missing_target</span>
 
        <span class="no">AttributeMethodMatch</span> <span class="o">=</span> <span class="no">Struct</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">:target</span><span class="p">,</span> <span class="ss">:attr_name</span><span class="p">,</span> <span class="ss">:method_name</span><span class="p">)</span>
 
@@ -155,11 +155,11 @@
      <span class="k">end</span>
 
    <span class="k">end</span>
-</code></pre>  </li>
+</code></pre></div>  </li>
   <li>
     <p>调用栈为:</p>
 
-<pre class="highlight plaintext"><code>  attribute_method_affix  prefix: 'reset_'
+<div class="highlight"><pre class="highlight plaintext"><code>  attribute_method_affix  prefix: 'reset_'
   define_attribute_methods :name
 
   |- attribute_method_affix 的调用产生 一个 AttributeMethodMatcher的数组，维系着 添加前缀后缀的标记
@@ -168,11 +168,11 @@
      |- define_proxy_call true, generated_attribute_methods, method_name, matcher.method_missing_target, attr_name.to_s
 
    define_attribute_methods 作用的symbol， 将前缀后缀的标记应用在参数上， 主动定义 prefix_name_sufix 的方法，并将方法的调用分发到 prefix_attribute_sufix函数中.
-</code></pre>  </li>
+</code></pre></div>  </li>
   <li>
     <p>值的注意的地方</p>
 
-<pre class="highlight ruby"><code>   <span class="c1"># @method_name = "prefix_%s", method_name(name) =&gt; prefix_name</span>
+<div class="highlight"><pre class="highlight ruby"><code>   <span class="c1"># @method_name = "prefix_%s", method_name(name) =&gt; prefix_name</span>
    <span class="k">def</span> <span class="nf">method_name</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
      <span class="vi">@method_name</span> <span class="o">%</span> <span class="n">attr_name</span>
    <span class="k">end</span>
@@ -183,7 +183,7 @@
        <span class="kp">extend</span> <span class="no">Mutex_m</span>
      <span class="p">}.</span><span class="nf">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">mod</span><span class="o">|</span> <span class="kp">include</span> <span class="n">mod</span> <span class="p">}</span>
    <span class="k">end</span>
-</code></pre>  </li>
+</code></pre></div>  </li>
 </ol>
 
 <h2 id="callbacks">callbacks</h2>
@@ -191,7 +191,7 @@
   <li>
     <p>代码调用</p>
 
-<pre class="highlight ruby"><code>   <span class="c1">#activesupport</span>
+<div class="highlight"><pre class="highlight ruby"><code>   <span class="c1">#activesupport</span>
    <span class="k">class</span> <span class="nc">Record</span>
      <span class="kp">include</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Callbacks</span>
      <span class="n">define_callbacks</span> <span class="ss">:save</span>
@@ -214,11 +214,11 @@
 
    <span class="n">person</span> <span class="o">=</span> <span class="no">PersonRecord</span><span class="p">.</span><span class="nf">new</span>
    <span class="n">person</span><span class="p">.</span><span class="nf">save</span>
-</code></pre>  </li>
+</code></pre></div>  </li>
   <li>
     <p>调用栈分析</p>
 
-<pre class="highlight plaintext"><code>   # /activesupport/callbacks
+<div class="highlight"><pre class="highlight plaintext"><code>   # /activesupport/callbacks
    |- define_callbacks(names)
      |- class_attribute "_#{name}_callbacks", instance_writer: false
      |- set_callbacks name, CallbackChain.new(name, options)
@@ -237,9 +237,9 @@
        |- runner.call(Filters::Environment.new(self, false, nil block)).value
        |- e = Filters::Environment.new(self, false, nil, block)
        |- runner.call(e).value
-</code></pre>  </li>
+</code></pre></div>  </li>
   <li>代码
-<pre class="highlight ruby"><code>   <span class="k">def</span> <span class="nf">define_callbacks</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">)</span>
+<div class="highlight"><pre class="highlight ruby"><code>   <span class="k">def</span> <span class="nf">define_callbacks</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">)</span>
      <span class="n">options</span> <span class="o">=</span> <span class="n">names</span><span class="p">.</span><span class="nf">extract_options!</span>
 
      <span class="n">names</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span>
@@ -279,11 +279,11 @@
 
    <span class="k">class</span> <span class="nc">Callback</span> <span class="c1">#:nodoc:#</span>
      <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">build</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="n">filter</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
-       <span class="kp">new</span> <span class="n">chain</span><span class="p">.</span><span class="nf">name</span><span class="p">,</span> <span class="n">filter</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">chain</span><span class="p">.</span><span class="nf">config</span>
+       <span class="n">new</span> <span class="n">chain</span><span class="p">.</span><span class="nf">name</span><span class="p">,</span> <span class="n">filter</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">chain</span><span class="p">.</span><span class="nf">config</span>
      <span class="k">end</span>
 
-     <span class="kp">attr_accessor</span> <span class="ss">:kind</span><span class="p">,</span> <span class="ss">:name</span>
-     <span class="kp">attr_reader</span> <span class="ss">:chain_config</span>
+     <span class="nb">attr_accessor</span> <span class="ss">:kind</span><span class="p">,</span> <span class="ss">:name</span>
+     <span class="nb">attr_reader</span> <span class="ss">:chain_config</span>
 
      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">filter</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">chain_config</span><span class="p">)</span>
        <span class="vi">@chain_config</span>  <span class="o">=</span> <span class="n">chain_config</span>
@@ -403,7 +403,7 @@
        <span class="k">end</span>
        <span class="nb">private_class_method</span> <span class="ss">:halting</span>
      <span class="k">end</span>
-</code></pre>
+</code></pre></div>
     <blockquote>
       <p>大概的调用 调用顺序为, define_callbacks :save 定义callback的名字，初始化CallbackChain, set_callback :save, :before, :save_messsage, 在CallbackChain中添加Callback 的实例, 在最后run_callback 的时候最为重要， 将前面两步做的操作都进行了兑现， 1. 调用CallBackChain#compile, compile 有意思的是初始化了一个CallbackSequence实例， 并对Callback数组进行inject Callback.apply 中最为重要， CallBack.apply 中将 Filters::Before, Filters::After中的其他通用部分， 执行条件(set_callback :save, :before, :do_something if: :xxx?), hook函数(do_something) 进行了lambda化，(条件为conditions_lambdas函数， hook为make_lambda), 并根据 kind(:before, :after, :around)进行了分发， 下降到Filters::Before 中， 则在 hook 的lambda的基础上进行了， 完善，完成了各自 Before, After 等的具体操作，这是最底层的具体到执行逻辑的部分。2. 执行， 上面的lambda化结果， 提供了一个Environment的环境， 包含:halt, :value, :target 等信息，</p>
     </blockquote>
@@ -415,15 +415,15 @@
       <p>active_model 中封装了， activesupport 中设定callback的繁琐步骤，而是通过 define_model_callbacks 来设定</p>
     </blockquote>
 
-<pre class="highlight plaintext"><code>   |- define_model_callbacks :save
+<div class="highlight"><pre class="highlight plaintext"><code>   |- define_model_callbacks :save
      |- define_callbacks(callback, options)
      |- send("_define_#{type}_model_callback", self, callback)
        |-  klass.define_singleton_method("before_#{callback}") do |*args, &amp;block|
        |-    set_callback(:"#{callback}", :before, *args, &amp;block)
        |-  end
 
-</code></pre>
-<pre class="highlight ruby"><code> <span class="k">module</span> <span class="nn">ActiveModel</span>
+</code></pre></div>
+<div class="highlight"><pre class="highlight ruby"><code> <span class="k">module</span> <span class="nn">ActiveModel</span>
    <span class="k">module</span> <span class="nn">Callbacks</span>
      <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">extended</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="c1">#:nodoc:</span>
        <span class="n">base</span><span class="p">.</span><span class="nf">class_eval</span> <span class="k">do</span>
@@ -478,7 +478,7 @@
    <span class="k">end</span>
  <span class="k">end</span>
 
-</code></pre>  </li>
+</code></pre></div>  </li>
   <li>
     <p>good-part</p>
 
@@ -508,7 +508,7 @@
   <li>调用函数 changes_applied 来”持久化”, 将现有的改动， 复制到之前（previous）中</li>
 </ol>
 
-<pre class="highlight ruby"><code>      <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">AttributeMethods</span>
+<div class="highlight"><pre class="highlight ruby"><code>      <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">AttributeMethods</span>
 
       <span class="n">included</span> <span class="k">do</span>
         <span class="n">attribute_method_suffix</span> <span class="s1">'_changed?'</span><span class="p">,</span> <span class="s1">'_change'</span><span class="p">,</span> <span class="s1">'_will_change!'</span><span class="p">,</span> <span class="s1">'_was'</span>
@@ -545,13 +545,13 @@
         <span class="vi">@previously_changed</span> <span class="o">=</span> <span class="n">changes</span>
         <span class="vi">@changed_attributes</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">HashWithIndifferentAccess</span><span class="p">.</span><span class="nf">new</span>
       <span class="k">end</span>
-</code></pre>
+</code></pre></div>
 <h2 id="validations">validations</h2>
 <ol>
   <li>
     <p>示例代码</p>
 
-<pre class="highlight ruby"><code>   <span class="k">class</span> <span class="nc">Person</span>
+<div class="highlight"><pre class="highlight ruby"><code>   <span class="k">class</span> <span class="nc">Person</span>
      <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Validations</span>
      <span class="n">validates_with</span> <span class="no">MyValidator</span>
    <span class="k">end</span>
@@ -568,11 +568,11 @@
          <span class="c1"># ...</span>
        <span class="k">end</span>
    <span class="k">end</span>
-</code></pre>  </li>
+</code></pre></div>  </li>
   <li>
     <p>调用栈分析</p>
 
-<pre class="highlight plaintext"><code>   # validation 中的代码
+<div class="highlight"><pre class="highlight plaintext"><code>   # validation 中的代码
      define_callbacks :validate, scope: :name
      class_attribute :_validators, instance_writer: false
 
@@ -593,7 +593,7 @@
        .......
        |- validate(record)
          |- validate_each(record, attribute, value)
-</code></pre>
+</code></pre></div>
     <p><strong>一个主要的数据流走向为:</strong></p>
 
     <ol>
@@ -614,8 +614,8 @@
       </li>
     </ol>
 
-<pre class="highlight ruby"><code> <span class="k">class</span> <span class="nc">EachValidator</span> <span class="o">&lt;</span> <span class="no">Validator</span> <span class="c1">#:nodoc:</span>
-   <span class="kp">attr_reader</span> <span class="ss">:attributes</span>
+<div class="highlight"><pre class="highlight ruby"><code> <span class="k">class</span> <span class="nc">EachValidator</span> <span class="o">&lt;</span> <span class="no">Validator</span> <span class="c1">#:nodoc:</span>
+   <span class="nb">attr_reader</span> <span class="ss">:attributes</span>
 
    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
      <span class="vi">@attributes</span> <span class="o">=</span> <span class="no">Array</span><span class="p">(</span><span class="n">options</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="ss">:attributes</span><span class="p">))</span>
@@ -634,7 +634,7 @@
        <span class="kp">extend</span>  <span class="no">HelperMethods</span>
        <span class="kp">include</span> <span class="no">HelperMethods</span>
 
-       <span class="kp">attr_accessor</span> <span class="ss">:validation_context</span>
+       <span class="nb">attr_accessor</span> <span class="ss">:validation_context</span>
        <span class="kp">private</span> <span class="ss">:validation_context</span><span class="o">=</span>
        <span class="n">define_callbacks</span> <span class="ss">:validate</span><span class="p">,</span> <span class="ss">scope: :name</span>
 
@@ -706,7 +706,7 @@
 
 
  <span class="k">class</span> <span class="nc">EachValidator</span> <span class="o">&lt;</span> <span class="no">Validator</span> <span class="c1">#:nodoc:</span>
-   <span class="kp">attr_reader</span> <span class="ss">:attributes</span>
+   <span class="nb">attr_reader</span> <span class="ss">:attributes</span>
 
    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
      <span class="vi">@attributes</span> <span class="o">=</span> <span class="no">Array</span><span class="p">(</span><span class="n">options</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="ss">:attributes</span><span class="p">))</span>
@@ -724,6 +724,6 @@
    <span class="k">end</span>
  <span class="k">end</span>
 
-</code></pre>  </li>
+</code></pre></div>  </li>
 </ol>
 <div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

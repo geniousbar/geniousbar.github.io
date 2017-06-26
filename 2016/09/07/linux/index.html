@@ -16,7 +16,7 @@ deployer ALL=(ALL) NOPASSWD: ALL<br />
 %admin ALL=(ALL) NOPASSWD: ALL<br />
 %sudo   ALL=(ALL:ALL) NOPASSWD: ALL</p>
 <h3 id="virtualbox安装vboxlinuxadditions">virtualbox安装VboxLinuxAdditions</h3>
-<pre class="highlight plaintext"><code># prepare
+<div class="highlight"><pre class="highlight plaintext"><code># prepare
 $ sudo apt-get install -y linux-headers-generic build-essential dkms
 # get the right ISO from http://download.virtualbox.org/virtualbox/
 $ wget http://download.virtualbox.org/virtualbox/5.1.6/VBoxGuestAdditions_5.1.6.iso
@@ -32,8 +32,8 @@ $ rm VBoxGuestAdditions_5.1.6.iso
 $ sudo umount /media/VBoxGuestAdditions
 # remove the mount folder
 $ sudo rmdir /media/VBoxGuestAdditions
-</code></pre><h3 id="ubuntu增加虚拟内存">Ubuntu增加虚拟内存</h3>
-<pre class="highlight plaintext"><code>docker run --name caravel -d -p 8088:8088 amancevice/caravel
+</code></pre></div><h3 id="ubuntu增加虚拟内存">Ubuntu增加虚拟内存</h3>
+<div class="highlight"><pre class="highlight plaintext"><code>docker run --name caravel -d -p 8088:8088 amancevice/caravel
 docker exec -it caravel demo
 
 设置swappiness的值
@@ -61,8 +61,8 @@ swapoff -v /swap/swapadd
 swapoff -v /swap/swapadd
 mv /swap/swapadd /mnt/swap
 swapon /swap/swapadd
-</code></pre><h3 id="supervisor使用">supervisor使用</h3>
-<pre class="highlight plaintext"><code>sudo pip install supervisor
+</code></pre></div><h3 id="supervisor使用">supervisor使用</h3>
+<div class="highlight"><pre class="highlight plaintext"><code>sudo pip install supervisor
 conf file: /etc/supervisord.conf
 $ supervisorctl status
 $ supervisorctl stop usercenter
@@ -70,8 +70,8 @@ $ supervisorctl start usercenter
 $ supervisorctl restart usercenter
 $ supervisorctl reread
 $ supervisorctl update
-</code></pre><h3 id="linux手动释放内存">linux手动释放内存</h3>
-<pre class="highlight plaintext"><code>释放前最好sync一下，防止丢数据。
+</code></pre></div><h3 id="linux手动释放内存">linux手动释放内存</h3>
+<div class="highlight"><pre class="highlight plaintext"><code>释放前最好sync一下，防止丢数据。
 cache释放：
 To free pagecache:
 echo 1 &gt; /proc/sys/vm/drop_caches
@@ -81,4 +81,4 @@ echo 2 &gt; /proc/sys/vm/drop_caches
 
 To free pagecache, dentries and inodes:
 echo 3 &gt; /proc/sys/vm/drop_caches
-</code></pre><div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>
+</code></pre></div><div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

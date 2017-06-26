@@ -15,7 +15,7 @@
   <li>
     <p>调用代码</p>
 
-<pre class="highlight ruby"><code>   <span class="nb">require</span> <span class="s1">'sinatra'</span>
+<div class="highlight"><pre class="highlight ruby"><code>   <span class="nb">require</span> <span class="s1">'sinatra'</span>
 
    <span class="n">get</span> <span class="s1">'/'</span> <span class="k">do</span>
      <span class="s1">'Hello world!1'</span>
@@ -39,11 +39,11 @@
    <span class="kp">extend</span> <span class="no">Sinatra</span><span class="o">::</span><span class="no">Delegator</span>
 
    <span class="n">call</span>
-</code></pre>  </li>
+</code></pre></div>  </li>
   <li>
     <p>代码调用栈</p>
 
-<pre class="highlight plaintext"><code>   |- extend Sinatra::Delegator
+<div class="highlight"><pre class="highlight plaintext"><code>   |- extend Sinatra::Delegator
      |- delegate [:get, :put ...] :register
        |- Delegator.delegate(Application)
          |- define_method :get do
@@ -70,7 +70,7 @@
              |-  end
                |- return unless match = pattern.match(route)
                |- block ? block[self, values] : yield(self, values)
-</code></pre>
+</code></pre></div>
     <blockquote>
       <p>第一个步骤， 将 :get, :put 等方法， 委托给Application, Application 继承Base，拿get举例， get 的调用在@routes中添加 将proc 取消binding的 可执行proc(不知道为什么需要这样，详细见 generate_method, 而且method_name 还可以是 “{ver} ${path}”), Regrex 对象等</p>
     </blockquote>
@@ -82,7 +82,7 @@
   <li>
     <p>代码</p>
 
-<pre class="highlight ruby"><code>   <span class="k">module</span> <span class="nn">Delegator</span> <span class="c1">#:nodoc:</span>
+<div class="highlight"><pre class="highlight ruby"><code>   <span class="k">module</span> <span class="nn">Delegator</span> <span class="c1">#:nodoc:</span>
      <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">delegate</span><span class="p">(</span><span class="o">*</span><span class="nb">methods</span><span class="p">)</span>
 
        <span class="nb">methods</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">method_name</span><span class="o">|</span>
@@ -100,7 +100,7 @@
               <span class="ss">:production?</span><span class="p">,</span> <span class="ss">:helpers</span><span class="p">,</span> <span class="ss">:settings</span><span class="p">,</span> <span class="ss">:register</span>
 
      <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
-       <span class="kp">attr_accessor</span> <span class="ss">:target</span>
+       <span class="nb">attr_accessor</span> <span class="ss">:target</span>
      <span class="k">end</span>
 
      <span class="nb">self</span><span class="p">.</span><span class="nf">target</span> <span class="o">=</span> <span class="no">Application</span>
@@ -229,7 +229,7 @@
    <span class="k">ensure</span>
      <span class="vi">@params</span> <span class="o">=</span> <span class="n">original</span> <span class="k">if</span> <span class="n">original</span>
    <span class="k">end</span>
-</code></pre>  </li>
+</code></pre></div>  </li>
   <li>
     <p>总结<br />
     1. DSL中通过将用户的block， 解除bind，执行bind来达到更换执行环境的问题，用这种方法实现的有 :get, :error 等, filter<br />

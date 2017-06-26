@@ -3,7 +3,7 @@
 
 <p><a href="ab_test.mht">性能测试之ab测试工具-mht</a></p>
 <h3 id="ab测试参数详解">ab测试参数详解：</h3>
-<pre class="highlight plaintext"><code>-n 测试会话中所执行的请求个数,默认仅执行一个请求
+<div class="highlight"><pre class="highlight plaintext"><code>-n 测试会话中所执行的请求个数,默认仅执行一个请求
 -c 一次产生的请求个数,即同一时间发出多少个请求,默认为一次一个
 -t 测试所进行的最大秒数,默认为无时间限制....其内部隐含值是[-n 50000],它可以使对服务器的测试限制在一个固定的总时间以内
 -p 包含了需要POST的数据的文件
@@ -27,8 +27,8 @@
 -e 产生一个以逗号分隔的(CSV)文件,其中包含了处理每个相应百分比的请求所需要(从1%到100%)的相应百分比的(以微妙为单位)时间
 -h 显示使用方法
 -k 发送keep-alive指令到服务器端
-</code></pre><h3 id="ab测试解读">ab测试解读</h3>
-<pre class="highlight plaintext"><code>[root@web ~]# ab -n 100 -c 10 -k http://192.168.18.41/forum.php
+</code></pre></div><h3 id="ab测试解读">ab测试解读</h3>
+<div class="highlight"><pre class="highlight plaintext"><code>[root@web ~]# ab -n 100 -c 10 -k http://192.168.18.41/forum.php
 This is ApacheBench, Version 2.3 &lt;$Revision: 1430300 $&gt;
 Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
 Licensed to The Apache Software Foundation, http://www.apache.org/
@@ -70,4 +70,4 @@ Percentage of the requests served within a certain time (ms)
   98%    452
   99%    482
  100%    482 (longest request)
-</code></pre><div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>
+</code></pre></div><div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

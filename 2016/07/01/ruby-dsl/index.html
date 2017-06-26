@@ -6,7 +6,7 @@
 
 <h2 id="whenever-代码-dsl">Whenever 代码 DSL</h2>
 
-<pre class="highlight ruby"><code>  <span class="n">bin</span>
+<div class="highlight"><pre class="highlight ruby"><code>  <span class="n">bin</span>
     <span class="no">Whenever</span><span class="o">::</span><span class="no">CommandLine</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
       <span class="o">--</span> <span class="nb">self</span><span class="p">.</span><span class="nf">new</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">run</span>
         <span class="o">--</span> <span class="n">whenever_cron</span>
@@ -14,12 +14,12 @@
             <span class="o">--</span> <span class="o">**</span> <span class="no">Whenever</span><span class="o">::</span><span class="no">JobList</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">options</span><span class="p">).</span><span class="nf">generate_cron_output</span>
               <span class="o">--</span> <span class="n">read</span> <span class="n">file</span> <span class="o">&amp;&amp;</span> <span class="nb">instance_eval</span>
                 <span class="o">--</span> <span class="err">所以</span><span class="no">JobList</span><span class="err">中设定了</span><span class="n">dsl</span><span class="err">，</span>
-</code></pre>
+</code></pre></div>
 <h2 id="jbuilder-代码-dsl">Jbuilder 代码 DSL</h2>
 
 <p><strong>jbuilder 中使用了method_missing 来定义全部的方法</strong></p>
 
-<pre class="highlight ruby"><code>    <span class="k">def</span> <span class="nf">_scope</span>
+<div class="highlight"><pre class="highlight ruby"><code>    <span class="k">def</span> <span class="nf">_scope</span>
       <span class="n">parent_attributes</span><span class="p">,</span> <span class="n">parent_formatter</span> <span class="o">=</span> <span class="vi">@attributes</span><span class="p">,</span> <span class="vi">@key_formatter</span>
       <span class="vi">@attributes</span> <span class="o">=</span> <span class="no">BLANK</span>
       <span class="k">yield</span>
@@ -28,12 +28,12 @@
       <span class="vi">@attributes</span><span class="p">,</span> <span class="vi">@key_formatter</span> <span class="o">=</span> <span class="n">parent_attributes</span><span class="p">,</span> <span class="n">parent_formatter</span>
     <span class="k">end</span>
 
-</code></pre>
+</code></pre></div>
 <blockquote>
   <p>jbuilder 中最具有价值的是， 对嵌套循环的处理，其中会对 scope 的处理， 其中的大概的思想是， 保证保证自身@attributes变量的不变，并在自身环境中执行， 执行之后结果保存在@attributes中， 代码中的ensure特性，比较奇特， 保证的代码的最后执行</p>
 </blockquote>
 
-<pre class="highlight ruby"><code>    <span class="vi">@name</span> <span class="o">=</span> <span class="s1">'xxxxxx'</span>
+<div class="highlight"><pre class="highlight ruby"><code>    <span class="vi">@name</span> <span class="o">=</span> <span class="s1">'xxxxxx'</span>
     <span class="k">def</span> <span class="nf">names</span>
     	<span class="vi">@name</span>
     	<span class="k">ensure</span>
@@ -41,21 +41,21 @@
     <span class="k">end</span>
     <span class="nb">p</span> <span class="n">names</span>
     <span class="nb">p</span> <span class="vi">@name</span>
-</code></pre>
+</code></pre></div>
 <h2 id="mina-部署pum-总结">mina 部署pum 总结</h2>
 
 <ol>
   <li>mina文档， puma文档(mina-puma 文档中需要在setup中添加一些配置 )</li>
 </ol>
 
-<pre class="highlight ruby"><code>     <span class="n">queue!</span> <span class="sx">%(mkdir -p "#{deploy_to}/#{shared_path}/tmp/sockets")</span>
+<div class="highlight"><pre class="highlight ruby"><code>     <span class="n">queue!</span> <span class="sx">%(mkdir -p "#{deploy_to}/#{shared_path}/tmp/sockets")</span>
      <span class="n">queue!</span> <span class="sx">%(chmod g+rx,u+rwx "#{deploy_to}/#{shared_path}/tmp/sockets")</span>
      <span class="n">queue!</span> <span class="sx">%(mkdir -p "#{deploy_to}/#{shared_path}/tmp/pids")</span>
      <span class="n">queue!</span> <span class="sx">%(chmod g+rx,u+rwx "#{deploy_to}/#{shared_path}/tmp/pids")</span>
-</code></pre><p>deploy 中添加</p>
+</code></pre></div><p>deploy 中添加</p>
 
-<pre class="highlight ruby"><code>       <span class="n">invoke</span> <span class="ss">:'puma:phased_restart'</span>
-</code></pre>
+<div class="highlight"><pre class="highlight ruby"><code>       <span class="n">invoke</span> <span class="ss">:'puma:phased_restart'</span>
+</code></pre></div>
 <ol>
   <li>mina setup</li>
   <li>建立puma.rb</li>
@@ -73,13 +73,13 @@
     <p>rbenv 配置信息, server中所有用户使用一个rbenv，  invoke :’rbenv:reload’, 导致创建了 ~/.rbenv 目录结构 其中有shime, version， 导致执行 queue ‘rbenv versions’ 没有之前安装的ruby版本， 跟在terminal中完全不一样<br />
      解决方法： 手动set一些变量解决</p>
 
-<pre class="highlight ruby"><code>   <span class="n">queue</span> <span class="sx">%{
+<div class="highlight"><pre class="highlight ruby"><code>   <span class="n">queue</span> <span class="sx">%{
      #{echo_cmd %{export PATH="#{rbenv_path}/bin:$PATH"}}
      #{echo_cmd %{export PATH="#{rbenv_path}/shims:$PATH"}}
      #{echo_cmd %{export RBENV_ROOT="#{rbenv_path}"}}
    %}</span>
    <span class="n">queue</span> <span class="s1">'rbenv local 2.3.1'</span>
-</code></pre>
+</code></pre></div>
     <blockquote>
       <p>. rbenv 推荐使用user安装rbenv，而不是使用全局的</p>
     </blockquote>
@@ -89,9 +89,9 @@
    sshd 中的sshd_config 中的配置修改<br />
      man sshd 中并没有如此的文档</p>
 
-<pre class="highlight plaintext"><code>   AuthorizedKeysFile	%h/.ssh/authorized_keys
+<div class="highlight"><pre class="highlight plaintext"><code>   AuthorizedKeysFile	%h/.ssh/authorized_keys
    AllowUsers kaws root
-</code></pre>    <blockquote>
+</code></pre></div>    <blockquote>
       <p>%h替换为当前登录用户的家目录， 所以所有用户可以通过在~/.ssh/authorized_keys中配置可以登录的用户pubkey<br />
    AllowUsers 控制那个用户可以通过ssh登录<br />
    至此所有的ssh控制登录的操作都可以了</p>

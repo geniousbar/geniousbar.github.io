@@ -1,0 +1,86 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>Linux service | 日常学习</title><meta description="linux service  service     简单的说,系统为了某些功能必须要提供一些服务 (丌讳是系统本身还是网络方面),这个服务就称为 service 。 但是 service 的提供总是需要程序的运作吧!否则如何执行呢?所以达成这个 service 的程序我们就称呼他为 daemon 啰      super daemon,            multi-threaded  多线程,       single-threaded 单线程,                stand...  " /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">Linux service</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 22, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/service/"><small class="tag-label">service</small></a></div><hr class="article-header-separator" /><h2 id="linux-service">linux service</h2>
+
+<h4 id="service">service</h4>
+<blockquote>
+
+  <p>简单的说,系统为了某些功能必须要提供一些服务 (丌讳是系统本身还是网络方面),这个服务就称为 service 。 但是 service 的提供总是需要程序的运作吧!否则如何执行呢?所以达成这个 service 的程序我们就称呼他为 daemon 啰</p>
+</blockquote>
+
+<ul>
+  <li>super daemon,
+    <ul>
+      <li>multi-threaded  多线程,</li>
+      <li>single-threaded 单线程,</li>
+    </ul>
+  </li>
+  <li>
+    <p>stand alone, 可以单独启动服务， 优点， 存在内存中只许的提供服务</p>
+  </li>
+  <li>工作形态类型
+    <ul>
+      <li>signal-control, 有需求进来，就处理</li>
+      <li>interval-control, 定期执行，处理</li>
+    </ul>
+  </li>
+  <li>因为daemon 的程序启动需要考虑很多东西， 判断环境，配置参数等， 所以， 系统提供一些 脚本命令提供执行
+    <ul>
+      <li>启动脚本配置 /etc/init.d/*</li>
+      <li>服务初始化环境配置: /etc/sysconfig/*, 比如 /etc/sysconfig/network</li>
+      <li>super daemon配置文件: /etc/xinetd.conf, /etc/xinetd.d/*,</li>
+      <li>各服务的配置文件: /etc/*</li>
+      <li>各服务产生的数据库: /var/lib/*</li>
+      <li>服务pid记录处： /var/run/*</li>
+    </ul>
+  </li>
+  <li>
+    <p>service命令, 简单的分析 service后面的参数， 然后传达到/etc/init.d/中， 完成</p>
+  </li>
+  <li>[ ] xinetd 服务管理吗？centos中的统一服务管理?</li>
+</ul>
+
+<h4 id="总结">总结</h4>
+<ul>
+  <li>服务 (daemon) 主要可以分为 stand alone (服务可单独吪劢) 及 super daemon (透过 xinetd 统一管理的服务) 两种。</li>
+  <li>super daemon 由亍是经过一个统一的 xinetd 来管理,因此可以具有类似防火墙管理功能。此外,管理的联机机 制又可以分为 multi-threaded 及 single-threaded。</li>
+  <li>启动daemon 的程序通常最末会加上一个 d ,例如 sshd, vsftpd, httpd 等</li>
+  <li>stand alone daemon 吪劢的脚本放置到 /etc/init.d/ 这个目录中,super daemon 的配置文件在 /etc/xinetd.d/*<br />
+内, 而启动的方式则为 /etc/init.d/xientd restart</li>
+  <li>立即启动 stand alone daemon 的方法亦可以使用 service 这个挃令</li>
+  <li>Super daemon 的配置文件 /etc/xinetd.conf ,个别 daemon 配置文件则在 /etc/xinetd.d/* 内。在配置文件内, 还可以讴定联机客户端的联机不否, 具有类似防火墙的功能喔。</li>
+  <li>若想要统一管理防火墙的功能,可以透过 /etc/hosts.{allow,deny} ,若有安装 TCP Wrappers 时,还能够使用额外的 spawn 功能等</li>
+  <li>若想要讴定开机时吪劢某个服务时,可以透过 chkconfig, ntsysv 等挃令。</li>
+</ul>
+
+<h2 id="linux-package-manger">Linux package manger</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left"> </th>
+      <th style="text-align: left"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">/etc</td>
+      <td style="text-align: left">几乎所有的配置文件</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">/usr/bin</td>
+      <td style="text-align: left">一些可执行文件档案</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">/usr/lib</td>
+      <td style="text-align: left">一些程序使用的动态函数库</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">/usr/share/doc</td>
+      <td style="text-align: left">一些基本的软件使用手册</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">/usr/share/man</td>
+      <td style="text-align: left">一些man page档案</td>
+    </tr>
+  </tbody>
+</table>
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

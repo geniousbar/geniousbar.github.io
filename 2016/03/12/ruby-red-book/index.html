@@ -30,10 +30,10 @@
           <p>实践是检验真理的唯一标准， 实践会弄脏你的双手、是充满选择的。</p>
         </blockquote>
 
-<pre class="highlight plaintext"><code>面向对象设计问题是----------需求的变化。
+<div class="highlight"><pre class="highlight plaintext"><code>面向对象设计问题是----------需求的变化。
 面向对象设计本质是----------依赖关系的管理
 警示：小的坏的程序不太可能形成好的大的程序（当然可以通过重构来实现， 但是不应该期待谁能重构它）
-</code></pre></li>
+</code></pre></div></li>
     </ol>
   </li>
 </ol>
@@ -62,7 +62,7 @@
           @data = data<br />
       end</p>
 
-<pre class="highlight plaintext"><code>  def sum
+<div class="highlight"><pre class="highlight plaintext"><code>  def sum
       data.inject(0) do |sum, item|
           sum += item[0] * item[1]
       end
@@ -77,23 +77,23 @@
   def sum
       @data.inject(0) &amp;:product
   end    end
-</code></pre>
+</code></pre></div>
     <p>class Infer<br />
       attr_reader :one, :two<br />
       def initialize(one, two)<br />
           @one, @two = one, two<br />
       end</p>
 
-<pre class="highlight plaintext"><code>  def product
+<div class="highlight"><pre class="highlight plaintext"><code>  def product
       one * two
   end    end
  ```
-</code></pre></li>
+</code></pre></div></li>
 </ol>
 
-<pre class="highlight plaintext"><code> 3. 将外在的依赖关系尽量的隔离开来
+<div class="highlight"><pre class="highlight plaintext"><code> 3. 将外在的依赖关系尽量的隔离开来
  &gt; 将经常重复的代码封装，将对外在的依赖尽量隔离在一个地方（建立单独的方法，统一隔离对外在的依赖关系，思想类似与 依赖方法而不是数据）
-</code></pre>
+</code></pre></div>
 <h3 id="管理依赖关系">管理依赖关系</h3>
 <blockquote>
   <p>消息的三中类型， 1. 自身实现 2. 继承 3. 依赖（指代发送消息）</p>
@@ -113,8 +113,8 @@
       <li>注入依赖关系（依赖注入）</li>
     </ol>
 
-<pre class="highlight ruby"><code>  <span class="k">class</span> <span class="nc">Gear</span>
-      <span class="kp">attr_reader</span> <span class="ss">:chainring</span><span class="p">,</span> <span class="ss">:cog</span><span class="p">,</span> <span class="ss">:rim</span><span class="p">,</span> <span class="ss">:tire</span>
+<div class="highlight"><pre class="highlight ruby"><code>  <span class="k">class</span> <span class="nc">Gear</span>
+      <span class="nb">attr_reader</span> <span class="ss">:chainring</span><span class="p">,</span> <span class="ss">:cog</span><span class="p">,</span> <span class="ss">:rim</span><span class="p">,</span> <span class="ss">:tire</span>
       <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">chainring</span><span class="p">,</span> <span class="n">cog</span><span class="p">,</span> <span class="n">rim</span><span class="p">,</span> <span class="n">trie</span><span class="p">)</span>
           <span class="vi">@chaining</span> <span class="o">=</span> <span class="n">chainring</span>
           <span class="vi">@cog</span> <span class="o">=</span> <span class="n">cog</span>
@@ -130,7 +130,7 @@
 
   <span class="c1"># 重构之后代码</span>
    <span class="k">class</span> <span class="nc">Gear</span>
-       <span class="kp">attr_reader</span> <span class="ss">:chainring</span><span class="p">,</span> <span class="ss">:cog</span><span class="p">,</span> <span class="ss">:wheel</span>
+       <span class="nb">attr_reader</span> <span class="ss">:chainring</span><span class="p">,</span> <span class="ss">:cog</span><span class="p">,</span> <span class="ss">:wheel</span>
        <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">chainring</span><span class="p">,</span> <span class="n">cog</span><span class="p">,</span> <span class="n">wheel</span><span class="p">)</span>
            <span class="vi">@chainring</span> <span class="o">=</span> <span class="n">chanring</span>
            <span class="vi">@cog</span> <span class="o">=</span> <span class="n">cog</span>
@@ -141,11 +141,11 @@
        <span class="k">end</span>
    <span class="k">end</span>
    <span class="no">Gear</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="no">Wheel</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">)).</span><span class="nf">gear_inches</span>
-</code></pre></li>
+</code></pre></div></li>
   <li>隔离脆弱的外部信息</li>
 </ol>
 
-<pre class="highlight plaintext"><code>```ruby
+<div class="highlight"><pre class="highlight plaintext"><code>```ruby
 def gear_inches
     ratio * wheel.diameter
 end
@@ -168,7 +168,7 @@ end
 #移除依赖关系，并将其封装在自己的某个方法中
 
 ```
-</code></pre>
+</code></pre></div>
 <blockquote>
   <p>当一个类包含了对某个可能发生变化的消息的嵌入引用时，这样的技术变得非常有用。另一种方法为：将依赖关系反转（后面）</p>
   <ol>
@@ -193,11 +193,11 @@ end
   </ol>
 </blockquote>
 
-<pre class="highlight plaintext"><code>  对依赖关系的管理时创建面向未来的应用程序的核心。
+<div class="highlight"><pre class="highlight plaintext"><code>  对依赖关系的管理时创建面向未来的应用程序的核心。
   1. 依赖注入 可以建立松耦合的依赖关系
   2. 依赖于抽象 可以降低面对变化的可能行（建立在更高层次的抽象上）
   3. 管理依赖的关键时管理依赖的方向（依赖于更不容易变化的对象）
-</code></pre>
+</code></pre></div>
 <h3 id="创建灵活的接口类里面的接口">创建灵活的接口（类里面的接口）</h3>
 
 <ol>

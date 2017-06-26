@@ -24,31 +24,31 @@
   <li>
     <p>方法调用模式： 函数被保存成为一个属性时，称为方法， 调用为方法调用</p>
 
-<pre class="highlight javascript"><code>  <span class="kd">var</span> <span class="nx">object</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight"><pre class="highlight javascript"><code>  <span class="kd">var</span> <span class="nx">object</span> <span class="o">=</span> <span class="p">{</span>
       <span class="na">value</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
       <span class="na">increment</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
           <span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">+=</span><span class="mi">1</span><span class="p">;</span>
       <span class="p">}</span>
   <span class="p">}</span>
-</code></pre>  </li>
+</code></pre></div>  </li>
   <li>
     <p>函数调用模式： 并非一个对象属性时候， 那么他就是被当作一个函数来调用的， 由此模式调用的函数，this被绑定为 全局对象，设计错误，正确时候，当作内部函数调用时候，this仍然绑定到外部函数的this变量， 这个设计的后果是，方法不能利用内部函数的来帮助它工作， 因为内部函数的this绑定到了全局对象。</p>
 
-<pre class="highlight javascript"><code>  <span class="nx">object</span><span class="p">.</span><span class="kr">double</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+<div class="highlight"><pre class="highlight javascript"><code>  <span class="nx">object</span><span class="p">.</span><span class="kr">double</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
       <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
       <span class="kd">var</span> <span class="nx">helper</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
         <span class="nx">that</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">add</span><span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nx">that</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
       <span class="p">}</span>
       <span class="nx">helper</span><span class="p">();</span> <span class="c1">// 函数调用模式调用，helper必须是现在函数内部？？ 为什么， 实验一下</span>
   <span class="p">}</span>
-</code></pre>  </li>
+</code></pre></div>  </li>
   <li>构造器调用模式： new前缀调用</li>
   <li>
     <p>apply调用模式： 传递this， 参数数组</p>
 
-<pre class="highlight javascript"><code> <span class="kd">var</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
+<div class="highlight"><pre class="highlight javascript"><code> <span class="kd">var</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
  <span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="nx">add</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">array</span><span class="p">);</span>
-</code></pre>  </li>
+</code></pre></div>  </li>
 </ul>
 
 <hr />
@@ -57,7 +57,7 @@
   <li>
     <p>闭包：</p>
 
-<pre class="highlight javascript"><code>  <span class="kd">var</span> <span class="nx">myObject</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+<div class="highlight"><pre class="highlight javascript"><code>  <span class="kd">var</span> <span class="nx">myObject</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
       <span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
       <span class="k">return</span> <span class="p">{</span>
           <span class="na">increment</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">inc</span><span class="p">){</span>
@@ -91,21 +91,21 @@
       <span class="p">}</span>
   <span class="p">}</span>
 
-</code></pre>  </li>
+</code></pre></div>  </li>
   <li>回调： 函数可以传递特性</li>
   <li>模块化： 使用作用域特性</li>
   <li>
     <p>柯里化</p>
 
-<pre class="highlight javascript"><code>  <span class="nb">Function</span><span class="p">.</span><span class="nx">method</span><span class="p">(</span><span class="s1">'curry'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+<div class="highlight"><pre class="highlight javascript"><code>  <span class="nb">Function</span><span class="p">.</span><span class="nx">method</span><span class="p">(</span><span class="s1">'curry'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
       <span class="kd">var</span> <span class="nx">slice</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">,</span>
        <span class="nx">args</span> <span class="o">=</span> <span class="nx">slice</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">arguemnts</span><span class="p">),</span>
        <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
    <span class="k">return</span> <span class="kd">function</span><span class="p">(){</span>
-       <span class="k">return</span> <span class="nx">that</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">slice</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">arguments</span><span class="p">)));</span>
+       <span class="k">return</span> <span class="nx">that</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">slice</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kr">arguments</span><span class="p">)));</span>
    <span class="p">}</span>
  <span class="p">})</span>
-</code></pre>  </li>
+</code></pre></div>  </li>
   <li>记忆： 缓存下来之前的计算结果，在解决一些复杂、无解的问题，比如 动态规划问题上，无论哪些方法也都是在避免更少的运算，减枝，避免重复运算， 而记忆就是避免重复运算的一中方式</li>
 </ul>
 
@@ -120,21 +120,21 @@
 
     <blockquote>
 
-<pre class="highlight plaintext"><code>  新函数创建时候， Function构造器产生的函数对象会运行类似的代码，this.prototype = {constructor: this}；
+<div class="highlight"><pre class="highlight plaintext"><code>  新函数创建时候， Function构造器产生的函数对象会运行类似的代码，this.prototype = {constructor: this}；
   新函数对象被赋予一个prototype属性，这个是存放继承特征的地方，因为js没有提供一种方法去确定那个函数是打算用作构造器的，所以每个函数都会的到一个prototype， constructor属性没有什么用，重要的时prototype属性。
-</code></pre>    </blockquote>
+</code></pre></div>    </blockquote>
   </li>
   <li>
     <p>new 操作符号调用模式类似下边代码</p>
 
     <blockquote>
 
-<pre class="highlight plaintext"><code>  Function.method('newf, function(){
+<div class="highlight"><pre class="highlight plaintext"><code>  Function.method('newf, function(){
       var that = Object.create(this.prototype);
       var other = this.apply(that, argument);
       return (typeof other === 'object' &amp;&amp; other) || that;
   })
-</code></pre>    </blockquote>
+</code></pre></div>    </blockquote>
   </li>
 </ul>
 
@@ -151,7 +151,7 @@
   <li>
     <p>在一个纯粹的原型模式中，我们会摒弃类，转而专注于类。基于原型的继承相比基于类的继承在概念上更为简单，一个新对象可以继承一个就对象的属性，这样可以避免把一个应用拆解成一系列的嵌套抽象类的分类过程。</p>
 
-<pre class="highlight javascript"><code>      <span class="kd">var</span> <span class="nx">myMammal</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+<div class="highlight"><pre class="highlight javascript"><code>      <span class="kd">var</span> <span class="nx">myMammal</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
           <span class="nl">name</span><span class="p">:</span> <span class="s1">'mammal'</span><span class="p">;</span>
           <span class="nl">get_name</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
               <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
@@ -168,7 +168,7 @@
           <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'xxxxx'</span><span class="p">);</span>
       <span class="p">}</span>
       <span class="c1">// 差异化 继承， 通过定制新的对象，区别继承的对象</span>
-</code></pre>    <h6 id="函数化继承方式">函数化继承方式</h6>
+</code></pre></div>    <h6 id="函数化继承方式">函数化继承方式</h6>
   </li>
   <li>创建一个对象</li>
   <li>有选择的定义私有实例变量和方法，这些就时函数和中通过var 语句定义的</li>
@@ -176,7 +176,7 @@
   <li>
     <p>返回那个新对象</p>
 
-<pre class="highlight javascript"><code>
+<div class="highlight"><pre class="highlight javascript"><code>
   <span class="kd">var</span> <span class="nx">mammal</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">spec</span><span class="p">){</span>
       <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="p">{};</span>
       <span class="nx">that</span><span class="p">.</span><span class="nx">get_name</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
@@ -193,7 +193,7 @@
       <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span>
       <span class="nx">method</span> <span class="o">=</span> <span class="nx">that</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span>
       <span class="k">return</span> <span class="kd">function</span><span class="p">(){</span>
-      <span class="k">return</span> <span class="nx">method</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">that</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+      <span class="k">return</span> <span class="nx">method</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">that</span><span class="p">,</span> <span class="kr">arguments</span><span class="p">);</span>
       <span class="p">}</span>
   <span class="p">})</span>
 
@@ -213,7 +213,7 @@
   <span class="p">}</span>
   <span class="kd">var</span> <span class="nx">myCat</span> <span class="o">=</span> <span class="nx">cat</span><span class="p">({</span><span class="na">name</span><span class="p">:</span> <span class="s1">'xx'</span><span class="p">});</span>
 
-</code></pre>    <h4 id="方法">方法</h4>
+</code></pre></div>    <h4 id="方法">方法</h4>
   </li>
   <li>Array
     <blockquote>
@@ -223,21 +223,21 @@
   <li>
     <p>Function:  apply, call</p>
 
-<pre class="highlight javascript"><code>
+<div class="highlight"><pre class="highlight javascript"><code>
      <span class="nb">Function</span><span class="p">.</span><span class="nx">method</span><span class="p">(</span><span class="s1">'bind'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">that</span><span class="p">){</span>
          <span class="kd">var</span> <span class="nx">method</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span>
              <span class="nx">slice</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">,</span>
-             <span class="nx">args</span> <span class="o">=</span> <span class="nx">slice</span><span class="p">.</span><span class="nx">appply</span><span class="p">(</span><span class="nx">arguments</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+             <span class="nx">args</span> <span class="o">=</span> <span class="nx">slice</span><span class="p">.</span><span class="nx">appply</span><span class="p">(</span><span class="kr">arguments</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
          <span class="k">return</span> <span class="kd">function</span><span class="p">(){</span>
              <span class="k">return</span> <span class="nx">method</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">that</span><span class="p">,</span>
-                 <span class="nx">args</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">slice</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">arguments</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">])));</span>
+                 <span class="nx">args</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">slice</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kr">arguments</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">])));</span>
          <span class="p">}</span>
      <span class="p">})</span>
      <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
          <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
      <span class="p">}.</span><span class="nx">bind</span><span class="p">({</span><span class="na">value</span><span class="p">:</span> <span class="mi">111</span><span class="p">});</span>
      <span class="nx">x</span><span class="p">()</span> <span class="c1">// 111</span>
-</code></pre>  </li>
+</code></pre></div>  </li>
   <li>Number, toFixed, toPercisioin, toString</li>
   <li>Object, hasOwnPrototype</li>
   <li>RegExp, exec, test</li>
@@ -253,20 +253,20 @@
   <li>NaN
     <blockquote>
 
-<pre class="highlight plaintext"><code>typeof NaN === 'number' // true
+<div class="highlight"><pre class="highlight plaintext"><code>typeof NaN === 'number' // true
 NaN === NaN // false
 NaN !== NaN // true
 isNaN(), 函数 isFinite函数，过滤掉 NaN， Infinity
-</code></pre>    </blockquote>
+</code></pre></div>    </blockquote>
   </li>
   <li>伪数组
     <blockquote>
       <p>typeof并不能分辨出数组与对象的区别，正确的检测方法是</p>
 
-<pre class="highlight plaintext"><code>if (Object.prototype.toString.apply(my_value) === '[object Array]'){
+<div class="highlight"><pre class="highlight plaintext"><code>if (Object.prototype.toString.apply(my_value) === '[object Array]'){
   // my_value is Array
 }
-</code></pre>    </blockquote>
+</code></pre></div>    </blockquote>
   </li>
   <li>== 永远不要使用， 而是使用 ===</li>
   <li>function 语句与function表达式，function表达式会被提升</li>
