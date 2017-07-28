@@ -13,95 +13,94 @@
     <link rel="alternate" href="http://geniousbar.github.io/2017/07/28/crafting-rails/"/>
     <id>http://geniousbar.github.io/2017/07/28/crafting-rails/</id>
     <published>2017-07-28T08:00:00+08:00</published>
-    <updated>2017-07-28T20:59:55+08:00</updated>
+    <updated>2017-07-28T21:10:47+08:00</updated>
     <summary type="html">&lt;h2 id="crafting-rails-application"&gt;crafting rails application&lt;/h2&gt;
 
 &lt;h3 id="创建自己的render"&gt;创建自己的render&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;* rails plugins new pdf_render
-* gemspec, 之盾依赖， 作者、version， lib/pef_render.rb会被自动require（详细看bundler.io中的解释）
-* Gemfile, 直接引入gemspec，生命依赖关系
 
-rails render 解析
+&lt;ul&gt;
+  &lt;li&gt;rails plugins new pdf_render&lt;/li&gt;
+  &lt;li&gt;gemspec, 之盾依赖， 作者、version， lib/pef_render.rb会被自动require（详细看bundler.io中的解释）&lt;/li&gt;
+  &lt;li&gt;Gemfile, 直接引入gemspec，生命依赖关系&lt;/li&gt;
+&lt;/ul&gt;
 
-```ruby
-  # rails/actionpac k/lib/action_controller...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary>
+&lt;p&gt;rails render 解析&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;  &lt;span class="c1"&gt;# rails/actionpac k/lib/action_controller/metal...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary>
     <content type="html">&lt;h2 id="crafting-rails-application"&gt;crafting rails application&lt;/h2&gt;
 
 &lt;h3 id="创建自己的render"&gt;创建自己的render&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;* rails plugins new pdf_render
-* gemspec, 之盾依赖， 作者、version， lib/pef_render.rb会被自动require（详细看bundler.io中的解释）
-* Gemfile, 直接引入gemspec，生命依赖关系
 
-rails render 解析
+&lt;ul&gt;
+  &lt;li&gt;rails plugins new pdf_render&lt;/li&gt;
+  &lt;li&gt;gemspec, 之盾依赖， 作者、version， lib/pef_render.rb会被自动require（详细看bundler.io中的解释）&lt;/li&gt;
+  &lt;li&gt;Gemfile, 直接引入gemspec，生命依赖关系&lt;/li&gt;
+&lt;/ul&gt;
 
-```ruby
-  # rails/actionpac k/lib/action_controller/metal/rendcers.rb
+&lt;p&gt;rails render 解析&lt;/p&gt;
 
-  add :json do |json, options|
-    json = json.to_json(options) unless json.kind_of?(String)
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;  &lt;span class="c1"&gt;# rails/actionpac k/lib/action_controller/metal/rendcers.rb&lt;/span&gt;
 
-    if options[:callback].present?
-      self.content_type ||= Mime::JS
-      "#{options[:callback]}(#{json})"
-    else
-      self.content_type |||= Mime::JSON
-      self
+  &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="ss"&gt;:json&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="n"&gt;json&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_json&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;kind_of?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="no"&gt;String&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:callback&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nf"&gt;present?&lt;/span&gt;
+      &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;content_type&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="no"&gt;Mime&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;JS&lt;/span&gt;
+      &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:callback&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;(&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;)"&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;
+      &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;content_type&lt;/span&gt; &lt;span class="o"&gt;|||=&lt;/span&gt; &lt;span class="no"&gt;Mime&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;JSON&lt;/span&gt;
+      &lt;span class="nb"&gt;self&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="n"&gt;render&lt;/span&gt; &lt;span class="ss"&gt;json: &lt;/span&gt;&lt;span class="vi"&gt;@post&lt;/span&gt;
+  &lt;span class="n"&gt;json&lt;/span&gt;  &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="vi"&gt;@post&lt;/span&gt;&lt;span class="c1"&gt;# json 指的是， block中的json的变量&lt;/span&gt;
+  &lt;span class="c1"&gt;# 我们想提供的为&lt;/span&gt;
+  &lt;span class="n"&gt;render&lt;/span&gt; &lt;span class="ss"&gt;pdf: &lt;/span&gt;&lt;span class="s1"&gt;'contents'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;template: &lt;/span&gt;&lt;span class="s1"&gt;'path/to/template'&lt;/span&gt;
+
+  &lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;'prawn'&lt;/span&gt;  &lt;span class="c1"&gt;# prawn 提供 pdf的生成&lt;/span&gt;
+  &lt;span class="n"&gt;pdf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Prawn&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;
+  &lt;span class="n"&gt;pdf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;text&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'a string to pdf'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="n"&gt;pdf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;render_file&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'sample.pdf'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+  &lt;span class="c1"&gt;# lib/pdf_render.rb&lt;/span&gt;
+  &lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;'prawn'&lt;/span&gt;
+  &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Renderers&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;add&lt;/span&gt; &lt;span class="ss"&gt;:pdf&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="n"&gt;pdf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Prawn&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;
+    &lt;span class="n"&gt;pdf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;text&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;render_to_string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;send_data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;render&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;filename: &lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.pdf"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;diposition: &lt;/span&gt;&lt;span class="s2"&gt;"attachment"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="c1"&gt;# rails 如何设定正确的respon中的content type？&lt;/span&gt;
+  &lt;span class="no"&gt;Mime&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Type&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;register&lt;/span&gt; &lt;span class="s2"&gt;"application/pdf"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:pdf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sx"&gt;%w(pdf)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;rails render stack&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   AbstractController::Rendering.render
+   |
+   |-- _normalize_render
+   |      |-- _normalize_args
+   |      |-- _normalize_opions
+   |-- ActionView::Rending.render_to_body
+          |-- _proccess_options
+          |-- _render_template
+                  |-- context = view_context_class.new(view_renderer, view_assigns, self)
+                  |-- ActionView::Renderer.new(lookup_context).render(context, option)
+                      |-- Renderer.render_template(context, options)
+                          |-- TemplateRenderer.new(@lookup_context).render(context, options)
+
+  其中, 大部分的都是在ActionController::Base 中include进去的，所以。所有方法都是在controller中执行的
+    def view_assigns
+      protected_vars = _protected_ivars
+      variables      = instance_variables
+
+      variables.reject! { || sprotected_vars.include?  }
+      svariables.each_with_object({}) { |name, hash|
+        hash[name.slice(1, name.length)] = instance_variable_get(name)
+      }
     end
-  end
-
-  render json: @post
-  json  =&amp;gt; @post# json 指的是， block中的json的变量
-  # 我们想提供的为
-  render pdf: 'contents', template: 'path/to/template'
-
-  require 'prawn'  # prawn 提供 pdf的生成
-  pdf = Prawn::Document.new
-  pdf.text('a string to pdf')
-  pdf.render_file('sample.pdf')
-
-
-  # lib/pdf_render.rb
-  require 'prawn'
-  ActionController::Renderers.add :pdf do |filename, options|
-    pdf = Prawn::Document.new
-    pdf.text = render_to_string(options)
-    send_data(pdf.render, filename: "#{filename}.pdf", diposition: "attachment")
-  end
-
-  # rails 如何设定正确的respon中的content type？
-  Mime::Type.register "application/pdf", :pdf, [], %w(pdf)
-```
-
-----------------------
-
-**rails render stack**
-
-```text
- AbstractController::Rendering.render
- |
- |-- _normalize_render
- |      |-- _normalize_args
- |      |-- _normalize_opions
- |-- ActionView::Rending.render_to_body
-        |-- _proccess_options
-        |-- _render_template
-                |-- context = view_context_class.new(view_renderer, view_assigns, self)
-                |-- ActionView::Renderer.new(lookup_context).render(context, option)
-                    |-- Renderer.render_template(context, options)
-                        |-- TemplateRenderer.new(@lookup_context).render(context, options)
-
-其中, 大部分的都是在ActionController::Base 中include进去的，所以。所有方法都是在controller中执行的
-  def view_assigns
-    protected_vars = _protected_ivars
-    variables      = instance_variables
-
-    variables.reject! { || sprotected_vars.include?  }
-    svariables.each_with_object({}) { |name, hash|
-      hash[name.slice(1, name.length)] = instance_variable_get(name)
-    }
-  end
-  获取controller中所有的实例变量, 传递到 context中
-```
+    获取controller中所有的实例变量, 传递到 context中
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h3 id="通过active-model建立自己的模型"&gt;通过Active Model建立自己的模型&lt;/h3&gt;
 
@@ -109,8 +108,7 @@ rails render 解析
   &lt;li&gt;form_helper&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;```text
-  form_for(record, options)
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;  form_for(record, options)
   |-- builder = instantiate_builder(object_name, record, options)
       |-- builder = options[:builder] || default_form_builder_class # ActionView::Helpers::FormBuilder
       |-- builder.new(object_name, object, self, options) # self is ActionView::Base instance
@@ -120,36 +118,38 @@ rails render 解析
           |-- options["value"] = options.fetch("value") { value_before_type_cast(object) }
             |-- value_before_type_cast # 从object获取method_name的数值
   |-- form_tag_with_body(html_options, output) # 构建真正的form dom
-```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;所以rails中的文档有很明确的拓展方法:&lt;/strong&gt;&lt;/p&gt;
 
-所以rails中的文档有很明确的拓展方法:
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;  &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MyFormBuilder&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActionView&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;FormBuilder&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;div_radio_button&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;method&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tag_value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
+      &lt;span class="vi"&gt;@template&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;content_tag&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:div&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="vi"&gt;@template&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;radio_button&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+          &lt;span class="vi"&gt;@object_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;method&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tag_value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;objectify_options&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
 
-```ruby
-  class MyFormBuilder &amp;lt; ActionView::Helpers::FormBuilder
-    def div_radio_button(method, tag_value, options = {})
-      @template.content_tag(:div,
-        @template.radio_button(
-          @object_name, method, tag_value, objectify_options(options)
-        )
-      )
-    end
-  end
+  &lt;span class="c1"&gt;# The above code creates a new method +div_radio_button+ which wraps a div&lt;/span&gt;
+  &lt;span class="c1"&gt;# around the new radio button. Note that when options are passed in, you&lt;/span&gt;
+  &lt;span class="c1"&gt;# must call +objectify_options+ in order for the model object to get&lt;/span&gt;
+  &lt;span class="c1"&gt;# correctly passed to the method. If +objectify_options+ is not called,&lt;/span&gt;
+  &lt;span class="c1"&gt;# then the newly created helper will not be linked back to the model.&lt;/span&gt;
+  &lt;span class="c1"&gt;#   &amp;lt;%= form_for @person, :builder =&amp;gt; MyFormBuilder do |f| %&amp;gt;&lt;/span&gt;
+  &lt;span class="c1"&gt;#     I am a child: &amp;lt;%= f.div_radio_button(:admin, "child") %&amp;gt;&lt;/span&gt;
+  &lt;span class="c1"&gt;#     I am an adult: &amp;lt;%= f.div_radio_button(:admin, "adult") %&amp;gt;&lt;/span&gt;
+  &lt;span class="c1"&gt;#   &amp;lt;% end -%&amp;gt;&lt;/span&gt;
 
-  # The above code creates a new method +div_radio_button+ which wraps a div
-  # around the new radio button. Note that when options are passed in, you
-  # must call +objectify_options+ in order for the model object to get
-  # correctly passed to the method. If +objectify_options+ is not called,
-  # then the newly created helper will not be linked back to the model.
-  #   &amp;lt;%= form_for @person, :builder =&amp;gt; MyFormBuilder do |f| %&amp;gt;
-  #     I am a child: &amp;lt;%= f.div_radio_button(:admin, "child") %&amp;gt;
-  #     I am an adult: &amp;lt;%= f.div_radio_button(:admin, "adult") %&amp;gt;
-  #   &amp;lt;% end -%&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;使用继承类，定义自定义的方法， 其他的自然使用继承的方法调用&lt;/p&gt;
 
-```
-使用继承类，定义自定义的方法， 其他的自然使用继承的方法调用
-
-&amp;gt; 1. 如何扩展 FormBuilder， 2： FormBuilder 在编辑时候的，默认值，是如何取到的
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;如何扩展 FormBuilder， 2： FormBuilder 在编辑时候的，默认值，是如何取到的&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+</content>
   </entry>
   <entry>
     <title>thor option parse 的代替者</title>
