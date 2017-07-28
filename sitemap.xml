@@ -157,7 +157,47 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2017/06/29/databases/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2017/07/21/ruby-gem-thor/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2017/07/28/crafting-rails/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/tags/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/rails/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/ruby/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/gem/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/mysql/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/riak/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/redis/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/hbase/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -201,15 +241,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/ruby/</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>http://geniousbar.github.io/tags/sinatra/</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://geniousbar.github.io/tags/rails/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -289,7 +321,23 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2017/07/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2017/07/28/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2017/07/21/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/2017/06/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2017/06/29/</loc>
     <priority>0.5</priority>
   </url>
   <url>

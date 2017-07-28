@@ -4,16 +4,375 @@
   <id>http://geniousbar.github.io</id>
   <link href="http://geniousbar.github.io"/>
   <link href="http://geniousbar.github.io/feed.xml" rel="self"/>
-  <updated>2017-06-26T08:00:00+08:00</updated>
+  <updated>2017-07-28T08:00:00+08:00</updated>
   <author>
     <name>geniousbar</name>
   </author>
+  <entry>
+    <title>crafting rails</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2017/07/28/crafting-rails/"/>
+    <id>http://geniousbar.github.io/2017/07/28/crafting-rails/</id>
+    <published>2017-07-28T08:00:00+08:00</published>
+    <updated>2017-07-28T20:59:55+08:00</updated>
+    <summary type="html">&lt;h2 id="crafting-rails-application"&gt;crafting rails application&lt;/h2&gt;
+
+&lt;h3 id="创建自己的render"&gt;创建自己的render&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;* rails plugins new pdf_render
+* gemspec, 之盾依赖， 作者、version， lib/pef_render.rb会被自动require（详细看bundler.io中的解释）
+* Gemfile, 直接引入gemspec，生命依赖关系
+
+rails render 解析
+
+```ruby
+  # rails/actionpac k/lib/action_controller...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary>
+    <content type="html">&lt;h2 id="crafting-rails-application"&gt;crafting rails application&lt;/h2&gt;
+
+&lt;h3 id="创建自己的render"&gt;创建自己的render&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;* rails plugins new pdf_render
+* gemspec, 之盾依赖， 作者、version， lib/pef_render.rb会被自动require（详细看bundler.io中的解释）
+* Gemfile, 直接引入gemspec，生命依赖关系
+
+rails render 解析
+
+```ruby
+  # rails/actionpac k/lib/action_controller/metal/rendcers.rb
+
+  add :json do |json, options|
+    json = json.to_json(options) unless json.kind_of?(String)
+
+    if options[:callback].present?
+      self.content_type ||= Mime::JS
+      "#{options[:callback]}(#{json})"
+    else
+      self.content_type |||= Mime::JSON
+      self
+    end
+  end
+
+  render json: @post
+  json  =&amp;gt; @post# json 指的是， block中的json的变量
+  # 我们想提供的为
+  render pdf: 'contents', template: 'path/to/template'
+
+  require 'prawn'  # prawn 提供 pdf的生成
+  pdf = Prawn::Document.new
+  pdf.text('a string to pdf')
+  pdf.render_file('sample.pdf')
+
+
+  # lib/pdf_render.rb
+  require 'prawn'
+  ActionController::Renderers.add :pdf do |filename, options|
+    pdf = Prawn::Document.new
+    pdf.text = render_to_string(options)
+    send_data(pdf.render, filename: "#{filename}.pdf", diposition: "attachment")
+  end
+
+  # rails 如何设定正确的respon中的content type？
+  Mime::Type.register "application/pdf", :pdf, [], %w(pdf)
+```
+
+----------------------
+
+**rails render stack**
+
+```text
+ AbstractController::Rendering.render
+ |
+ |-- _normalize_render
+ |      |-- _normalize_args
+ |      |-- _normalize_opions
+ |-- ActionView::Rending.render_to_body
+        |-- _proccess_options
+        |-- _render_template
+                |-- context = view_context_class.new(view_renderer, view_assigns, self)
+                |-- ActionView::Renderer.new(lookup_context).render(context, option)
+                    |-- Renderer.render_template(context, options)
+                        |-- TemplateRenderer.new(@lookup_context).render(context, options)
+
+其中, 大部分的都是在ActionController::Base 中include进去的，所以。所有方法都是在controller中执行的
+  def view_assigns
+    protected_vars = _protected_ivars
+    variables      = instance_variables
+
+    variables.reject! { || sprotected_vars.include?  }
+    svariables.each_with_object({}) { |name, hash|
+      hash[name.slice(1, name.length)] = instance_variable_get(name)
+    }
+  end
+  获取controller中所有的实例变量, 传递到 context中
+```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id="通过active-model建立自己的模型"&gt;通过Active Model建立自己的模型&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;form_helper&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;```text
+  form_for(record, options)
+  |-- builder = instantiate_builder(object_name, record, options)
+      |-- builder = options[:builder] || default_form_builder_class # ActionView::Helpers::FormBuilder
+      |-- builder.new(object_name, object, self, options) # self is ActionView::Base instance
+  |-- output = capture(builder, &amp;amp;block) # form_for中的内部dom
+      |-- yield(builder)
+        |-- Tags::TextField.new("data_bank", :title, self, {object: object}).render
+          |-- options["value"] = options.fetch("value") { value_before_type_cast(object) }
+            |-- value_before_type_cast # 从object获取method_name的数值
+  |-- form_tag_with_body(html_options, output) # 构建真正的form dom
+```
+
+所以rails中的文档有很明确的拓展方法:
+
+```ruby
+  class MyFormBuilder &amp;lt; ActionView::Helpers::FormBuilder
+    def div_radio_button(method, tag_value, options = {})
+      @template.content_tag(:div,
+        @template.radio_button(
+          @object_name, method, tag_value, objectify_options(options)
+        )
+      )
+    end
+  end
+
+  # The above code creates a new method +div_radio_button+ which wraps a div
+  # around the new radio button. Note that when options are passed in, you
+  # must call +objectify_options+ in order for the model object to get
+  # correctly passed to the method. If +objectify_options+ is not called,
+  # then the newly created helper will not be linked back to the model.
+  #   &amp;lt;%= form_for @person, :builder =&amp;gt; MyFormBuilder do |f| %&amp;gt;
+  #     I am a child: &amp;lt;%= f.div_radio_button(:admin, "child") %&amp;gt;
+  #     I am an adult: &amp;lt;%= f.div_radio_button(:admin, "adult") %&amp;gt;
+  #   &amp;lt;% end -%&amp;gt;
+
+```
+使用继承类，定义自定义的方法， 其他的自然使用继承的方法调用
+
+&amp;gt; 1. 如何扩展 FormBuilder， 2： FormBuilder 在编辑时候的，默认值，是如何取到的
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <title>thor option parse 的代替者</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2017/07/21/ruby-gem-thor/"/>
+    <id>http://geniousbar.github.io/2017/07/21/ruby-gem-thor/</id>
+    <published>2017-07-21T08:00:00+08:00</published>
+    <updated>2017-07-28T21:01:05+08:00</updated>
+    <summary type="html">&lt;h2 id="thor"&gt;thor&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;option parse 的代替者，可以在shell中调用脚本，更方便的传递参数，转换参数类型，　设定默认值，进行必要参数校验等.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id="简单的示例"&gt;简单的示例：&lt;/h3&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Test&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Thor&lt;/span&gt;
+  &lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s2"&gt;"example FILE"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"an example task"&lt;/span&gt;
+  &lt;span class="n"&gt;method_option&lt;/span&gt; &lt;span class="ss"&gt;:delete&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:aliases&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;"-d"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:desc&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;"Delete the file after parsing it"&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;example&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary>
+    <content type="html">&lt;h2 id="thor"&gt;thor&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;option parse 的代替者，可以在shell中调用脚本，更方便的传递参数，转换参数类型，　设定默认值，进行必要参数校验等.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id="简单的示例"&gt;简单的示例：&lt;/h3&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Test&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Thor&lt;/span&gt;
+  &lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s2"&gt;"example FILE"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"an example task"&lt;/span&gt;
+  &lt;span class="n"&gt;method_option&lt;/span&gt; &lt;span class="ss"&gt;:delete&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:aliases&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;"-d"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:desc&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;"Delete the file after parsing it"&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;example&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;"You supplied the file: &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+    &lt;span class="n"&gt;delete_file&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:delete&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;delete_file&lt;/span&gt;
+      &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;"You specified that you would like to delete &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;
+      &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;"You do not want to delete &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="n"&gt;thor&lt;/span&gt; &lt;span class="nb"&gt;test&lt;/span&gt;&lt;span class="ss"&gt;:example&lt;/span&gt; &lt;span class="s1"&gt;'test.rb'&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="method_options"&gt;method_options&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;aliases, type, desc, 描述参数的类型，简写形式
+method_options :value, aliases: 'v', default: 1, type: :numeric
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id="invocations"&gt;invocations&lt;/h4&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;```ruby class Counter &amp;lt; Thor   desc "one", "Prints 1 2 3"   def one
+puts 1
+invoke :two
+invoke :three   end
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;desc “two”, “Prints 2 3”&lt;br /&gt;
+  def two&lt;br /&gt;
+    puts 2&lt;br /&gt;
+    invoke :three&lt;br /&gt;
+  end&lt;/p&gt;
+
+&lt;p&gt;desc “three”, “Prints 3”&lt;br /&gt;
+  def three&lt;br /&gt;
+    puts 3&lt;br /&gt;
+  end&lt;br /&gt;
+end&lt;br /&gt;
+    ```&lt;/p&gt;
+&lt;h4 id="executable"&gt;Executable&lt;/h4&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;#!/usr/bin/env ruby&lt;/span&gt;
+&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s2"&gt;"rubygems"&lt;/span&gt; &lt;span class="c1"&gt;# ruby1.9 doesn't "require" it though&lt;/span&gt;
+&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s2"&gt;"thor"&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MyThorCommand&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Thor&lt;/span&gt;
+  &lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s2"&gt;"foo"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"Prints foo"&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;foo&lt;/span&gt;
+    &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;"foo"&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="no"&gt;MyThorCommand&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;start&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;最终要的是rails 中的generator使用thor创建，拷贝模板，　参数解析等&lt;/p&gt;
+&lt;/blockquote&gt;
+</content>
+  </entry>
+  <entry>
+    <title>七周七数据库</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2017/06/29/databases/"/>
+    <id>http://geniousbar.github.io/2017/06/29/databases/</id>
+    <published>2017-06-29T08:00:00+08:00</published>
+    <updated>2017-07-28T21:01:20+08:00</updated>
+    <summary type="html">&lt;h2 id="七周七数据库"&gt;七周七数据库&lt;/h2&gt;
+&lt;p&gt;&lt;a href="#postgres"&gt;Postgres&lt;/a&gt;&lt;br&gt;
+&lt;a href="#riak"&gt;Riak&lt;/a&gt;&lt;br&gt;
+&lt;a href="#hbase"&gt;Rbase&lt;/a&gt;&lt;br&gt;
+&lt;a href="#mongodb"&gt;MongoDB&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id="概述"&gt;概述&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;选取那种数据库能够最好的解决你的问题&lt;/li&gt;
+  &lt;li&gt;数据库类型：关系型(Postgres)、键值类型(Riak, Redis)、多列型(Hbase)、面向文档型(MongoDb, CouchDb)、图型(Neo4j)&lt;/li&gt;
+  &lt;li&gt;模式是数据库所强制的一个刚性框架&lt;/li&gt;
+  &lt;li&gt;实现横向扩展（MongoDB， Hbase、Riak）， 纵向扩展（Postgres、Neo4j、Redis）&lt;/li&gt;
+  &lt;li&gt;关系型数据库： Mysql, H2, HSQLDB...&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    <content type="html">&lt;h2 id="七周七数据库"&gt;七周七数据库&lt;/h2&gt;
+&lt;p&gt;&lt;a href="#postgres"&gt;Postgres&lt;/a&gt;&lt;br /&gt;
+&lt;a href="#riak"&gt;Riak&lt;/a&gt;&lt;br /&gt;
+&lt;a href="#hbase"&gt;Rbase&lt;/a&gt;&lt;br /&gt;
+&lt;a href="#mongodb"&gt;MongoDB&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id="概述"&gt;概述&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;选取那种数据库能够最好的解决你的问题&lt;/li&gt;
+  &lt;li&gt;数据库类型：关系型(Postgres)、键值类型(Riak, Redis)、多列型(Hbase)、面向文档型(MongoDb, CouchDb)、图型(Neo4j)&lt;/li&gt;
+  &lt;li&gt;模式是数据库所强制的一个刚性框架&lt;/li&gt;
+  &lt;li&gt;实现横向扩展（MongoDB， Hbase、Riak）， 纵向扩展（Postgres、Neo4j、Redis）&lt;/li&gt;
+  &lt;li&gt;关系型数据库： Mysql, H2, HSQLDB,SQLite,&lt;/li&gt;
+  &lt;li&gt;键值数据库， KV， 因为对资源的要求非常少，所以会有着高性能， 但是当你有复杂的查询和聚合的需求时候，不会有帮助&lt;/li&gt;
+  &lt;li&gt;列型数据库：大约介于关系数据库-键值数据库之间HBase&lt;/li&gt;
+  &lt;li&gt;文档型数据库：存储的就是文档， 有一个独一无二的IB标识&lt;/li&gt;
+  &lt;li&gt;图数据库：在数据中建立联系， 如社交网络&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id="postgres"&gt;postgres&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;庞大的特性集合（触发器、存储过程、高级索引、数据安全性）， 查询灵活，模式是规范的。&lt;/li&gt;
+  &lt;li&gt;事务保证一致性， 索引，连接查询。&lt;/li&gt;
+  &lt;li&gt;存储过程， 可以减少客户端代码的编写，提高性能，但是， 却决定与数据库的绑定，&lt;/li&gt;
+  &lt;li&gt;视图，create View&lt;/li&gt;
+  &lt;li&gt;全文索引 TSVector TSQuery， Lucence, Sphinx， 搜索引擎&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;优点:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;符合ACID，确保提交的院子型，一致性， 隔离和持久, 数据模式非常规范，通过优化（建立索引等）可以轻松处理TB的数据&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;缺点:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;分区不是强项，数据要求比较严格，如果数据过于灵活，不是很容易融入到关系数据库严格的数据模式中，或者不需要一个完整的数据库功能带来的开销，需要进厂非常大量的键值对读写的操作&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id="riak"&gt;riak&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;分布式的键值数据库，值可以是任何类型的数据， 普通文本，json，xml，图片，音频等。对互联网友好，可以通过URL，http方式查询&lt;/li&gt;
+  &lt;li&gt;容错： 服务器可以在任何时刻启动或者停止，而不会引起任何单点故障，（非常注重可以写入性。。。为的是可以回家睡觉）&lt;/li&gt;
+  &lt;li&gt;缺点：对于自定义的查询缺乏支持， 键值的存储设计，是数据值无法进行连接（外键）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id="riak-中的架构设计"&gt;Riak 中的架构设计&lt;/h5&gt;
+&lt;ol&gt;
+  &lt;li&gt;环状：个个节点加入到一个环， 每个Vnode代表一系列经过hash的键，这个可以通过计算hash可快速寻找键值&lt;/li&gt;
+  &lt;li&gt;Riak中写入对象时候，可以选择在多个节点上创建这个值的副本，如果某个节点发生故障，还有另一个节点的副本可以使用.三个数值， N， W， R， ：n第一次写入最终复制的节点数量， 集群中的副本数量，W， 第一次成功写入返回前，必须成功写入的节点数，R是成功读取一项数据所必须的节点数，&lt;/li&gt;
+  &lt;li&gt;向量时钟， 解决冲突：&lt;/li&gt;
+  &lt;li&gt;可以使用Erlang， Javascript，写函数，提交前后的回调函数&lt;/li&gt;
+  &lt;li&gt;搜索： 如果你打算为大规模web应用提供搜索功能， Riak是一个明确的选择。 但是你需要大量简答的自有定义的查询，则不是明智的&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;优点:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;致力于最高可用性， 避免单点故障，如果使用Erlang就能够扩展Riak的核心，map reduce&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;缺点:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;没有严格的数据结构，数据模式， 自定义查询很弱。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id="hbase"&gt;hbase&lt;/h3&gt;
+
+&lt;p&gt;优点：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;值得注意的特性：健壮的可伸缩架构， 内置的版本，压缩功能。 保存wiki页面，自动实现了版本管理&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;缺点：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;5个节点是最小的配置， 学习曲线陡峭，除了行键之外，不提供任何索引功能，不提供排序， 所以如果不能使用行键查找，就只能使用扫描表，或者自己维护索引， 数据类型的缺失： 所有字段的数值都作为不解释的字节数组， 比如整数值、字符串、日期之类的，对这些的解释取决玉应用程序。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id="mongodb"&gt;mongodb&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;文档数据库，允许数据以嵌套形式的状态保存， 没有模式，&lt;/li&gt;
+  &lt;li&gt;关系数据库有强大的查询能力， Riak， Hbase分布式存储的特点，Mongo在这俩昂着之前找到了最佳结合点， 保存大规模数据， 又能满足自有定义的查询。 是一个json�文档数据库，能够无限的嵌套。&lt;/li&gt;
+  &lt;li&gt;安装一般需要先创建数据存储位置， /data/db, mongod&lt;/li&gt;
+  &lt;li&gt;Mongo不支持join操作&lt;/li&gt;
+  &lt;li&gt;db.users.find(function(){ return this.age &amp;gt; 50 &amp;amp;&amp;amp; this.age &amp;lt; 100})使用函数作为find参数的，最后在考虑，因为查询很慢，不能使用索引。&lt;/li&gt;
+  &lt;li&gt;Map Reduce, db.runCommand({mapReduce: ‘tables’, map: map_fun, reduce: reduce_fun, out: ‘result_tables’})&lt;/li&gt;
+  &lt;li&gt;副本集合， 分片，地理空间， GridFS，&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;优点：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;能够通过复制和横向伸缩， 处理大量的数据，+ 非常灵活的数据模型，强大的SQL&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;缺点：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;鼓励反规范化的模式， 将任意类型的数据插入集合中，是很危险的。需要努力去设计和管理。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id="redis"&gt;redis&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;1. redis-server, redis-cli
+2. redis 数据类型，Lists, Sets, Sorted sets, Hashes, Bit arrays, HyperLogLogs
+3. redis keys 
+   * 空值可以是key
+   * 太长太浪费空间，　太短容易造成冲突
+   * 坚持使用一种模式
+4. 命令集合: 
+   * set, get, incr, decr, mset, exists, type, expire, ttl
+   * list rpush, lpush, lrange, rpop, del, llen, lpop, 
+   * hash, hmset, hget, hgetall, 
+   * sets, sadd, smembers, sismember, sinter, sunionstore, spop, scard, 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+  </entry>
   <entry>
     <title>高性能Mysql</title>
     <link rel="alternate" href="http://geniousbar.github.io/2017/06/26/mysql/"/>
     <id>http://geniousbar.github.io/2017/06/26/mysql/</id>
     <published>2017-06-26T08:00:00+08:00</published>
-    <updated>2017-06-28T17:57:00+08:00</updated>
+    <updated>2017-06-28T18:07:21+08:00</updated>
     <summary type="html">&lt;h2 id="mysql-性能优化"&gt;Mysql 性能优化&lt;/h2&gt;
 
 &lt;h3 id="mysql-架构"&gt;mysql 架构&lt;/h3&gt;
@@ -498,236 +857,6 @@
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Linux process</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2017/06/22/linux-process/"/>
-    <id>http://geniousbar.github.io/2017/06/22/linux-process/</id>
-    <published>2017-06-22T08:00:00+08:00</published>
-    <updated>2017-06-22T18:53:53+08:00</updated>
-    <summary type="html">&lt;h2 id="linux-process"&gt;linux process&lt;/h2&gt;
-
-&lt;h5 id="程序"&gt;程序&lt;/h5&gt;
-&lt;ul&gt;
-  &lt;li&gt;触发任何一个事件，系统会将他定义为一个程序，赋予PID，根据调用用户与相关属性关系，赋予PID相关的有效的权限设定， 在系统上进行的动作就与这个权限相关&lt;/li&gt;
-  &lt;li&gt;shell是一个程序， 执行bash， 与内核交互&lt;/li&gt;
-  &lt;li&gt;fork and exec, fork, 父进程 到子进程， 赋予子进程新的PID， PPID=父进程， exec 程序实体&lt;/li&gt;
-  &lt;li&gt;crontab, atd, syslog, 为常驻进程
-    &lt;h4 id="工作管理"&gt;工作管理&lt;/h4&gt;
-  &lt;/li&gt;
-  &lt;li&gt;background job...&lt;/li&gt;
-&lt;/ul&gt;</summary>
-    <content type="html">&lt;h2 id="linux-process"&gt;linux process&lt;/h2&gt;
-
-&lt;h5 id="程序"&gt;程序&lt;/h5&gt;
-&lt;ul&gt;
-  &lt;li&gt;触发任何一个事件，系统会将他定义为一个程序，赋予PID，根据调用用户与相关属性关系，赋予PID相关的有效的权限设定， 在系统上进行的动作就与这个权限相关&lt;/li&gt;
-  &lt;li&gt;shell是一个程序， 执行bash， 与内核交互&lt;/li&gt;
-  &lt;li&gt;fork and exec, fork, 父进程 到子进程， 赋予子进程新的PID， PPID=父进程， exec 程序实体&lt;/li&gt;
-  &lt;li&gt;crontab, atd, syslog, 为常驻进程
-    &lt;h4 id="工作管理"&gt;工作管理&lt;/h4&gt;
-  &lt;/li&gt;
-  &lt;li&gt;background job, foreground job&lt;/li&gt;
-  &lt;li&gt;background job 中 的限制
-    &lt;ol&gt;
-      &lt;li&gt;为当前bash的子进程&lt;/li&gt;
-      &lt;li&gt;可以自行运作，无法使用ctrl+c终止， 只能使用fg/bg&lt;/li&gt;
-      &lt;li&gt;不能够与终端交互&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;丢到背景执行 &amp;amp; tar -zpcf /tmp/etc.tar.gz /etc &amp;amp;&lt;/li&gt;
-  &lt;li&gt;ctrl+z 讲当前工作丢到背景执行 并暂停, 例如 vi ~/.bashrc&lt;/li&gt;
-  &lt;li&gt;jobs 查询背景执行工作状态 -l 列表， -r running的工作， -s stop 的工作&lt;/li&gt;
-  &lt;li&gt;fg jobnunber， 将背景执行转移到前景执行&lt;/li&gt;
-  &lt;li&gt;bg jobnunber， 将前景执行转移背景执行&lt;/li&gt;
-  &lt;li&gt;kill -signal %jobnumber&lt;/li&gt;
-  &lt;li&gt;ps aux(系统所有程序), -lA(同aux) axjf（连同程序树状态）&lt;/li&gt;
-  &lt;li&gt;ps -l 仅查找bash相关程序, 列表中个个字段的含义 F, (process flags),4 为root， 1为此进程fork的， S(state)， R running， S sleep, D 不可唤醒状态, T 停止状态， Z 僵尸状态, UID/PID,PPID(parent pid), PRI/NI(priority/nice) 程序的优先级&lt;/li&gt;
-  &lt;li&gt;top, 动态查看程序的变化，-p pid -d 几秒刷新&lt;/li&gt;
-  &lt;li&gt;pstree -p pid, -u process 所属帐号&lt;/li&gt;
-  &lt;li&gt;kill 中signal, kill -signal PID
-    &lt;ul&gt;
-      &lt;li&gt;1, SIGHUP, 重新读取配置文件，重新启动&lt;/li&gt;
-      &lt;li&gt;2, SIGINT, 终止程序&lt;/li&gt;
-      &lt;li&gt;9, SIGKILL 强制终止&lt;/li&gt;
-      &lt;li&gt;15, SIGTERM 正常结束程序&lt;/li&gt;
-      &lt;li&gt;17, SIGSTOP，暂停程序的执行&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;程序中的优先级，sum = PRI + nice, pri为动态计算的， nice为人工指定，范围为(-20 - 19 )
-    &lt;blockquote&gt;
-      &lt;p&gt;nice -n command, renice number PID&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-  &lt;li&gt;free 查看内存使用情况,  free -b m(Mbytes) b(bytes), -t 显示swap总量(很有效率的使用没存， 比如使用大量buffer， cached)&lt;/li&gt;
-  &lt;li&gt;uname 查看系统与核心相关程序&lt;/li&gt;
-  &lt;li&gt;uptime, 观察系统启动时间与工作负载&lt;/li&gt;
-  &lt;li&gt;netstat 追踪网络, -a（所有联机， 监听， socket列出来）, -t (tcp网络封包数据), -u（udp网络封包数据） -n port number， -l 列出正在监听的服务， -p pid&lt;/li&gt;
-  &lt;li&gt;fuser:藉由档案(戒文件系统)找出正在使用该档案癿程序, 找出正在占用文件资源的程序，-u 列出使用者，-v 列出程序指令， -k， 住处pid，并试图发送SIGKILL信号， -i交互式发送信号&lt;/li&gt;
-  &lt;li&gt;pidof -x 列出该program name的可能的PPID的pid（找出父进程关联的pid） program_name&lt;/li&gt;
-&lt;/ul&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Linux crontab</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2017/06/22/linux-crontab/"/>
-    <id>http://geniousbar.github.io/2017/06/22/linux-crontab/</id>
-    <published>2017-06-22T08:00:00+08:00</published>
-    <updated>2017-06-22T16:10:19+08:00</updated>
-    <summary type="html">&lt;h2 id="linux-crontab-例行性工作排程"&gt;linux crontab （例行性工作排程）&lt;/h2&gt;
-
-&lt;h5 id="at"&gt;at&lt;/h5&gt;
-&lt;ul&gt;
-  &lt;li&gt;执行一次就结束的程序指令&lt;/li&gt;
-  &lt;li&gt;开启 /etc/init.d/atd restart&lt;/li&gt;
-  &lt;li&gt;at任务记录在 /var/spool/at/中&lt;/li&gt;
-  &lt;li&gt;权限 /etc/at.allow, /etc/at.deny, 规则： 1. 先寻找at.allow，写入这个文档的使用者才能使用，没有写入的不能使用 2. 寻找 /etc/at.deny， 写入文档的不能使用， 没有写入的可以使用, 3.两个文档都不存在的，只有root可以使用。&lt;/li&gt;
-  &lt;li&gt;按照...&lt;/li&gt;
-&lt;/ul&gt;</summary>
-    <content type="html">&lt;h2 id="linux-crontab-例行性工作排程"&gt;linux crontab （例行性工作排程）&lt;/h2&gt;
-
-&lt;h5 id="at"&gt;at&lt;/h5&gt;
-&lt;ul&gt;
-  &lt;li&gt;执行一次就结束的程序指令&lt;/li&gt;
-  &lt;li&gt;开启 /etc/init.d/atd restart&lt;/li&gt;
-  &lt;li&gt;at任务记录在 /var/spool/at/中&lt;/li&gt;
-  &lt;li&gt;权限 /etc/at.allow, /etc/at.deny, 规则： 1. 先寻找at.allow，写入这个文档的使用者才能使用，没有写入的不能使用 2. 寻找 /etc/at.deny， 写入文档的不能使用， 没有写入的可以使用, 3.两个文档都不存在的，只有root可以使用。&lt;/li&gt;
-  &lt;li&gt;按照上面规则，所以如果是所以使用者都可以使用话，简历空的at.deny就可以了&lt;/li&gt;
-  &lt;li&gt;at -l（列出用户的at排程）, -d （取消）, -c （列出id的实际工作内容）&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;任务管理， atrm id， 移除任务, 等同于 at -d&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;  &lt;span class="c"&gt;#设定范例&lt;/span&gt;
-  at HH:MM YYYY-MM-DD
-  at HH:MM[am|pm]
-  at now + numbers &lt;span class="o"&gt;[&lt;/span&gt;minutes | hours | days | weeks]
-  at now + 5 minutes
-  &lt;span class="c"&gt;#进入编辑窗口&lt;/span&gt;
-  ctrl + d 结束
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h5 id="crontab"&gt;crontab&lt;/h5&gt;
-&lt;ul&gt;
-  &lt;li&gt;周期性执行任务&lt;/li&gt;
-  &lt;li&gt;crontab -u 只有root才能使用， 帮助其他用户管理任务, -e 编辑， -l 查阅， -r 移除所有工作&lt;/li&gt;
-  &lt;li&gt;分中， 小时， 日期， 月份， 周， 指令（分时日月周）&lt;/li&gt;
-  &lt;li&gt;* 任何时候&lt;/li&gt;
-  &lt;li&gt;, 分割枚举&lt;/li&gt;
-  &lt;li&gt;
-    &lt;ul&gt;
-      &lt;li&gt;时间范围&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;/n， 每隔n个单位&lt;/li&gt;
-  &lt;li&gt;crontab 每分钟读取， 所以只需要编辑， /etc/crontab 文件即可&lt;/li&gt;
-  &lt;li&gt;如果在大量的crontab时候，出现分配不均，（认为被集中执行）, 则可以，使用分割枚举的方法， 将任务排开，充分利用资源&lt;/li&gt;
-  &lt;li&gt;可以在命令中进行，输出的重定向，例如， /dev/null&lt;/li&gt;
-  &lt;li&gt;run-parts, /usr/bin/run-parts, 定期执行script文件&lt;/li&gt;
-  &lt;li&gt;/var/log/cron中为crontab的log文件&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;anacron 是可以自动自动检查timestap日志，并将因为开关机导致没有执行的crontab重新执行的程序， 但是需要按照天，月来进行任务排期，&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;  &lt;span class="c"&gt;# run-parts&lt;/span&gt;
-  01 &lt;span class="k"&gt;*&lt;/span&gt; &lt;span class="k"&gt;*&lt;/span&gt; &lt;span class="k"&gt;*&lt;/span&gt; &lt;span class="k"&gt;*&lt;/span&gt; root
-  02 4 &lt;span class="k"&gt;*&lt;/span&gt; &lt;span class="k"&gt;*&lt;/span&gt; &lt;span class="k"&gt;*&lt;/span&gt; root
-  22 4 &lt;span class="k"&gt;*&lt;/span&gt; &lt;span class="k"&gt;*&lt;/span&gt; 0 root
-  42 4 1 &lt;span class="k"&gt;*&lt;/span&gt; &lt;span class="k"&gt;*&lt;/span&gt; root 分时日月周执行者身仹 挃令串
-  root run-parts /etc/cron.hourly &amp;lt;&lt;span class="o"&gt;==&lt;/span&gt;每小时 run-parts /etc/cron.daily &amp;lt;&lt;span class="o"&gt;==&lt;/span&gt;每天
-  root run-parts /etc/cron.weekly &amp;lt;&lt;span class="o"&gt;==&lt;/span&gt;每周日 run-parts /etc/cron.monthly &amp;lt;&lt;span class="o"&gt;==&lt;/span&gt;每个月 1 号
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h5 id="系统性常见周期任务"&gt;系统性常见周期任务&lt;/h5&gt;
-&lt;ul&gt;
-  &lt;li&gt;登录档的轮替， log rotate&lt;/li&gt;
-  &lt;li&gt;登录文件分析, logwatch&lt;/li&gt;
-  &lt;li&gt;locate数据库更新&lt;/li&gt;
-&lt;/ul&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Linux Relearn</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2017/06/19/linux-relearn/"/>
-    <id>http://geniousbar.github.io/2017/06/19/linux-relearn/</id>
-    <published>2017-06-19T08:00:00+08:00</published>
-    <updated>2017-06-26T10:26:05+08:00</updated>
-    <summary type="html">&lt;h2 id="linux-bash"&gt;linux bash&lt;/h2&gt;
-
-&lt;h4 id="常用命令"&gt;常用命令&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;history, alias, type, 变量，echo, unset, env, declare, set, read, array&lt;/li&gt;
-  &lt;li&gt;系统变量， HOME, SHELL, HISISIZE, PATH, LANG, RANDOM, $, $?, OSTYPE, HOSTTYPE, MACHTYPE,&lt;/li&gt;
-  &lt;li&gt;read, read -p ‘please enter you name’ -t 100 name&lt;/li&gt;
-  &lt;li&gt;declare, declare -a...&lt;/li&gt;
-&lt;/ul&gt;</summary>
-    <content type="html">&lt;h2 id="linux-bash"&gt;linux bash&lt;/h2&gt;
-
-&lt;h4 id="常用命令"&gt;常用命令&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;history, alias, type, 变量，echo, unset, env, declare, set, read, array&lt;/li&gt;
-  &lt;li&gt;系统变量， HOME, SHELL, HISISIZE, PATH, LANG, RANDOM, $, $?, OSTYPE, HOSTTYPE, MACHTYPE,&lt;/li&gt;
-  &lt;li&gt;read, read -p ‘please enter you name’ -t 100 name&lt;/li&gt;
-  &lt;li&gt;declare, declare -a(array) ary; declear (-i) integer, declear -x(设定为幻境变量), declare -r (read only); ary[1]=’xx’ 从1开始，而非从0开始&lt;/li&gt;
-  &lt;li&gt;ulimit 用于限制用户的系统资源，可以打开的档案数量， cpu时间， 内存总量等&lt;/li&gt;
-  &lt;li&gt;alias, unalias,  alias rm=’rm i’&lt;/li&gt;
-  &lt;li&gt;history 10&lt;/li&gt;
-  &lt;li&gt;指定的搜索顺序， type -a ls, 1. 以相对/绝对路径执行挃令,例如『/bin/ls』戒『./ls』; 2. 由alias找刡该挃令杢执行; 3. 由bash内建癿(builtin)挃令杢执行; 4. 透过$PATH这个发量癿顺序搜寻刡癿第一个挃令杢执行。&lt;/li&gt;
-  &lt;li&gt;bash 的登录欢迎信息， /etc/issue, /etc/motd, /etc/issue.net, 远程sshd登录，可以配置/etc/ssh/sshd_config 来决定， 读取文件&lt;/li&gt;
-  &lt;li&gt;bash 的配置文件， login 读取文件顺序， 1. /etc/profile, 2. ~/.bash_profie, ~/.bash_login, ~/.profile , 其中2中三选一， 按照顺序那个文件存在读取那个文件 1。中不要改动比较重要， 1中会另外呼入 /etc/profile.d/*.sh 文件夹夏的所有文件， /etc/profile.d/lang.sh 会呼入/etc/sysconfig/i18n文件, /etc/skel/.bashrc 文件是 ~/.bashrc 的备份文件&lt;/li&gt;
-  &lt;li&gt;source=. 可以source ~/.bash_profile 或者 . ~/.bash_profile&lt;/li&gt;
-  &lt;li&gt;~/.bash_history, ~/.bash_logout&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;输入输出流管理：&lt;/p&gt;
-
-    &lt;blockquote&gt;
-
-      &lt;ol&gt;
-        &lt;li&gt;标准输入 (stdin):代码为0,使用&amp;lt;戒«;&lt;/li&gt;
-        &lt;li&gt;标准输出 (stdout):代码为1,使用&amp;gt;戒»;&lt;/li&gt;
-        &lt;li&gt;标准错诨输出(stderr):代码为2,使用2&amp;gt;戒2»;&lt;br /&gt;
- find /home -name .bashrc &amp;gt; list_right 2&amp;gt; list_error&lt;br /&gt;
- /dev/null 垃圾桶黑洞装置不特殊写法&lt;br /&gt;
- find /home -name .bashrc &amp;gt; list 2&amp;gt;&amp;amp;1 同时写入一个文件中，不能写成 &amp;gt; list 2&amp;gt; list会导致同时吸入问津啊，顺序发生错乱&lt;br /&gt;
- command1 &amp;amp;&amp;amp; command2 || command3&lt;/li&gt;
-      &lt;/ol&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-  &lt;li&gt;cut; cut -d ‘:’ -f 2 $PATH; 通过分隔符裁剪，取特定位置的数值&lt;/li&gt;
-  &lt;li&gt;expand -t 4 file_name, 将tab转换成4个空格&lt;/li&gt;
-  &lt;li&gt;split -b 10m file 将文件切分成10m大小&lt;/li&gt;
-  &lt;li&gt;xargs, sort, uniq&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id="总结"&gt;总结&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;由于核心在内存中是受保护,因此我们必须要透过 Shell将我们输入命令传给 Kernel 沟通&lt;/li&gt;
-  &lt;li&gt;用户默认登入去的shell记录于的最后一个字段&lt;/li&gt;
-  &lt;li&gt;bash 主要功能有： 工作控制，前景背景控制，程序脚本化(job control, foreground, background)&lt;/li&gt;
-  &lt;li&gt;type, which&lt;/li&gt;
-  &lt;li&gt;locale 查询目前语言系材料， /etc/sysconfig/i18n&lt;/li&gt;
-  &lt;li&gt;read可以回去用户输入，交互&lt;/li&gt;
-  &lt;li&gt;ulimit限制用户系统资源&lt;/li&gt;
-  &lt;li&gt;bash 非为login shell， non-login shell， login shell主要读取 /etc/profile, ~/.bash_profile, non-login shell 仅读取 ~/.bashrc&lt;/li&gt;
-  &lt;li&gt;命令集， cut, grep, sort, wc, uniq, tee, tr, col, join, paste, expand, split, xargs&lt;/li&gt;
-  &lt;li&gt;shell中的提示字符， 修改PSI变量&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;登录欢迎信息，在 /etc/issue, /etc/motd&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;变量：&lt;/p&gt;
-
-    &lt;blockquote&gt;
-
-      &lt;p&gt;name=file_name&lt;br /&gt;
-  name=’file name is –’&lt;br /&gt;
-  name=”$name”:suffix; name=${name}:suffix;&lt;br /&gt;
-  name=$(uname -r); name=&lt;code&gt;unname -r&lt;/code&gt;&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
 </content>
   </entry>
 </feed>
