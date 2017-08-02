@@ -9,12 +9,12 @@
     <name>geniousbar</name>
   </author>
   <entry>
-    <title>crafting rails</title>
+    <title>Crafting rails</title>
     <link rel="alternate" href="http://geniousbar.github.io/2017/07/28/crafting-rails/"/>
     <id>http://geniousbar.github.io/2017/07/28/crafting-rails/</id>
     <published>2017-07-28T08:00:00+08:00</published>
-    <updated>2017-07-28T21:10:47+08:00</updated>
-    <summary type="html">&lt;h2 id="crafting-rails-application"&gt;crafting rails application&lt;/h2&gt;
+    <updated>2017-08-02T16:45:36+08:00</updated>
+    <summary type="html">&lt;h2 id="crafting-rails-application"&gt;Crafting rails application&lt;/h2&gt;
 
 &lt;h3 id="创建自己的render"&gt;创建自己的render&lt;/h3&gt;
 
@@ -27,7 +27,7 @@
 &lt;p&gt;rails render 解析&lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;  &lt;span class="c1"&gt;# rails/actionpac k/lib/action_controller/metal...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary>
-    <content type="html">&lt;h2 id="crafting-rails-application"&gt;crafting rails application&lt;/h2&gt;
+    <content type="html">&lt;h2 id="crafting-rails-application"&gt;Crafting rails application&lt;/h2&gt;
 
 &lt;h3 id="创建自己的render"&gt;创建自己的render&lt;/h3&gt;
 
@@ -148,6 +148,164 @@
   &lt;ol&gt;
     &lt;li&gt;如何扩展 FormBuilder， 2： FormBuilder 在编辑时候的，默认值，是如何取到的&lt;/li&gt;
   &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id="server-异步消息到-client"&gt;Server 异步消息到 client&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;当样式表改动时候，rails发送data到浏览器，浏览器根据data 重新加载当前页面的样式表， 从而达到不需要重新刷新页面累加载样式的目的.&lt;/li&gt;
+  &lt;li&gt;使用websocket(但是不知道为啥不能保持很长时间)， puma多线程, 自定义subscribe 使用queue作为数据结构， 体统轮训， 来分发到个个subscribe， 使用listener，监听个个文件的通知提供事件。&lt;/li&gt;
+  &lt;li&gt;涉及到线程概念&lt;/li&gt;
+  &lt;li&gt;代码加载， autoload是rails提供，而非ruby， ruby中的require是存在缺陷的，不是原子性的require， 在多线程加载中，存在问题， 可能存在A加载中class， B看到了class但是却是残缺不全的， 所以提供了eager load技术，加载所有的代码，而不需要动态加载代码。可以通过config.eager_load_namespaces 来配置，或者，使用代码 eager_autoload {autoload: SSESubscriber}， eager load受益的不仅仅是 puma这样的多线程，还有基于fork的unicorn，&lt;/li&gt;
+  &lt;li&gt;listener， linux实现机制&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id="responders"&gt;Responders&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;使用ActionController::Responder 最大的好处是 集中处理 每种请求的format&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;影响条件， type, http verb, resource status&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;rails 中responder 的实现&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;  &lt;span class="c1"&gt;# rails/actionpack/lib/action_controller/metal/responder.rb&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;respond&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;respond&lt;/span&gt;
+    &lt;span class="nb"&gt;method&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"to_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+    &lt;span class="nb"&gt;respond_to?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;method&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;?&lt;/span&gt; &lt;span class="nb"&gt;send&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;method&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;to_format&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;to_html&lt;/span&gt;
+    &lt;span class="n"&gt;default_render&lt;/span&gt;
+  &lt;span class="k"&gt;rescue&lt;/span&gt; &lt;span class="no"&gt;ActionView&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;MissingTemplate&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;
+    &lt;span class="n"&gt;navigation_behavior&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;to_js&lt;/span&gt;
+    &lt;span class="n"&gt;default_render&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;to_format&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;get?&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;has_errors?&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;response_overridden?&lt;/span&gt;
+      &lt;span class="n"&gt;default_render&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;
+      &lt;span class="n"&gt;display_errors&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;rescue&lt;/span&gt; &lt;span class="no"&gt;ActionView&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;MissingTemplate&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;
+    &lt;span class="n"&gt;api_behavior&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="no"&gt;DEFAULT_ACTIONS_FOR_VERBS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="ss"&gt;post: :new&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;patch: :edit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;put: :edit&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;navigation_behavior&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;get?&lt;/span&gt;
+      &lt;span class="n"&gt;raise_error&lt;/span&gt;
+    &lt;span class="k"&gt;elsif&lt;/span&gt; &lt;span class="n"&gt;has_errors?&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;default_action&lt;/span&gt;
+      &lt;span class="n"&gt;rende4r&lt;/span&gt; &lt;span class="ss"&gt;:action&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;default_action&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;
+      &lt;span class="n"&gt;redirect_to&lt;/span&gt; &lt;span class="n"&gt;navigation_location&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;api_behavior&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt; &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="n"&gt;resourceful?&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;get?&lt;/span&gt;
+      &lt;span class="nb"&gt;display&lt;/span&gt; &lt;span class="n"&gt;resource&lt;/span&gt;
+    &lt;span class="k"&gt;elsif&lt;/span&gt; &lt;span class="n"&gt;post?&lt;/span&gt;
+      &lt;span class="nb"&gt;display&lt;/span&gt; &lt;span class="n"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:status&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="ss"&gt;:created&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:location&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;api_location&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;
+      &lt;span class="n"&gt;head&lt;/span&gt; &lt;span class="ss"&gt;:no_content&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;resourceful?&lt;/span&gt;
+    &lt;span class="n"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;respond_to?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"to_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;has_errors?&lt;/span&gt;
+    &lt;span class="n"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;respond_to?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:errors&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;empty?&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;resource_location&lt;/span&gt;
+    &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:location&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;resources&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;display&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;given_options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
+    &lt;span class="n"&gt;controller&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;render&lt;/span&gt; &lt;span class="n"&gt;given_options&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;merge!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;merge!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;format&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="c1"&gt;# 配置方式&lt;/span&gt;
+  &lt;span class="no"&gt;ApplicationController&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;responder&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;MyAppResponder&lt;/span&gt;
+  &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;UsersController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ApplicationController&lt;/span&gt;
+    &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;responder&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;MyAppResponder&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;如果想特殊化一个format的展现， 可以像respond_to 一样使用block&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;index&lt;/span&gt;
+    &lt;span class="vi"&gt;@users&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;all&lt;/span&gt;
+    &lt;span class="n"&gt;respond_with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="vi"&gt;@users&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+      &lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;json&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;render&lt;/span&gt; &lt;span class="ss"&gt;json: &lt;/span&gt;&lt;span class="vi"&gt;@users&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_json&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;some_specific_option: &lt;/span&gt;&lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;)}&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;最后章节， 关于generator的自定义，类似于rails guides，可以作为参考&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id="notification-api"&gt;Notification API&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;1. instrument(), subscribe(),
+  ```ruby
+    ActiveSupport::Notification.instrument(event_name,
+    payload: {format: :html, name: 'xxx'}) do
+      process_action("index")
+    end
+    ActiveSupport::Notification.subscribe(event_name) do |*args|
+      args
+    end
+
+    args: {
+      name: 事件名字,
+      started_at: 事件开始时间,
+      ended_at: 事件完结时间,
+      instrument_id: 事件唯一id,
+      payload: 事件携带的信息,
+    }
+  ```
+2. Rails and rack
+  &amp;gt; 任何一个响应call方法的ruby对象都是Rack应用，接受一个参数， environment， 然后返回 status, headers, body
+
+  ```ruby
+  class HelloRack
+    def call(env)
+      [200, {'Content-Type' =&amp;gt; 'text/html'}, ['Hello Rack!']]
+    end
+  end
+  run HelloRack.new
+  ```
+3. Rails Router
+  Rails自动将 Controller#action 转换成Rack application， 可以这样， PostsController.action(:index).responds_to?(:call)
+4. middleware stacks
+  * 除了在 config 中配置middleware外，还可以在Conttoller中配置使用， class Userscontroller use MyMiddleware end;
+  * Request ---&amp;gt; Web server -&amp;gt; middleware -&amp;gt; Rails Appplication -&amp;gt; middleware -&amp;gt; Router -&amp;gt; Controller -&amp;gt; middleware -&amp;gt; Action
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id="i18n-没看"&gt;I18n （没看）&lt;/h3&gt;
+
+&lt;h3 id="总结"&gt;总结&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;创建自己的render： 创建自己的pdf handler&lt;/li&gt;
+  &lt;li&gt;自定义自己的ActionModel： 讲的有点鸡肋， 没有进行深入的剖析, 譬如Active::Model中的callback实现， 自定义model的原因， 目的。FormBuilder的自定义也没有涉及到&lt;/li&gt;
+  &lt;li&gt;websocket： 似乎并不是一个完整的实现， 还存在缺陷&lt;/li&gt;
+  &lt;li&gt;Responders: 并不是解耦的很好方法，实际情况中，似乎并不需要&lt;/li&gt;
+  &lt;li&gt;Notification: 主要讲的并不是Notification的实现机制，实现方法，主要讲的是Rails Engin， middleware&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;书中讲解的并不算太多，大部分都是在Rails Engin 中进行， 进行了一个markdown的view handler 值得注意看，之外， 其他的都没有进行深入的讲解，譬如， 自定义ActiveModel 的作用，目的，实现方法， FormBuilder又是如何, Reponder 感觉并没有太多的进行简化，&lt;/p&gt;
 &lt;/blockquote&gt;
 </content>
   </entry>
