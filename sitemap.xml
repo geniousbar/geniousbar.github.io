@@ -169,6 +169,10 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2017/08/02/rails-application-refactor/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/tags/</loc>
     <priority>0.5</priority>
   </url>
@@ -178,6 +182,10 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/tags/ruby/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/refactor/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -318,6 +326,14 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/2017/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2017/08/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2017/08/02/</loc>
     <priority>0.5</priority>
   </url>
   <url>

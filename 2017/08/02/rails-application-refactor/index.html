@@ -1,0 +1,183 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>Rails Application Refactor | 日常学习</title><meta description="重构现有Rails应用  面临问题     数据库层面单独建立项目，导致产生更新流程， 更改interface, 然后重新启动， Rails应用（这里面存在问题，是不是可以使用listener， 设定脚本，更改 其他项目时候，主动重启Rails应用呢）, 也是流程问题， 两个项目interface, rails 分开发行，分支不同   项目趋于复杂， 不同模型，使用字段映射到相同的数据表，然而两个model却趋向于完全不同。导致使用统一model，的validation， callback... " /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">Rails Application Refactor</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">August 02, 2017</span></div><div class="tag-labels"><a href="/tags/rails/"><small class="tag-label">rails</small></a><a href="/tags/ruby/"><small class="tag-label">ruby</small></a><a href="/tags/refactor/"><small class="tag-label">refactor</small></a></div><hr class="article-header-separator" /><h2 id="重构现有rails应用">重构现有Rails应用</h2>
+
+<h3 id="面临问题">面临问题</h3>
+
+<ul>
+  <li>数据库层面单独建立项目，导致产生更新流程， 更改interface, 然后重新启动， Rails应用（这里面存在问题，是不是可以使用listener， 设定脚本，更改 其他项目时候，主动重启Rails应用呢）, 也是流程问题， 两个项目interface, rails 分开发行，分支不同</li>
+  <li>项目趋于复杂， 不同模型，使用字段映射到相同的数据表，然而两个model却趋向于完全不同。导致使用统一model，的validation， callback，变得复杂，混乱。页面中使用同一个controller，出现了各种判断流程。</li>
+</ul>
+
+<h3 id="解决方法">解决方法</h3>
+<ul>
+  <li>« Growing Rails Application in Practice » 中的方法是正确的，</li>
+  <li>本文实现了一个类似的 class</li>
+</ul>
+
+<div class="highlight"><pre class="highlight ruby"><code>
+  <span class="k">class</span> <span class="nc">CmsModel</span>
+
+    <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Model</span>
+    <span class="kp">extend</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Callbacks</span>
+
+    <span class="c1"># 如果更加简单的话，可以使用 method_missing 将全部的方法转发到 model中， 但是这样的话，存在如果保存失败的时候的情况，所以使用当前方法</span>
+    <span class="no">DEFAULT_PRO</span> <span class="o">=</span> <span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="p">,</span> <span class="n">instance</span><span class="o">|</span>
+      <span class="k">if</span> <span class="nb">name</span> <span class="o">!=</span> <span class="ss">:model</span>
+        <span class="n">instance</span><span class="p">.</span><span class="nf">instance_variable_get</span><span class="p">(</span><span class="s2">"@</span><span class="si">#{</span><span class="nb">name</span><span class="p">.</span><span class="nf">to_s</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="o">||</span>
+        <span class="p">(</span><span class="n">instance</span><span class="p">.</span><span class="nf">instance_variable_get</span><span class="p">(</span><span class="s2">"@model"</span><span class="p">).</span><span class="nf">present?</span> <span class="o">&amp;&amp;</span>
+        <span class="n">instance</span><span class="p">.</span><span class="nf">instance_variable_get</span><span class="p">(</span><span class="s2">"@model"</span><span class="p">).</span><span class="nf">respond_to?</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+        <span class="n">instance</span><span class="p">.</span><span class="nf">instance_variable_get</span><span class="p">(</span><span class="s2">"@model"</span><span class="p">).</span><span class="nf">send</span><span class="p">(</span><span class="nb">name</span><span class="p">))</span> <span class="o">||</span>
+        <span class="kp">nil</span>
+      <span class="k">else</span>
+        <span class="n">instance</span><span class="p">.</span><span class="nf">instance_variable_get</span><span class="p">(</span><span class="s2">"@model"</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">cms_attr_reader</span><span class="p">(</span><span class="o">*</span> <span class="n">names</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+      <span class="n">block</span> <span class="o">||=</span> <span class="no">DEFAULT_PRO</span>
+      <span class="n">names</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+        <span class="n">define_method</span> <span class="n">item</span> <span class="k">do</span>
+          <span class="n">block</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">self</span><span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="c1"># ActiveModel::Attributes 中的方法, 使model伪装成 active record</span>
+    <span class="k">alias</span> <span class="ss">:set</span> <span class="ss">:assign_attributes</span>
+
+    <span class="c1"># 生命callback，统一使用一个save的interface来更新，创建 model， 使用if: :persisted?进行update， create的区分</span>
+    <span class="n">define_model_callbacks</span> <span class="ss">:save</span>
+
+    <span class="k">def</span> <span class="nf">save</span>
+      <span class="k">if</span> <span class="n">valid?</span>
+        <span class="n">_run_save_callbacks</span>
+      <span class="k">else</span>
+        <span class="kp">false</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="c1"># 供给页面调用，是否 持久化的判断</span>
+    <span class="k">def</span> <span class="nf">persisted?</span>
+      <span class="vi">@model</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">new?</span>
+      <span class="o">!</span><span class="n">persisted?</span>
+    <span class="k">end</span>
+
+    <span class="c1"># 减少delegate 的声明</span>
+    <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="n">method_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+      <span class="k">if</span> <span class="vi">@model</span> <span class="o">&amp;&amp;</span> <span class="vi">@model</span><span class="p">.</span><span class="nf">respond_to?</span><span class="p">(</span><span class="n">method_name</span><span class="p">)</span>
+        <span class="vi">@model</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">method_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+      <span class="k">else</span>
+        <span class="k">super</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+  <span class="k">end</span>
+
+
+  <span class="c1"># cms post model</span>
+
+  <span class="k">class</span> <span class="nc">CmsPost</span> <span class="o">&lt;</span> <span class="no">CmsModel</span>
+
+    <span class="no">ATTRIBUTES</span> <span class="o">=</span> <span class="p">[</span><span class="ss">:username</span><span class="p">,</span> <span class="ss">:userkey</span> <span class="ss">:tags</span><span class="p">,</span> <span class="ss">:model</span><span class="p">,</span> <span class="ss">:id</span><span class="p">]</span>
+
+    <span class="no">NOT_PARAMS_COLUMN</span> <span class="o">=</span> <span class="p">[</span><span class="ss">:username</span><span class="p">,</span> <span class="ss">:model</span><span class="p">,</span> <span class="ss">:id</span><span class="p">]</span>
+
+    <span class="n">cms_attr_reader</span><span class="p">(</span><span class="o">*</span> <span class="no">ATTRIBUTES</span><span class="p">)</span>
+    <span class="nb">attr_writer</span><span class="p">(</span><span class="o">*</span> <span class="no">ATTRIBUTES</span><span class="p">)</span>
+
+    <span class="n">before_save</span> <span class="ss">:create_model</span><span class="p">,</span> <span class="ss">if: :new?</span>
+    <span class="n">before_save</span> <span class="ss">:update_model</span><span class="p">,</span> <span class="ss">unless: :new?</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">hash</span> <span class="o">=</span> <span class="p">{})</span>
+      <span class="k">super</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">model_name</span>
+      <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Name</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="s2">"Post"</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">params</span>
+      <span class="n">columns</span> <span class="o">=</span> <span class="no">ATTRIBUTES</span> <span class="o">-</span> <span class="no">NOT_PARAMS_COLUMN</span>
+      <span class="n">columns</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+        <span class="p">[</span><span class="n">item</span><span class="p">,</span> <span class="nb">instance_variable_get</span><span class="p">(</span><span class="s2">"@</span><span class="si">#{</span><span class="n">item</span><span class="p">.</span><span class="nf">to_s</span><span class="si">}</span><span class="s2">"</span><span class="p">)]</span>
+      <span class="k">end</span><span class="p">.</span><span class="nf">select</span> <span class="p">{</span><span class="o">|</span><span class="n">_</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span> <span class="n">value</span><span class="p">.</span><span class="nf">present?</span><span class="p">}.</span><span class="nf">to_h</span><span class="p">.</span><span class="nf">merge</span><span class="p">(</span><span class="ss">type_id: </span><span class="no">FORUM_TYPE</span><span class="p">[</span><span class="ss">:community</span><span class="p">])</span>
+    <span class="k">end</span>
+
+
+
+  <span class="kp">private</span>
+
+  <span class="c1"># validator ------------------------------------</span>
+    <span class="k">def</span> <span class="nf">userkey_exist</span>
+      <span class="k">unless</span> <span class="no">User</span><span class="p">[</span><span class="ss">:userkey</span><span class="p">].</span><span class="nf">present?</span>
+        <span class="n">errors</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="ss">:userkey</span><span class="p">,</span> <span class="s2">"用户不存在"</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+  <span class="c1"># callback ------------------------------------</span>
+    <span class="k">def</span> <span class="nf">create_model</span>
+      <span class="c1"># do something</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">update_model</span>
+      <span class="c1"># do something</span>
+    <span class="k">end</span>
+
+  <span class="k">end</span>
+
+
+  <span class="c1"># controller</span>
+
+  <span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+    <span class="n">before_action</span> <span class="ss">:set_post</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:show</span><span class="p">,</span> <span class="ss">:edit</span><span class="p">,</span> <span class="ss">:update</span><span class="p">,</span> <span class="ss">:destroy</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">new</span>
+      <span class="vi">@post</span> <span class="o">=</span> <span class="no">CmsPost</span><span class="p">.</span><span class="nf">new</span><span class="p">()</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">show</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">edit</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">create</span>
+      <span class="vi">@post</span> <span class="o">=</span> <span class="no">CmsPost</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">post_params</span><span class="p">)</span>
+      <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+        <span class="k">if</span> <span class="vi">@post</span><span class="p">.</span><span class="nf">save</span>
+          <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="p">{</span> <span class="n">redirect_to</span> <span class="vi">@post</span><span class="p">,</span> <span class="ss">notice: </span><span class="s1">'创建成功'</span> <span class="p">}</span>
+        <span class="k">else</span>
+          <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="p">{</span><span class="n">render</span> <span class="ss">:new</span><span class="p">}</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">update</span>
+      <span class="vi">@post</span><span class="p">.</span><span class="nf">set</span><span class="p">(</span><span class="n">post_params</span><span class="p">)</span>
+      <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+        <span class="k">if</span> <span class="vi">@post</span><span class="p">.</span><span class="nf">save</span>
+          <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="p">{</span> <span class="n">redirect_to</span> <span class="vi">@post</span><span class="p">,</span> <span class="ss">notice: </span><span class="s1">'Post was successfully updated.'</span> <span class="p">}</span>
+        <span class="k">else</span>
+          <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">:edit</span><span class="p">}</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="kp">private</span>
+
+    <span class="k">def</span> <span class="nf">set_post</span>
+      <span class="n">model</span> <span class="o">=</span> <span class="no">Post</span><span class="p">.</span><span class="nf">first</span><span class="p">(</span><span class="ss">id: </span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+      <span class="vi">@post</span> <span class="o">=</span> <span class="no">CmsPost</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">model: </span><span class="n">model</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<h3 id="总结">总结</h3>
+<ul>
+  <li>大量的使用rails中自带的现有功能，validatoin, callback, attributes, naming</li>
+  <li>使用统一的save方法进行更新， 创建操作</li>
+  <li>使用@model区分更新或者创建, persisted?的返回值</li>
+  <li>使用 before callback 进行创建更新model， after callback进行关联model的区分</li>
+</ul>
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>
