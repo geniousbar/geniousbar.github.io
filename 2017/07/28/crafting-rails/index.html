@@ -121,6 +121,109 @@
   </ol>
 </blockquote>
 
+<ol>
+  <li>完善的ActiveModel
+    <ol>
+      <li>ActiveModel::AttributeMethods
+<div class="highlight"><pre class="highlight ruby"><code><span class="n">moduel</span> <span class="no">MailForm</span>
+<span class="k">class</span> <span class="nc">Base</span>
+    <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">AttributeMethods</span>
+    <span class="n">attribute_method</span> <span class="ss">prefix: </span><span class="s2">"clear_"</span>
+            
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">attributes</span><span class="p">(</span><span class="o">*</span> <span class="n">names</span><span class="p">)</span>
+        <span class="nb">attr_accessor</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">)</span>
+        <span class="n">define_attribute_methods</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+    <span class="k">end</span>
+            
+    <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">clear_attribute</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+        <span class="nb">send</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">="</span><span class="p">,</span> <span class="kp">nil</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></li>
+    </ol>
+
+    <ul>
+      <li>
+        <p>当rails controller, view helper接到一个 model,首先调用to_model，操纵结果，而不是直接使用model,　同样我们也不会自己实现，而是通过include ActiveModel::Conversion来实现, 其中主要实现为：　</p>
+
+        <ol>
+          <li>to_params, 用来生成唯一路由，　</li>
+          <li>to_key, 返回唯一表示model的数组，供诸如dom_id, dom_class, div_for</li>
+          <li>to_partial_path，　在vieｗ中使用render(model)时候调用，来计算渲染使用的模板，<br />
+ 　　&gt; 重要的不仅仅是　这些方法的作用，还有这些方法帮助我们所实现的，取得的成就。　比如实现to_params 可以轻松的改变object 的url,<br />
+  def to_params<br />
+ “#{id}-#{title.parameterize}”<br />
+  end<br />
+  假设每个POST有一个不同的方式，可能是video, link, or text, 需要不同的渲染方式，　<br />
+  @posts.each do |post| <br />
+render partial: “post/post_#{post.format}”, locals: {post: post}<br />
+  end<br />
+  可以这样：　<br />
+  def to_partial_path<br />
+“post/post_#{format}”<br />
+  end<br />
+  render @posts</li>
+        </ol>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<div class="highlight"><pre class="highlight plaintext"><code>* 最终的结果是这个样子：
+```ruby
+module ActiveModel
+    class Base
+        def self.included(base)
+            base.class_eval do 
+                extend ActiveModel::Naming
+                extend ActiveModel::Translation
+                include ActiveModel::Validations
+                include ActiveModel::Conversions
+                
+            end
+        end
+        
+        def persisted?
+            true
+        end
+    end
+end
+```
+&gt; 可以实现一个自己的model来自定义，自己重写sequel中定义的model，而不需要改动interface来定义, cms中可以通过两种方式结合来，重新重构：１：自定义form_for，　２：自定义model
+</code></pre></div>
+<h3 id="自定义视图模板">自定义视图模板</h3>
+<div class="highlight"><pre class="highlight plaintext"><code>rails在渲染模板，必须通过某种方式定位模板位置，默认rails的模板在文件系统中，但是却不是必须的，rails提供的钩子允许我们从任何地方来提供模板，让我们从数据库中提供模板，让我们深入了解rails的render stack。
+
+*　rails 渲染：　主要职责为：normalize　选项然后传递给ActionView::Renderer 的实例变量，renderer接受一个ActionView::Base的实例变量和hash，来寻找，编译，渲染模板。无论合适，我们渲染模板，源代码必须给编译成可执行的ruby代码，每当代码被执行，发生在给定的环境变量中，　view context，所有的helper方法都在，　包括form_for, link_to，　在view context中，　view renderer还有ActionView::LookupContext的实例变量，这个变量是在controller和view中共享的，它包含所有的为了找到模板的信息，　比如，当渲染jsoｎ请求来是，request的format　就被存储在lookup context变量中，所以rails只寻找json格式的模板。变量在view中也是可用的，包含模板名称，locale, format, 
+</code></pre></div>
+<table>
+  <tbody>
+    <tr>
+      <td>request—&gt; controller—-&gt;(render) view_renderer ——-&gt;(find) looup_context ——&gt;(find) view_path —————————-</td>
+    </tr>
+    <tr>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>response &lt;- controller &lt;-(rendered template)&lt;—–view_renderer&lt;——–(template)looup_context&lt;——-(template)view_path&lt;——–</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlight"><pre class="highlight plaintext"><code>* resolver API, 
+  &gt; resolver API 只有find_all一个接口，返回包含template,等的数组。
+</code></pre></div>
+<blockquote>
+  <ol>
+    <li>如何扩展 FormBuilder， 2： FormBuilder 在编辑时候的，默认值，是如何取到的</li>
+  </ol>
+</blockquote>
+
 <h3 id="server-异步消息到-client">Server 异步消息到 client</h3>
 <ol>
   <li>当样式表改动时候，rails发送data到浏览器，浏览器根据data 重新加载当前页面的样式表， 从而达到不需要重新刷新页面累加载样式的目的.</li>
@@ -278,4 +381,5 @@
 <blockquote>
   <p>书中讲解的并不算太多，大部分都是在Rails Engin 中进行， 进行了一个markdown的view handler 值得注意看，之外， 其他的都没有进行深入的讲解，譬如， 自定义ActiveModel 的作用，目的，实现方法， FormBuilder又是如何, Reponder 感觉并没有太多的进行简化，</p>
 </blockquote>
+
 <div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2017 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

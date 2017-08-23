@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://geniousbar.github.io/tags/page/2/</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://geniousbar.github.io/page/2/</loc>
+    <loc>http://geniousbar.github.io/2017/page/2/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -14,6 +10,10 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/page/4/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/page/2/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -173,7 +173,23 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2017/08/07/phoenix-contexts/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/tags/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/phoenix/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/elixir/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/desigin/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -330,6 +346,10 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/2017/08/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2017/08/07/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -498,6 +518,10 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/archives/page/2/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/page/2/</loc>
     <priority>0.5</priority>
   </url>
 </urlset>
