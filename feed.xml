@@ -458,7 +458,7 @@
     <link rel="alternate" href="http://geniousbar.github.io/2017/08/02/rails-application-refactor/"/>
     <id>http://geniousbar.github.io/2017/08/02/rails-application-refactor/</id>
     <published>2017-08-02T08:00:00+08:00</published>
-    <updated>2017-08-02T17:39:07+08:00</updated>
+    <updated>2017-08-23T12:25:00+08:00</updated>
     <summary type="html">&lt;h2 id="重构现有rails应用"&gt;重构现有Rails应用&lt;/h2&gt;
 
 &lt;h3 id="面临问题"&gt;面临问题&lt;/h3&gt;
@@ -510,11 +510,20 @@
       &lt;span class="k"&gt;end&lt;/span&gt;
     &lt;span class="k"&gt;end&lt;/span&gt;
 
+    &lt;span class="c1"&gt;# save_model 用来在callback中， before_save中， 创建model不能保存为 @model，会导致callback new? 为false&lt;/span&gt;
+    &lt;span class="nb"&gt;attr_reader&lt;/span&gt; &lt;span class="ss"&gt;:save_model&lt;/span&gt;
     &lt;span class="c1"&gt;# ActiveModel::Attributes 中的方法, 使model伪装成 active record&lt;/span&gt;
     &lt;span class="k"&gt;alias&lt;/span&gt; &lt;span class="ss"&gt;:set&lt;/span&gt; &lt;span class="ss"&gt;:assign_attributes&lt;/span&gt;
 
     &lt;span class="c1"&gt;# 生命callback，统一使用一个save的interface来更新，创建 model， 使用if: :persisted?进行update， create的区分&lt;/span&gt;
     &lt;span class="n"&gt;define_model_callbacks&lt;/span&gt; &lt;span class="ss"&gt;:save&lt;/span&gt;
+    &lt;span class="n"&gt;define_model_callbacks&lt;/span&gt; &lt;span class="ss"&gt;:init&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;hash&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
+      &lt;span class="n"&gt;_run_init_callbacks&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+        &lt;span class="n"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;hash&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
 
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;save&lt;/span&gt;
       &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;valid?&lt;/span&gt;
@@ -542,6 +551,14 @@
       &lt;span class="k"&gt;end&lt;/span&gt;
     &lt;span class="k"&gt;end&lt;/span&gt;
 
+    &lt;span class="c1"&gt;# 工具类&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;params_present&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;flatten&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:model&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:id&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="nf"&gt;inject&lt;/span&gt;&lt;span class="p"&gt;({})&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="nb"&gt;hash&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+        &lt;span class="n"&gt;infer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;instance_variable_get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"@&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_s&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="nb"&gt;hash&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;infer&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;infer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;present?&lt;/span&gt;
+        &lt;span class="nb"&gt;hash&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
   &lt;span class="k"&gt;end&lt;/span&gt;
 
 
@@ -586,8 +603,10 @@
     &lt;span class="k"&gt;end&lt;/span&gt;
 
   &lt;span class="c1"&gt;# callback ------------------------------------&lt;/span&gt;
+  &lt;span class="c1"&gt;# 这其中不能保存为 model&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;create_model&lt;/span&gt;
       &lt;span class="c1"&gt;# do something&lt;/span&gt;
+      &lt;span class="vi"&gt;@save_model&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;create&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
     &lt;span class="k"&gt;end&lt;/span&gt;
 
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;update_model&lt;/span&gt;
@@ -648,6 +667,7 @@
   &lt;li&gt;使用统一的save方法进行更新， 创建操作&lt;/li&gt;
   &lt;li&gt;使用@model区分更新或者创建, persisted?的返回值&lt;/li&gt;
   &lt;li&gt;使用 before callback 进行创建更新model， after callback进行关联model的区分&lt;/li&gt;
+  &lt;li&gt;可以通过继承提供大量的工具类型函数， 应用模板方法创建 流程&lt;/li&gt;
 &lt;/ul&gt;
 </content>
   </entry>
