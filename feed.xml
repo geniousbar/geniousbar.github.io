@@ -4,10 +4,232 @@
   <id>http://geniousbar.github.io</id>
   <link href="http://geniousbar.github.io"/>
   <link href="http://geniousbar.github.io/feed.xml" rel="self"/>
-  <updated>2017-08-07T08:00:00+08:00</updated>
+  <updated>2017-09-02T08:00:00+08:00</updated>
   <author>
     <name>geniousbar</name>
   </author>
+  <entry>
+    <title>Css The Definitive Guide</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2017/09/02/css_the_definitive_guide/"/>
+    <id>http://geniousbar.github.io/2017/09/02/css_the_definitive_guide/</id>
+    <published>2017-09-02T08:00:00+08:00</published>
+    <updated>2017-09-13T05:35:55+08:00</updated>
+    <summary type="html">&lt;h2 id="the-definitive-guide-css"&gt;The Definitive Guide css&lt;/h2&gt;
+
+&lt;h4 id="css-和-文档"&gt;css 和 文档&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;* 层叠： css中解决样式冲突的规则，称为层叠
+* 元素：
+  ```text
+      替换、非替换元素
+      替换元素： 用来替换元素的内容部分，并非由文档内容直接表示。&amp;lt;img src='xxx'&amp;gt; 标记片段中不包含任何具体内容，只有一个属性
+      非替换元素：大多数元素都是非替换元素。
+     元素显示角色：
+     块级(block-level)，行内(inline-level)
+     display...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary>
+    <content type="html">&lt;h2 id="the-definitive-guide-css"&gt;The Definitive Guide css&lt;/h2&gt;
+
+&lt;h4 id="css-和-文档"&gt;css 和 文档&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;* 层叠： css中解决样式冲突的规则，称为层叠
+* 元素：
+  ```text
+      替换、非替换元素
+      替换元素： 用来替换元素的内容部分，并非由文档内容直接表示。&amp;lt;img src='xxx'&amp;gt; 标记片段中不包含任何具体内容，只有一个属性
+      非替换元素：大多数元素都是非替换元素。
+     元素显示角色：
+     块级(block-level)，行内(inline-level)
+     display: none, inline, block, inline-block, list-item, run-in
+  ```
+* css and html:
+  1. link 标记： &amp;lt;link rel='stylesheet' type='text/css' href='sheet1.css' media='all' /&amp;gt;
+  2. media 属性： all, aural(语音合成器), braille, print, screen, tty, tv &amp;lt;link rel='stylesheet' type='text/css' href='sheet1.css' media='screen, tv'/&amp;gt; 在tv， 屏幕设备上使用共同的css样式。
+  3. style元素， &amp;lt;style type='text/css'&amp;gt; xxxxx &amp;lt;/style&amp;gt;
+  4. @import 指令： @import url(style.css) screen, tv; @import 必须写在样式表中，2.， 必须写在文档开头，，出现在样式表中其他规则的前面.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id="选择器"&gt;选择器&lt;/h4&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;* 规则结构： 选择器 + 声明块 h1(选择器) {color: red; background: yellow}(声明块)
+* 声明和关键字： 格式：属性： 关键字\数值;关键字在多个的情况下，由空格分隔
+* 选择器：
+  1. 元素： html { color: red}
+  2. 选择器分组： 使用，分隔 选择器 h1, p {color: grey}
+  3. 通配选择器: * {color: red;}
+  4. 类选择器: p.warning 多类选择器， class='urgent warning' 选择器如下:  .urgent.warning
+  5. ID选择器: #ID
+  6. 属性选择器:
+     1.简单属性选择器： &amp;lt;h1 class='people'&amp;gt; hello &amp;lt;/h1&amp;gt; , h1[class] {color: red;} img[alt] {border: 1px solid red;}， 可以多个属性同时选择： a[href][title] {color: red; font-weight: bold;}
+     2. 属性值选择器： planet[name="1" {color: red;}]
+     3. 部分属性值选择：主要应用在class上，因为class可能为多个， 不能直接p[class='name'] 当p以后有多个class时候，而是需要p[class~='name']
+     4. 特定属性选择器： *[lang!="en"] {color: "white";}
+ 7. 使用文档结构：
+    1. 后代选择器： h1 em {color: gray;}
+    2. 子元素选择器： h1 &amp;gt; em {color: gray;}
+ 8. 伪类和伪元素：（可以为文档中不一定具体存在的结构制定样式， 会根据某种条件来应用部分样式）
+     1, 伪类： a 特有的 :link, :visited, 其他的都存在的 :focus, :hover, :active, 其中a 的样式声明顺序为 :linkm, :visited, :hover, :active
+     2. 伪元素选择器(动态的给html改变内容，样式，可以修改文档本身)： first-letter, :first-line, :before, :after,例如：h2:before{}content: '||'}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id="结构和层叠"&gt;结构和层叠&lt;/h4&gt;
+&lt;p&gt;　&amp;gt; 继承是　从一个元素向其后代元素传递属性所采用的机制，样式冲突的解决机制：通过考虑声明的特殊性，声明来源，特殊性，这个决策过程就称为层叠(cascade)&lt;br /&gt;
+    * 特殊性：&lt;br /&gt;
+      1. 对于选择器中所给定的各个ＩＤ属性：0, 1, 0, 0&lt;br /&gt;
+      2. 对于选择器中的各个类属性值　属性选择、伪类: 0, 0, 1, 0&lt;br /&gt;
+      3. 选择器中各个元素和伪元素：0, 0, 0, 1&lt;br /&gt;
+      4. 通配符选择器对特殊性没有任何贡献&lt;br /&gt;
+      5. 内联样式的特殊性: 1, 0, 0, 0&lt;br /&gt;
+    &amp;gt; #id 与　p[id=’id’] 中，第一个贡献的为：0, 1, 0, 0第二个贡献为 0, 0, 1, 0&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;* 重要性: !important p.dark {color: red !important; background: white !important}
+!important　没有特殊性，不过要与其他的分开考虑，所有!important的会分组在一起考虑，其中的冲突在内部解决。重要声明与非冲要声明相比，总是胜出。
+* 继承没有特殊性，通配符大于继承的特殊性。注意：不应该不加区别的使用通配符选择器。
+
+* 层叠规则：
+  1. 找出所有规则，这些规则都包含与一个给定元素匹配的选择器
+  2. 按照权重对应用到该元素的所有声明排序，标志!important的规则的权重高于没有的，按来源进行对应用到元素的所有声明排序，３中来源，　创作人员，读者，用户代理。排序为：　读者的重要声明，　２：创作人员的重要声明，３：创作人员的正常声明，　４：读者的正常声明，　５：用户代理声明
+  3. 按特殊性对应用到给定元素的所有声明排序，　有较高特殊性的元素权重大与较低权重的元素
+  4. 按出现顺序对应用到元素的所有声明排序，一个声明在样式表或者文档中越后出现，他的权重越大，如果样式表中有导入的样式表，一般认为出现在导入样式表中的声明在前，主样式表中的所有样式表声明在后。（没有比较　多个导入样式表中的样式权重）
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id="值和单位"&gt;值和单位：&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;em ex为相对单位长度，　em定义为　一种给定字体的font-size的值，如果一个元素的font-size 为１４px，　那em为14px,　1ex = 0.5em
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id="字体先略过"&gt;字体(先略过)&lt;/h4&gt;
+
+&lt;h4 id="文本属性"&gt;文本属性&lt;/h4&gt;
+&lt;p&gt;　&amp;gt; 文本是内容，　而字体用于显示内容&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;text-indent: 数值： length, percentage, inherit，应用于： 块，继承： 有，百分数：相对于包含块的宽度&lt;/li&gt;
+  &lt;li&gt;text-align: 数值: left, right, center, justify, inherit, 应用于：块，继承性：有&lt;/li&gt;
+  &lt;li&gt;line-height: 值：length, percentage, number, normal, inherit，初始值: normal, 应用于：所有元素，继承性：有&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id="基本视觉格式化书中的css-版本为-2１其中大量的规则已经不能使用了"&gt;基本视觉格式化：（书中的css 版本为 2.１　其中大量的规则已经不能使用了）&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;* 基本框：css假定每个元素都会生成一个或多个矩形框，这成为元素框。包含：内边框, 边框，外边框，内容
+* 包含块：包含块是一个元素的上下文
+* 块元素：
+  1. 水平格式化：元素的宽度：指的是　左外边界到右外边界的距离，可见区域：width + 内边距，规则：正常流中的块级元素框的水平部分总和等于　父元素的width,
+  2. 水平属性：　margin-left, border-left, padding-left, width, padding-right, border-right, margin-right
+  3. width,, margin-left, margin-right中的某个值设定为auto，其余两个就会计算指定为特定值，使元素的框宽度等于副元素的width,　如果三个都设定为非auto，会产生过分受限，这时候从会把　margin-right强制为auto。margin-left, margin-right 设定为auto, 会将元素居中。border不能使用白分数
+  4. 一个元素的默认的高度由其内容决定，　高度还会受内容宽度影响。　段落越窄，相应的高度就会越高。
+  5.　垂直属性：margin-top, border-top, padding-top, height, padding-bottom, border-bottom, margin-bottom, 属性值　之和必须等于　包含块的height, 如果一个正常流中的一个块元素的margin-top, margin-bottom设置为auto,他会自动计算为０，并不会让块垂直居中
+  6. auto 如果height 为auto，　其高度正好为包含内容的高度，
+  7. 合并垂直外边框：这种合并行为只应用于外边距，如果元素有内边距和边框，他们绝对不会合并。   * 行内元素－－行内布局：　
+1. 基本概念：　匿名文本，em框,　内容区，行间距((font-size - line-height) / 2)，行内框（非替换元素，行内框的高度等于line-height，　替换元素，行内框高度等于内容区的高度　替换元素没有行间距）
+2. 规则：
+   1. 内容区类似于一个块级元素的内容框
+   2. 行内元素的背景应用于内容区　以及所有　内边距
+   3. 行内元素的边框要包围内容区　及所有　内边距和边框
+   4. 非替换元素的内边距，边框和外边距对汗内元素或者其生成的框没有垂直效果，也就是说，　他们呢不会影响元素行内框的高度
+   5. 替换元素的外边距和边框　会影响该元素行内框的高度，相应的影响该元素行框的高度
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ol&gt;
+  &lt;li&gt;行内　非替换元素：　
+    &lt;ol&gt;
+      &lt;li&gt;font-size：定义内容（字体）高度，　line-height: 定义框高度，　(line-height - font-size) / 2 为行间距，　line-height 可以小于font-size导致行内框小于内容区，行间距为负数，造成行间重叠。&lt;/li&gt;
+      &lt;li&gt;行框定义为　行中最高行内框的顶端到最低行内框低端之间的距离，为了避免行间重叠。&lt;/li&gt;
+      &lt;li&gt;vertical-align: top, bottom, middle etc,　描述基准线的位置。&lt;/li&gt;
+      &lt;li&gt;line-height: 数值的话：为font-size的缩放比例。该属性是可以继承的，从而在不同的ｆｏｎｔ-size中存在不同的line-height,&lt;br /&gt;
+5.　内边距，外边距，边框　可以应用到行内非替换元素，但是却不会影响行框的高度，可能会造成重叠。实际上，外边距不会应用到元素上，但是可以应用到两侧。可以将文本推离到两侧。&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;行内块元素(inline-block)：
+    &lt;ol&gt;
+      &lt;li&gt;类似于　图像放在行中&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id="边框"&gt;边框：&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;* 基本元素框：
+  1. 元素的width：左内边　－－　右内边，　height: 上内边－－下内边，　不能应用到行内非替换元素, width: 白分数想对于　包含块的　width, 正常流中的元素很少设定height，height: 白分数相对于　包含块的height。
+  2. 背景颜色会延伸到内边距中，而不会到外边距。
+  3. margin: 白分数相对于包含块的width, margin 的左右，上下都是相对于包含块width
+  3. padding: 白分数相对于包含块的width, padding 的左右，上下都是相对于包含块width      
+  4. 值复制：　top right bottom left, top -&amp;gt; right, top -&amp;gt; bottom, right -&amp;gt; left。
+  5. 边框：border-style: top right bottom left; (none, hidden, dotted, dashed, solid double, grove, ridge, inset, outset, inherit) 注意在边框指定为none 的时候，设定其他属性是没有作用的。可以设定单边样式：　border-top-style, border-right-style etc, border-width　同style类似（thin, medium, thick, length, inherit）, 单边设定border-top-width, border-color 同style 一样,单边设定 border-top-color: 简写：border-top: thick solid gray;全局边框: border: thick solid gray;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id="颜色和背景略过"&gt;颜色和背景：（略过）&lt;/h4&gt;
+
+&lt;h4 id="浮动和定位"&gt;浮动和定位：&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;*　属性：　float: left, right, none, inherit, 应用于：所有元素，　
+* 浮动会将元素从正常流中　删除，浮动元素包含块为　其最近的块级祖先元素。只要是浮动元素，就会生成一个块级框，回像块及元素一样表现和摆放。简单规则：
+  1. 浮动元素的左右外边界不能超过其包含块的　左右内边界。 　　　2. 浮动元素的顶端　不能比其父元素的内边界更高
+* 定位：　position: static, relative, absolute, fixed, inherit
+* 对于一个非根元素，　如果其position为　relative, static包含块设定为最近的块级框、表单元格、行内块祖先框的内容边界构成
+* 对于非根元素，如果其position 为absolute，包含块设定为最近的position值不是static　的祖先元素，如果这个祖先是块级元素，　包含块设定为该元素的内边距边界。
+* relative: 元素想对于之前元素偏移位置，它原本所占据的空间仍然保留。
+* absolute: 从文档流中完全删除，并相对于包含块定位。元素定位之后会生成一个块级框。
+* fixed: 表现类似与absolute，不过包含块是视图本身。
+* relative, absolute, fixed, 描述偏移：　top, right, bottom, left, 用来描述　距离包含块最近边的偏移距离。width, height，　对于定位元素并不重要，因为可以通过四个属性来隐形的确定。
+* min-width, min-height, max-width, max-height　作用：　可以相对安全的混合使用不同的单位，　使用白分数的时候，可以设定长度限制。
+* 内容溢出和可见性：　overflow: visible(超出边框) | hidden(超出边框的被剪裁) | scroll(html中添加滚轮展示) | auto | inherit, visibility:  visible | hidden | collapse | inherit, visible　设定为展示内容，　hidden 隐藏内容，但是并不从文档流中删除，　区别于 display: none, 会从文档中删除，不占据位置，　所以 visibility　是可以继承的，可以设定父元素hidden, 子元素为visible
+- [还没有介绍 collapse呢]
+* 绝对定位：包含块： 最近的position值不为 static 的元素。通常简单的做法是， 选在一个元素作为绝对定位元素的包含块，将其position设定为relative，并没有偏移。元素绝对定位时候，还为其后代元素建立了一个包含块。文档可以滚动的话，绝对定位是随着文档滚动的，因为定位元素的包含块是文档流的一部分。外边距为 auto可以得到垂直居中的 效果，
+* 固定定位： 固定定位与绝对定位相似，只是包含块是 视窗。
+* 相对定位：
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id="家"&gt;家:&lt;/h4&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;1. 海，天空，星辰，公主，王子，烤箱（蛋糕），狗，毛绒玩具
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <title>Phoenix 1.3</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2017/08/24/phoenix_13_learn/"/>
+    <id>http://geniousbar.github.io/2017/08/24/phoenix_13_learn/</id>
+    <published>2017-08-24T08:00:00+08:00</published>
+    <updated>2017-09-13T05:33:17+08:00</updated>
+    <summary type="html">&lt;h2 id="phoenix-13-learn"&gt;Phoenix 1.3 learn&lt;/h2&gt;
+
+&lt;h4 id="常用命令"&gt;常用命令&lt;/h4&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;```
+mix phx.new hello 
+mix deps.get 
+mix deps.compile 
+iex -S mix phx.server 
+mix ecto.create 
+mix phx.server 
+
+
+```
+
+lib/hello_web 保存web相关的代码， 
+```
+|-- channels
+|     |-- user_socket.ex
+|-- controllers
+|     |-- page_controller...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary>
+    <content type="html">&lt;h2 id="phoenix-13-learn"&gt;Phoenix 1.3 learn&lt;/h2&gt;
+
+&lt;h4 id="常用命令"&gt;常用命令&lt;/h4&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;```
+mix phx.new hello 
+mix deps.get 
+mix deps.compile 
+iex -S mix phx.server 
+mix ecto.create 
+mix phx.server 
+
+
+```
+
+lib/hello_web 保存web相关的代码， 
+```
+|-- channels
+|     |-- user_socket.ex
+|-- controllers
+|     |-- page_controller.ex
+|-- router.ex
+|-- endpoint.ex
+|-- template
+|     |-- layout 
+|     |-- page 
+|-- views
+|     |-- xx_ helpers.ex
+```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+</content>
+  </entry>
   <entry>
     <title>Phoenix framework 1.3 context</title>
     <link rel="alternate" href="http://geniousbar.github.io/2017/08/07/phoenix-contexts/"/>
@@ -458,7 +680,7 @@
     <link rel="alternate" href="http://geniousbar.github.io/2017/08/02/rails-application-refactor/"/>
     <id>http://geniousbar.github.io/2017/08/02/rails-application-refactor/</id>
     <published>2017-08-02T08:00:00+08:00</published>
-    <updated>2017-08-23T12:25:00+08:00</updated>
+    <updated>2017-08-23T12:28:05+08:00</updated>
     <summary type="html">&lt;h2 id="重构现有rails应用"&gt;重构现有Rails应用&lt;/h2&gt;
 
 &lt;h3 id="面临问题"&gt;面临问题&lt;/h3&gt;
@@ -1159,254 +1381,6 @@ end&lt;br /&gt;
 &lt;blockquote&gt;
   &lt;p&gt;最终要的是rails 中的generator使用thor创建，拷贝模板，　参数解析等&lt;/p&gt;
 &lt;/blockquote&gt;
-</content>
-  </entry>
-  <entry>
-    <title>七周七数据库</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2017/06/29/databases/"/>
-    <id>http://geniousbar.github.io/2017/06/29/databases/</id>
-    <published>2017-06-29T08:00:00+08:00</published>
-    <updated>2017-07-28T21:01:20+08:00</updated>
-    <summary type="html">&lt;h2 id="七周七数据库"&gt;七周七数据库&lt;/h2&gt;
-&lt;p&gt;&lt;a href="#postgres"&gt;Postgres&lt;/a&gt;&lt;br&gt;
-&lt;a href="#riak"&gt;Riak&lt;/a&gt;&lt;br&gt;
-&lt;a href="#hbase"&gt;Rbase&lt;/a&gt;&lt;br&gt;
-&lt;a href="#mongodb"&gt;MongoDB&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id="概述"&gt;概述&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;选取那种数据库能够最好的解决你的问题&lt;/li&gt;
-  &lt;li&gt;数据库类型：关系型(Postgres)、键值类型(Riak, Redis)、多列型(Hbase)、面向文档型(MongoDb, CouchDb)、图型(Neo4j)&lt;/li&gt;
-  &lt;li&gt;模式是数据库所强制的一个刚性框架&lt;/li&gt;
-  &lt;li&gt;实现横向扩展（MongoDB， Hbase、Riak）， 纵向扩展（Postgres、Neo4j、Redis）&lt;/li&gt;
-  &lt;li&gt;关系型数据库： Mysql, H2, HSQLDB...&lt;/li&gt;
-&lt;/ul&gt;</summary>
-    <content type="html">&lt;h2 id="七周七数据库"&gt;七周七数据库&lt;/h2&gt;
-&lt;p&gt;&lt;a href="#postgres"&gt;Postgres&lt;/a&gt;&lt;br /&gt;
-&lt;a href="#riak"&gt;Riak&lt;/a&gt;&lt;br /&gt;
-&lt;a href="#hbase"&gt;Rbase&lt;/a&gt;&lt;br /&gt;
-&lt;a href="#mongodb"&gt;MongoDB&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id="概述"&gt;概述&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;选取那种数据库能够最好的解决你的问题&lt;/li&gt;
-  &lt;li&gt;数据库类型：关系型(Postgres)、键值类型(Riak, Redis)、多列型(Hbase)、面向文档型(MongoDb, CouchDb)、图型(Neo4j)&lt;/li&gt;
-  &lt;li&gt;模式是数据库所强制的一个刚性框架&lt;/li&gt;
-  &lt;li&gt;实现横向扩展（MongoDB， Hbase、Riak）， 纵向扩展（Postgres、Neo4j、Redis）&lt;/li&gt;
-  &lt;li&gt;关系型数据库： Mysql, H2, HSQLDB,SQLite,&lt;/li&gt;
-  &lt;li&gt;键值数据库， KV， 因为对资源的要求非常少，所以会有着高性能， 但是当你有复杂的查询和聚合的需求时候，不会有帮助&lt;/li&gt;
-  &lt;li&gt;列型数据库：大约介于关系数据库-键值数据库之间HBase&lt;/li&gt;
-  &lt;li&gt;文档型数据库：存储的就是文档， 有一个独一无二的IB标识&lt;/li&gt;
-  &lt;li&gt;图数据库：在数据中建立联系， 如社交网络&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id="postgres"&gt;postgres&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;庞大的特性集合（触发器、存储过程、高级索引、数据安全性）， 查询灵活，模式是规范的。&lt;/li&gt;
-  &lt;li&gt;事务保证一致性， 索引，连接查询。&lt;/li&gt;
-  &lt;li&gt;存储过程， 可以减少客户端代码的编写，提高性能，但是， 却决定与数据库的绑定，&lt;/li&gt;
-  &lt;li&gt;视图，create View&lt;/li&gt;
-  &lt;li&gt;全文索引 TSVector TSQuery， Lucence, Sphinx， 搜索引擎&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;优点:&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;符合ACID，确保提交的院子型，一致性， 隔离和持久, 数据模式非常规范，通过优化（建立索引等）可以轻松处理TB的数据&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;缺点:&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;分区不是强项，数据要求比较严格，如果数据过于灵活，不是很容易融入到关系数据库严格的数据模式中，或者不需要一个完整的数据库功能带来的开销，需要进厂非常大量的键值对读写的操作&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id="riak"&gt;riak&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;分布式的键值数据库，值可以是任何类型的数据， 普通文本，json，xml，图片，音频等。对互联网友好，可以通过URL，http方式查询&lt;/li&gt;
-  &lt;li&gt;容错： 服务器可以在任何时刻启动或者停止，而不会引起任何单点故障，（非常注重可以写入性。。。为的是可以回家睡觉）&lt;/li&gt;
-  &lt;li&gt;缺点：对于自定义的查询缺乏支持， 键值的存储设计，是数据值无法进行连接（外键）&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h5 id="riak-中的架构设计"&gt;Riak 中的架构设计&lt;/h5&gt;
-&lt;ol&gt;
-  &lt;li&gt;环状：个个节点加入到一个环， 每个Vnode代表一系列经过hash的键，这个可以通过计算hash可快速寻找键值&lt;/li&gt;
-  &lt;li&gt;Riak中写入对象时候，可以选择在多个节点上创建这个值的副本，如果某个节点发生故障，还有另一个节点的副本可以使用.三个数值， N， W， R， ：n第一次写入最终复制的节点数量， 集群中的副本数量，W， 第一次成功写入返回前，必须成功写入的节点数，R是成功读取一项数据所必须的节点数，&lt;/li&gt;
-  &lt;li&gt;向量时钟， 解决冲突：&lt;/li&gt;
-  &lt;li&gt;可以使用Erlang， Javascript，写函数，提交前后的回调函数&lt;/li&gt;
-  &lt;li&gt;搜索： 如果你打算为大规模web应用提供搜索功能， Riak是一个明确的选择。 但是你需要大量简答的自有定义的查询，则不是明智的&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;优点:&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;致力于最高可用性， 避免单点故障，如果使用Erlang就能够扩展Riak的核心，map reduce&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;缺点:&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;没有严格的数据结构，数据模式， 自定义查询很弱。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id="hbase"&gt;hbase&lt;/h3&gt;
-
-&lt;p&gt;优点：&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;值得注意的特性：健壮的可伸缩架构， 内置的版本，压缩功能。 保存wiki页面，自动实现了版本管理&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;缺点：&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;5个节点是最小的配置， 学习曲线陡峭，除了行键之外，不提供任何索引功能，不提供排序， 所以如果不能使用行键查找，就只能使用扫描表，或者自己维护索引， 数据类型的缺失： 所有字段的数值都作为不解释的字节数组， 比如整数值、字符串、日期之类的，对这些的解释取决玉应用程序。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id="mongodb"&gt;mongodb&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;文档数据库，允许数据以嵌套形式的状态保存， 没有模式，&lt;/li&gt;
-  &lt;li&gt;关系数据库有强大的查询能力， Riak， Hbase分布式存储的特点，Mongo在这俩昂着之前找到了最佳结合点， 保存大规模数据， 又能满足自有定义的查询。 是一个json�文档数据库，能够无限的嵌套。&lt;/li&gt;
-  &lt;li&gt;安装一般需要先创建数据存储位置， /data/db, mongod&lt;/li&gt;
-  &lt;li&gt;Mongo不支持join操作&lt;/li&gt;
-  &lt;li&gt;db.users.find(function(){ return this.age &amp;gt; 50 &amp;amp;&amp;amp; this.age &amp;lt; 100})使用函数作为find参数的，最后在考虑，因为查询很慢，不能使用索引。&lt;/li&gt;
-  &lt;li&gt;Map Reduce, db.runCommand({mapReduce: ‘tables’, map: map_fun, reduce: reduce_fun, out: ‘result_tables’})&lt;/li&gt;
-  &lt;li&gt;副本集合， 分片，地理空间， GridFS，&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;优点：&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;能够通过复制和横向伸缩， 处理大量的数据，+ 非常灵活的数据模型，强大的SQL&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;缺点：&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;鼓励反规范化的模式， 将任意类型的数据插入集合中，是很危险的。需要努力去设计和管理。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id="redis"&gt;redis&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;1. redis-server, redis-cli
-2. redis 数据类型，Lists, Sets, Sorted sets, Hashes, Bit arrays, HyperLogLogs
-3. redis keys 
-   * 空值可以是key
-   * 太长太浪费空间，　太短容易造成冲突
-   * 坚持使用一种模式
-4. 命令集合: 
-   * set, get, incr, decr, mset, exists, type, expire, ttl
-   * list rpush, lpush, lrange, rpop, del, llen, lpop, 
-   * hash, hmset, hget, hgetall, 
-   * sets, sadd, smembers, sismember, sinter, sunionstore, spop, scard, 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
-  </entry>
-  <entry>
-    <title>高性能Mysql</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2017/06/26/mysql/"/>
-    <id>http://geniousbar.github.io/2017/06/26/mysql/</id>
-    <published>2017-06-26T08:00:00+08:00</published>
-    <updated>2017-06-28T18:07:21+08:00</updated>
-    <summary type="html">&lt;h2 id="mysql-性能优化"&gt;Mysql 性能优化&lt;/h2&gt;
-
-&lt;h3 id="mysql-架构"&gt;mysql 架构&lt;/h3&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;  客户端 ---&amp;gt; 连接/线程处理 ----&amp;gt; 查询缓存
-                |               ^
-                |               |
-                |               |
-                |------------&amp;gt; 解析器 ---------&amp;gt; 优化器 ------&amp;gt; 存储引擎
-                ( 第一层)      (第...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary>
-    <content type="html">&lt;h2 id="mysql-性能优化"&gt;Mysql 性能优化&lt;/h2&gt;
-
-&lt;h3 id="mysql-架构"&gt;mysql 架构&lt;/h3&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;  客户端 ---&amp;gt; 连接/线程处理 ----&amp;gt; 查询缓存
-                |               ^
-                |               |
-                |               |
-                |------------&amp;gt; 解析器 ---------&amp;gt; 优化器 ------&amp;gt; 存储引擎
-                ( 第一层)      (第二层)          (     第三层          )
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;ol&gt;
-  &lt;li&gt;使用用户名，密码，安全套接字ssl，方式连接&lt;/li&gt;
-  &lt;li&gt;优化执行： 优化器，会解析查询。包括，创建内部解析树，决定表的查询顺序，选择合适的索引等，explaiin，优化器并不关心表的存储引擎，而是隔离！，但是存储引擎对于查询优化是有影响的。优化器会请求存储引擎提供容量、操作的开销信息等，进行优化.&lt;/li&gt;
-  &lt;li&gt;并发控制， 读写锁（共享锁、排它锁），锁的粒度（表锁、行级锁、）, 事务： 原子性、一致性、哥理性、持久性，事务日志，通过日志恢复错误的崩溃. 在innoDb中显示的使用所，没有必要，还会严重影响性能。&lt;/li&gt;
-  &lt;li&gt;存储引擎： Engine: InnoDB, MyISAM(不支持事务、行级锁) 、Archive, Blackhole, CSV, Memory&lt;/li&gt;
-  &lt;li&gt;引擎选择： 除非需要用到某些InnoDB不具备的特性，并且没有其他办法可以代替，否则都应该优先选择InnoDB引擎，例如使用全文索引，有限使用InnoDB+Sphinx，而不是支持全文所以的MyISAM, 考虑因素： 事务、备份、崩溃恢复&lt;/li&gt;
-  &lt;li&gt;大数据量： InnoDB 数据量在 3-5TB，10TB以上，需要建立数据仓库， Infobright是比较成功的mysql数据仓库反感， TokuDB也可以&lt;/li&gt;
-  &lt;li&gt;存储引擎的转换： alter table, 导出导入， 创建与查询， create table innodb_table like myisam_table; alter table innodb_table ENGINE=InnoDB; insert into innodb_table select * from myisam_table&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id="基准测试"&gt;基准测试&lt;/h3&gt;
-&lt;p&gt;todo&lt;/p&gt;
-
-&lt;h3 id="服务器性能剖析"&gt;服务器性能剖析&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;通常为三个问题： 确认服务器是否达到了性能最佳的状态、找出某条语句为什么执行不够快、诊断造成用户卡顿的某些间歇性 性能故障&lt;/li&gt;
-  &lt;li&gt;性能剖析， 测量服务器的时间花费在那里&lt;/li&gt;
-  &lt;li&gt;性能定义为： 完成某件任务所需要的时间而不是资源来测量性能。数据库服务器的目的是执行sql，所以关注的任务是查询或者语句。一个陷阱是：资源是用来消耗并且用来工作的。所以有时候消耗更多的资源能够加快查询速度，查询的响应速度更能够提现升级后的性能是不是更好。&lt;/li&gt;
-  &lt;li&gt;所以如果目标是降低响应时间，那么就需要先搞清楚时间话费在哪里，无法测量就无法有效的优化，所以第一步是： 测量时间花费在什么地方。&lt;/li&gt;
-  &lt;li&gt;完成任务所需要的时间： 执行时间+等待时间。 而等待时间则的测量比较复杂，可能由其他系统间接导致。基于执行时间的分析研究的是什么任务的执行时间最长，等待的分析：判断任务在什么地方被阻塞的时间最长.&lt;/li&gt;
-  &lt;li&gt;性能剖析： 1： 测量任务所花费的时间， 2：统计排序， 性能剖析报告会列出所有的任务列表，列出，任务名、任务的执行时间，任务的消耗时间，占比等。&lt;/li&gt;
-  &lt;li&gt;show status, 大部分结果只是一个计数器， FLUSH STATUS; select * from users; SHOW STATUS WHERE Variable_name LIKE ‘Handler%’ OR Variable_name LIKE ‘Create%’&lt;/li&gt;
-  &lt;li&gt;慢查询日志:&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id="schema-与数据类型优化"&gt;Schema 与数据类型优化&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;schema 原则： 1： 更小的通常更好（更小的通常意味着占用更小的磁盘、内存）， 2：简单就好, 简单的数据类型耗费更少的CPU周期，（应该是用mysql内奸的数据类型而不是字符串保存日期和时间， 另一个则是使用整行，保存ip）, 3:  避免NULL，通常最好指定列为NOT NULL，查询中包含null对于mysql来说更难优化，尽量不要在NUll的列上建立索引。&lt;/li&gt;
-  &lt;li&gt;varchar（变长） char (固定长度), 最好的策略是，只分配真正需要的空间&lt;/li&gt;
-  &lt;li&gt;使用枚举代替 字符串类型，枚举类型的数据结构非常紧凑，可以节省大量的空间。&lt;br /&gt;
-    * 缺点: 不能够随意改变，对于未来会改变的字符串，不太适合。不建议选用。&lt;br /&gt;
-    * 排序可以使用FIELD函数进行。&lt;/li&gt;
-  &lt;li&gt;日期和时间类型： DATETIME， 与时区无关，使用8个字节的存储空间。 TIMESTAMP： 格林尼治标准时间， 处理时区，使用4个字节。默认not NULL&lt;/li&gt;
-  &lt;li&gt;选择标志符, 标识符可能与其他值进行比较，例如关联操作，标识列可能在另在的表中作为外键使用。所以为标识列选择数据类型时，应该选择跟关联表中对应的列一样的类型。所以不进需要卡绿存储类型，还需要考虑mysql对这种类型怎样执行计算和比较。在可满足的范围的需求，并且预留未来增长空间的前提下，应该选用最小的数据类型，&lt;br /&gt;
-    * 整数类型： 通常是最好的选择&lt;br /&gt;
-    * 字符串类型： 如果可能，应该避免使用字符串作为标识列，1，消耗空间，比数字类型慢，2.对于md5， sha1,uuid类型产生的字符串，会导致insert以及select语句变得慢。因为插入值会随机的写入到索引的不同位置，所以insert慢，select慢，是因为逻辑上相邻的行，会分不在磁盘、内存的不同地方，随机值导致缓存的效果也会很差，因为会导致缓存赖以工作的局部性原理失效。UUID，应该移除「-」符号, 对比sha1，虽然分布也不均匀，但是还有有一定顺序。&lt;br /&gt;
-    * 所以按照这样的说法，一些，需要处理id的地方，比如用户的主键，直接使用integer，可以另外设定一个字段展示。&lt;br /&gt;
-    * 特殊数据类型： IP v4地址， 人们经常石永红varchar(15)来保存，然而它是32位无符号正数，不是字符串， INET_ATON, INET_NTOA&lt;br /&gt;
-    * 为了提升读查询的速度，需要建立一些额外的索引，增加冗余列，增加了写的负担，需要额外的维护任务，但是读操作提醒了。这是常见的技巧&lt;/li&gt;
-  &lt;li&gt;alert table 执行大部分修改表结构的惭怍方法是： 使用新的数据结构创建一个空表，从旧的表中查询所有数据插入到新表，然后删除旧表。这样的操作可能需要花费很长时间，如果内存不足而且表又很大，很多索引的情况下尤其如此。&lt;br /&gt;
-    * 下面的一些操作，是可能不需要重建表的， 而是直接修改.frm文件&lt;br /&gt;
-    * 移除 一个列的 auto_increment操作&lt;br /&gt;
-    * 增加、移除、或者更改 ENUM， SET敞亮，&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id="创建高性能的索引"&gt;创建高性能的索引&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;索引对于良好的性能非常关键，尤其是当表中的数据量越来越大时。索引优化应该是针对查询性能优化最有效的手段了，索引能够情谊的讲查询性能提高到几个数量级。&lt;/li&gt;
-  &lt;li&gt;索引类型：索引是在存储引擎而不是在服务层实现的，所以并没有统一的索引标准，&lt;br /&gt;
-    * B-Tree, 人们多半讨论的是B-Tree索引，但是存储引擎依然使用的是不同的结构， InnoDB使用的为B+Tree， B-Tree对索引列是顺序组织的，适合范围查找，限制： 如果不是按照所以的声明顺序的最左列开始查找，则无法使用索引，不能跳过中间索引，所以：可能需要使用相同的列，但是不同顺序的索引满足查询要求。&lt;br /&gt;
-    * 哈希索引： 将所有索引生成哈希码&lt;/li&gt;
-  &lt;li&gt;索引的优点：&lt;br /&gt;
-    * 大大减少了服务器需要扫描的数据量&lt;br /&gt;
-    * 可以帮助服务器避免排序和临时表&lt;br /&gt;
-    * 可以将随机io变味顺序io&lt;/li&gt;
-  &lt;li&gt;高性能索引策略, 正确的创建和使用索引是实现高性能查询的基础。&lt;/li&gt;
-  &lt;li&gt;索引策略：&lt;br /&gt;
-    * 前缀索引和索引选择性， varchar类型的列，需要使用前缀索引，&lt;br /&gt;
-    * 把where条件中的列都加上索引是错误的！。&lt;br /&gt;
-    * 多个列独立的建立索引大部分情况下都不能提高查询性能。&lt;br /&gt;
-    * 选择合适的索引顺序。 B-Tree中索引的顺序意味着所以首先按照最左列进行排序， 其次是第二列，将选择最高的列，放在索引前面。&lt;br /&gt;
-    * 聚簇索引：主键中为B-Tree， 其他索引中，为B-tree，但是叶子节点中存储的为主键， 通过主键在次查询到具体数据.&lt;br /&gt;
-    * 在InnoDB中按照主键顺序的插入行，最好避免随机，会带来没必要的分页存储。大量的数据插入可能会导致AUTO_INCREMENT锁竞争，可以秀发Innodb_autoin_lock_mode中的配置。&lt;br /&gt;
-    * 使用索引扫描来做排序， 通过排序操作，活着按照索引顺序排序, explain出来 type为index， 则说明使用了索引排序&lt;br /&gt;
-    * 删除冗余和重复索引&lt;br /&gt;
-    * 删除未使用的索引&lt;br /&gt;
-    * 索引会有效的减少需要lock的数据，&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id="查询性能优化"&gt;查询性能优化&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;大部分性能底下的查询都可以通过减少访问的数据量的方式进行&lt;/li&gt;
-  &lt;li&gt;是否扫描额外的数据：1：响应时间， 2： 扫描的行数， 3：返回的行数&lt;/li&gt;
-  &lt;li&gt;explain 类型，有： 全表扫描， 碎银扫描， 范围扫描， 唯一索引查询，常熟引用&lt;/li&gt;
-  &lt;li&gt;发现扫描大量数据但是返回很少的行的情况的优化方法：&lt;br /&gt;
-    * 使用索引， 将需要的列，放入到索引中&lt;br /&gt;
-    * 改变库表的结构，例如使用单独的汇总表&lt;/li&gt;
-  &lt;li&gt;重构查询：&lt;br /&gt;
-    *  切分查询，例如，删除数据，分散的删除数据， 而不是一次性删除&lt;br /&gt;
-    * 分解关联查询： 简单的， 可以对没一个表进行查询，然后将结果在应用程序中，进行关联， 几个有点： 1：缓存的效果v更高， 2：查询分解后，减少锁的竞争。 3：查询效率提升（单个查询）， 4： 减少冗余记录的查询&lt;/li&gt;
-  &lt;li&gt;查询执行基础：&lt;br /&gt;
-    * 客户端、服务器通信协议，任何时刻都只有一个人在掌控球。一旦客户端发送了请求，能做的事情，就只有等待结果。&lt;br /&gt;
-    * mysql的连接（线程）的状态有： sleep, query, locked, analyzing and statistics, cpoying to tmp table, sorting result, sending data&lt;br /&gt;
-    *  排序优化：加索引&lt;br /&gt;
-    * 在同一个表上查询和更新： 借助临时表&lt;br /&gt;
-    * 关联查询： 确保On 中的列上有索引， 只需要在关联顺序中的第二个表的对应列上创建索引&lt;br /&gt;
-    * 优化limit：一般会加上合适的order by语句， 如果有索引，效率会非常不错。 2： 大偏移量问题： 限制&lt;/li&gt;
-&lt;/ol&gt;
 </content>
   </entry>
 </feed>
