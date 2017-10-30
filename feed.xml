@@ -13,7 +13,7 @@
     <link rel="alternate" href="http://geniousbar.github.io/2017/10/21/art_of_unix_programming/"/>
     <id>http://geniousbar.github.io/2017/10/21/art_of_unix_programming/</id>
     <published>2017-10-21T08:00:00+08:00</published>
-    <updated>2017-10-28T23:40:58+08:00</updated>
+    <updated>2017-10-30T10:04:38+08:00</updated>
     <summary type="html">&lt;h2 id="the-art-of-unix-programming"&gt;The Art of unix programming&lt;/h2&gt;
 
 &lt;h2 id="哲学"&gt;哲学&lt;/h2&gt;
@@ -100,13 +100,12 @@
   &lt;li&gt;unix 和 面向对象&lt;br /&gt;
     1. 面向对象编程中，作用于具体的数据结构的函数，和数据一起封装在 可视为单元的一个对象中。非OO中，数据跟函数的联系变的毫无规律。&lt;br /&gt;
     2. OO的设计理念在 图形系统，图形用户界面中得到非常多的认可。然而，其他领域则很难发现有多少显著的优点。&lt;br /&gt;
-    3. OO语言鼓励 『复杂的抽象层次』， 在简单事情中，使事情变得很复杂。使程序员容易陷入过度分层的抽象中，过多的层次破坏了透明性。无在头脑中理清楚代码到底在干什么、如何运行的。
-    &lt;ul&gt;
-      &lt;li&gt;好协议产生好实践&lt;/li&gt;
-      &lt;li&gt;透明性：来点光（Let There Be light）&lt;strong&gt;最有效的方法： 就是不要在具体操作的代码上叠放太多的抽象层&lt;/strong&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+    3. OO语言鼓励 『复杂的抽象层次』， 在简单事情中，使事情变得很复杂。使程序员容易陷入过度分层的抽象中，过多的层次破坏了透明性。无在头脑中理清楚代码到底在干什么、如何运行的。&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;h2 id="好协议产生好实践"&gt;好协议产生好实践&lt;/h2&gt;
+
+&lt;h2 id="透明性来点光let-there-be-light最有效的方法-就是不要在具体操作的代码上叠放太多的抽象层"&gt;透明性：来点光（Let There Be light）&lt;strong&gt;最有效的方法： 就是不要在具体操作的代码上叠放太多的抽象层&lt;/strong&gt;&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;需要思考的问题:&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
@@ -153,6 +152,63 @@
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;h2 id="微型语言"&gt;微型语言：&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;对软件错误模式进行大量研究得出的一个一致的结论就是： 程序员每百行代码出错率，和所使用的编程语言在很大程度上相关。更高级的语言可以使用更少的行数完成更多的任务，也意味着更少的bug.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id="生成-提升规格说明的层次"&gt;生成： 提升规格说明的层次&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;人类更善于肉眼观察数据，而不是推到控制流程。不同的方式在透明性和清晰性方面具有非常显著的差别。数据比程序更容易驾驭。尽可能的把设计的复杂度从程序代码中转移到数据中是个很好的实践。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;数据驱动编程&lt;br /&gt;
+    需要把代码跟代码作用的数据结构划分清楚。&lt;br /&gt;
+    跟面向对象区分是： 数据驱动编程中，数据不仅仅是某个对象的状态，实际上还定义了程序的控制流程。 b：OO首先考虑的封装，而数据驱动编程看中的事编写尽可能少的固定代码。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="配置-starting-on-the-right-foot"&gt;配置： Starting on the Right foot&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;配置在哪里?&lt;br /&gt;
+    * /etc 下的运行控制文件(配置文件)&lt;br /&gt;
+    * 有系统设定的环境变量&lt;br /&gt;
+    * 用户主目录下的控制文件&lt;br /&gt;
+    * 用户设置的环境变量&lt;br /&gt;
+    * 启动程序命令行所传递的开关、参数&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   后面的会覆盖前面的参数
+   考虑使用何种机制想程序传递配置数据时候， 要考虑参数的使用周期。
+    1. 对调用时可能发生变化项： 使用命令开关。
+    2. 改动很少但是确实应该由每个用户控制的项： 用户主目录的运行控制文件
+    3. 需要管理员控制，而不是用户能够改变的系统级项： 系统的控制文件
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ol&gt;
+  &lt;li&gt;运行控制文件（配置文件的格式）&lt;br /&gt;
+    1. 通常只在程序启动时，一次性读取，因此性能不是主要考虑的问题， 互用性和透明性要求我们使用文本格式。&lt;br /&gt;
+    2. 特例： 如果程序是某种解释器，那么应该是用 该语言语言写成，并在启动时候，执行命令文件。（mina deploy.rb, 不知道静态语言是不是会费点劲？）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="优化-optimization"&gt;优化： Optimization&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;关于性能优化， Unix经验告诉我们，最主要的就是如何知道合适不去优化， 其次，最有效的优化往往是优化之外的其他事情，比如干净的设计。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;程序员工具箱中最强大的优化技术就是不做优化&lt;/li&gt;
+  &lt;li&gt;先估量，后优化。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="复杂度-尽可能简单但是别简单的过了头as-simple-as-possible-but-note-simpler"&gt;复杂度： 尽可能简单，但是别简单的过了头（As simple as possible, but Note Simpler）&lt;/h2&gt;
+&lt;p&gt;| 偶然复杂     | 违反SPOT原则    | 过早优化 | 非正交性&lt;br /&gt;
+  | :————- | :————- |:——-|:———|&lt;br /&gt;
+  | 选择复杂度       | 方法学开销       | 别的一切 | 有效功能&lt;br /&gt;
+  | 本质复杂度 | 开发工具 | 核心数据结构 | 功能需求 |&lt;br /&gt;
+  |        | 代码库规模 | 实现复杂度 | 接口复杂度 |&lt;br /&gt;
+  偶然复杂度经常来源于， 接口设计并非正交&lt;/p&gt;
 </content>
   </entry>
   <entry>
