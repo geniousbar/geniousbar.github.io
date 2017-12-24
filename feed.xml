@@ -4,16 +4,209 @@
   <id>http://geniousbar.github.io</id>
   <link href="http://geniousbar.github.io"/>
   <link href="http://geniousbar.github.io/feed.xml" rel="self"/>
-  <updated>2017-10-21T08:00:00+08:00</updated>
+  <updated>2017-12-02T08:00:00+08:00</updated>
   <author>
     <name>geniousbar</name>
   </author>
+  <entry>
+    <title>CSAPP</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2017/12/02/csapp/"/>
+    <id>http://geniousbar.github.io/2017/12/02/csapp/</id>
+    <published>2017-12-02T08:00:00+08:00</published>
+    <updated>2017-12-24T23:27:02+08:00</updated>
+    <summary type="html">&lt;h2 id="深入理解计算机系统"&gt;深入理解计算机系统&lt;/h2&gt;
+
+&lt;h2 id="计算机系统漫游"&gt;计算机系统漫游&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;代码从文本到可执行文件的过程（c语言示例）：
+    &lt;ul&gt;
+      &lt;li&gt;预处理阶段，处理 #inlcude &lt;stadio.h&gt;， #define MAX 100&lt;/stadio.h&gt;
+&lt;/li&gt;
+      &lt;li&gt;编译阶段：将文本编译成汇编程序，hello.s&lt;/li&gt;
+      &lt;li&gt;汇编阶段：汇编器将上一步的程序翻译成机器指令。hello.o&lt;/li&gt;
+      &lt;li&gt;链接阶段就：hello 中调用的printf函数，而函数存在一个printf.o 单独的编译完成文件，需要以某种方式合并到hello.o 中。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+ ...&lt;/ol&gt;</summary>
+    <content type="html">&lt;h2 id="深入理解计算机系统"&gt;深入理解计算机系统&lt;/h2&gt;
+
+&lt;h2 id="计算机系统漫游"&gt;计算机系统漫游&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;代码从文本到可执行文件的过程（c语言示例）：
+    &lt;ul&gt;
+      &lt;li&gt;预处理阶段，处理 #inlcude &lt;stadio.h&gt;， #define MAX 100&lt;/stadio.h&gt;&lt;/li&gt;
+      &lt;li&gt;编译阶段：将文本编译成汇编程序，hello.s&lt;/li&gt;
+      &lt;li&gt;汇编阶段：汇编器将上一步的程序翻译成机器指令。hello.o&lt;/li&gt;
+      &lt;li&gt;链接阶段就：hello 中调用的printf函数，而函数存在一个printf.o 单独的编译完成文件，需要以某种方式合并到hello.o 中。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;系统的硬件组成
+    &lt;ul&gt;
+      &lt;li&gt;总线&lt;/li&gt;
+      &lt;li&gt;I/O设备&lt;/li&gt;
+      &lt;li&gt;主存&lt;/li&gt;
+      &lt;li&gt;处理器， 指令集合： 加载(复制内容到寄存器）， 存储（从寄存器到存储），操作（加减乘除等计算）， 跳转（覆盖程序计数器PC的数值，执行代码跳转）&lt;/li&gt;
+      &lt;li&gt;缓存， 高速缓存&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;操作系统如何管理硬件
+    &lt;ul&gt;
+      &lt;li&gt;任何的硬件通过操作系统提供服务， 所有应用程序都是建立在操作系统之上的。&lt;/li&gt;
+      &lt;li&gt;OS 的基本功能： 1. 方式硬件被滥用， 2. 提供一套简单一致的机制来控制复杂度而又大相径庭的低级硬件设备。&lt;/li&gt;
+      &lt;li&gt;OS 的抽象： 文件 -&amp;gt; IO， 虚拟存储器 -&amp;gt; 主存+磁盘， 进程 -&amp;gt; 处理器，主存，IO设备的抽象&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;抽象
+    &lt;ul&gt;
+      &lt;li&gt;进程： 计算机科学中最重要并且成功的概念。
+        &lt;blockquote&gt;
+          &lt;p&gt;提供一种假象， 好像系统上只有这个程序在运行，看上去只有这个程序在使用处理器、主存、和IO设备. 这是通过处理器在进程间切换来实现的。  操作系统实现这种交错执行的机制为 &lt;strong&gt;上下文切换&lt;/strong&gt;, 实现进程这个抽象概念需要低级硬件和操作系统软件之间的紧密合作。&lt;/p&gt;
+        &lt;/blockquote&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;线程：每个线程都运行在进程的上下文中，并共享同样的代码和全局数据，服务器对于并行处理的需求，导致线程编程成为越来越重要的编程模型， 一般来说，多线程之间更容易共享数据，也比进程更轻量。&lt;/li&gt;
+  &lt;li&gt;虚拟存储器： 为进程提供了一个抽象、一致的存储空间，称为虚拟地址空间。包括： 程序代码和数据，堆，共享库，栈，内核虚拟存储器。&lt;/li&gt;
+  &lt;li&gt;文件： 字节序列。包括磁盘，键盘，显示器，网络，都可以视为文件。&lt;/li&gt;
+  &lt;li&gt;并行跟并发的区分： 并发: &lt;strong&gt;好像&lt;/strong&gt; 同时具有多个活动在系统中。 并行：真正的并行。&lt;/li&gt;
+  &lt;li&gt;抽象： 抽象的使用是计算机科学中最为重要的概念之一，因为，程序员无需了解它内部的工作变可以使用这些代码。在处理器中，指令集结构提供了对实际处理器硬件的抽象。机器代码程序表现的好像是运行在一个一次执行一条指令的处理器上。底层的硬件币抽象描述的要复杂精细的多，它并行的执行多条指令，但又总是与那个简单有序的模型保持一致。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;———————进程———————&lt;br /&gt;
+  |                                            |&lt;br /&gt;
+  |—-指令集结构—–|———虚拟存储器——–|&lt;br /&gt;
+  |                 |———–|—–文件—–|&lt;br /&gt;
+  |   处理器         |  主存      |    I/O 设备  |&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;计算机系统中一个重大的主题就是  提供不同层次的抽象表示，来 隐藏实际实现的复杂性&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id="信息的表示和处理"&gt;信息的表示和处理&lt;/h2&gt;
+
+&lt;p&gt;因为只是介绍了二进制、无符号数、有符号数、以及小数的表示方法， 计算机教程中都有介绍，所以省略不写了。只是简单的摘录重要的。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;在相同长度的无符号和有符号整数之间 进行强制类型转换时候，大多数C语言实现遵循 原则是 底层的位模式不变。而是改变位的解释方法。&lt;/li&gt;
+  &lt;li&gt;编码的存储长度有限。可能导致数值溢出。需要非常注意。&lt;/li&gt;
+  &lt;li&gt;整数和浮点数的表示方法，有所区别，导致， 整数可以进行移位、结合等优化方法，但是浮点数则不行，如 x * y * z 不等于 y * z * x 需要注意&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="程序的机器级别表示"&gt;程序的机器级别表示&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;精通细节是理解更深和更基本概念的先决条件， 所以魔鬼隐藏在细节之中。&lt;/strong&gt;*&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;机器代码的产生过程
+    &lt;blockquote&gt;
+      &lt;p&gt;机器代码， 用字节序列编码低级的操作，包括处理数据、管理存储器、读写存储设备上的数据、以及利用网络通信。 编译器机基于编程语言的原则、目标机器的指令和操作系统遵循的原则， 经过一系列的阶段产生机器代码。GCC C语言编译器以汇编代码的形式产生输出，然后调用 汇编器和链接器从而根据汇编代码生成可执行的机器代码。&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;主要内容：
+    &lt;ul&gt;
+      &lt;li&gt;了解C语言中的控制结构， 比如if while switch 语句的实现方法。&lt;/li&gt;
+      &lt;li&gt;过程的实现， 包括程序如何维护一个运行栈来支持过程间数据和控制的传递以及局部变量的存储&lt;/li&gt;
+      &lt;li&gt;数组、结构、联合这样的数据结构的实现方法&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;抽象：
+    &lt;ul&gt;
+      &lt;li&gt;指令集体系结构（ISA）： 屏蔽了处理器的硬件实现，将指令的执行描述为，简单的顺序执行&lt;/li&gt;
+      &lt;li&gt;存储抽象： 抽象成一个大的字节数组，存储器的实现是，将多个硬件存储器和操作系统软件的结合&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;指令集：
+    &lt;ul&gt;
+      &lt;li&gt;寄存器&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;%eax         %ax&lt;/th&gt;
+          &lt;th&gt;%ah&lt;/th&gt;
+          &lt;th&gt;%al&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;%ecx         %cx&lt;/td&gt;
+          &lt;td&gt;%ch&lt;/td&gt;
+          &lt;td&gt;%cl&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;%edx         %dx&lt;/td&gt;
+          &lt;td&gt;%dh&lt;/td&gt;
+          &lt;td&gt;%dl&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;%ebx         %bx&lt;/td&gt;
+          &lt;td&gt;%bh&lt;/td&gt;
+          &lt;td&gt;%bl&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;%esi         %si&lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;%edi         %di&lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;%esp         %sp&lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+          &lt;td&gt;栈指针&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;%ebp         %bp&lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+          &lt;td&gt;帧指针&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;指令操作数:
+    &lt;ul&gt;
+      &lt;li&gt;源数据： 常数、寄存器、存储器&lt;/li&gt;
+      &lt;li&gt;类型： 立即数（常数）、寄存器(Ea)、存储器&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;数据传送指令: MOV&lt;/li&gt;
+  &lt;li&gt;C语言的指针就是地址，间接引用指针就是将该指针放在一个寄存器中，然后在存储器引用中，使用这个寄存器， 局部变量通常保存在寄存器中。&lt;/li&gt;
+  &lt;li&gt;取址： leal,&lt;/li&gt;
+  &lt;li&gt;条件码：cmp, test, sete, sets, setg etc…&lt;/li&gt;
+  &lt;li&gt;跳转指令：jmp,&lt;/li&gt;
+  &lt;li&gt;算数操作： imull, mull, idivl, divl&lt;/li&gt;
+  &lt;li&gt;栈： push, pop&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
   <entry>
     <title>Art of UNIX programming</title>
     <link rel="alternate" href="http://geniousbar.github.io/2017/10/21/art_of_unix_programming/"/>
     <id>http://geniousbar.github.io/2017/10/21/art_of_unix_programming/</id>
     <published>2017-10-21T08:00:00+08:00</published>
-    <updated>2017-11-05T14:18:19+08:00</updated>
+    <updated>2017-11-06T10:32:08+08:00</updated>
     <summary type="html">&lt;h2 id="the-art-of-unix-programming"&gt;The Art of unix programming&lt;/h2&gt;
 
 &lt;h2 id="哲学"&gt;哲学&lt;/h2&gt;
@@ -1174,411 +1367,6 @@ lib/hello_web 保存web相关的代码，
   &lt;li&gt;使用 before callback 进行创建更新model， after callback进行关联model的区分&lt;/li&gt;
   &lt;li&gt;可以通过继承提供大量的工具类型函数， 应用模板方法创建 流程&lt;/li&gt;
 &lt;/ul&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Crafting rails</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2017/07/28/crafting-rails/"/>
-    <id>http://geniousbar.github.io/2017/07/28/crafting-rails/</id>
-    <published>2017-07-28T08:00:00+08:00</published>
-    <updated>2017-10-28T11:48:51+08:00</updated>
-    <summary type="html">&lt;h2 id="crafting-rails-application"&gt;Crafting rails application&lt;/h2&gt;
-
-&lt;h3 id="创建自己的render"&gt;创建自己的render&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;rails plugins new pdf_render&lt;/li&gt;
-  &lt;li&gt;gemspec, 之盾依赖， 作者、version， lib/pef_render.rb会被自动require（详细看bundler.io中的解释）&lt;/li&gt;
-  &lt;li&gt;Gemfile, 直接引入gemspec，生命依赖关系&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;rails render 解析&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;  &lt;span class="c1"&gt;# rails/actionpac k/lib/action_controller/metal...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary>
-    <content type="html">&lt;h2 id="crafting-rails-application"&gt;Crafting rails application&lt;/h2&gt;
-
-&lt;h3 id="创建自己的render"&gt;创建自己的render&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;rails plugins new pdf_render&lt;/li&gt;
-  &lt;li&gt;gemspec, 之盾依赖， 作者、version， lib/pef_render.rb会被自动require（详细看bundler.io中的解释）&lt;/li&gt;
-  &lt;li&gt;Gemfile, 直接引入gemspec，生命依赖关系&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;rails render 解析&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;  &lt;span class="c1"&gt;# rails/actionpac k/lib/action_controller/metal/rendcers.rb&lt;/span&gt;
-
-  &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="ss"&gt;:json&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-    &lt;span class="n"&gt;json&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_json&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;kind_of?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="no"&gt;String&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:callback&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nf"&gt;present?&lt;/span&gt;
-      &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;content_type&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="no"&gt;Mime&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;JS&lt;/span&gt;
-      &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:callback&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;(&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;)"&lt;/span&gt;
-    &lt;span class="k"&gt;else&lt;/span&gt;
-      &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;content_type&lt;/span&gt; &lt;span class="o"&gt;|||=&lt;/span&gt; &lt;span class="no"&gt;Mime&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;JSON&lt;/span&gt;
-      &lt;span class="nb"&gt;self&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="n"&gt;render&lt;/span&gt; &lt;span class="ss"&gt;json: &lt;/span&gt;&lt;span class="vi"&gt;@post&lt;/span&gt;
-  &lt;span class="n"&gt;json&lt;/span&gt;  &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="vi"&gt;@post&lt;/span&gt;&lt;span class="c1"&gt;# json 指的是， block中的json的变量&lt;/span&gt;
-  &lt;span class="c1"&gt;# 我们想提供的为&lt;/span&gt;
-  &lt;span class="n"&gt;render&lt;/span&gt; &lt;span class="ss"&gt;pdf: &lt;/span&gt;&lt;span class="s1"&gt;'contents'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;template: &lt;/span&gt;&lt;span class="s1"&gt;'path/to/template'&lt;/span&gt;
-
-  &lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;'prawn'&lt;/span&gt;  &lt;span class="c1"&gt;# prawn 提供 pdf的生成&lt;/span&gt;
-  &lt;span class="n"&gt;pdf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Prawn&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;
-  &lt;span class="n"&gt;pdf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;text&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'a string to pdf'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="n"&gt;pdf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;render_file&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'sample.pdf'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-
-  &lt;span class="c1"&gt;# lib/pdf_render.rb&lt;/span&gt;
-  &lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;'prawn'&lt;/span&gt;
-  &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Renderers&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;add&lt;/span&gt; &lt;span class="ss"&gt;:pdf&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-    &lt;span class="n"&gt;pdf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Prawn&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;
-    &lt;span class="n"&gt;pdf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;text&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;render_to_string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="n"&gt;send_data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;render&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;filename: &lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.pdf"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;diposition: &lt;/span&gt;&lt;span class="s2"&gt;"attachment"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="c1"&gt;# rails 如何设定正确的respon中的content type？&lt;/span&gt;
-  &lt;span class="no"&gt;Mime&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Type&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;register&lt;/span&gt; &lt;span class="s2"&gt;"application/pdf"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:pdf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sx"&gt;%w(pdf)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;rails render stack&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   AbstractController::Rendering.render
-   |
-   |-- _normalize_render
-   |      |-- _normalize_args
-   |      |-- _normalize_opions
-   |-- ActionView::Rending.render_to_body
-          |-- _proccess_options
-          |-- _render_template
-                  |-- context = view_context_class.new(view_renderer, view_assigns, self)
-                  |-- ActionView::Renderer.new(lookup_context).render(context, option)
-                      |-- Renderer.render_template(context, options)
-                          |-- TemplateRenderer.new(@lookup_context).render(context, options)
-
-  其中, 大部分的都是在ActionController::Base 中include进去的，所以。所有方法都是在controller中执行的
-    def view_assigns
-      protected_vars = _protected_ivars
-      variables      = instance_variables
-
-      variables.reject! { || sprotected_vars.include?  }
-      svariables.each_with_object({}) { |name, hash|
-        hash[name.slice(1, name.length)] = instance_variable_get(name)
-      }
-    end
-    获取controller中所有的实例变量, 传递到 context中
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id="通过active-model建立自己的模型"&gt;通过Active Model建立自己的模型&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;form_helper&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;  form_for(record, options)
-  |-- builder = instantiate_builder(object_name, record, options)
-      |-- builder = options[:builder] || default_form_builder_class # ActionView::Helpers::FormBuilder
-      |-- builder.new(object_name, object, self, options) # self is ActionView::Base instance
-  |-- output = capture(builder, &amp;amp;block) # form_for中的内部dom
-      |-- yield(builder)
-        |-- Tags::TextField.new("data_bank", :title, self, {object: object}).render
-          |-- options["value"] = options.fetch("value") { value_before_type_cast(object) }
-            |-- value_before_type_cast # 从object获取method_name的数值
-  |-- form_tag_with_body(html_options, output) # 构建真正的form dom
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;所以rails中的文档有很明确的拓展方法:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;  &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MyFormBuilder&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActionView&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;FormBuilder&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;div_radio_button&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;method&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tag_value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
-      &lt;span class="vi"&gt;@template&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;content_tag&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:div&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="vi"&gt;@template&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;radio_button&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-          &lt;span class="vi"&gt;@object_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;method&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tag_value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;objectify_options&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="c1"&gt;# The above code creates a new method +div_radio_button+ which wraps a div&lt;/span&gt;
-  &lt;span class="c1"&gt;# around the new radio button. Note that when options are passed in, you&lt;/span&gt;
-  &lt;span class="c1"&gt;# must call +objectify_options+ in order for the model object to get&lt;/span&gt;
-  &lt;span class="c1"&gt;# correctly passed to the method. If +objectify_options+ is not called,&lt;/span&gt;
-  &lt;span class="c1"&gt;# then the newly created helper will not be linked back to the model.&lt;/span&gt;
-  &lt;span class="c1"&gt;#   &amp;lt;%= form_for @person, :builder =&amp;gt; MyFormBuilder do |f| %&amp;gt;&lt;/span&gt;
-  &lt;span class="c1"&gt;#     I am a child: &amp;lt;%= f.div_radio_button(:admin, "child") %&amp;gt;&lt;/span&gt;
-  &lt;span class="c1"&gt;#     I am an adult: &amp;lt;%= f.div_radio_button(:admin, "adult") %&amp;gt;&lt;/span&gt;
-  &lt;span class="c1"&gt;#   &amp;lt;% end -%&amp;gt;&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;使用继承类，定义自定义的方法， 其他的自然使用继承的方法调用&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;ol&gt;
-    &lt;li&gt;如何扩展 FormBuilder， 2： FormBuilder 在编辑时候的，默认值，是如何取到的&lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/blockquote&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;完善的ActiveModel
-    &lt;ol&gt;
-      &lt;li&gt;ActiveModel::AttributeMethods
-&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;moduel&lt;/span&gt; &lt;span class="no"&gt;MailForm&lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Base&lt;/span&gt;
-    &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;ActiveModel&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;AttributeMethods&lt;/span&gt;
-    &lt;span class="n"&gt;attribute_method&lt;/span&gt; &lt;span class="ss"&gt;prefix: &lt;/span&gt;&lt;span class="s2"&gt;"clear_"&lt;/span&gt;
-            
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;attributes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="nb"&gt;attr_accessor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="n"&gt;define_attribute_methods&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-            
-    &lt;span class="kp"&gt;private&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;clear_attribute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="nb"&gt;send&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;="&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;nil&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-    &lt;/ol&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;当rails controller, view helper接到一个 model,首先调用to_model，操纵结果，而不是直接使用model,　同样我们也不会自己实现，而是通过include ActiveModel::Conversion来实现, 其中主要实现为：　&lt;/p&gt;
-
-        &lt;ol&gt;
-          &lt;li&gt;to_params, 用来生成唯一路由，　&lt;/li&gt;
-          &lt;li&gt;to_key, 返回唯一表示model的数组，供诸如dom_id, dom_class, div_for&lt;/li&gt;
-          &lt;li&gt;to_partial_path，　在vieｗ中使用render(model)时候调用，来计算渲染使用的模板，&lt;br /&gt;
- 　　&amp;gt; 重要的不仅仅是　这些方法的作用，还有这些方法帮助我们所实现的，取得的成就。　比如实现to_params 可以轻松的改变object 的url,&lt;br /&gt;
-  def to_params&lt;br /&gt;
- “#{id}-#{title.parameterize}”&lt;br /&gt;
-  end&lt;br /&gt;
-  假设每个POST有一个不同的方式，可能是video, link, or text, 需要不同的渲染方式，　&lt;br /&gt;
-  @posts.each do |post| &lt;br /&gt;
-render partial: “post/post_#{post.format}”, locals: {post: post}&lt;br /&gt;
-  end&lt;br /&gt;
-  可以这样：　&lt;br /&gt;
-  def to_partial_path&lt;br /&gt;
-“post/post_#{format}”&lt;br /&gt;
-  end&lt;br /&gt;
-  render @posts&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;* 最终的结果是这个样子：
-```ruby
-module ActiveModel
-    class Base
-        def self.included(base)
-            base.class_eval do 
-                extend ActiveModel::Naming
-                extend ActiveModel::Translation
-                include ActiveModel::Validations
-                include ActiveModel::Conversions
-                
-            end
-        end
-        
-        def persisted?
-            true
-        end
-    end
-end
-```
-&amp;gt; 可以实现一个自己的model来自定义，自己重写sequel中定义的model，而不需要改动interface来定义, cms中可以通过两种方式结合来，重新重构：１：自定义form_for，　２：自定义model
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id="自定义视图模板"&gt;自定义视图模板&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;rails在渲染模板，必须通过某种方式定位模板位置，默认rails的模板在文件系统中，但是却不是必须的，rails提供的钩子允许我们从任何地方来提供模板，让我们从数据库中提供模板，让我们深入了解rails的render stack。
-
-*　rails 渲染：　主要职责为：normalize　选项然后传递给ActionView::Renderer 的实例变量，renderer接受一个ActionView::Base的实例变量和hash，来寻找，编译，渲染模板。无论合适，我们渲染模板，源代码必须给编译成可执行的ruby代码，每当代码被执行，发生在给定的环境变量中，　view context，所有的helper方法都在，　包括form_for, link_to，　在view context中，　view renderer还有ActionView::LookupContext的实例变量，这个变量是在controller和view中共享的，它包含所有的为了找到模板的信息，　比如，当渲染jsoｎ请求来是，request的format　就被存储在lookup context变量中，所以rails只寻找json格式的模板。变量在view中也是可用的，包含模板名称，locale, format, 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;request—&amp;gt; controller—-&amp;gt;(render) view_renderer ——-&amp;gt;(find) looup_context ——&amp;gt;(find) view_path —————————-&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;response &amp;lt;- controller &amp;lt;-(rendered template)&amp;lt;—–view_renderer&amp;lt;——–(template)looup_context&amp;lt;——-(template)view_path&amp;lt;——–&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;* resolver API, 
-  &amp;gt; resolver API 只有find_all一个接口，返回包含template,等的数组。
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;blockquote&gt;
-  &lt;ol&gt;
-    &lt;li&gt;如何扩展 FormBuilder， 2： FormBuilder 在编辑时候的，默认值，是如何取到的&lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id="server-异步消息到-client"&gt;Server 异步消息到 client&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;当样式表改动时候，rails发送data到浏览器，浏览器根据data 重新加载当前页面的样式表， 从而达到不需要重新刷新页面累加载样式的目的.&lt;/li&gt;
-  &lt;li&gt;使用websocket(但是不知道为啥不能保持很长时间)， puma多线程, 自定义subscribe 使用queue作为数据结构， 体统轮训， 来分发到个个subscribe， 使用listener，监听个个文件的通知提供事件。&lt;/li&gt;
-  &lt;li&gt;涉及到线程概念&lt;/li&gt;
-  &lt;li&gt;代码加载， autoload是rails提供，而非ruby， ruby中的require是存在缺陷的，不是原子性的require， 在多线程加载中，存在问题， 可能存在A加载中class， B看到了class但是却是残缺不全的， 所以提供了eager load技术，加载所有的代码，而不需要动态加载代码。可以通过config.eager_load_namespaces 来配置，或者，使用代码 eager_autoload {autoload: SSESubscriber}， eager load受益的不仅仅是 puma这样的多线程，还有基于fork的unicorn，&lt;/li&gt;
-  &lt;li&gt;listener， linux实现机制&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id="responders"&gt;Responders&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;使用ActionController::Responder 最大的好处是 集中处理 每种请求的format&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;影响条件， type, http verb, resource status&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;rails 中responder 的实现&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;  &lt;span class="c1"&gt;# rails/actionpack/lib/action_controller/metal/responder.rb&lt;/span&gt;
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="n"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;respond&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;respond&lt;/span&gt;
-    &lt;span class="nb"&gt;method&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"to_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-    &lt;span class="nb"&gt;respond_to?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;method&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;?&lt;/span&gt; &lt;span class="nb"&gt;send&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;method&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;to_format&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;to_html&lt;/span&gt;
-    &lt;span class="n"&gt;default_render&lt;/span&gt;
-  &lt;span class="k"&gt;rescue&lt;/span&gt; &lt;span class="no"&gt;ActionView&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;MissingTemplate&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;
-    &lt;span class="n"&gt;navigation_behavior&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;to_js&lt;/span&gt;
-    &lt;span class="n"&gt;default_render&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;to_format&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;get?&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;has_errors?&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;response_overridden?&lt;/span&gt;
-      &lt;span class="n"&gt;default_render&lt;/span&gt;
-    &lt;span class="k"&gt;else&lt;/span&gt;
-      &lt;span class="n"&gt;display_errors&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;rescue&lt;/span&gt; &lt;span class="no"&gt;ActionView&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;MissingTemplate&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;
-    &lt;span class="n"&gt;api_behavior&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="no"&gt;DEFAULT_ACTIONS_FOR_VERBS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="ss"&gt;post: :new&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;patch: :edit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;put: :edit&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;navigation_behavior&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;get?&lt;/span&gt;
-      &lt;span class="n"&gt;raise_error&lt;/span&gt;
-    &lt;span class="k"&gt;elsif&lt;/span&gt; &lt;span class="n"&gt;has_errors?&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;default_action&lt;/span&gt;
-      &lt;span class="n"&gt;rende4r&lt;/span&gt; &lt;span class="ss"&gt;:action&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;default_action&lt;/span&gt;
-    &lt;span class="k"&gt;else&lt;/span&gt;
-      &lt;span class="n"&gt;redirect_to&lt;/span&gt; &lt;span class="n"&gt;navigation_location&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;api_behavior&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt; &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="n"&gt;resourceful?&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;get?&lt;/span&gt;
-      &lt;span class="nb"&gt;display&lt;/span&gt; &lt;span class="n"&gt;resource&lt;/span&gt;
-    &lt;span class="k"&gt;elsif&lt;/span&gt; &lt;span class="n"&gt;post?&lt;/span&gt;
-      &lt;span class="nb"&gt;display&lt;/span&gt; &lt;span class="n"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:status&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="ss"&gt;:created&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:location&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;api_location&lt;/span&gt;
-    &lt;span class="k"&gt;else&lt;/span&gt;
-      &lt;span class="n"&gt;head&lt;/span&gt; &lt;span class="ss"&gt;:no_content&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;resourceful?&lt;/span&gt;
-    &lt;span class="n"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;respond_to?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"to_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;has_errors?&lt;/span&gt;
-    &lt;span class="n"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;respond_to?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:errors&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;empty?&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;resource_location&lt;/span&gt;
-    &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:location&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;resources&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;display&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;given_options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
-    &lt;span class="n"&gt;controller&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;render&lt;/span&gt; &lt;span class="n"&gt;given_options&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;merge!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;merge!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;format&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="c1"&gt;# 配置方式&lt;/span&gt;
-  &lt;span class="no"&gt;ApplicationController&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;responder&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;MyAppResponder&lt;/span&gt;
-  &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;UsersController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ApplicationController&lt;/span&gt;
-    &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;responder&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;MyAppResponder&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;如果想特殊化一个format的展现， 可以像respond_to 一样使用block&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;index&lt;/span&gt;
-    &lt;span class="vi"&gt;@users&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;all&lt;/span&gt;
-    &lt;span class="n"&gt;respond_with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="vi"&gt;@users&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-      &lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;json&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;render&lt;/span&gt; &lt;span class="ss"&gt;json: &lt;/span&gt;&lt;span class="vi"&gt;@users&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_json&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;some_specific_option: &lt;/span&gt;&lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;)}&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;最后章节， 关于generator的自定义，类似于rails guides，可以作为参考&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id="notification-api"&gt;Notification API&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;1. instrument(), subscribe(),
-  ```ruby
-    ActiveSupport::Notification.instrument(event_name,
-    payload: {format: :html, name: 'xxx'}) do
-      process_action("index")
-    end
-    ActiveSupport::Notification.subscribe(event_name) do |*args|
-      args
-    end
-
-    args: {
-      name: 事件名字,
-      started_at: 事件开始时间,
-      ended_at: 事件完结时间,
-      instrument_id: 事件唯一id,
-      payload: 事件携带的信息,
-    }
-  ```
-2. Rails and rack
-  &amp;gt; 任何一个响应call方法的ruby对象都是Rack应用，接受一个参数， environment， 然后返回 status, headers, body
-
-  ```ruby
-  class HelloRack
-    def call(env)
-      [200, {'Content-Type' =&amp;gt; 'text/html'}, ['Hello Rack!']]
-    end
-  end
-  run HelloRack.new
-  ```
-3. Rails Router
-  Rails自动将 Controller#action 转换成Rack application， 可以这样， PostsController.action(:index).responds_to?(:call)
-4. middleware stacks
-  * 除了在 config 中配置middleware外，还可以在Conttoller中配置使用， class Userscontroller use MyMiddleware end;
-  * Request ---&amp;gt; Web server -&amp;gt; middleware -&amp;gt; Rails Appplication -&amp;gt; middleware -&amp;gt; Router -&amp;gt; Controller -&amp;gt; middleware -&amp;gt; Action
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id="i18n-没看"&gt;I18n （没看）&lt;/h3&gt;
-
-&lt;h3 id="总结"&gt;总结&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;创建自己的render： 创建自己的pdf handler&lt;/li&gt;
-  &lt;li&gt;自定义自己的ActionModel： 讲的有点鸡肋， 没有进行深入的剖析, 譬如Active::Model中的callback实现， 自定义model的原因， 目的。FormBuilder的自定义也没有涉及到&lt;/li&gt;
-  &lt;li&gt;websocket： 似乎并不是一个完整的实现， 还存在缺陷&lt;/li&gt;
-  &lt;li&gt;Responders: 并不是解耦的很好方法，实际情况中，似乎并不需要&lt;/li&gt;
-  &lt;li&gt;Notification: 主要讲的并不是Notification的实现机制，实现方法，主要讲的是Rails Engin， middleware&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;书中讲解的并不算太多，大部分都是在Rails Engin 中进行， 进行了一个markdown的view handler 值得注意看，之外， 其他的都没有进行深入的讲解，譬如， 自定义ActiveModel 的作用，目的，实现方法， FormBuilder又是如何, Reponder 感觉并没有太多的进行简化，&lt;/p&gt;
-&lt;/blockquote&gt;
-
 </content>
   </entry>
 </feed>
