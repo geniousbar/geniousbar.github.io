@@ -13,7 +13,7 @@
     <link rel="alternate" href="http://geniousbar.github.io/2017/12/02/csapp/"/>
     <id>http://geniousbar.github.io/2017/12/02/csapp/</id>
     <published>2017-12-02T08:00:00+08:00</published>
-    <updated>2018-01-22T00:01:01+08:00</updated>
+    <updated>2018-01-29T13:01:53+08:00</updated>
     <summary type="html">&lt;h2 id="计算机系统漫游"&gt;计算机系统漫游&lt;/h2&gt;
 
 &lt;ol&gt;
@@ -228,6 +228,79 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
 &lt;/ol&gt;
 
 &lt;p&gt;C语言跟汇编指令 的差别很大，在汇编语言中，各种数据类型之间的差距很小，程序以指令序列来表示。每条指令是一个单独的操作。编译器必须提供多条指令来产生和操作各种数据结构，来实现像条件、循环、和过程这样的控制结构、抽象机制。&lt;/p&gt;
+
+&lt;h2 id="处理器体系结构"&gt;处理器体系结构&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;一个处理器支持的指令和指令的字节编码成为它的 指令集体系结构 （ISA）ISA的编辑器编写者和处理器设计人员之间提供了一个&lt;strong&gt;概念抽象层。现代处理器的实际工作方式可能跟ISA 隐含的计算模型大相径庭&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;目的
+    &lt;ul&gt;
+      &lt;li&gt;设计 Y86 处理器，首先是基于顺序的、功能正确的处理器设计&lt;/li&gt;
+      &lt;li&gt;创建一个流水线化的处理。处理器可以同时执行五条指令的不同阶段&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Y86 指令编码，
+    &lt;ul&gt;
+      &lt;li&gt;具体的描述了， 指令的机器字节表示。字节编码必须有唯一 的解释，任何一个字节序列要么是一个唯一的指令序列的编码，要么就不是一个合法的字节序列。 每条指令的第一个字节码都有唯一的代码和功能组合。给定这个字节，我们就可以决定所有的其他的附加字节的长度和含义。这个性质确保处理器可以无二义性的执行目标代码程序。反汇编程序的翻译解释，就是如此。&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;&lt;img src="../../../../images/command_sample-8e624c4a.png" alt="编码示例" /&gt;&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;RISC（精简指令集） 和 CISC（复杂指令集）：简单的指令集形式可以产生更搞笑的代码， 实际上，许多加到指令集中的高级指令很难被编辑器产生，所以也很少被利用。90年代，沉沦逐渐平息，无论是淡出的RISC，还是单纯的CISC都不如结合两者思想精华的设计。今天的RISC机器的指令表，已经有数百条指令，几乎与  精简指令集机器 的名字不相符了。那种将实现细节暴露给机器级程序的思想已经被证明是目光短浅的。（RISC做过这样的事情？）&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Y86 的实现：
+    &lt;ol&gt;
+      &lt;li&gt;拆分指令为阶段：
+        &lt;ul&gt;
+          &lt;li&gt;取指： 取指阶段从存储器读取指令字节，地址为程序计数器的值，从指令中 抽取出 指令的，icode， ifun， 操作的字符， rA， rB, 常数&lt;/li&gt;
+          &lt;li&gt;译码： 译码阶段从寄存器文件读入最多两个操作数，得到值， valA， valB等。&lt;/li&gt;
+          &lt;li&gt;执行： ALU运算，&lt;/li&gt;
+          &lt;li&gt;访存： 可以将数据写入存储器，或者从存储器读出数据。&lt;/li&gt;
+          &lt;li&gt;写回： 将结果写回到寄存器文件&lt;/li&gt;
+          &lt;li&gt;更新PC： 将PC设置成为下一条指令的地址&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;blockquote&gt;
+          &lt;p&gt;在设计硬件时候， 一个非常简单而一致的结构是非常重要的。降低复杂度的一种方法是，让不同的指令共享尽量多的硬件，因为在硬件上复制逻辑快比用软件来处理困难的多。&lt;/p&gt;
+        &lt;/blockquote&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+
+    &lt;p&gt;&lt;img src="../../../../images/command_flow-ef59c07b.png" alt="指令阶段" /&gt;&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;硬件结构 (SEQ)
+        &lt;ul&gt;
+          &lt;li&gt;组合电路从本质上讲，不存储任何信息，他们只是简单的响应输入信号。 产生等于输入的某个函数的输出。&lt;/li&gt;
+          &lt;li&gt;存储设备： 时钟寄存器： 存储单个位，或字，时钟信号控制寄存器加载输入值&lt;/li&gt;
+          &lt;li&gt;随进访问寄存器： 存储多个字，用地址来选择该读或者写。应用有：寄存器文件， %eax etc&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+
+    &lt;p&gt;&lt;img src="../../../../images/register-c8184b41.png" alt="指令阶段" /&gt;&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;流水线通用原理：
+        &lt;blockquote&gt;
+          &lt;p&gt;流水线化的一个重要特性就是增加了&lt;strong&gt;系统的吞吐量&lt;/strong&gt;（单位时间内服务的顾客的总数），代价是可能稍微的增加了延迟（服务一个用户所需的时间）。举例来说， 一个客户需要沙拉，在一个非流水线话的服务中，非常简单，只需要在沙拉阶段停留。但是在一个流水线化的服务中，则需要无谓的其他阶段的等待。&lt;/p&gt;
+        &lt;/blockquote&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;流水线的局限性： 不一致的划分， 运行时钟的速率是由最慢的阶段的延迟限制的。所以对于硬件设计者来说，将系统计算设计成 具有相同延迟的阶段 是一个严峻的挑战。&lt;/li&gt;
+          &lt;li&gt;流水线冒险： 将流水线引入一个带反馈的系统，当相邻指令间存在相关时会导致出现问题。1）数据相关，下一条指令会用到这一条指令计算出的结果。2）控制相关， 一条指令要确定下一条指令的位置。例如执行条件跳转。这些相关可能会导致流水线产生计算错误，称谓冒险。&lt;/li&gt;
+          &lt;li&gt;暂停来避免冒险： 让一条指令停留在译码阶段，直到他需要的操作数的指令通过了写回阶段，这样来避免数据冒险。&lt;/li&gt;
+          &lt;li&gt;转发来避免冒险： 将结果直接从一个流水线阶段传到较早阶段的技术称为 数据转发， 也就是较早的反馈到需要的阶段。比如 译码阶段。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
 </content>
   </entry>
   <entry>
