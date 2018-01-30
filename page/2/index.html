@@ -114,9 +114,15 @@
 
    <span class="n">get</span></code></pre></div>
 </li>
-</ol><div class="read-more"><a href="/2017/05/08/sinatra/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/04/25/docker-abc/">docker 入门</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 25, 2017</span></div><div class="tag-labels"><a href="/tags/docker/"><small class="tag-label">docker</small></a></div><hr class="article-header-separator" /><h4 id="docker">docker</h4>
+</ol><div class="read-more"><a href="/2017/05/08/sinatra/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/04/25/rails-activemodel/">Rails ActiveModel</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 25, 2017</span></div><div class="tag-labels"><a href="/tags/rails/"><small class="tag-label">rails</small></a><a href="/tags/activemodel/"><small class="tag-label">activemodel</small></a><a href="/tags/ruby/"><small class="tag-label">ruby</small></a></div><hr class="article-header-separator" /><p><a href="#attribute_assignment">AttributeAssignment</a><br>
+<a href="#callbacks">Callbacks</a><br>
+<a href="#dirty">Dirty</a><br>
+<a href="#validations">Validations</a></p>
+<h2 id="rails-activemodel">rails activemodel</h2>
 
-<h4 id="概念">概念</h4>
-<p>image(景象), container(容器),volume（数据卷）</p>
-<div class="highlight"><pre class="highlight plaintext"><code>    镜像(Image)和容器(Container)的关系,就像是面向对象程序设计中 的 类 和 实例 一样,镜像是静态的定义,容器是镜像运行时的实体。容器可以被 创建、启动、停止、删除、暂停等。
-    容器的实质是进程,但与直接在宿主执行的进程不同,容器进程运行于属于自己的 独立的 命名空间。因此容器可以拥有自己的 root 文件系统、自己的网络配置、 自己的进程空间,甚至自己的用户 ID...</code></pre></div><div class="read-more"><a href="/2017/04/25/docker-abc/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><div class="paginate-wrapper"><div class="previous-page"><a href="/"><i class="fa fa-arrow-left"></i> Previous Page</a></div><div class="next-page"><a href="/page/3/"><i class="fa fa-arrow-right"></i> Next Page</a></div></div><div class="page-number">Page 2 of 4</div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2018 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>
+<div class="highlight"><pre class="highlight ruby"><code>    <span class="k">module</span> <span class="nn">ActiveModel</span>
+      <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Autoload</span>
+
+      <span class="nb">autoload</span> <span class="ss">:AttributeAssignment</span>
+      <span class="nb">autoload</span> <span class="ss">:AttributeMethods</span>
+      <span class="nb">autoload</span> <span class="ss">:BlockValidator</span><span class="p">,</span> <span class="s1">'active_model/validator...</span></code></pre></div><div class="read-more"><a href="/2017/04/25/rails-activemodel/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><div class="paginate-wrapper"><div class="previous-page"><a href="/"><i class="fa fa-arrow-left"></i> Previous Page</a></div><div class="next-page"><a href="/page/3/"><i class="fa fa-arrow-right"></i> Next Page</a></div></div><div class="page-number">Page 2 of 4</div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2018 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>
