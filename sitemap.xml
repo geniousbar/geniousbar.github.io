@@ -5,11 +5,15 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/page/5/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/tags/page/2/</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/page/4/</loc>
+    <loc>http://geniousbar.github.io/tags/page/3/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -189,7 +193,15 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2018/01/04/benjamin-graham/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/tags/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/.html</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -377,6 +389,18 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2018/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2018/01/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2018/01/04/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/2017/</loc>
     <priority>0.5</priority>
   </url>
@@ -433,7 +457,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/page/3/</loc>
+    <loc>http://geniousbar.github.io/2017/06/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -585,11 +609,19 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/archives/page/3/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/page/2/</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/2017/06/</loc>
+    <loc>http://geniousbar.github.io/page/3/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/page/4/</loc>
     <priority>0.5</priority>
   </url>
 </urlset>
