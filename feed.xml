@@ -4,16 +4,221 @@
   <id>http://geniousbar.github.io</id>
   <link href="http://geniousbar.github.io"/>
   <link href="http://geniousbar.github.io/feed.xml" rel="self"/>
-  <updated>2017-12-02T08:00:00+08:00</updated>
+  <updated>2018-01-04T08:00:00+08:00</updated>
   <author>
     <name>geniousbar</name>
   </author>
+  <entry>
+    <title>格雷厄姆之道</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2018/01/04/benjamin-graham/"/>
+    <id>http://geniousbar.github.io/2018/01/04/benjamin-graham/</id>
+    <published>2018-01-04T08:00:00+08:00</published>
+    <updated>2018-02-05T13:57:44+08:00</updated>
+    <summary type="html">&lt;h2 id="格雷厄姆之道如何在中国实践价值投资"&gt;格雷厄姆之道（如何在中国实践价值投资）&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;现在已然衰朽者， 将来可能重放异彩；现在备受青睐者，，将来却可能日渐衰朽。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id="原理"&gt;原理&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;价值投资：
+    &lt;blockquote&gt;
+      &lt;p&gt;价值投资不会让你一夜暴富，但它可以在保证本金安全的前提下让你的财产增值&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;价值投资：用远低于公司内在价值的价格购买该公司的股票&lt;/li&gt;
+      &lt;li&gt;金融思维和商业思维： 商业思维 这个公司值多少钱，股票价格 = 公司价格 / 股票数量。 金融思维： 股票价格 = 每股收益 * 市盈率（PE）金融...&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    <content type="html">&lt;h2 id="格雷厄姆之道如何在中国实践价值投资"&gt;格雷厄姆之道（如何在中国实践价值投资）&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;现在已然衰朽者， 将来可能重放异彩；现在备受青睐者，，将来却可能日渐衰朽。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id="原理"&gt;原理&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;价值投资：
+    &lt;blockquote&gt;
+      &lt;p&gt;价值投资不会让你一夜暴富，但它可以在保证本金安全的前提下让你的财产增值&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;价值投资：用远低于公司内在价值的价格购买该公司的股票&lt;/li&gt;
+      &lt;li&gt;金融思维和商业思维： 商业思维 这个公司值多少钱，股票价格 = 公司价格 / 股票数量。 金融思维： 股票价格 = 每股收益 * 市盈率（PE）金融思维中 &lt;strong&gt;每股收益 在决定股票价格时候占了大部分比重。而市盈率本身也很大程度上是由收益趋势外推决定的&lt;/strong&gt;&lt;/li&gt;
+      &lt;li&gt;金融思维的弊端：
+        &lt;ol&gt;
+          &lt;li&gt;采用正常的商业思维， 并购一家公司要对 &lt;strong&gt;资产和收益&lt;/strong&gt; 进行双重考量，双重考量要比单一强调收益的评估方式更可靠。&lt;/li&gt;
+          &lt;li&gt;与资产相比，每股收益的变化更加剧烈，这样在股票估值时候，就包含了一个被夸大的不稳定性。&lt;/li&gt;
+          &lt;li&gt;每股收益很容易被人为的操控&lt;/li&gt;
+          &lt;li&gt;市盈率 跟 每股收益 相关性比较大，所以导致，每股价格 严重相关 每股收益&lt;/li&gt;
+        &lt;/ol&gt;
+
+        &lt;blockquote&gt;
+          &lt;p&gt;要想在一生中获得投资的成功，并不需要顶尖的智商、超凡的商业智慧或内幕消息，而是需要一个稳妥的知识体系作为决策的基础。并且有能力控制自己的情绪，使其不会对这种体系造成侵蚀（比如达里奥的模型系统，决策系统，都在某一个方面上在避免情绪决策，贪婪和恐惧很容易影响人的判断能力）&lt;br /&gt;
+  杰出的收益 = 投资方面的知识和努力 * 股票市场的愚蠢程度&lt;/p&gt;
+        &lt;/blockquote&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;市场波动、估值、安全边际
+    &lt;ul&gt;
+      &lt;li&gt;了解市场，需要对不同的证券在不同条件下的表现有足够的认识 (忘掉过去的人，容易重蹈覆辙， 比如后面不同的资本结构， 不同的行业性质都会在相同的条件下有不同的反应)&lt;/li&gt;
+      &lt;li&gt;安全边际： 是价值投资的核心思想。安全边际就是证券的市场价格低于证券内在价值的差额。充足的安全边际 可以帮助投资人在犯错误的情况下依然保证本金的安全。安全边际越大投资就越安全。未来的潜在收益就更高&lt;/li&gt;
+      &lt;li&gt;投资原则： 股价应该是内在价值的三分之二&lt;/li&gt;
+      &lt;li&gt;足够的安全边际，不仅可以赚取 公司价值增长的钱，还有 股票价值回归的钱&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;内在价值：
+    &lt;ul&gt;
+      &lt;li&gt;一个大概的估算价格范围&lt;/li&gt;
+      &lt;li&gt;股价偏离内在价值的原因: 股市给股票定价的过程就是市场心里变化的过程。而市场心里变化的过程通常是不合逻辑的。&lt;/li&gt;
+      &lt;li&gt;股票价值回归： 股票市场短期是一个投票机，长期来看，却是一个称重器。
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   又一个投资人死了，去见上帝，求上帝安排他到天堂去。
+   上帝说： 『天堂里都是你们这些高投资的，都满了，只有地狱还有空位』
+   投资人说： 『那麻烦你跟他们说一句： 地狱了发现了石油』
+   过了一阵， 天堂里的人都开始往地狱里跑。
+   上帝对投资人说： 『你可以搬到天堂里了，他们都下地狱了』
+   投资人说：『不行，我也得去地狱看看，万一是真的呢』
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="估值"&gt;估值&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;资产
+    &lt;ul&gt;
+      &lt;li&gt;资产至少同收益同样重要      (资产要比收益稳定的多, 收益确实很重要，市场也在不断进行收益预测，但是，就算是能够准确的预测下一年的收益，也很难判断 这个盈利预期 是否已经体现在当前的价格中了 priced-in)&lt;/li&gt;
+      &lt;li&gt;市净率 = 每股股价 / 每股净资产，   股票价格低于每股有形资产账面价值 的 2/3， 不管什么股票，都不应该以两倍市净率买入&lt;/li&gt;
+      &lt;li&gt;流动资产价值 = 流动资产 - 所有负债,     现金资产价值 = 现金资产 - 所有负债。    股票价格 低于 流动资产价值 的2/3&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;收益：
+    &lt;ul&gt;
+      &lt;li&gt;市盈率（PE） = 每股价格 / 每股收益,     市盈率越高 表示股票卖的越贵， 以当前股价买入股票，回本需要更长的时间。&lt;/li&gt;
+      &lt;li&gt;盈利率 = 1 / 市盈率 = 每股收益  / 每股股价,     盈利率至少为长期AAA（国债）级债券收益率的2倍。&lt;/li&gt;
+      &lt;li&gt;股价和股息： 股息收益率应该为AAA债券级的2/3 （对股息发放的形式和方法，需要补充）&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;盈利能力
+    &lt;ul&gt;
+      &lt;li&gt;盈利能力： 过十年的年度盈利增长率至少为 7%&lt;/li&gt;
+      &lt;li&gt;收益质量：需要的是实实在在的赚钱，而不是靠会计手段赚钱。不能单一看利润表，必须要用资产负债表对利润表进行审核，来发现公司当年收益对公司财务状况的真正影响。&lt;/li&gt;
+      &lt;li&gt;未来收益：投机者和投资者都是以未来收益而非过去收益作为投资基础，但是投资者对未来的收益分析需要有理有据，并且尽量保守&lt;/li&gt;
+      &lt;li&gt;不要关注某一年的利润，而是公司正常情况下的盈利能力，&lt;/li&gt;
+      &lt;li&gt;折旧和摊销费用： 需要特别关注，他们不代表当前相应的现金支出。而是代表因为损耗原因，引起的固定资产和资本资产价值的减少。折旧是针对固定资产而言，摊销是对无形资产而言。&lt;/li&gt;
+      &lt;li&gt;归属母公司利润 / 总股本 = 每股收益&lt;/li&gt;
+      &lt;li&gt;在过去十年间经营状况波动巨大的情况下，收益一直表现稳定&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;财务状况：
+    &lt;ul&gt;
+      &lt;li&gt;营运资金 = 流动资产 - 流动负债,      流动比率 = 流动资产/流动负债,      速冻比率 = (流动资产 - 存货) / 流动负债&lt;/li&gt;
+      &lt;li&gt;流动资产 至少为 流动负债 的2倍&lt;/li&gt;
+      &lt;li&gt;不包括存货的流动资产 至少等于 流动负债（速动比率大于1）&lt;/li&gt;
+      &lt;li&gt;总负债小于股东权益&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;股票划分标准：
+    &lt;ul&gt;
+      &lt;li&gt;市盈率 在 20倍 以上， 也就是盈利率低于 5% 的成长股&lt;/li&gt;
+      &lt;li&gt;市盈率 在 7-20 之间，也就是盈利率 在5% - 15% 之间的股票&lt;/li&gt;
+      &lt;li&gt;市盈率在7倍一下，也就是盈利率高于15%，但是不受欢迎的股票&lt;/li&gt;
+      &lt;li&gt;第一个是首市场热捧的高成长性股票，第三组股票体现了人们对其前景的悲观预期。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;同质性行业和异质性行业：
+    &lt;ul&gt;
+      &lt;li&gt;同质性行业： 未来的发展变化影响到所有的公司： 全行业一荣俱荣一损俱损， 比如： 铁路、电力、热力、煤炭、棉花等。&lt;/li&gt;
+      &lt;li&gt;异质性行业： 行业各家公司宣传和销售各自的品牌，这样的行业一家公司的兴往往建立在牺牲竞争对手的利益的基础上。&lt;/li&gt;
+      &lt;li&gt;越是异质性行业，对定性分析的要求就越高。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;定性分析： 是对公司的业务性质和前景、管理层能力、未来收益的趋势、业务的内在稳定性等统计数据无法表达的因素进行分析。有一点非常重要，&lt;strong&gt;对公司的数据进行定量分析，只有得到定性分析的支持时才可靠&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;标准
+    &lt;ul&gt;
+      &lt;li&gt;估价是否被低估
+        &lt;ul&gt;
+          &lt;li&gt;盈利率 至少为 长期AAA级债券收益率 的2倍&lt;/li&gt;
+          &lt;li&gt;市盈率位于最低的10%的区间内 (市盈率（PE） = 每股价格 / 每股收益 )&lt;/li&gt;
+          &lt;li&gt;股息收益率 至少是 长期AAA级债券 的收益的2/3&lt;/li&gt;
+          &lt;li&gt;股票价格 低于 每股有形资产账面价值 的2/3&lt;/li&gt;
+          &lt;li&gt;股票价格 低于 流动资产价值 的2/3&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;盈利的标准：
+        &lt;ul&gt;
+          &lt;li&gt;前十年 的年度盈利增长率至少为7%&lt;/li&gt;
+          &lt;li&gt;在过去十年，年度盈利下跌幅度 超过5%的期间不能超过2年&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;财务安全状况：
+        &lt;ul&gt;
+          &lt;li&gt;流动资产至少为流动负债的2倍&lt;/li&gt;
+          &lt;li&gt;债务股本比低于1&lt;/li&gt;
+          &lt;li&gt;总负债低于流动资产价值的2倍&lt;/li&gt;
+          &lt;li&gt;平均收益和市场价格之间的比率令人满意财务状况足够稳健，营运资金充足&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="投资组合管理"&gt;投资组合管理&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;买入
+    &lt;ol&gt;
+      &lt;li&gt;价值投资有效的两个原因： 1. 他始终关注者价值和价格之间的联系。 2. 他利用了人性的弱点。&lt;/li&gt;
+      &lt;li&gt;市场（人性）的弱点：
+        &lt;ul&gt;
+          &lt;li&gt;对当前收益的夸大，这个特定为我们不断的带来投资机会， 逆向做，&lt;/li&gt;
+          &lt;li&gt;股息变化夸大&lt;/li&gt;
+          &lt;li&gt;诉讼夸大&lt;/li&gt;
+          &lt;li&gt;合并分拆夸大&lt;/li&gt;
+          &lt;li&gt;趋势外推（错误、简单的认为 现有趋势，会继续发展下去）然而经验表明 这只是例外情况&lt;/li&gt;
+          &lt;li&gt;冷门股的市场行为： 热门股票的股价几乎总是对其收益变化迅速做出反应。而冷门股 则可能远远滞后于 收益变化
+            &lt;blockquote&gt;
+              &lt;p&gt;你可以想象自己正在戏院看戏，当所有人都在安静的看戏时，你觉得很精彩，你第一个起来故障。你在做着与大众主题意见相反的事情，所以价值投资理论很简单。但是做起来却非常困难（克服从众心理） 1. 必须正确思考，2. 必须独立思考，需要回归基本常识，弄清楚股票，而不是每天上下波动的数字。&lt;/p&gt;
+            &lt;/blockquote&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;持有：
+    &lt;ol&gt;
+      &lt;li&gt;第一次买入计划的 50%&lt;/li&gt;
+      &lt;li&gt;股价下跌后，做更多的研究，如果买入的决定是正确的，我们会更多的买入，这也是价值投资困难的地方，大多数人无法坚持运用价值投资的原因，在于，当买入股票时，股价肯能继续下跌，这样会严重影响情绪，甚至导致做出错误的判断。&lt;/li&gt;
+      &lt;li&gt;持股时间： 3，4，5年&lt;/li&gt;
+      &lt;li&gt;换股： 不会&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;卖出&lt;br /&gt;
+卖出的东西，总是让别人觉得有利可图，这样别人才会买，不要等到股价已经被高估了，就有风险了。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id="投资方法"&gt;投资方法&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;简易策略&lt;br /&gt;
+    * 购买管理费用极低的指数基金&lt;br /&gt;
+    * 定期定额投资指数基金&lt;/li&gt;
+  &lt;li&gt;债股平衡： 5 ：5， 2.5 ：7.5&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+  </entry>
   <entry>
     <title>CSAPP(深入理解计算机系统)</title>
     <link rel="alternate" href="http://geniousbar.github.io/2017/12/02/csapp/"/>
     <id>http://geniousbar.github.io/2017/12/02/csapp/</id>
     <published>2017-12-02T08:00:00+08:00</published>
-    <updated>2018-01-30T11:30:26+08:00</updated>
+    <updated>2018-01-30T12:17:05+08:00</updated>
     <summary type="html">&lt;h2 id="计算机系统漫游"&gt;计算机系统漫游&lt;/h2&gt;
 
 &lt;ol&gt;
@@ -1288,224 +1493,6 @@ lib/hello_web 保存web相关的代码，
        &lt;span class="k"&gt;end&lt;/span&gt;
    &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;完成！我现在有两个独立的分别负担 user context 和内容管理&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Rails Application Refactor</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2017/08/02/rails-application-refactor/"/>
-    <id>http://geniousbar.github.io/2017/08/02/rails-application-refactor/</id>
-    <published>2017-08-02T08:00:00+08:00</published>
-    <updated>2017-10-28T11:48:51+08:00</updated>
-    <summary type="html">&lt;h2 id="重构现有rails应用"&gt;重构现有Rails应用&lt;/h2&gt;
-
-&lt;h3 id="面临问题"&gt;面临问题&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;数据库层面单独建立项目，导致产生更新流程， 更改interface, 然后重新启动， Rails应用（这里面存在问题，是不是可以使用listener， 设定脚本，更改 其他项目时候，主动重启Rails应用呢）, 也是流程问题， 两个项目interface, rails 分开发行，分支不同&lt;/li&gt;
-  &lt;li&gt;项目趋于复杂， 不同模型，使用字段映射到相同的数据表，然而两个model却趋向于完全不同。导致使用统一model，的validation， callback...&lt;/li&gt;
-&lt;/ul&gt;</summary>
-    <content type="html">&lt;h2 id="重构现有rails应用"&gt;重构现有Rails应用&lt;/h2&gt;
-
-&lt;h3 id="面临问题"&gt;面临问题&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;数据库层面单独建立项目，导致产生更新流程， 更改interface, 然后重新启动， Rails应用（这里面存在问题，是不是可以使用listener， 设定脚本，更改 其他项目时候，主动重启Rails应用呢）, 也是流程问题， 两个项目interface, rails 分开发行，分支不同&lt;/li&gt;
-  &lt;li&gt;项目趋于复杂， 不同模型，使用字段映射到相同的数据表，然而两个model却趋向于完全不同。导致使用统一model，的validation， callback，变得复杂，混乱。页面中使用同一个controller，出现了各种判断流程。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id="解决方法"&gt;解决方法&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;« Growing Rails Application in Practice » 中的方法是正确的，&lt;/li&gt;
-  &lt;li&gt;本文实现了一个类似的 class&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;
-  &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CmsModel&lt;/span&gt;
-
-    &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;ActiveModel&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Model&lt;/span&gt;
-    &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;ActiveModel&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Callbacks&lt;/span&gt;
-
-    &lt;span class="c1"&gt;# 如果更加简单的话，可以使用 method_missing 将全部的方法转发到 model中， 但是这样的话，存在如果保存失败的时候的情况，所以使用当前方法&lt;/span&gt;
-    &lt;span class="no"&gt;DEFAULT_PRO&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Proc&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;instance&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="ss"&gt;:model&lt;/span&gt;
-        &lt;span class="n"&gt;instance&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;instance_variable_get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"@&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_s&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt;
-        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;instance&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;instance_variable_get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"@model"&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;present?&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-        &lt;span class="n"&gt;instance&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;instance_variable_get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"@model"&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;respond_to?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-        &lt;span class="n"&gt;instance&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;instance_variable_get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"@model"&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;send&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt;
-        &lt;span class="kp"&gt;nil&lt;/span&gt;
-      &lt;span class="k"&gt;else&lt;/span&gt;
-        &lt;span class="n"&gt;instance&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;instance_variable_get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"@model"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;cms_attr_reader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="n"&gt;block&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="no"&gt;DEFAULT_PRO&lt;/span&gt;
-      &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-        &lt;span class="n"&gt;define_method&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-          &lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="k"&gt;end&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="c1"&gt;# save_model 用来在callback中， before_save中， 创建model不能保存为 @model，会导致callback new? 为false&lt;/span&gt;
-    &lt;span class="nb"&gt;attr_reader&lt;/span&gt; &lt;span class="ss"&gt;:save_model&lt;/span&gt;
-    &lt;span class="c1"&gt;# ActiveModel::Attributes 中的方法, 使model伪装成 active record&lt;/span&gt;
-    &lt;span class="k"&gt;alias&lt;/span&gt; &lt;span class="ss"&gt;:set&lt;/span&gt; &lt;span class="ss"&gt;:assign_attributes&lt;/span&gt;
-
-    &lt;span class="c1"&gt;# 生命callback，统一使用一个save的interface来更新，创建 model， 使用if: :persisted?进行update， create的区分&lt;/span&gt;
-    &lt;span class="n"&gt;define_model_callbacks&lt;/span&gt; &lt;span class="ss"&gt;:save&lt;/span&gt;
-    &lt;span class="n"&gt;define_model_callbacks&lt;/span&gt; &lt;span class="ss"&gt;:init&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;hash&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
-      &lt;span class="n"&gt;_run_init_callbacks&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-        &lt;span class="n"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;hash&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;save&lt;/span&gt;
-      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;valid?&lt;/span&gt;
-        &lt;span class="n"&gt;_run_save_callbacks&lt;/span&gt;
-      &lt;span class="k"&gt;else&lt;/span&gt;
-        &lt;span class="kp"&gt;false&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="c1"&gt;# 供给页面调用，是否 持久化的判断&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;persisted?&lt;/span&gt;
-      &lt;span class="vi"&gt;@model&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;new?&lt;/span&gt;
-      &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;persisted?&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="c1"&gt;# 减少delegate 的声明&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;method_missing&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vi"&gt;@model&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="vi"&gt;@model&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;respond_to?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="vi"&gt;@model&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;send&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;method_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="k"&gt;else&lt;/span&gt;
-        &lt;span class="k"&gt;super&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="c1"&gt;# 工具类&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;params_present&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;flatten&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:model&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:id&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="nf"&gt;inject&lt;/span&gt;&lt;span class="p"&gt;({})&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="nb"&gt;hash&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-        &lt;span class="n"&gt;infer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;instance_variable_get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"@&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_s&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="nb"&gt;hash&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;infer&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;infer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;present?&lt;/span&gt;
-        &lt;span class="nb"&gt;hash&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-
-  &lt;span class="c1"&gt;# cms post model&lt;/span&gt;
-
-  &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CmsPost&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;CmsModel&lt;/span&gt;
-
-    &lt;span class="no"&gt;ATTRIBUTES&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:username&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:userkey&lt;/span&gt; &lt;span class="ss"&gt;:tags&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:model&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:id&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-
-    &lt;span class="no"&gt;NOT_PARAMS_COLUMN&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:username&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:model&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:id&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-
-    &lt;span class="n"&gt;cms_attr_reader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="no"&gt;ATTRIBUTES&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="nb"&gt;attr_writer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="no"&gt;ATTRIBUTES&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-    &lt;span class="n"&gt;before_save&lt;/span&gt; &lt;span class="ss"&gt;:create_model&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;if: :new?&lt;/span&gt;
-    &lt;span class="n"&gt;before_save&lt;/span&gt; &lt;span class="ss"&gt;:update_model&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;unless: :new?&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;hash&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
-      &lt;span class="k"&gt;super&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;model_name&lt;/span&gt;
-      &lt;span class="no"&gt;ActiveModel&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Name&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;nil&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"Post"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;params&lt;/span&gt;
-      &lt;span class="n"&gt;columns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;ATTRIBUTES&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="no"&gt;NOT_PARAMS_COLUMN&lt;/span&gt;
-      &lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;map&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-        &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;instance_variable_get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"@&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_s&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;select&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;present?&lt;/span&gt;&lt;span class="p"&gt;}.&lt;/span&gt;&lt;span class="nf"&gt;to_h&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;merge&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;type_id: &lt;/span&gt;&lt;span class="no"&gt;FORUM_TYPE&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:community&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-
-
-  &lt;span class="kp"&gt;private&lt;/span&gt;
-
-  &lt;span class="c1"&gt;# validator ------------------------------------&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;userkey_exist&lt;/span&gt;
-      &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:userkey&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nf"&gt;present?&lt;/span&gt;
-        &lt;span class="n"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:userkey&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"用户不存在"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="c1"&gt;# callback ------------------------------------&lt;/span&gt;
-  &lt;span class="c1"&gt;# 这其中不能保存为 model&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;create_model&lt;/span&gt;
-      &lt;span class="c1"&gt;# do something&lt;/span&gt;
-      &lt;span class="vi"&gt;@save_model&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;create&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;update_model&lt;/span&gt;
-      &lt;span class="c1"&gt;# do something&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-
-  &lt;span class="c1"&gt;# controller&lt;/span&gt;
-
-  &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;PostsController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ApplicationController&lt;/span&gt;
-    &lt;span class="n"&gt;before_action&lt;/span&gt; &lt;span class="ss"&gt;:set_post&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;only: &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:show&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:edit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:update&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:destroy&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;new&lt;/span&gt;
-      &lt;span class="vi"&gt;@post&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CmsPost&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;show&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;edit&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;create&lt;/span&gt;
-      &lt;span class="vi"&gt;@post&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CmsPost&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;post_params&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="n"&gt;respond_to&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vi"&gt;@post&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;save&lt;/span&gt;
-          &lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;html&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;redirect_to&lt;/span&gt; &lt;span class="vi"&gt;@post&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;notice: &lt;/span&gt;&lt;span class="s1"&gt;'创建成功'&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-        &lt;span class="k"&gt;else&lt;/span&gt;
-          &lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;html&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;render&lt;/span&gt; &lt;span class="ss"&gt;:new&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-        &lt;span class="k"&gt;end&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;update&lt;/span&gt;
-      &lt;span class="vi"&gt;@post&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;post_params&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="n"&gt;respond_to&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vi"&gt;@post&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;save&lt;/span&gt;
-          &lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;html&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;redirect_to&lt;/span&gt; &lt;span class="vi"&gt;@post&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;notice: &lt;/span&gt;&lt;span class="s1"&gt;'Post was successfully updated.'&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-        &lt;span class="k"&gt;else&lt;/span&gt;
-          &lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;html&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;render&lt;/span&gt; &lt;span class="ss"&gt;:edit&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-        &lt;span class="k"&gt;end&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="kp"&gt;private&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;set_post&lt;/span&gt;
-      &lt;span class="n"&gt;model&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Post&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;first&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;id: &lt;/span&gt;&lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:id&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-      &lt;span class="vi"&gt;@post&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CmsPost&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;model: &lt;/span&gt;&lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id="总结"&gt;总结&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;大量的使用rails中自带的现有功能，validatoin, callback, attributes, naming&lt;/li&gt;
-  &lt;li&gt;使用统一的save方法进行更新， 创建操作&lt;/li&gt;
-  &lt;li&gt;使用@model区分更新或者创建, persisted?的返回值&lt;/li&gt;
-  &lt;li&gt;使用 before callback 进行创建更新model， after callback进行关联model的区分&lt;/li&gt;
-  &lt;li&gt;可以通过继承提供大量的工具类型函数， 应用模板方法创建 流程&lt;/li&gt;
-&lt;/ul&gt;
 </content>
   </entry>
 </feed>
