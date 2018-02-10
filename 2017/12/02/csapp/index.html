@@ -307,4 +307,172 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作</p>
     </ol>
   </li>
 </ol>
+
+<h2 id="优化程序性能">优化程序性能</h2>
+
+<ol>
+  <li>代码标准：
+    <ul>
+      <li>清晰简洁的代码，能够很容的理解代码。</li>
+      <li>运行的快（比如实时处理视频帧，网络包）</li>
+    </ul>
+  </li>
+  <li>如何编写高效率的代码：
+    <ol>
+      <li>组合正确的数据结构和算法，</li>
+      <li>需要编写出编译器能够有效优化以转换成高效可执行代码的源代码。对于第二点，理解编译器的能力和局限性是非常重要的</li>
+      <li>并行计算</li>
+    </ol>
+
+    <blockquote>
+      <p>在算法级别上， 几分钟就能编写一个插入排序，而搞笑的是排序算法程序可能需要一天或更长的时间 来实现和优化，在代码级上， 许多低级别的优化往往会降低程序的可读性和模块性，是的程序容易出错，并且难以修改和扩展，对于在性能重要的环境中反复执行的代码，进行广泛的优化比较合适。一个挑战就是尽管做了广泛的优化，但还是要维护代码一定程度的简洁和可读性。一个很有用的策略是，只写到编译器能够产生有效代码的程度就好了。</p>
+    </blockquote>
+  </li>
+  <li>程序优化:
+    <ul>
+      <li>消除不必要的内容，让代码尽可能有效的执行期望的工作。这包括不必要的函数调用，条件测试，存储器引用。并且这些是不依赖于目标环境的（思想通用）</li>
+      <li>利用处理器提供的指令级表示进行优化。</li>
+    </ul>
+  </li>
+  <li>编译器的局限性
+<div class="highlight"><pre class="highlight c"><code>   <span class="kt">int</span> <span class="n">f</span><span class="p">();</span>
+   <span class="kt">int</span> <span class="n">func1</span><span class="p">(){</span>
+     <span class="k">return</span> <span class="n">f</span><span class="p">()</span> <span class="o">+</span> <span class="n">f</span><span class="p">()</span> <span class="o">+</span> <span class="n">f</span><span class="p">()</span> <span class="o">+</span> <span class="n">f</span><span class="p">();</span>
+   <span class="p">}</span>
+   <span class="kt">int</span> <span class="n">func2</span><span class="p">(){</span>
+     <span class="k">return</span> <span class="n">f</span><span class="p">()</span> <span class="o">*</span> <span class="mi">4</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="kt">int</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="n">in</span> <span class="n">func1</span><span class="p">(){</span>
+     <span class="k">return</span> <span class="n">counter</span> <span class="o">++</span><span class="p">;</span>
+   <span class="p">}</span>
+</code></pre></div>
+    <blockquote>
+      <p>func1 函数具有副作用，他修改了程序状态的一部分，改变了整体程序的行为，大多数编辑器不会试图判断一个函数是否具有副作用，所以，编译器会保持函数调用不变， 并不会按照人们预期的 进行函数调用优化</p>
+    </blockquote>
+
+    <ul>
+      <li>
+        <p>另一个示例<br />
+消除循环的低效率代码； 例如for(i = 0; i&lt; strlen(s); i++) 中，strlen的调用，我们可能会假想strlen函数只调用一次，然而编译器并不会这么做，他假定每次strlen的函数调用是不同的。从而在每次循环中多增加了一次函数调用。</p>
+
+        <blockquote>
+          <p>示例说明一个问题： 一个看上去无足轻重的代码片段有隐藏的渐进低效率，通常人们会在一个小的数据集中进行测试和分析程序，对此程序的性能是足够的。不过， 当程序最终部署好以后，过程完全可能应用在一个100万个字符串上。突然，这段无危险的代码变成了程序的主要性能瓶颈。大型编程项目中出现这样的问题的故事比比皆是。一个有经验的程序员工作的一部分就是避免引入这样的渐进低效率。<br />
+  这个优化是常见的一类优化例子： 代码移动， 这类优化包括识别要执行的多次但是计算结果不会改变的计算。因而可以将计算移动到代码前面不会被多次求值的部分，编译器会试图进行代码移动，他们不能够发现一个函数是否会有副作用，因而假设函数会有副作用。所以，程序员经常需要显示的完成代码移动。</p>
+        </blockquote>
+      </li>
+    </ul>
+  </li>
+  <li>手动优化的几个建议：
+    <ul>
+      <li>减少过程调用： 一个纯粹主义者可能会说这种变换严重损害了程序的模块性。比较实际的程序员会争辩说 这种变换是获得高性能结果的必要步骤。对于性能至关重要的应用来说。为了速度，经常必要的损害一些功能模块性和抽象性，为了防止以后修改代码，添加一些文档是很明智的，说明采用了那些变换以及导致这些变换的假设。</li>
+      <li>消除不必要的存储器引用</li>
+      <li>循环展开： 一种程序变换， 通过增加每次迭代计算的元素数量，减少循环的迭代次数，循环展开能够从两方面改善程序的性能。 1. 减少 不直接有助于程序结果 的操作的数目， 例如<strong>循环索引计算和条件分支</strong> 2. 提供了一些方法，有助于减少整个计算中关键路径上的操作数量。</li>
+      <li>提高并行性: <strong>程序是受运算单元的延迟限制的。执行加法和乘法的功能单元 是完全流水线化的</strong>。这意味着他们可以每个时钟周期开始一个新操作。代码不能利用这种能力。即使是使用循环展开也不能，这是因为我们将积累值放在一个单独的变量acc中，在前面的计算完成之前，都不能计算acc的新值。打破这种顺序关系是问题的关键。1， 多个累积变量。 2. 重新结合变换。减少计算中的关键路径上的操作数量。通过更好地利用功能单元的流水线能力得到更好点性能，大多数编译器不会对浮点数做重新结合，因为这些运算是不符合结合律的。通常我们发现， 循环展开和并行的积累在多个值，是提高程序性能的更可靠的方法。</li>
+      <li>分支预测和预测错误的处罚： 书写适合用条件传送实现的代码。分支预测错误，会招致严重的处罚</li>
+      <li>存储器性能： 只考虑所有的数据都存放在高速缓存中的情况。（在下一章节中，进行详细的介绍）</li>
+    </ul>
+
+    <p>对循环展开和多个累计变量，重新结合变化的代码示例</p>
+<div class="highlight"><pre class="highlight c"><code>   <span class="kt">void</span> <span class="nf">combine4</span><span class="p">(</span><span class="n">vect_ptr</span> <span class="n">v</span><span class="p">,</span> <span class="n">data_t</span> <span class="o">*</span> <span class="n">dest</span><span class="p">)</span>
+   <span class="p">{</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vect_length</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="n">data_t</span> <span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="n">data_t</span> <span class="n">acc</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+     <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">){</span>
+       <span class="n">acc</span> <span class="o">=</span> <span class="n">acc</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+     <span class="p">}</span>
+     <span class="o">*</span> <span class="n">dest</span> <span class="o">=</span> <span class="n">acc</span>
+   <span class="p">}</span>
+</code></pre></div>    <p><img src="../../../../images/combine4-c7b62e6a.png" alt="combine 4" /></p>
+
+<div class="highlight"><pre class="highlight c"><code>   <span class="kt">void</span> <span class="nf">combine5</span><span class="p">(</span><span class="n">vec_ptr</span> <span class="n">v</span><span class="p">,</span> <span class="n">data_r</span> <span class="o">*</span> <span class="n">dest</span><span class="p">)</span>
+   <span class="p">{</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vect_length</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">limit</span> <span class="o">=</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+     <span class="n">data_t</span> <span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="n">data_t</span> <span class="n">acc</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+     <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">limit</span><span class="p">;</span> <span class="n">i</span><span class="o">+=</span><span class="mi">2</span><span class="p">){</span>
+       <span class="n">acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">acc</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+     <span class="p">}</span>
+
+     <span class="k">for</span> <span class="p">(;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="n">length</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+       <span class="n">acc</span> <span class="o">=</span> <span class="n">acc</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+     <span class="p">}</span>
+     <span class="o">*</span> <span class="n">dest</span> <span class="o">=</span>  <span class="n">acc</span><span class="p">;</span>
+   <span class="p">}</span>
+</code></pre></div>    <p><img src="../../../../images/combine5-4dd0d808.png" alt="combine 5" /></p>
+
+<div class="highlight"><pre class="highlight c"><code>   <span class="kt">void</span> <span class="nf">combine6</span><span class="p">(</span><span class="n">vec_ptr</span> <span class="n">v</span><span class="p">,</span> <span class="n">data_r</span> <span class="o">*</span> <span class="n">dest</span><span class="p">)</span>
+   <span class="p">{</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vect_length</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">limit</span> <span class="o">=</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+     <span class="n">data_t</span> <span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="n">data_t</span> <span class="n">acc0</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+     <span class="n">data_t</span> <span class="n">acc1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+     <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">limit</span><span class="p">;</span> <span class="n">i</span><span class="o">+=</span><span class="mi">2</span><span class="p">){</span>
+       <span class="n">acc0</span> <span class="o">=</span> <span class="n">acc0</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+       <span class="n">acc1</span> <span class="o">=</span> <span class="n">acc1</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+     <span class="p">}</span>
+
+     <span class="k">for</span> <span class="p">(;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="n">length</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+       <span class="n">acc</span> <span class="o">=</span> <span class="n">acc0</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+     <span class="p">}</span>
+     <span class="o">*</span> <span class="n">dest</span> <span class="o">=</span>  <span class="n">acc0</span> <span class="o">*</span> <span class="n">acc1</span><span class="p">;</span>
+   <span class="p">}</span>
+
+</code></pre></div>    <p><img src="../../../../images/combine6-15034d94.png" alt="combine 6" /></p>
+
+<div class="highlight"><pre class="highlight c"><code>   <span class="kt">void</span> <span class="nf">combine7</span><span class="p">(</span><span class="n">vec_ptr</span> <span class="n">v</span><span class="p">,</span> <span class="n">data_r</span> <span class="o">*</span> <span class="n">dest</span><span class="p">)</span>
+   <span class="p">{</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vect_length</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">limit</span> <span class="o">=</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+     <span class="n">data_t</span> <span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="n">data_t</span> <span class="n">acc</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+     <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">limit</span><span class="p">;</span> <span class="n">i</span><span class="o">+=</span><span class="mi">2</span><span class="p">){</span>
+       <span class="n">acc0</span> <span class="o">=</span> <span class="n">acc</span> <span class="o">*</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+     <span class="p">}</span>
+
+     <span class="k">for</span> <span class="p">(;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="n">length</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+       <span class="n">acc</span> <span class="o">=</span> <span class="n">acc</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+     <span class="p">}</span>
+     <span class="o">*</span> <span class="n">dest</span> <span class="o">=</span>  <span class="n">acc</span><span class="p">;</span>
+   <span class="p">}</span>
+</code></pre></div>    <p><img src="../../../../images/combine7-011509b3.png" alt="combine 7" /></p>
+  </li>
+  <li>总结 优化程序效率的层次以及方法：
+    <ul>
+      <li>高级设计： 选择恰当的算法和数据结构，避免使用那些会渐进的产生糟糕的性能的算法和编码技术</li>
+      <li>基本编码原则：避免限制优化的因素
+        <ol>
+          <li>消除连续的函数调用。在可能时，可以牺牲模块性来获得更大的效率</li>
+          <li>消除不必要的存储器引用： 引入临时变量来存储结果，只在 最后的时候，将结果存放到数组变量、全局变量中</li>
+        </ol>
+      </li>
+      <li>低级优化
+        <ol>
+          <li>展开循环</li>
+          <li>多个累积变量 和重新结合的技术，找到方法提高指令级别的并行（利用指令的流水线化）</li>
+          <li>用功能的风格重新条件操作，使编译器采用条件数据传送。</li>
+        </ol>
+      </li>
+      <li>profiling
+        <blockquote>
+          <p>警惕在优化效率时候引入错误，引入新变量，改变循环边界 使得代码整体上更为复杂，很容易导致错误，需要测试来保证优化代码的正确性。</p>
+        </blockquote>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="存储器层次结构">存储器层次结构</h2>
 <div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2018 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

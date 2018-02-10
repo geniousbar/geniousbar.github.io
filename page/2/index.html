@@ -13,27 +13,7 @@
 社会面临着在　效率公平 之间的权衡取舍</li>
   <li>机会成本(某种东西的成本是为了得到他所放弃的东西), 比如时间，资源</li>
 </ul>
-<div class="read-more"><a href="/2017/06/25/economy-learn/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/22/linux-crontab/">Linux crontab</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 22, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/crontab/"><small class="tag-label">crontab</small></a></div><hr class="article-header-separator" /><h2 id="linux-crontab-例行性工作排程">linux crontab （例行性工作排程）</h2>
-
-<h5 id="at">at</h5>
-<ul>
-  <li>执行一次就结束的程序指令</li>
-  <li>开启 /etc/init.d/atd restart</li>
-  <li>at任务记录在 /var/spool/at/中</li>
-  <li>权限 /etc/at.allow, /etc/at.deny, 规则： 1. 先寻找at.allow，写入这个文档的使用者才能使用，没有写入的不能使用 2. 寻找 /etc/at.deny， 写入文档的不能使用， 没有写入的可以使用, 3.两个文档都不存在的，只有root可以使用。</li>
-  <li>按照...</li>
-</ul><div class="read-more"><a href="/2017/06/22/linux-crontab/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/22/linux-process/">Linux process</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 22, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/process/"><small class="tag-label">process</small></a></div><hr class="article-header-separator" /><h2 id="linux-process">linux process</h2>
-
-<h5 id="程序">程序</h5>
-<ul>
-  <li>触发任何一个事件，系统会将他定义为一个程序，赋予PID，根据调用用户与相关属性关系，赋予PID相关的有效的权限设定， 在系统上进行的动作就与这个权限相关</li>
-  <li>shell是一个程序， 执行bash， 与内核交互</li>
-  <li>fork and exec, fork, 父进程 到子进程， 赋予子进程新的PID， PPID=父进程， exec 程序实体</li>
-  <li>crontab, atd, syslog, 为常驻进程
-    <h4 id="工作管理">工作管理</h4>
-  </li>
-  <li>background job...</li>
-</ul><div class="read-more"><a href="/2017/06/22/linux-process/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/22/linux-service/">Linux service</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 22, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/service/"><small class="tag-label">service</small></a></div><hr class="article-header-separator" /><h2 id="linux-service">linux service</h2>
+<div class="read-more"><a href="/2017/06/25/economy-learn/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/22/linux-service/">Linux service</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 22, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/service/"><small class="tag-label">service</small></a></div><hr class="article-header-separator" /><h2 id="linux-service">linux service</h2>
 
 <h4 id="service">service</h4>
 <blockquote>
@@ -51,15 +31,27 @@
   <li>
     <p>stand...</p>
 </li>
-</ul><div class="read-more"><a href="/2017/06/22/linux-service/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/19/linux-relearn-shell/">Linux Shell</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/bash/"><small class="tag-label">bash</small></a><a href="/tags/shell/"><small class="tag-label">shell</small></a></div><hr class="article-header-separator" /><h2 id="linux-shell">linux shell</h2>
+</ul><div class="read-more"><a href="/2017/06/22/linux-service/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/22/linux-process/">Linux process</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 22, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/process/"><small class="tag-label">process</small></a></div><hr class="article-header-separator" /><h2 id="linux-process">linux process</h2>
 
-<h4 id="常用命令">常用命令</h4>
+<h5 id="程序">程序</h5>
 <ul>
-  <li>history, alias, type, 变量，echo, unset, env, declare, set, read, array</li>
-  <li>系统变量， HOME, SHELL, HISISIZE, PATH, LANG, RANDOM, $, $?, OSTYPE, HOSTTYPE, MACHTYPE,</li>
-  <li>read, read -p ‘please enter you name’ -t 100 name</li>
-  <li>declare, declare ...</li>
-</ul><div class="read-more"><a href="/2017/06/19/linux-relearn-shell/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/19/linux-relearn/">Linux Relearn</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/bash/"><small class="tag-label">bash</small></a><a href="/tags/shell/"><small class="tag-label">shell</small></a></div><hr class="article-header-separator" /><h2 id="linux-bash">linux bash</h2>
+  <li>触发任何一个事件，系统会将他定义为一个程序，赋予PID，根据调用用户与相关属性关系，赋予PID相关的有效的权限设定， 在系统上进行的动作就与这个权限相关</li>
+  <li>shell是一个程序， 执行bash， 与内核交互</li>
+  <li>fork and exec, fork, 父进程 到子进程， 赋予子进程新的PID， PPID=父进程， exec 程序实体</li>
+  <li>crontab, atd, syslog, 为常驻进程
+    <h4 id="工作管理">工作管理</h4>
+  </li>
+  <li>background job...</li>
+</ul><div class="read-more"><a href="/2017/06/22/linux-process/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/22/linux-crontab/">Linux crontab</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 22, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/crontab/"><small class="tag-label">crontab</small></a></div><hr class="article-header-separator" /><h2 id="linux-crontab-例行性工作排程">linux crontab （例行性工作排程）</h2>
+
+<h5 id="at">at</h5>
+<ul>
+  <li>执行一次就结束的程序指令</li>
+  <li>开启 /etc/init.d/atd restart</li>
+  <li>at任务记录在 /var/spool/at/中</li>
+  <li>权限 /etc/at.allow, /etc/at.deny, 规则： 1. 先寻找at.allow，写入这个文档的使用者才能使用，没有写入的不能使用 2. 寻找 /etc/at.deny， 写入文档的不能使用， 没有写入的可以使用, 3.两个文档都不存在的，只有root可以使用。</li>
+  <li>按照...</li>
+</ul><div class="read-more"><a href="/2017/06/22/linux-crontab/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/19/linux-relearn/">Linux Relearn</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/bash/"><small class="tag-label">bash</small></a><a href="/tags/shell/"><small class="tag-label">shell</small></a></div><hr class="article-header-separator" /><h2 id="linux-bash">linux bash</h2>
 
 <h4 id="常用命令">常用命令</h4>
 <ul>
@@ -67,7 +59,15 @@
   <li>系统变量， HOME, SHELL, HISISIZE, PATH, LANG, RANDOM, $, $?, OSTYPE, HOSTTYPE, MACHTYPE,</li>
   <li>read, read -p ‘please enter you name’ -t 100 name</li>
   <li>declare, declare -a...</li>
-</ul><div class="read-more"><a href="/2017/06/19/linux-relearn/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/19/linux-acl/">Linux Acl</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/acl/"><small class="tag-label">ACL</small></a><a href="/tags/shell/"><small class="tag-label">shell</small></a></div><hr class="article-header-separator" /><h2 id="linux-acl-控制管理">linux ACl 控制管理</h2>
+</ul><div class="read-more"><a href="/2017/06/19/linux-relearn/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/19/linux-relearn-shell/">Linux Shell</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/bash/"><small class="tag-label">bash</small></a><a href="/tags/shell/"><small class="tag-label">shell</small></a></div><hr class="article-header-separator" /><h2 id="linux-shell">linux shell</h2>
+
+<h4 id="常用命令">常用命令</h4>
+<ul>
+  <li>history, alias, type, 变量，echo, unset, env, declare, set, read, array</li>
+  <li>系统变量， HOME, SHELL, HISISIZE, PATH, LANG, RANDOM, $, $?, OSTYPE, HOSTTYPE, MACHTYPE,</li>
+  <li>read, read -p ‘please enter you name’ -t 100 name</li>
+  <li>declare, declare ...</li>
+</ul><div class="read-more"><a href="/2017/06/19/linux-relearn-shell/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/19/linux-acl/">Linux Acl</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/acl/"><small class="tag-label">ACL</small></a><a href="/tags/shell/"><small class="tag-label">shell</small></a></div><hr class="article-header-separator" /><h2 id="linux-acl-控制管理">linux ACl 控制管理</h2>
 
 <h4 id="常用命令">常用命令</h4>
 <ul>
