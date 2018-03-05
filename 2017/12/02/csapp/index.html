@@ -307,4 +307,481 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作</p>
     </ol>
   </li>
 </ol>
+
+<h2 id="优化程序性能">优化程序性能</h2>
+
+<ol>
+  <li>代码标准：
+    <ul>
+      <li>清晰简洁的代码，能够很容的理解代码。</li>
+      <li>运行的快（比如实时处理视频帧，网络包）</li>
+    </ul>
+  </li>
+  <li>如何编写高效率的代码：
+    <ol>
+      <li>组合正确的数据结构和算法，</li>
+      <li>需要编写出编译器能够有效优化以转换成高效可执行代码的源代码。对于第二点，理解编译器的能力和局限性是非常重要的</li>
+      <li>并行计算</li>
+    </ol>
+
+    <blockquote>
+      <p>在算法级别上， 几分钟就能编写一个插入排序，而搞笑的是排序算法程序可能需要一天或更长的时间 来实现和优化，在代码级上， 许多低级别的优化往往会降低程序的可读性和模块性，是的程序容易出错，并且难以修改和扩展，对于在性能重要的环境中反复执行的代码，进行广泛的优化比较合适。一个挑战就是尽管做了广泛的优化，但还是要维护代码一定程度的简洁和可读性。一个很有用的策略是，只写到编译器能够产生有效代码的程度就好了。</p>
+    </blockquote>
+  </li>
+  <li>程序优化:
+    <ul>
+      <li>消除不必要的内容，让代码尽可能有效的执行期望的工作。这包括不必要的函数调用，条件测试，存储器引用。并且这些是不依赖于目标环境的（思想通用）</li>
+      <li>利用处理器提供的指令级表示进行优化。</li>
+    </ul>
+  </li>
+  <li>编译器的局限性
+<div class="highlight"><pre class="highlight c"><code>   <span class="kt">int</span> <span class="n">f</span><span class="p">();</span>
+   <span class="kt">int</span> <span class="n">func1</span><span class="p">(){</span>
+     <span class="k">return</span> <span class="n">f</span><span class="p">()</span> <span class="o">+</span> <span class="n">f</span><span class="p">()</span> <span class="o">+</span> <span class="n">f</span><span class="p">()</span> <span class="o">+</span> <span class="n">f</span><span class="p">();</span>
+   <span class="p">}</span>
+   <span class="kt">int</span> <span class="n">func2</span><span class="p">(){</span>
+     <span class="k">return</span> <span class="n">f</span><span class="p">()</span> <span class="o">*</span> <span class="mi">4</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="kt">int</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="n">in</span> <span class="n">func1</span><span class="p">(){</span>
+     <span class="k">return</span> <span class="n">counter</span> <span class="o">++</span><span class="p">;</span>
+   <span class="p">}</span>
+</code></pre></div>
+    <blockquote>
+      <p>func1 函数具有副作用，他修改了程序状态的一部分，改变了整体程序的行为，大多数编辑器不会试图判断一个函数是否具有副作用，所以，编译器会保持函数调用不变， 并不会按照人们预期的 进行函数调用优化</p>
+    </blockquote>
+
+    <ul>
+      <li>
+        <p>另一个示例<br />
+消除循环的低效率代码； 例如for(i = 0; i&lt; strlen(s); i++) 中，strlen的调用，我们可能会假想strlen函数只调用一次，然而编译器并不会这么做，他假定每次strlen的函数调用是不同的。从而在每次循环中多增加了一次函数调用。</p>
+
+        <blockquote>
+          <p>示例说明一个问题： 一个看上去无足轻重的代码片段有隐藏的渐进低效率，通常人们会在一个小的数据集中进行测试和分析程序，对此程序的性能是足够的。不过， 当程序最终部署好以后，过程完全可能应用在一个100万个字符串上。突然，这段无危险的代码变成了程序的主要性能瓶颈。大型编程项目中出现这样的问题的故事比比皆是。一个有经验的程序员工作的一部分就是避免引入这样的渐进低效率。<br />
+  这个优化是常见的一类优化例子： 代码移动， 这类优化包括识别要执行的多次但是计算结果不会改变的计算。因而可以将计算移动到代码前面不会被多次求值的部分，编译器会试图进行代码移动，他们不能够发现一个函数是否会有副作用，因而假设函数会有副作用。所以，程序员经常需要显示的完成代码移动。</p>
+        </blockquote>
+      </li>
+    </ul>
+  </li>
+  <li>手动优化的几个建议：
+    <ul>
+      <li>减少过程调用： 一个纯粹主义者可能会说这种变换严重损害了程序的模块性。比较实际的程序员会争辩说 这种变换是获得高性能结果的必要步骤。对于性能至关重要的应用来说。为了速度，经常必要的损害一些功能模块性和抽象性，为了防止以后修改代码，添加一些文档是很明智的，说明采用了那些变换以及导致这些变换的假设。</li>
+      <li>消除不必要的存储器引用</li>
+      <li>循环展开： 一种程序变换， 通过增加每次迭代计算的元素数量，减少循环的迭代次数，循环展开能够从两方面改善程序的性能。 1. 减少 不直接有助于程序结果 的操作的数目， 例如<strong>循环索引计算和条件分支</strong> 2. 提供了一些方法，有助于减少整个计算中关键路径上的操作数量。</li>
+      <li>提高并行性: <strong>程序是受运算单元的延迟限制的。执行加法和乘法的功能单元 是完全流水线化的</strong>。这意味着他们可以每个时钟周期开始一个新操作。代码不能利用这种能力。即使是使用循环展开也不能，这是因为我们将积累值放在一个单独的变量acc中，在前面的计算完成之前，都不能计算acc的新值。打破这种顺序关系是问题的关键。1， 多个累积变量。 2. 重新结合变换。减少计算中的关键路径上的操作数量。通过更好地利用功能单元的流水线能力得到更好点性能，大多数编译器不会对浮点数做重新结合，因为这些运算是不符合结合律的。通常我们发现， 循环展开和并行的积累在多个值，是提高程序性能的更可靠的方法。</li>
+      <li>分支预测和预测错误的处罚： 书写适合用条件传送实现的代码。分支预测错误，会招致严重的处罚</li>
+      <li>存储器性能： 只考虑所有的数据都存放在高速缓存中的情况。（在下一章节中，进行详细的介绍）</li>
+    </ul>
+  </li>
+  <li>对循环展开和多个累计变量，重新结合变化的代码示例
+<div class="highlight"><pre class="highlight c"><code>   <span class="kt">void</span> <span class="nf">combine4</span><span class="p">(</span><span class="n">vect_ptr</span> <span class="n">v</span><span class="p">,</span> <span class="n">data_t</span> <span class="o">*</span> <span class="n">dest</span><span class="p">)</span>
+   <span class="p">{</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vect_length</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="n">data_t</span> <span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="n">data_t</span> <span class="n">acc</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+     <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">){</span>
+       <span class="n">acc</span> <span class="o">=</span> <span class="n">acc</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+     <span class="p">}</span>
+     <span class="o">*</span> <span class="n">dest</span> <span class="o">=</span> <span class="n">acc</span>
+   <span class="p">}</span>
+</code></pre></div>    <p><img src="../../../../images/combine4-c7b62e6a.png" alt="combine 4" /></p>
+<div class="highlight"><pre class="highlight c"><code>   <span class="kt">void</span> <span class="nf">combine5</span><span class="p">(</span><span class="n">vec_ptr</span> <span class="n">v</span><span class="p">,</span> <span class="n">data_r</span> <span class="o">*</span> <span class="n">dest</span><span class="p">)</span>
+   <span class="p">{</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vect_length</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">limit</span> <span class="o">=</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+     <span class="n">data_t</span> <span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="n">data_t</span> <span class="n">acc</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+     <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">limit</span><span class="p">;</span> <span class="n">i</span><span class="o">+=</span><span class="mi">2</span><span class="p">){</span>
+       <span class="n">acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">acc</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+     <span class="p">}</span>
+
+     <span class="k">for</span> <span class="p">(;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="n">length</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+       <span class="n">acc</span> <span class="o">=</span> <span class="n">acc</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+     <span class="p">}</span>
+     <span class="o">*</span> <span class="n">dest</span> <span class="o">=</span>  <span class="n">acc</span><span class="p">;</span>
+   <span class="p">}</span>
+</code></pre></div>    <p><img src="../../../../images/combine5-4dd0d808.png" alt="combine 5" /></p>
+
+<div class="highlight"><pre class="highlight c"><code>   <span class="kt">void</span> <span class="nf">combine6</span><span class="p">(</span><span class="n">vec_ptr</span> <span class="n">v</span><span class="p">,</span> <span class="n">data_r</span> <span class="o">*</span> <span class="n">dest</span><span class="p">)</span>
+   <span class="p">{</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vect_length</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">limit</span> <span class="o">=</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+     <span class="n">data_t</span> <span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="n">data_t</span> <span class="n">acc0</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+     <span class="n">data_t</span> <span class="n">acc1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+     <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">limit</span><span class="p">;</span> <span class="n">i</span><span class="o">+=</span><span class="mi">2</span><span class="p">){</span>
+       <span class="n">acc0</span> <span class="o">=</span> <span class="n">acc0</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+       <span class="n">acc1</span> <span class="o">=</span> <span class="n">acc1</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+     <span class="p">}</span>
+
+     <span class="k">for</span> <span class="p">(;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="n">length</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+       <span class="n">acc</span> <span class="o">=</span> <span class="n">acc0</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+     <span class="p">}</span>
+     <span class="o">*</span> <span class="n">dest</span> <span class="o">=</span>  <span class="n">acc0</span> <span class="o">*</span> <span class="n">acc1</span><span class="p">;</span>
+   <span class="p">}</span>
+
+</code></pre></div>    <p><img src="../../../../images/combine6-15034d94.png" alt="combine 6" /></p>
+
+<div class="highlight"><pre class="highlight c"><code>   <span class="kt">void</span> <span class="nf">combine7</span><span class="p">(</span><span class="n">vec_ptr</span> <span class="n">v</span><span class="p">,</span> <span class="n">data_r</span> <span class="o">*</span> <span class="n">dest</span><span class="p">)</span>
+   <span class="p">{</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vect_length</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="kt">long</span> <span class="kt">int</span> <span class="n">limit</span> <span class="o">=</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+     <span class="n">data_t</span> <span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+     <span class="n">data_t</span> <span class="n">acc</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+     <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">limit</span><span class="p">;</span> <span class="n">i</span><span class="o">+=</span><span class="mi">2</span><span class="p">){</span>
+       <span class="n">acc0</span> <span class="o">=</span> <span class="n">acc</span> <span class="o">*</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+     <span class="p">}</span>
+
+     <span class="k">for</span> <span class="p">(;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="n">length</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+       <span class="n">acc</span> <span class="o">=</span> <span class="n">acc</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+     <span class="p">}</span>
+     <span class="o">*</span> <span class="n">dest</span> <span class="o">=</span>  <span class="n">acc</span><span class="p">;</span>
+   <span class="p">}</span>
+</code></pre></div>    <p>```<br />
+ <img src="../../../../images/combine7-011509b3.png" alt="combine 7" /></p>
+  </li>
+  <li>总结 优化程序效率的层次以及方法：
+    <ul>
+      <li>高级设计： 选择恰当的算法和数据结构，避免使用那些会渐进的产生糟糕的性能的算法和编码技术</li>
+      <li>基本编码原则：避免限制优化的因素
+        <ol>
+          <li>消除连续的函数调用。在可能时，可以牺牲模块性来获得更大的效率</li>
+          <li>消除不必要的存储器引用： 引入临时变量来存储结果，只在 最后的时候，将结果存放到数组变量、全局变量中</li>
+        </ol>
+      </li>
+      <li>低级优化
+        <ol>
+          <li>展开循环</li>
+          <li>多个累积变量 和重新结合的技术，找到方法提高指令级别的并行（利用指令的流水线化）</li>
+          <li>用功能的风格重新条件操作，使编译器采用条件数据传送。</li>
+        </ol>
+      </li>
+      <li>profiling
+        <blockquote>
+          <p>警惕在优化效率时候引入错误，引入新变量，改变循环边界 使得代码整体上更为复杂，很容易导致错误，需要测试来保证优化代码的正确性。</p>
+        </blockquote>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="存储器层次结构">存储器层次结构</h2>
+<ol>
+  <li>认识存储器系统
+    <ul>
+      <li>存储器系统: 是一个<strong>具有不同容器、成本和访问时间</strong>的存储设备的<strong>层次结构</strong>，CPU寄存器保存最常用的数据，高速缓冲区作为一部分存储在相对慢速的主存储器中的数据和指令的缓冲区， 主存暂时存放存储在容量较大、慢速的磁盘上的数据，而磁盘常常作为存储在通过网络连接的其他机器的磁盘上的数据的缓冲区。</li>
+      <li><strong>存储器层次结构</strong>: 对应用程序的性能有着巨大的影响，CPU寄存器中的数据在0个周期可以访问，在高速缓冲中1-30个周期，主存中50-200个周期，如果存储在磁盘上，大概需要 几千万个周期。</li>
+      <li>存储器层次结构是可行的，一个编写良好的程序倾向于频繁的访问某一个层次上的存储设备。存储器实现的整体效果是，其成本与层次结构底层最便宜的存储设备相当。 但是却以最接近于层次结构顶部存储设备的高速率向程序提供数据。</li>
+      <li>局部性： 一个计算机程序的基本属性。具有良好局部性的程序倾向于一次又一次的访问相同的数据项集合。或是倾向于访问邻近的数据项集合。具有良好局部性的程序比局部程序差的程序更倾向于访问更高层次的数据项，其运行速度也可以相差20倍。</li>
+    </ul>
+  </li>
+  <li>存储技术：
+    <ul>
+      <li>静态RAM： SRAM， 双稳态特性。</li>
+      <li>动态RAM：DRAM， DRAM 存储器单元对干扰非常敏感，暴露在光线之下会导致电容电压的改变，数据照相机摄像机中的传感器本质就是DRAM，DDR(2 位), DDR2(4位), DDR3(8位)双倍数据速率同步DRAM， (Double Data-rate Synchronous)</li>
+      <li>总线： 数据通过总线 共享电子电路在处理器和DRAM主存之间来来回回，每次CPU和主存之间的数据传送都是通过一系列步骤来完成的。这些步骤通过总线事务。总线是一组并行的导线， 能携带地址、数据、控制信号。控制总线携带的信号会同步事务，并区分当前正在被执行的事务类型。例如， 当前得儿事务是主存，还是磁盘，以及其他磁盘设备，信息是地址，还是数据，事务是读还是写。</li>
+      <li>总线接口 — IO桥 —— 主存， iO桥将系统总线的信号翻译成存储器总线的电子信号。</li>
+      <li>磁盘存储， 画图</li>
+      <li>固态硬盘（Solid State Disk SSD） ssd 的性能特性， 顺序读和写性能相当，顺序℃比顺序写稍微快一点，但是按照随机顺序访问逻辑快时， 写比读慢一个数量级。一个闪存是由B个块的序列组成。每个块有P页组成，通常页的大小是512-4Kb， 块是32-128页组成的。树蕨是以页单位读写的。只有一页所属的真个块被擦除之后，才能写这一页，不过一旦一个块被擦除了，块中每一个都可以不需要在进行擦除就可以写了，大约在100000次重复写之后，块就会损坏。速记写慢的原因： 1. 擦出块需要相对较长的时间，1ms级别，比访问页所需时间要高出一个数量级，2. 如果写操作试图修改一个包含已经有数据的页，那么这个块中所有有用数据的页都必须拷贝到一个新块，才能进行对页p的写。</li>
+    </ul>
+  </li>
+  <li>局部性：<br />
+  一个编写良好的程序具有良好的局部性， 他倾向于引用邻近其他最近引用过的数据项的数据，或者最近应用过的数据项，这种倾向性被称为局部性原理。1. 时间局部性， 2. 空间局部性
+    <ul>
+      <li>时间局部性： 被引用一次的存储器位置很可能在不远的将来再被多次引用。</li>
+      <li>空间局部性： 一个存储器位置被引用了，那么程序很可能在不远的将来引用附近的一个存储位置</li>
+    </ul>
+
+<div class="highlight"><pre class="highlight c"><code>   <span class="kt">int</span> <span class="nf">sumec</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">[</span><span class="n">N</span><span class="p">])</span>
+   <span class="p">{</span>
+     <span class="kt">int</span>  <span class="n">i</span><span class="p">,</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+     <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+     <span class="p">{</span>
+         <span class="n">sum</span> <span class="o">+=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+     <span class="p">}</span>
+     <span class="k">return</span> <span class="n">sum</span><span class="p">;</span>
+   <span class="p">}</span>
+</code></pre></div>    <p>空间局部性很好， 时间局部性很差, 在一个连续的向量模式中，每隔k个元素进行访问， 就被称为步长为k的引用模式，一般而言，随着步长的增加， 空间局部性下降。</p>
+  </li>
+  <li>存储器层次结构<br />
+  图片
+    <ul>
+      <li>缓存命中：</li>
+      <li>缓存不命中：</li>
+    </ul>
+    <ul>
+      <li>第k层的缓存从第k+1缓存中 取出包含的那个块，如果k层的缓存已经满了的话，就需要覆盖现存的一个块。 成为替换或驱逐这个块，倍驱逐的这个块儿，称为 牺牲块，决定该替换那个块是有缓存的替换策略来控制的。比如随机替换策略和最近最少被使用的（LRU）替换策略</li>
+      <li>缓存不命中的种类： 冷缓存： 一个空的缓存，他是短暂的事件，不会在反复访问存储器是的缓存暖身之后的稳定状态中出现。2. 只要发生了不命中，k层的缓存就必须执行某个放置策略，确定它从第k+1层中的数据放在哪里。</li>
+      <li>冲突不命中： 被引用的数据对象，映射到同一个缓存块，缓存会一直不命中
+        <ul>
+          <li>容量不命中： 一个嵌套的循环可能会反复的访问同一个数组的元素，这个块的集合称为这个阶段的工作集，当工作集的大小超过了缓存的大小，就会发生 容量不命中的</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="链接">链接</h2>
+
+<p>链接 是将各种代码和数据部分收集起来并组合成为一个单一文件的过程，链接可以执行于 编译时（compile time 也就是在源代码被翻译成机器代码时）也可以执行于加载时（load time在程序倍加载器加载到存储器并运行时）甚至执行于运行时（run time 有应用程序来执行）<br />
+链接器 在软件开发中，扮演者一个关键的角色，因为他们使得的分离编译 成为可能，我们不用将一个大型的应用程序组织为一个巨大的源文件，而是可以把她分解为更小，更好管理的模块，可以独立的修改和编译这些模块。当我们修改一个文件时候，简单的编译她，并重新连接应用，而不必重新编译整个项目。</p>
+
+<p>链接器产生的可执行文件在重要的系统功能中扮演者重要的角色，比如 加载和运行程序，虚拟存储器，分页，和存储器映射。随着共享库和动态连接在 操作系统中的重要性加强，链接成为一个复杂的过程。linux elf目标文件格式。</p>
+
+<h2 id="异常控制流">异常控制流</h2>
+
+<blockquote>
+
+  <p>异常控制流(Exceptional Control Flow ECF): 异常控制流发生在计算机的各个层次。<br />
+  硬件层: 硬件检测的事情会触发控制突然转移到异常处理程序<br />
+  操作系统层: 内核通过 上下文切换 将控制从一个用户进程转移到另一个用户进程<br />
+  应用层面: 一个进程可以通过发送信号到另一个进程， 而接受者将转移到信号处理程序</p>
+</blockquote>
+
+<ol>
+  <li>异常控制流：
+    <ul>
+      <li>是操作系统用来实现I/O、进程、和虚拟存储器的基本机制</li>
+      <li>是应用程序与操作系统交互的方式： 应用程序通过一个陷阱（trap）或 系统调用(system call) 的形式，向操作系统请求服务。</li>
+      <li>操作系统为程序提供了强大的ECF机制，创建进程、等待进程、通知其他进程系统中的异常事件等</li>
+      <li>ECF是计算机实现并发的基本机制</li>
+      <li>提供程序方面的异常机制，try， catch。 setjmp, longjmp）</li>
+    </ul>
+  </li>
+  <li>异常：
+    <ul>
+      <li>异常是异常控制流的一种形式。</li>
+      <li>实现： 硬件 + 操作系统， 随着系统不同而不同，但是基本思想相同，</li>
+      <li>控制流中的突变， 用来响应处理器状态中的某些变化。也称为事件， 比如： 发生虚拟存储器缺页，算数溢出， I/O请求完成等。</li>
+      <li>事件放生时候， 处理器通过 异常表(exception table， 间接跳转表) 来调用 操作系统子程序—异常处理程序（一个专门设计来处理这种事件的操作系统子程序）</li>
+      <li>详细过程： 附图 跳转表(todo)</li>
+      <li>异常处理类似于函数调用， 但是不同于函数调用：
+        <ol>
+          <li>异常处理程序运行在内核模式下，这意味着他们对所有的系统资源都有完全的访问权限</li>
+          <li>如果控制从一个用户态转到内核态，那么所有的项目都需要压到内核栈中</li>
+          <li>过程调用， 在跳转到程序之前，处理器将返回地址压倒栈中， 异常：返回地址要么是当前指令，要么是 下一台指令。</li>
+        </ol>
+      </li>
+    </ul>
+  </li>
+  <li>异常类型： 中断（interrupt）, 陷阱（trap）， 故障（fault）终止（abort）
+    <ul>
+      <li>中断： 来自处理器外部的I/O设备的信号的结果， 异步， 硬件中断的异常处理程序 通常称为 中断处理程序。</li>
+      <li>陷阱： 有意的异常，是执行一条指令的结果。陷阱的重要用途是： <strong>在用户程序和内核之间提供一个像过程一样的接口，叫系统调用</strong>。 从程序员的角度来看， 系统调用和函数调用是一样的，然而其中的内部实现是非常不同的。 普通的函数运行在用户模式中， 用户模式限制了函数可以执行的指令的类型， 指令访问用户栈。</li>
+      <li>故障： 由错误引起的，故障发生时， 处理器将控制转移到故障处理程序，如果处理程序能够处理修正错误，他将控制权转移到引起故障的指令，从而重新执行。否则，处理程序返回到内核中的abort函数，从而终止程序。 一个经典的故障示例是缺页异常， 指令引用的一个虚拟地址，与该虚拟地址关联的物理页面不在 存储器中，从而发生故障。缺页处理程序 从磁盘加载到存储器中之后，将控制权转交到 程序指令， 程序执行再次执行，就不会发生故障了。</li>
+      <li>终止： 是不可以修复的致命错误造成的结果， 通常是一些硬件错误。终止处理程序，不会将控制返回到应用程序，而是终止应用程序。</li>
+      <li>linux 中的异常示例：
+        <ul>
+          <li>linux 故障和终止： 图片， 示例</li>
+          <li>linux 系统调用： 每个系统调用都有一个唯一的整数号， 对应于一个到内核中的跳转表的偏移量。</li>
+          <li>系统调用是通过 指令 int 0x80 调用的， 参数传递都是通过寄存器而不是栈传递的。 %eax为系统调用号， 寄存器%ebx, %ecx …为调用参数， 标准C函数库提供了包装函数， 这些包装函数将参数打包在一起， 以适当系统调用号陷入内核。然后将系统调用的返回状态传递给调用函数，完成包装任务。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>进程：
+    <ul>
+      <li><strong>一个执行中的程序的示例。 系统中的每个程序都是运行在某个进程的上下文中的。上下文是程序正确运行所需要的状态的组成</strong>。包括， 程序代码和数据，栈，通用寄存器的内容，程序计数器等</li>
+      <li><strong>异常是允许 操作系统提供进程的概念所需要的基本构造块</strong>。</li>
+      <li>在外壳程序中输入可执行目标文件的名字， 外壳会创建一个新的进程，然后在这个进程的上下文中 运行这个可执行目标文件。</li>
+      <li>进程提供的关键抽象有：
+        <ol>
+          <li>一个独立的逻辑控制流，提供一个独占使用处理器的假象</li>
+          <li>一个私有的地址空间，提供一个独占存储系统的假象</li>
+        </ol>
+      </li>
+      <li>并发与并行:
+        <ol>
+          <li>逻辑控制流：因为进程提供每个程序单独使用处理器的假象。所以程序计数器（PC）的值的序列叫做 逻辑控制流</li>
+          <li>并发: 并发流(concurrent)一个逻辑控制流 的执行时间 与另一个逻辑控制流重叠, 称为并发的执行。多个流并发的执行称为并发，</li>
+          <li>一个进程与其他进程轮流运行成为多任务</li>
+          <li>并行流（parallel follow） 是并发流的一个真子集， 如果两个流并发的运行在不同的处理器核或者计算机上，我们称为并行流，</li>
+        </ol>
+      </li>
+      <li>私有地址空间： n为地址的机器上， 0,1,2……z**n - 1， 地址空间顶部是保留给内核的，该部分是内核在代表进程执行指令时使用的代码，数据和栈</li>
+      <li>用户模式、内核模式:
+        <ol>
+          <li>为了提供一个无懈可击的进程抽象，处理器提供一种机制，来限制一个应用可以执行的指令以及他可以访问的地址空间。( 为了一个无懈可击的抽象？还是因为安全， 比如内核模式应该可以对用户模式，掩盖 地址抽象的细节，而不是，让用户破坏这种抽象)</li>
+          <li>一般是处理器通过一个寄存器中的一个模式位(mode bit)来提供这种功能的。该寄存器 描述了进程当前的特权， 设定了位模式， 进程在内核模式，反之在用户模式</li>
+          <li>内核模式: 一个运行在内核模式中的程序可以执行指令集中的任何指令，并可以访问系统中的任何存储位置。</li>
+          <li>用户模式:  不允许执行执行特权命令，比如：停止处理器， 发起一个I/O操作。</li>
+          <li>进程进入到内核模式的唯一方法是：通过，中断、故障、或者陷入（系统调用）来进入到内核模式。</li>
+        </ol>
+      </li>
+      <li>上下文切换：
+        <ul>
+          <li>上下文切换: 操作系统通过这种较高层次的异常控制流来实现多任务。上下文切换机制是建立在 中断，陷阱，故障，终止 较低异常层次机制之上的。</li>
+          <li>上下文: 就是内核重启一个被抢占进程所需要的数据状态。包括，寄存器，程序计数器，内核栈，和各种数据结构等。内核为每一个进程提供一个上下文。</li>
+          <li>调度: 在进程执行的某些时刻（那些？），内核可以决定抢占 当前进程，并重新开始一个进程， 这种决定叫做调度。有内核中成为调度器的代码处理。在内核调度了一个进程运行后，她就抢占了当前进程，使用上下文切换机制来将控制转移到新的进程。
+            <ol>
+              <li>保存当前进程的上下文</li>
+              <li>恢复某个先前被抢占的进程被保存的上下文</li>
+              <li>将控制转移到新的进程</li>
+            </ol>
+          </li>
+          <li>上下文切换的几个简单示例：
+            <ul>
+              <li>中断(任何时候): 所有系统都有某种产生周期性定时器中断的机制，典型的为1毫秒， 每次发生定时器中断时，内核就能够判断 当前进程是否执行了足够的时间，并切换到一个新的进程。</li>
+              <li>阻塞：系统调用时候，因为等待某个事件而发生阻塞，可能发生上下文切换。比如 read 系统请求磁盘访问，内核可能进行上下文切换， 来执行其他操作，而不是等待I/O, Sleep 系统调用， 显示的请求让调用进程休眠。</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>进程控制：
+    <ol>
+      <li>进程创建和终止： 从程序员的角度来看 进程总是处于3个状态： 运行， 停止，终止，
+        <ul>
+          <li>停止： 进程的执行被挂起。 且不会被调度， 当收到SIGSTOP, sigtstp, sidttin, sigttout 进程就会停止，并保持停止直到它收到一个sigcont 程序再次执行</li>
+          <li>终止： 进程永远停止。原因有： 1. 收到一格信号，该信号默认行为是终止进程 2. 从主程序返回 3. 调用exit函数</li>
+        </ul>
+      </li>
+      <li>fork
+        <ul>
+          <li>子进程得到与父进程用户级虚拟地址空间相同的 一份拷贝， 文本，数据，bss，堆等。 子进程还获得父进程任何打开文件描述符的相同的拷贝。 这意味子进程可以读写父进程中打开的任何文件。最大的区别在于PID。</li>
+          <li>
+            <p>fork函数 只被调用一次， 却返回两次。在父进程中 fork返回子进程的PID， 在子进程中，返回0，因为子进程的PID为非零，所以提供了一种明确的方法，来分辨程序在 父进程中，还是子进程中执行。</p>
+
+<div class="highlight"><pre class="highlight c"><code>  <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+  <span class="p">{</span>
+      <span class="n">pid_t</span> <span class="o">=</span> <span class="n">pid</span><span class="p">;</span>
+      <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="n">pid</span> <span class="o">=</span> <span class="n">Fork</span><span class="p">();</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"child :x %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">++</span><span class="n">x</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">"parent： x %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">--</span><span class="n">x</span><span class="p">);</span>
+      <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  <span class="p">}</span>
+
+</code></pre></div>          </li>
+          <li>调用一次返回两次： fork函数被父进程 调用一次， 但是却返回两次， 一次返回到父进程中，一次返回到子进程中，对于只fork一次的程序来说，这还是相当简单直接的，但是对于多次fork的程序来说，需要谨慎的分析</li>
+          <li>并发执行：父进程和子进程是并发运行的独立进程。也就说不能够假定 进程的执行顺序。</li>
+          <li>相同的但是独立的地址空间</li>
+          <li>共享文件：子进程继承了父进程的所有的打开文件。</li>
+        </ul>
+      </li>
+      <li>回收子进程：wait/ waitpid
+        <ul>
+          <li>回收： 当一个进程终止时，内核并不是把它从系统中清除出去，而是保持终止状态，直到父进程回收。当父进程回收已经终止的子进程时，内核将子进程的退出状态传递给父进程。然后抛弃已终止的进程。改进程就不存在了，</li>
+          <li>僵死进程: 一个终止了但是还没有被回收的进程,</li>
+          <li>僵死进城处理： 父进程还没有回收僵死进程就退出了，那么内核会安排init进程来回收他们。init 进程PID 为1在系统初始化时候有内核创建。</li>
+          <li>waitpid 函数
+            <ol>
+              <li>waitpid(pid_t pid, int * status, int optins)</li>
+              <li>pid &gt; 0 等待单个pid， pic = -1， 等待 父进程的所有子进程。</li>
+              <li>options：
+                <ul>
+                  <li>WNOHANG: 等待集合中的任何子进程都还没有终止， 那么就立即返回, 默认行文是 挂起调用进程， 直到所有子进程终止，</li>
+                  <li>WUNTRACED： 挂起调用进程， 直到 等待集合中一个进程变成 已终止或者被停止，返回， 返回的PID为引起返回的 进程PID， 默认行为：返回已经终止的子进程</li>
+                  <li>WHOHANG | WUNTRACED, 立即返回， 如果等待集合中没有任何子进程被停止或已终止， 那么返回值为0， 或者返回那个停止的终止的进程PPID</li>
+                </ul>
+              </li>
+              <li>如果status参数非空，waitpid在status中放置 关于导致返回子进程的状态信息。下面是解释status参数的几个宏
+                <ul>
+                  <li>WIFEXITED(status): 如果子进程通过调用exit或者一个返回(return) 正常终止。就返回真</li>
+                  <li>WEXITSTATUS(status): 返回一个正常终止的子进程的退出状态，只有在WIFEXITED 返回为真时了， 才会定义这个状态。</li>
+                  <li>WIFSIGNALED(status): 如果子进程是因为一个未被捕获的信号终止的。那么返回真</li>
+                  <li>WTERMSIG(status): 返回导致子进程终止的信号的编码， 只有咋WIFESIGNailed为真 才定义这个状态</li>
+                  <li>WIFSTOPPED(status): 如果引起返回的子进程当前是被停止的。那么就返回真。</li>
+                  <li>WSTOPSIG(status): 返回引起子进程停止的信号的数量，只有 wifstopped 返回为真时，才定义这个状态。</li>
+                </ul>
+              </li>
+            </ol>
+          </li>
+          <li>wait 函数是waitpid 的 简单版本， wait(int * status) === waitpid(-1, &amp; status, 0)</li>
+        </ul>
+      </li>
+      <li>让进程休眠
+        <ul>
+          <li>sleep：休眠一定秒数</li>
+          <li>pause：函数让调用进程休眠，直到该进程收到一个信号</li>
+        </ul>
+      </li>
+      <li>加载并运行程序 execve:
+        <ol>
+          <li>execve(char * filename, char * argsv[], char * envp[])</li>
+          <li>函数加载并运行可执行目标文件filename, 并传递参数argv, 环境变量 envp execve 调用一次 并不返回 fork函数在新的子进程中运行相同的程序，新的子进程是父进程的一个复制品。 execve 函数在当前进程的上下文中加载并运行一个新的程序，他会覆盖当前进程的地址空间。但是并没有创建一个新进程。新进程依然有相同的PID， 已打开的文件描述符</li>
+        </ol>
+      </li>
+      <li>信号
+        <ul>
+          <li>信号概念
+            <ul>
+              <li>更高层的软件异常形式。允许中断其他进程</li>
+              <li>man 7 signal 得到信号列表</li>
+              <li>每个信号类型都对应于 某种系统事件， 底层的硬件异常 是由内核异常处理程序处理的。正常情况下， 对用户进程是不可见的。信号提供了一种机制，来通知用户发生了这些异常。</li>
+            </ul>
+          </li>
+          <li>发射信号 到接受者的过程 相关概念：
+            <ol>
+              <li>发送信号： 内核通过更新目的进程的上下文中的某个状态，来发送一个信号到目的进程，发射信号的原因有： 1. 内核检测到一个事件，通知进程， 2. 一个进程调用kill函数， 要求内核发送信号。</li>
+              <li>接受信号： 当目的进程被内核强迫以某种形式对信号的发送做出反应时，反应有： 1. 忽略信号， 2. 终止 3. 执行信号处理程序的用户函数</li>
+              <li>待处理信号：一个发出而没有被接受的信号，任何时刻， 一种类型至多只会有一个待处理信号。如果一个进程有一个类型为k的待处理信号，那么任何接下来的发送到进程的类型为k的信号，都会被简单的丢弃。</li>
+              <li>阻塞信号： 一个进程可以设定阻塞一种类型的信号。可以被发送，但是不会被接受。</li>
+              <li>实现： pending 位向量 维护待处理信号集合， blocked 位向量，维护被阻塞信号集合。传递类型为k的信号， pending 的k位 被标记， 接收了 清除标记。</li>
+            </ol>
+          </li>
+          <li>发送信号
+            <ol>
+              <li>进程组： 提供了大量向进程发送信号的机制， 所有这些机制都是基于进程组的。每个进程都属于一个进程组，</li>
+              <li>kill 程序发送信号</li>
+              <li>键盘发送信号， 外壳程序 创建程序执行，ctrl-c 会发送一个SIGINT信号到 外壳， 外壳程序捕获到该信号，然后发送SIGINT 信号到这个前台进程中的每个进程。ctrl-z则会发送 SIGTSTP 信号</li>
+              <li>kill 函数调用</li>
+              <li>alarm 函数发送信号 SIGALRM 信号， 在sec 秒中发送信号</li>
+            </ol>
+          </li>
+          <li>接受信号
+            <ol>
+              <li>当内核从一个异常处理程序中返回，准备将控制传递到进程p时，他会检查进程p的未被阻塞的待处理信号的集合。 如果这个集合不为空， 那么内核选择集合中的某个信号k， 并且强制p接受信号k， 触发进程的某个行为， 每个信号类型都有一个预订的默认行为如下：
+                <ul>
+                  <li>进程终止</li>
+                  <li>进程终止并转存储器</li>
+                  <li>进程停止知道倍SIGCONT 信号重启</li>
+                  <li>进程忽略该信号</li>
+                </ul>
+              </li>
+              <li>进程可以通过signal函数修改和信号相关联的默认行为， 唯一的例外是： SIGSTOP， SIGKILL他们的默认行为是不可以修改的。 signal(int signum, sighandler_t handler) 设置信号处理程序选项
+                <ul>
+                  <li>如果handler 是SIG_IGN, 那么忽略类型为 signum 的信号</li>
+                  <li>如果handler 是SIG_DFL，那么类型为signum的信号行为修改未默认</li>
+                  <li>否则handler是用户定义的 信号处理程序地址，</li>
+                  <li>调用信号处理程序成为捕获信号， 执行信号处理程序为 处理信号。处理程序会调用会传递一个参数k，为信号类型， 因此， 同一个函数可以设定为处理多个信号处理程序</li>
+                </ul>
+              </li>
+              <li>设定阻塞，和取消阻塞， sigismember(sigset_t * set, int signum)</li>
+            </ol>
+          </li>
+          <li>信号处理问题：
+            <ol>
+              <li>待处理信号被阻塞： Unix信号处理程序通常会阻塞当前处理程序正在处理类型的待处理信号。如果一个进程捕获一个SIGINT信号，并运行处理程序，如果另外一个SIGINT 信号传递到这个进程， 那么这个SIGINT将变成待处理的，但是不会被接受，直到处理程序返回</li>
+              <li>待处理信号不会排队等待，任意类型至多只有一个待处理信号</li>
+              <li><strong>系统调用可以被中断</strong>，慢系统调用， read， wait， accept等会阻塞进程一段时间，某些系统中当捕获一个信号时，被中断的慢系统调用不会被继续而是返回错误</li>
+            </ol>
+          </li>
+          <li>非本地跳转： 它将控制直接从一个函数转移到另一个当前正在执行的函数，而不需要经过正常的调用–返回序列。(setjump longjump, sigsetjmp, siglongjmp)
+            <ul>
+              <li>setjump 函数在env 缓冲区中保存当前调用环境</li>
+              <li>longjmp 从env缓冲区中恢复调用环境，然后触发一个从最近一次初始化env的setjmp调用的返回，然后setjmp返回，并带有非零的返回值retval</li>
+              <li>从深层嵌套函数调用中立刻返回</li>
+              <li>信号处理程序分支到一个特殊的代码位置，而不是返回到倍信号到达中断了的指令位置</li>
+              <li>C++， java提供的异常机制是较高层次的，是C语言的setjmp， longjmp更结构化的版本。</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ol>
 <div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2018 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>
