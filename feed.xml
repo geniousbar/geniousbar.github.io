@@ -13,7 +13,7 @@
     <link rel="alternate" href="http://geniousbar.github.io/2018/01/04/benjamin-graham/"/>
     <id>http://geniousbar.github.io/2018/01/04/benjamin-graham/</id>
     <published>2018-01-04T08:00:00+08:00</published>
-    <updated>2018-02-05T23:48:24+08:00</updated>
+    <updated>2018-02-15T15:39:52+08:00</updated>
     <summary type="html">&lt;h2 id="格雷厄姆之道如何在中国实践价值投资"&gt;格雷厄姆之道（如何在中国实践价值投资）&lt;/h2&gt;
 &lt;blockquote&gt;
   &lt;p&gt;现在已然衰朽者， 将来可能重放异彩；现在备受青睐者，，将来却可能日渐衰朽。&lt;/p&gt;
@@ -279,7 +279,7 @@
     <link rel="alternate" href="http://geniousbar.github.io/2017/12/02/csapp/"/>
     <id>http://geniousbar.github.io/2017/12/02/csapp/</id>
     <published>2017-12-02T08:00:00+08:00</published>
-    <updated>2018-03-04T15:28:25+08:00</updated>
+    <updated>2018-03-05T11:45:52+08:00</updated>
     <summary type="html">&lt;h2 id="计算机系统漫游"&gt;计算机系统漫游&lt;/h2&gt;
 
 &lt;ol&gt;
@@ -670,8 +670,8 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
       &lt;li&gt;分支预测和预测错误的处罚： 书写适合用条件传送实现的代码。分支预测错误，会招致严重的处罚&lt;/li&gt;
       &lt;li&gt;存储器性能： 只考虑所有的数据都存放在高速缓存中的情况。（在下一章节中，进行详细的介绍）&lt;/li&gt;
     &lt;/ul&gt;
-
-    &lt;p&gt;对循环展开和多个累计变量，重新结合变化的代码示例&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;对循环展开和多个累计变量，重新结合变化的代码示例
 &lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;   &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;combine4&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vect_ptr&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data_t&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dest&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
    &lt;span class="p"&gt;{&lt;/span&gt;
      &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -685,7 +685,6 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
      &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dest&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;acc&lt;/span&gt;
    &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;&lt;img src="../../../../images/combine4-c7b62e6a.png" alt="combine 4" /&gt;&lt;/p&gt;
-
 &lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;   &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;combine5&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vec_ptr&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data_r&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dest&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
    &lt;span class="p"&gt;{&lt;/span&gt;
      &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -744,7 +743,8 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
      &lt;span class="p"&gt;}&lt;/span&gt;
      &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dest&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="n"&gt;acc&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
    &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;&lt;img src="../../../../images/combine7-011509b3.png" alt="combine 7" /&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;```&lt;br /&gt;
+ &lt;img src="../../../../images/combine7-011509b3.png" alt="combine 7" /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;总结 优化程序效率的层次以及方法：
     &lt;ul&gt;
@@ -772,12 +772,15 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
 &lt;/ol&gt;
 
 &lt;h2 id="存储器层次结构"&gt;存储器层次结构&lt;/h2&gt;
-
-&lt;p&gt;存储器系统是一个具有不同容器、成本和访问时间的存储设备的层次结构，CPU寄存器保存最常用的数据，高速缓冲区作为一部分存储在相对慢速的主存储器中的数据和指令的缓冲区， 主存暂时存放存储在容量较大、慢速的磁盘上的数据，而磁盘常常作为存储在通过网络连接的其他机器的磁盘上的数据的缓冲区。&lt;br /&gt;
-存储器层次结构对应用程序的性能有着巨大的影响，CPU寄存器中的数据在0个周期可以访问，在高速缓冲中1-30个周期，主存中50-200个周期，如果存储在磁盘上，大概需要 几千万个周期。&lt;br /&gt;
-存储器层次结构是可行的，一个编写良好的程序倾向于频繁的访问某一个层次上的存储设备。存储器实现的整体效果是，其成本与层次结构底层最便宜的存储设备相当。 但是却以最接近于层次结构顶部存储设备的高速率向程序提供数据。&lt;br /&gt;
-局部性： 一个计算机程序的基本属性。具有良好局部性的程序倾向于一次又一次的访问相同的数据项集合。或是倾向于访问邻近的数据项集合。具有良好局部性的程序比局部程序差的程序更倾向于访问更高层次的数据项，其运行速度也可以相差20倍。&lt;/p&gt;
 &lt;ol&gt;
+  &lt;li&gt;认识存储器系统
+    &lt;ul&gt;
+      &lt;li&gt;存储器系统: 是一个&lt;strong&gt;具有不同容器、成本和访问时间&lt;/strong&gt;的存储设备的&lt;strong&gt;层次结构&lt;/strong&gt;，CPU寄存器保存最常用的数据，高速缓冲区作为一部分存储在相对慢速的主存储器中的数据和指令的缓冲区， 主存暂时存放存储在容量较大、慢速的磁盘上的数据，而磁盘常常作为存储在通过网络连接的其他机器的磁盘上的数据的缓冲区。&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;存储器层次结构&lt;/strong&gt;: 对应用程序的性能有着巨大的影响，CPU寄存器中的数据在0个周期可以访问，在高速缓冲中1-30个周期，主存中50-200个周期，如果存储在磁盘上，大概需要 几千万个周期。&lt;/li&gt;
+      &lt;li&gt;存储器层次结构是可行的，一个编写良好的程序倾向于频繁的访问某一个层次上的存储设备。存储器实现的整体效果是，其成本与层次结构底层最便宜的存储设备相当。 但是却以最接近于层次结构顶部存储设备的高速率向程序提供数据。&lt;/li&gt;
+      &lt;li&gt;局部性： 一个计算机程序的基本属性。具有良好局部性的程序倾向于一次又一次的访问相同的数据项集合。或是倾向于访问邻近的数据项集合。具有良好局部性的程序比局部程序差的程序更倾向于访问更高层次的数据项，其运行速度也可以相差20倍。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
   &lt;li&gt;存储技术：
     &lt;ul&gt;
       &lt;li&gt;静态RAM： SRAM， 双稳态特性。&lt;/li&gt;
@@ -794,20 +797,18 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
       &lt;li&gt;时间局部性： 被引用一次的存储器位置很可能在不远的将来再被多次引用。&lt;/li&gt;
       &lt;li&gt;空间局部性： 一个存储器位置被引用了，那么程序很可能在不远的将来引用附近的一个存储位置&lt;/li&gt;
     &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
 
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;sumec&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-    &lt;span class="p"&gt;{&lt;/span&gt;
-      &lt;span class="kt"&gt;int&lt;/span&gt;  &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sum&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-      &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="p"&gt;{&lt;/span&gt;
-          &lt;span class="n"&gt;sum&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-      &lt;span class="p"&gt;}&lt;/span&gt;
-      &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;空间局部性很好， 时间局部性很差, 在一个连续的向量模式中，每隔k个元素进行访问， 就被称为步长为k的引用模式，一般而言，随着步长的增加， 空间局部性下降。&lt;/p&gt;
-&lt;ol&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;   &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;sumec&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+   &lt;span class="p"&gt;{&lt;/span&gt;
+     &lt;span class="kt"&gt;int&lt;/span&gt;  &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sum&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+     &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="p"&gt;{&lt;/span&gt;
+         &lt;span class="n"&gt;sum&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+     &lt;span class="p"&gt;}&lt;/span&gt;
+     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;空间局部性很好， 时间局部性很差, 在一个连续的向量模式中，每隔k个元素进行访问， 就被称为步长为k的引用模式，一般而言，随着步长的增加， 空间局部性下降。&lt;/p&gt;
+  &lt;/li&gt;
   &lt;li&gt;存储器层次结构&lt;br /&gt;
   图片
     &lt;ul&gt;
@@ -860,13 +861,14 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
       &lt;li&gt;控制流中的突变， 用来响应处理器状态中的某些变化。也称为事件， 比如： 发生虚拟存储器缺页，算数溢出， I/O请求完成等。&lt;/li&gt;
       &lt;li&gt;事件放生时候， 处理器通过 异常表(exception table， 间接跳转表) 来调用 操作系统子程序—异常处理程序（一个专门设计来处理这种事件的操作系统子程序）&lt;/li&gt;
       &lt;li&gt;详细过程： 附图 跳转表(todo)&lt;/li&gt;
-      &lt;li&gt;异常处理类似于函数调用， 但是不同于函数调用：&lt;/li&gt;
+      &lt;li&gt;异常处理类似于函数调用， 但是不同于函数调用：
+        &lt;ol&gt;
+          &lt;li&gt;异常处理程序运行在内核模式下，这意味着他们对所有的系统资源都有完全的访问权限&lt;/li&gt;
+          &lt;li&gt;如果控制从一个用户态转到内核态，那么所有的项目都需要压到内核栈中&lt;/li&gt;
+          &lt;li&gt;过程调用， 在跳转到程序之前，处理器将返回地址压倒栈中， 异常：返回地址要么是当前指令，要么是 下一台指令。&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
     &lt;/ul&gt;
-    &lt;ol&gt;
-      &lt;li&gt;异常处理程序运行在内核模式下，这意味着他们对所有的系统资源都有完全的访问权限&lt;/li&gt;
-      &lt;li&gt;如果控制从一个用户态转到内核态，那么所有的项目都需要压到内核栈中&lt;/li&gt;
-      &lt;li&gt;过程调用， 在跳转到程序之前，处理器将返回地址压倒栈中， 异常：返回地址要么是当前指令，要么是 下一台指令。&lt;/li&gt;
-    &lt;/ol&gt;
   &lt;/li&gt;
   &lt;li&gt;异常类型： 中断（interrupt）, 陷阱（trap）， 故障（fault）终止（abort）
     &lt;ul&gt;
@@ -902,43 +904,183 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
           &lt;li&gt;并行流（parallel follow） 是并发流的一个真子集， 如果两个流并发的运行在不同的处理器核或者计算机上，我们称为并行流，&lt;/li&gt;
         &lt;/ol&gt;
       &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;私有地址空间： n为地址的机器上， 0,1,2……z**n - 1， 地址空间顶部是保留给内核的，该部分是内核在代表进程执行指令时使用的代码，数据和栈&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;用户模式、内核模式:
-    &lt;ol&gt;
-      &lt;li&gt;为了提供一个无懈可击的进程抽象，处理器提供一种机制，来限制一个应用可以执行的指令以及他可以访问的地址空间。( 为了一个无懈可击的抽象？还是因为安全， 比如内核模式应该可以对用户模式，掩盖 地址抽象的细节，而不是，让用户破坏这种抽象)&lt;/li&gt;
-      &lt;li&gt;一般是处理器通过一个寄存器中的一个模式位(mode bit)来提供这种功能的。该寄存器 描述了进程当前的特权， 设定了位模式， 进程在内核模式，反之在用户模式&lt;/li&gt;
-      &lt;li&gt;内核模式: 一个运行在内核模式中的程序可以执行指令集中的任何指令，并可以访问系统中的任何存储位置。&lt;/li&gt;
-      &lt;li&gt;用户模式:  不允许执行执行特权命令，比如：停止处理器， 发起一个I/O操作。&lt;/li&gt;
-      &lt;li&gt;进程进入到内核模式的唯一方法是：通过，中断、故障、或者陷入（系统调用）来进入到内核模式。&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;上下文切换：
-    &lt;ul&gt;
-      &lt;li&gt;上下文切换: 操作系统通过这种较高层次的异常控制流来实现多任务。上下文切换机制是建立在 中断，陷阱，故障，终止 较低异常层次机制之上的。&lt;/li&gt;
-      &lt;li&gt;上下文: 就是内核重启一个被抢占进程所需要的数据状态。包括，寄存器，程序计数器，内核栈，和各种数据结构等。内核为每一个进程提供一个上下文。&lt;/li&gt;
-      &lt;li&gt;调度: 在进程执行的某些时刻（那些？），内核可以决定抢占 当前进程，并重新开始一个进程， 这种决定叫做调度。有内核中成为调度器的代码处理。在内核调度了一个进程运行后，她就抢占了当前进程，使用上下文切换机制来将控制转移到新的进程。
+      &lt;li&gt;私有地址空间： n为地址的机器上， 0,1,2……z**n - 1， 地址空间顶部是保留给内核的，该部分是内核在代表进程执行指令时使用的代码，数据和栈&lt;/li&gt;
+      &lt;li&gt;用户模式、内核模式:
         &lt;ol&gt;
-          &lt;li&gt;保存当前进程的上下文&lt;/li&gt;
-          &lt;li&gt;恢复某个先前被抢占的进程被保存的上下文&lt;/li&gt;
-          &lt;li&gt;将控制转移到新的进程&lt;/li&gt;
+          &lt;li&gt;为了提供一个无懈可击的进程抽象，处理器提供一种机制，来限制一个应用可以执行的指令以及他可以访问的地址空间。( 为了一个无懈可击的抽象？还是因为安全， 比如内核模式应该可以对用户模式，掩盖 地址抽象的细节，而不是，让用户破坏这种抽象)&lt;/li&gt;
+          &lt;li&gt;一般是处理器通过一个寄存器中的一个模式位(mode bit)来提供这种功能的。该寄存器 描述了进程当前的特权， 设定了位模式， 进程在内核模式，反之在用户模式&lt;/li&gt;
+          &lt;li&gt;内核模式: 一个运行在内核模式中的程序可以执行指令集中的任何指令，并可以访问系统中的任何存储位置。&lt;/li&gt;
+          &lt;li&gt;用户模式:  不允许执行执行特权命令，比如：停止处理器， 发起一个I/O操作。&lt;/li&gt;
+          &lt;li&gt;进程进入到内核模式的唯一方法是：通过，中断、故障、或者陷入（系统调用）来进入到内核模式。&lt;/li&gt;
         &lt;/ol&gt;
       &lt;/li&gt;
-      &lt;li&gt;上下文切换的几个简单示例：
+      &lt;li&gt;上下文切换：
         &lt;ul&gt;
-          &lt;li&gt;中断(任何时候): 所有系统都有某种产生周期性定时器中断的机制，典型的为1毫秒， 每次发生定时器中断时，内核就能够判断 当前进程是否执行了足够的时间，并切换到一个新的进程。&lt;/li&gt;
-          &lt;li&gt;阻塞：系统调用时候，因为等待某个事件而发生阻塞，可能发生上下文切换。比如 read 系统请求磁盘访问，内核可能进行上下文切换， 来执行其他操作，而不是等待I/O, Sleep 系统调用， 显示的请求让调用进程休眠。&lt;/li&gt;
+          &lt;li&gt;上下文切换: 操作系统通过这种较高层次的异常控制流来实现多任务。上下文切换机制是建立在 中断，陷阱，故障，终止 较低异常层次机制之上的。&lt;/li&gt;
+          &lt;li&gt;上下文: 就是内核重启一个被抢占进程所需要的数据状态。包括，寄存器，程序计数器，内核栈，和各种数据结构等。内核为每一个进程提供一个上下文。&lt;/li&gt;
+          &lt;li&gt;调度: 在进程执行的某些时刻（那些？），内核可以决定抢占 当前进程，并重新开始一个进程， 这种决定叫做调度。有内核中成为调度器的代码处理。在内核调度了一个进程运行后，她就抢占了当前进程，使用上下文切换机制来将控制转移到新的进程。
+            &lt;ol&gt;
+              &lt;li&gt;保存当前进程的上下文&lt;/li&gt;
+              &lt;li&gt;恢复某个先前被抢占的进程被保存的上下文&lt;/li&gt;
+              &lt;li&gt;将控制转移到新的进程&lt;/li&gt;
+            &lt;/ol&gt;
+          &lt;/li&gt;
+          &lt;li&gt;上下文切换的几个简单示例：
+            &lt;ul&gt;
+              &lt;li&gt;中断(任何时候): 所有系统都有某种产生周期性定时器中断的机制，典型的为1毫秒， 每次发生定时器中断时，内核就能够判断 当前进程是否执行了足够的时间，并切换到一个新的进程。&lt;/li&gt;
+              &lt;li&gt;阻塞：系统调用时候，因为等待某个事件而发生阻塞，可能发生上下文切换。比如 read 系统请求磁盘访问，内核可能进行上下文切换， 来执行其他操作，而不是等待I/O, Sleep 系统调用， 显示的请求让调用进程休眠。&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-&lt;/ul&gt;
+  &lt;li&gt;进程控制：
+    &lt;ol&gt;
+      &lt;li&gt;进程创建和终止： 从程序员的角度来看 进程总是处于3个状态： 运行， 停止，终止，
+        &lt;ul&gt;
+          &lt;li&gt;停止： 进程的执行被挂起。 且不会被调度， 当收到SIGSTOP, sigtstp, sidttin, sigttout 进程就会停止，并保持停止直到它收到一个sigcont 程序再次执行&lt;/li&gt;
+          &lt;li&gt;终止： 进程永远停止。原因有： 1. 收到一格信号，该信号默认行为是终止进程 2. 从主程序返回 3. 调用exit函数&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;fork
+        &lt;ul&gt;
+          &lt;li&gt;子进程得到与父进程用户级虚拟地址空间相同的 一份拷贝， 文本，数据，bss，堆等。 子进程还获得父进程任何打开文件描述符的相同的拷贝。 这意味子进程可以读写父进程中打开的任何文件。最大的区别在于PID。&lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;fork函数 只被调用一次， 却返回两次。在父进程中 fork返回子进程的PID， 在子进程中，返回0，因为子进程的PID为非零，所以提供了一种明确的方法，来分辨程序在 父进程中，还是子进程中执行。&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;  &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+  &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="n"&gt;pid_t&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="n"&gt;pid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Fork&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pid&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"child :x %d&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+      &lt;span class="p"&gt;}&lt;/span&gt;
+      &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"parent： x %d&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+      &lt;span class="n"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;          &lt;/li&gt;
+          &lt;li&gt;调用一次返回两次： fork函数被父进程 调用一次， 但是却返回两次， 一次返回到父进程中，一次返回到子进程中，对于只fork一次的程序来说，这还是相当简单直接的，但是对于多次fork的程序来说，需要谨慎的分析&lt;/li&gt;
+          &lt;li&gt;并发执行：父进程和子进程是并发运行的独立进程。也就说不能够假定 进程的执行顺序。&lt;/li&gt;
+          &lt;li&gt;相同的但是独立的地址空间&lt;/li&gt;
+          &lt;li&gt;共享文件：子进程继承了父进程的所有的打开文件。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;回收子进程：wait/ waitpid
+        &lt;ul&gt;
+          &lt;li&gt;回收： 当一个进程终止时，内核并不是把它从系统中清除出去，而是保持终止状态，直到父进程回收。当父进程回收已经终止的子进程时，内核将子进程的退出状态传递给父进程。然后抛弃已终止的进程。改进程就不存在了，&lt;/li&gt;
+          &lt;li&gt;僵死进程: 一个终止了但是还没有被回收的进程,&lt;/li&gt;
+          &lt;li&gt;僵死进城处理： 父进程还没有回收僵死进程就退出了，那么内核会安排init进程来回收他们。init 进程PID 为1在系统初始化时候有内核创建。&lt;/li&gt;
+          &lt;li&gt;waitpid 函数
+            &lt;ol&gt;
+              &lt;li&gt;waitpid(pid_t pid, int * status, int optins)&lt;/li&gt;
+              &lt;li&gt;pid &amp;gt; 0 等待单个pid， pic = -1， 等待 父进程的所有子进程。&lt;/li&gt;
+              &lt;li&gt;options：
+                &lt;ul&gt;
+                  &lt;li&gt;WNOHANG: 等待集合中的任何子进程都还没有终止， 那么就立即返回, 默认行文是 挂起调用进程， 直到所有子进程终止，&lt;/li&gt;
+                  &lt;li&gt;WUNTRACED： 挂起调用进程， 直到 等待集合中一个进程变成 已终止或者被停止，返回， 返回的PID为引起返回的 进程PID， 默认行为：返回已经终止的子进程&lt;/li&gt;
+                  &lt;li&gt;WHOHANG | WUNTRACED, 立即返回， 如果等待集合中没有任何子进程被停止或已终止， 那么返回值为0， 或者返回那个停止的终止的进程PPID&lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/li&gt;
+              &lt;li&gt;如果status参数非空，waitpid在status中放置 关于导致返回子进程的状态信息。下面是解释status参数的几个宏
+                &lt;ul&gt;
+                  &lt;li&gt;WIFEXITED(status): 如果子进程通过调用exit或者一个返回(return) 正常终止。就返回真&lt;/li&gt;
+                  &lt;li&gt;WEXITSTATUS(status): 返回一个正常终止的子进程的退出状态，只有在WIFEXITED 返回为真时了， 才会定义这个状态。&lt;/li&gt;
+                  &lt;li&gt;WIFSIGNALED(status): 如果子进程是因为一个未被捕获的信号终止的。那么返回真&lt;/li&gt;
+                  &lt;li&gt;WTERMSIG(status): 返回导致子进程终止的信号的编码， 只有咋WIFESIGNailed为真 才定义这个状态&lt;/li&gt;
+                  &lt;li&gt;WIFSTOPPED(status): 如果引起返回的子进程当前是被停止的。那么就返回真。&lt;/li&gt;
+                  &lt;li&gt;WSTOPSIG(status): 返回引起子进程停止的信号的数量，只有 wifstopped 返回为真时，才定义这个状态。&lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/li&gt;
+            &lt;/ol&gt;
+          &lt;/li&gt;
+          &lt;li&gt;wait 函数是waitpid 的 简单版本， wait(int * status) === waitpid(-1, &amp;amp; status, 0)&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;让进程休眠
+        &lt;ul&gt;
+          &lt;li&gt;sleep：休眠一定秒数&lt;/li&gt;
+          &lt;li&gt;pause：函数让调用进程休眠，直到该进程收到一个信号&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;加载并运行程序 execve:
+        &lt;ol&gt;
+          &lt;li&gt;execve(char * filename, char * argsv[], char * envp[])&lt;/li&gt;
+          &lt;li&gt;函数加载并运行可执行目标文件filename, 并传递参数argv, 环境变量 envp execve 调用一次 并不返回 fork函数在新的子进程中运行相同的程序，新的子进程是父进程的一个复制品。 execve 函数在当前进程的上下文中加载并运行一个新的程序，他会覆盖当前进程的地址空间。但是并没有创建一个新进程。新进程依然有相同的PID， 已打开的文件描述符&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+      &lt;li&gt;信号
+        &lt;ul&gt;
+          &lt;li&gt;信号概念
+            &lt;ul&gt;
+              &lt;li&gt;更高层的软件异常形式。允许中断其他进程&lt;/li&gt;
+              &lt;li&gt;man 7 signal 得到信号列表&lt;/li&gt;
+              &lt;li&gt;每个信号类型都对应于 某种系统事件， 底层的硬件异常 是由内核异常处理程序处理的。正常情况下， 对用户进程是不可见的。信号提供了一种机制，来通知用户发生了这些异常。&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;发射信号 到接受者的过程 相关概念：
+            &lt;ol&gt;
+              &lt;li&gt;发送信号： 内核通过更新目的进程的上下文中的某个状态，来发送一个信号到目的进程，发射信号的原因有： 1. 内核检测到一个事件，通知进程， 2. 一个进程调用kill函数， 要求内核发送信号。&lt;/li&gt;
+              &lt;li&gt;接受信号： 当目的进程被内核强迫以某种形式对信号的发送做出反应时，反应有： 1. 忽略信号， 2. 终止 3. 执行信号处理程序的用户函数&lt;/li&gt;
+              &lt;li&gt;待处理信号：一个发出而没有被接受的信号，任何时刻， 一种类型至多只会有一个待处理信号。如果一个进程有一个类型为k的待处理信号，那么任何接下来的发送到进程的类型为k的信号，都会被简单的丢弃。&lt;/li&gt;
+              &lt;li&gt;阻塞信号： 一个进程可以设定阻塞一种类型的信号。可以被发送，但是不会被接受。&lt;/li&gt;
+              &lt;li&gt;实现： pending 位向量 维护待处理信号集合， blocked 位向量，维护被阻塞信号集合。传递类型为k的信号， pending 的k位 被标记， 接收了 清除标记。&lt;/li&gt;
+            &lt;/ol&gt;
+          &lt;/li&gt;
+          &lt;li&gt;发送信号
+            &lt;ol&gt;
+              &lt;li&gt;进程组： 提供了大量向进程发送信号的机制， 所有这些机制都是基于进程组的。每个进程都属于一个进程组，&lt;/li&gt;
+              &lt;li&gt;kill 程序发送信号&lt;/li&gt;
+              &lt;li&gt;键盘发送信号， 外壳程序 创建程序执行，ctrl-c 会发送一个SIGINT信号到 外壳， 外壳程序捕获到该信号，然后发送SIGINT 信号到这个前台进程中的每个进程。ctrl-z则会发送 SIGTSTP 信号&lt;/li&gt;
+              &lt;li&gt;kill 函数调用&lt;/li&gt;
+              &lt;li&gt;alarm 函数发送信号 SIGALRM 信号， 在sec 秒中发送信号&lt;/li&gt;
+            &lt;/ol&gt;
+          &lt;/li&gt;
+          &lt;li&gt;接受信号
+            &lt;ol&gt;
+              &lt;li&gt;当内核从一个异常处理程序中返回，准备将控制传递到进程p时，他会检查进程p的未被阻塞的待处理信号的集合。 如果这个集合不为空， 那么内核选择集合中的某个信号k， 并且强制p接受信号k， 触发进程的某个行为， 每个信号类型都有一个预订的默认行为如下：
+                &lt;ul&gt;
+                  &lt;li&gt;进程终止&lt;/li&gt;
+                  &lt;li&gt;进程终止并转存储器&lt;/li&gt;
+                  &lt;li&gt;进程停止知道倍SIGCONT 信号重启&lt;/li&gt;
+                  &lt;li&gt;进程忽略该信号&lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/li&gt;
+              &lt;li&gt;进程可以通过signal函数修改和信号相关联的默认行为， 唯一的例外是： SIGSTOP， SIGKILL他们的默认行为是不可以修改的。 signal(int signum, sighandler_t handler) 设置信号处理程序选项
+                &lt;ul&gt;
+                  &lt;li&gt;如果handler 是SIG_IGN, 那么忽略类型为 signum 的信号&lt;/li&gt;
+                  &lt;li&gt;如果handler 是SIG_DFL，那么类型为signum的信号行为修改未默认&lt;/li&gt;
+                  &lt;li&gt;否则handler是用户定义的 信号处理程序地址，&lt;/li&gt;
+                  &lt;li&gt;调用信号处理程序成为捕获信号， 执行信号处理程序为 处理信号。处理程序会调用会传递一个参数k，为信号类型， 因此， 同一个函数可以设定为处理多个信号处理程序&lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/li&gt;
+              &lt;li&gt;设定阻塞，和取消阻塞， sigismember(sigset_t * set, int signum)&lt;/li&gt;
+            &lt;/ol&gt;
+          &lt;/li&gt;
+          &lt;li&gt;信号处理问题：
+            &lt;ol&gt;
+              &lt;li&gt;待处理信号被阻塞： Unix信号处理程序通常会阻塞当前处理程序正在处理类型的待处理信号。如果一个进程捕获一个SIGINT信号，并运行处理程序，如果另外一个SIGINT 信号传递到这个进程， 那么这个SIGINT将变成待处理的，但是不会被接受，直到处理程序返回&lt;/li&gt;
+              &lt;li&gt;待处理信号不会排队等待，任意类型至多只有一个待处理信号&lt;/li&gt;
+              &lt;li&gt;&lt;strong&gt;系统调用可以被中断&lt;/strong&gt;，慢系统调用， read， wait， accept等会阻塞进程一段时间，某些系统中当捕获一个信号时，被中断的慢系统调用不会被继续而是返回错误&lt;/li&gt;
+            &lt;/ol&gt;
+          &lt;/li&gt;
+          &lt;li&gt;非本地跳转： 它将控制直接从一个函数转移到另一个当前正在执行的函数，而不需要经过正常的调用–返回序列。(setjump longjump, sigsetjmp, siglongjmp)
+            &lt;ul&gt;
+              &lt;li&gt;setjump 函数在env 缓冲区中保存当前调用环境&lt;/li&gt;
+              &lt;li&gt;longjmp 从env缓冲区中恢复调用环境，然后触发一个从最近一次初始化env的setjmp调用的返回，然后setjmp返回，并带有非零的返回值retval&lt;/li&gt;
+              &lt;li&gt;从深层嵌套函数调用中立刻返回&lt;/li&gt;
+              &lt;li&gt;信号处理程序分支到一个特殊的代码位置，而不是返回到倍信号到达中断了的指令位置&lt;/li&gt;
+              &lt;li&gt;C++， java提供的异常机制是较高层次的，是C语言的setjmp， longjmp更结构化的版本。&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
 </content>
   </entry>
   <entry>
@@ -946,7 +1088,7 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
     <link rel="alternate" href="http://geniousbar.github.io/2017/10/21/art_of_unix_programming/"/>
     <id>http://geniousbar.github.io/2017/10/21/art_of_unix_programming/</id>
     <published>2017-10-21T08:00:00+08:00</published>
-    <updated>2017-12-25T22:29:15+08:00</updated>
+    <updated>2017-12-25T13:51:01+08:00</updated>
     <summary type="html">&lt;h2 id="the-art-of-unix-programming"&gt;The Art of unix programming&lt;/h2&gt;
 
 &lt;h2 id="哲学"&gt;哲学&lt;/h2&gt;
@@ -1229,7 +1371,7 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
     <link rel="alternate" href="http://geniousbar.github.io/2017/09/02/css_the_definitive_guide/"/>
     <id>http://geniousbar.github.io/2017/09/02/css_the_definitive_guide/</id>
     <published>2017-09-02T08:00:00+08:00</published>
-    <updated>2017-09-13T05:35:55+08:00</updated>
+    <updated>2017-10-28T11:48:51+08:00</updated>
     <summary type="html">&lt;h2 id="the-definitive-guide-css"&gt;The Definitive Guide css&lt;/h2&gt;
 
 &lt;h4 id="css-和-文档"&gt;css 和 文档&lt;/h4&gt;
@@ -1392,7 +1534,7 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
     <link rel="alternate" href="http://geniousbar.github.io/2017/08/24/phoenix_13_learn/"/>
     <id>http://geniousbar.github.io/2017/08/24/phoenix_13_learn/</id>
     <published>2017-08-24T08:00:00+08:00</published>
-    <updated>2017-09-13T05:33:17+08:00</updated>
+    <updated>2017-10-28T11:48:51+08:00</updated>
     <summary type="html">&lt;h2 id="phoenix-13-learn"&gt;Phoenix 1.3 learn&lt;/h2&gt;
 
 &lt;h4 id="常用命令"&gt;常用命令&lt;/h4&gt;
@@ -1451,7 +1593,7 @@ lib/hello_web 保存web相关的代码，
     <link rel="alternate" href="http://geniousbar.github.io/2017/08/07/phoenix-contexts/"/>
     <id>http://geniousbar.github.io/2017/08/07/phoenix-contexts/</id>
     <published>2017-08-07T08:00:00+08:00</published>
-    <updated>2017-08-23T12:07:01+08:00</updated>
+    <updated>2017-10-28T11:48:51+08:00</updated>
     <summary type="html">&lt;h2 id="design"&gt;Design&lt;/h2&gt;
 
 &lt;h3 id="思考设计"&gt;思考设计&lt;/h3&gt;
