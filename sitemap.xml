@@ -5,11 +5,15 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/page/3/</loc>
+    <loc>http://geniousbar.github.io/page/5/</loc>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>http://geniousbar.github.io/tags/page/2/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/page/3/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -285,7 +289,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/crontab/</loc>
+    <loc>http://geniousbar.github.io/tags/service/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -293,7 +297,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/service/</loc>
+    <loc>http://geniousbar.github.io/tags/crontab/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -313,11 +317,11 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/activemodel/</loc>
+    <loc>http://geniousbar.github.io/tags/docker/</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/docker/</loc>
+    <loc>http://geniousbar.github.io/tags/activemodel/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -449,7 +453,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/page/5/</loc>
+    <loc>http://geniousbar.github.io/2017/07/21/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -618,10 +622,6 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/page/4/</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://geniousbar.github.io/2017/07/21/</loc>
     <priority>0.5</priority>
   </url>
 </urlset>
