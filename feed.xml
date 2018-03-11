@@ -275,12 +275,19 @@
 </content>
   </entry>
   <entry>
-    <title>CSAPP(深入理解计算机系统)</title>
+    <title/>
     <link rel="alternate" href="http://geniousbar.github.io/2017/12/02/csapp/"/>
     <id>http://geniousbar.github.io/2017/12/02/csapp/</id>
     <published>2017-12-02T08:00:00+08:00</published>
-    <updated>2018-03-11T22:08:50+08:00</updated>
-    <summary type="html">&lt;h2 id="计算机系统漫游"&gt;计算机系统漫游&lt;/h2&gt;
+    <updated>2018-03-11T22:19:00+08:00</updated>
+    <summary type="html">
+&lt;hr&gt;
+&lt;p&gt;title: CSAPP(深入理解计算机系统)&lt;br&gt;
+date: 2017-12-02&lt;br&gt;
+tags: csapp&lt;br&gt;
+—&lt;/p&gt;
+
+&lt;h2 id="计算机系统漫游"&gt;计算机系统漫游&lt;/h2&gt;
 
 &lt;ol&gt;
   &lt;li&gt;代码从文本到可执行文件的过程（c语言示例）：
@@ -288,11 +295,18 @@
       &lt;li&gt;预处理阶段，处理 #inlcude &amp;lt;stadI/O.h&amp;gt;， #define MAX 100&lt;/li&gt;
       &lt;li&gt;编译阶段：将文本编译成汇编程序，hello.s&lt;/li&gt;
       &lt;li&gt;汇编阶段：汇编器将上一步的程序翻译成机器指令。hello.o&lt;/li&gt;
-      &lt;li&gt;链接阶段就：hello 中调用的printf函数，而函数存在一个printf.o 单独的编译完成文件，需要以某种方式合并到hello.o 中。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
- ...&lt;/ol&gt;</summary>
-    <content type="html">&lt;h2 id="计算机系统漫游"&gt;计算机系统漫游&lt;/h2&gt;
+      &lt;li&gt;链接阶段就：hello 中调用的printf函...&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    <content type="html">
+&lt;hr /&gt;
+&lt;p&gt;title: CSAPP(深入理解计算机系统)&lt;br /&gt;
+date: 2017-12-02&lt;br /&gt;
+tags: csapp&lt;br /&gt;
+—&lt;/p&gt;
+
+&lt;h2 id="计算机系统漫游"&gt;计算机系统漫游&lt;/h2&gt;
 
 &lt;ol&gt;
   &lt;li&gt;代码从文本到可执行文件的过程（c语言示例）：
