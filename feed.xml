@@ -279,7 +279,7 @@
     <link rel="alternate" href="http://geniousbar.github.io/2017/12/02/csapp/"/>
     <id>http://geniousbar.github.io/2017/12/02/csapp/</id>
     <published>2017-12-02T08:00:00+08:00</published>
-    <updated>2018-03-12T10:22:55+08:00</updated>
+    <updated>2018-03-14T17:05:26+08:00</updated>
     <summary type="html">&lt;h2 id="计算机系统漫游"&gt;计算机系统漫游&lt;/h2&gt;
 
 &lt;ol&gt;
@@ -485,7 +485,7 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
       &lt;li&gt;运算符 * 用于指针的 间接引用&lt;/li&gt;
       &lt;li&gt;数组与指针紧密关联&lt;/li&gt;
       &lt;li&gt;指针类型转换： 只改变类型，而不是值&lt;/li&gt;
-      &lt;li&gt;指针可以指向函数，之函数机器代码中的 第一条 指令地址。将&lt;/li&gt;
+      &lt;li&gt;指针可以指向函数，指向 函数机器代码中的 第一条 指令地址&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
@@ -497,7 +497,7 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
 &lt;h2 id="处理器体系结构"&gt;处理器体系结构&lt;/h2&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;一个处理器支持的指令和指令的字节编码成为它的 指令集体系结构 （ISA）ISA的编辑器编写者和处理器设计人员之间提供了一个&lt;strong&gt;概念抽象层。现代处理器的实际工作方式可能跟ISA 隐含的计算模型大相径庭&lt;/strong&gt;&lt;/p&gt;
+  &lt;p&gt;一个处理器支持的指令和指令的字节编码称为它的 指令集体系结构 （ISA）ISA的编译器编写者和处理器设计人员之间提供了一个&lt;strong&gt;概念抽象层。现代处理器的实际工作方式可能跟ISA 隐含的计算模型大相径庭&lt;/strong&gt; –&amp;gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;ol&gt;
@@ -517,7 +517,7 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
     &lt;/ul&gt;
 
     &lt;blockquote&gt;
-      &lt;p&gt;RISC（精简指令集） 和 CISC（复杂指令集）：简单的指令集形式可以产生更搞笑的代码， 实际上，许多加到指令集中的高级指令很难被编辑器产生，所以也很少被利用。90年代，沉沦逐渐平息，无论是淡出的RISC，还是单纯的CISC都不如结合两者思想精华的设计。今天的RISC机器的指令表，已经有数百条指令，几乎与  精简指令集机器 的名字不相符了。那种将实现细节暴露给机器级程序的思想已经被证明是目光短浅的。（RISC做过这样的事情？）&lt;/p&gt;
+      &lt;p&gt;RISC（精简指令集） 和 CISC（复杂指令集）：简单的指令集形式可以产生更搞笑的代码， 实际上，许多加到指令集中的高级指令很难被编译器产生，所以也很少被利用。90年代，沉沦逐渐平息，无论是淡出的RISC，还是单纯的CISC都不如结合两者思想精华的设计。今天的RISC机器的指令表，已经有数百条指令，几乎与  精简指令集机器 的名字不相符了。那种将实现细节暴露给机器级程序的思想已经被证明是目光短浅的。（RISC做过这样的事情？）&lt;/p&gt;
     &lt;/blockquote&gt;
   &lt;/li&gt;
   &lt;li&gt;Y86 的实现：
@@ -643,7 +643,7 @@ leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&g
    &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
     &lt;blockquote&gt;
-      &lt;p&gt;func1 函数具有副作用，他修改了程序状态的一部分，改变了整体程序的行为，大多数编辑器不会试图判断一个函数是否具有副作用，所以，编译器会保持函数调用不变， 并不会按照人们预期的 进行函数调用优化&lt;/p&gt;
+      &lt;p&gt;func1 函数具有副作用，他修改了程序状态的一部分，改变了整体程序的行为，大多数编译器不会试图判断一个函数是否具有副作用，所以，编译器会保持函数调用不变， 并不会按照人们预期的 进行函数调用优化&lt;/p&gt;
     &lt;/blockquote&gt;
 
     &lt;ul&gt;
