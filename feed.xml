@@ -4,10 +4,242 @@
   <id>http://geniousbar.github.io</id>
   <link href="http://geniousbar.github.io"/>
   <link href="http://geniousbar.github.io/feed.xml" rel="self"/>
-  <updated>2018-01-04T08:00:00+08:00</updated>
+  <updated>2018-03-20T08:00:00+08:00</updated>
   <author>
     <name>geniousbar</name>
   </author>
+  <entry>
+    <title>计算机程序的构造和解释</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2018/03/20/sicp/"/>
+    <id>http://geniousbar.github.io/2018/03/20/sicp/</id>
+    <published>2018-03-20T08:00:00+08:00</published>
+    <updated>2018-03-24T14:55:01+08:00</updated>
+    <summary type="html">&lt;h2 id="计算机程序的构造和解释"&gt;计算机程序的构造和解释&lt;/h2&gt;
+
+&lt;h2 id="序"&gt;序&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;关注程序的创建、执行和研究。使用Lisp方言书写&lt;br&gt;
+本书中讨论的各种问题主要涉及到： 人的大脑，计算机程序的集合，以及计算机本身。每一个计算机程序都是现实中的或者精神中的某个过程的一个模型。通过人的头脑孵化出来，这种过程出现在人们的经验或者思维中。很少能够通过程序将这种过程模拟到永远令人满意的程度。 因为这个原因，程序也在不断的演化。当我们对模型的认识更深入、更扩大，更广泛时，我们就会修改程序。直到达到一中亚稳定状态。而在这时，程序中有会出现一个需要我们...&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    <content type="html">&lt;h2 id="计算机程序的构造和解释"&gt;计算机程序的构造和解释&lt;/h2&gt;
+
+&lt;h2 id="序"&gt;序&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;关注程序的创建、执行和研究。使用Lisp方言书写&lt;br /&gt;
+本书中讨论的各种问题主要涉及到： 人的大脑，计算机程序的集合，以及计算机本身。每一个计算机程序都是现实中的或者精神中的某个过程的一个模型。通过人的头脑孵化出来，这种过程出现在人们的经验或者思维中。很少能够通过程序将这种过程模拟到永远令人满意的程度。 因为这个原因，程序也在不断的演化。当我们对模型的认识更深入、更扩大，更广泛时，我们就会修改程序。直到达到一中亚稳定状态。而在这时，程序中有会出现一个需要我们为之奋斗的模型。计算机程序设计领域之所以令人兴奋的源泉，就在于他所引起的连绵不绝的发现。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;组织技术&lt;br /&gt;
+ 一致性和正确性在程序变得更大更复杂的时候，非常值得怀疑了。很少能够看到有关大型程序正确性的完全形式化的论述。&lt;br /&gt;
+ 组织技术: 是理解 程序设计这种具有设计、创造性的事业中 的本质。&lt;br /&gt;
+ 因为大的程序是从小的东西成长起来的。所以，开发一个标准化的程序结构的武器库，并保证其中每种结构的正确性。再通过组织技术，将这些结构组合成更大的结构。这些都是至关重要的。发现并掌握这种强有力的组织技术，将提升我们构造大型重要程序的能力,反过来，因为构造大型程序的费力，导致我们去发明新的方法，来减轻构造大型程序的沉重负担。&lt;/p&gt;
+
+    &lt;p&gt;在任何非常大的程序设计工作中，一个非常有用的组织原则就是 通过发明新语言， 去控制和隔离作业模块之间的信息流动。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;算法&lt;br /&gt;
+  执行了某个精确函数的程序 我们称为算法。 特别需要关注的两个参数是：执行的事件、对数据存储的需要。 程序员应该追求好的算法&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;计算机语言不仅仅是让计算机执行操作的一种形式，更重要的是，他是一种表述有关方法学的思想的形式化媒介。&lt;/li&gt;
+  &lt;li&gt;所以， 程序是写给人读的，然后才是去执行&lt;/li&gt;
+  &lt;li&gt;最基本的材料不是 特定程序的语法，不是某种巧妙的算法。而是一些能够用于控制大型软件系统的智力复杂性的技术。（创建抽象去控制复杂性，通过建立约定的界面，以便能够用一种 混合与匹配的方式组合在一起， 建立一些新的语言去描述各种设计，每种语言强调设计中的一个特定方面并降低其他方面的重要性，以控制复杂度）&lt;/li&gt;
+  &lt;li&gt;计算机科学并不是一种科学，而且其重要性也与计算机本身并无太大关系。计算机革命是有关我们如何去思考的方式，以及我们如何去表达自己思考的一个革命。这其中最基本的东西是，过程性认知论的现象，就是如何从一种命令式的观点去研究知识的结构，这是一种与经典数学领域总所采用的更具有说明性的观点完全不同。数学为精准处理 “是什么的” 提供了一种框架，而计算则为精准处理“怎样做” 的概念提供了一种框架。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="过程构造抽象"&gt;过程构造抽象&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;心智活动主要表现如下三个方面
+    &lt;ol&gt;
+      &lt;li&gt;将若干简单的认识组合为一个复杂的认识，由此产生出复杂的认识&lt;/li&gt;
+      &lt;li&gt;将两个认识放在一起做对照，不管他们如何简单或者复杂。这样做并不将他们合二为一，由此得到的有关他们相互关系的认知。&lt;/li&gt;
+      &lt;li&gt;将有关认识与那些实际中和他们同在懂得所有其他的认识隔离开，这就是抽象。所有具有普遍性的认识都是这样得到的&lt;/li&gt;
+    &lt;/ol&gt;
+
+    &lt;p&gt;计算过程的Lisp描述， 本身又可以作为Lisp的数据来表示和操作。现在的语言都在填平 『被动的数据』和『主动的过程』之间的传统划分，（划分是什么？）能够将过程表示为数据的能力，Lisp的这种能力使Lisp成为编写那些必须将其他程序当做数据去操作的程序的最佳语言，比如： 计算机语言的解释器和编译器。 macro&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;程序设计的基本元素
+    &lt;ul&gt;
+      &lt;li&gt;语言提供的将简单的认识组合起来成为更复杂认识 三种机制：
+        &lt;ol&gt;
+          &lt;li&gt;基本表达形式: 组成语言的最小单位，个体&lt;/li&gt;
+          &lt;li&gt;组合的方法： 通过他们可以将简单的组合成为复杂的&lt;/li&gt;
+          &lt;li&gt;抽象的方法：通过他们将复杂对象命名，并将他们作为单元去使用&lt;br /&gt;
+  程序中需要处理 过程和数据两种元素，数据是一种我们需要去处理的东西，过程就是我们操作数据的规则的描述。 任何语言都需要 能够表述基本的数据和基本的的过程，还需要提供对过程和数据进行抽象组合的方法。&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+      &lt;li&gt;具体语言的实现：
+        &lt;ol&gt;
+          &lt;li&gt;表达式&lt;br /&gt;
+  (操作符 参数1 参数2)&lt;br /&gt;
+  解释器总是按照  从终端读入一个表达式，对这个表达式求值，而后打印出得到的结果，称为读入—求值—打印 的循环， REPL&lt;/li&gt;
+          &lt;li&gt;命名&lt;br /&gt;
+  (define radius 10)&lt;br /&gt;
+  创建名字–对象的关联。 鼓励人们采用递增的方式去开发和调试程序。其中需要注意的是，其中隐含着 环境的概念，其中保持着 名字—值的关联&lt;br /&gt;
+  环境在确定表达式中各个符号的意义是十分重要的，如果没有相关环境的任何信息，那么说表达式(+ x 1) 是没有任何意义的。因为需要环境提供x的意义。环境是具有普遍性的概念。他为求值过程提供了一种上下文。对我们理解程序的执行起着重要的作用。&lt;/li&gt;
+          &lt;li&gt;组合式的求值
+            &lt;ol&gt;
+              &lt;li&gt;求值该组合式的各个子表达式&lt;/li&gt;
+              &lt;li&gt;将作为最左表达式的值的那个过程应用与相应的实际参数。所谓实际参数就是各个子表达式的求值结果&lt;br /&gt;
+   为了实现对一个组合式的求值过程， 我们必须先对组合式里的每个元素执行同样的求值过程。 因此，在性质上，这一求值过程是递归的。&lt;/li&gt;
+              &lt;li&gt;反复的执行第一步骤，最终会到达求值中的一个点，在这里遇到的不是组合式而是基本表达式。例如内部运算符或者其他名字
+                &lt;ul&gt;
+                  &lt;li&gt;数的值就是他们所表示的数值&lt;/li&gt;
+                  &lt;li&gt;内部运算符 的值就是能完成相应操作的机器指令序列， fun&lt;/li&gt;
+                  &lt;li&gt;其他名字的值就是在环境中关联与这一名字的那个对象， 变量&lt;br /&gt;
+   &lt;em&gt; 可以将第二种情况看做最后一种情况的特殊情况，像 +， - 等，相应的指令序列就是与之关联的值&lt;/em&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/li&gt;
+            &lt;/ol&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;特殊形式&lt;br /&gt;
+  (define x 3) 并不是一个组合式，一般性的求值规则的这种例外称为 特殊形式。各种不同类型的表达式（有着不同的求值规则） 组成了程序设计语言的语法形式。&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight scheme"&gt;&lt;code&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;p&gt;条件表达式， 谓词 并不是普通的过程（表达式不一定都需要求值）&lt;br /&gt;
+  (if &lt;predicate&gt; &lt;consequent&gt; &lt;alternative&gt;)
+  (cond (&lt;p1&gt; &lt;e1&gt;)
+   (&lt;p2&gt; &lt;e2&gt;)
+   ...
+   (&lt;pn&gt; &lt;en&gt;))&lt;/en&gt;&lt;/pn&gt;&lt;/e2&gt;&lt;/p2&gt;&lt;/e1&gt;&lt;/p1&gt;&lt;/alternative&gt;&lt;/consequent&gt;&lt;/predicate&gt;&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;代换模型
+            &lt;ul&gt;
+              &lt;li&gt;组合式的求值递归过程&lt;/li&gt;
+              &lt;li&gt;正则序求值： 完全展开而后归约&lt;/li&gt;
+              &lt;li&gt;应用序求值： 先求值参数而后应用&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;过程
+    &lt;ul&gt;
+      &lt;li&gt;形式参数， 约束变量、自由变量: 在过程体中扮演者一种非常特殊的角色，形式参数的具体名字是什么，完全没有关系，这样的名字称为。 一个过程的定义约束了他所有的形式参数，如果一个变量不是被约束的，我们就称他为自由的。一个名字的定义被约束于的那一个表达式称为这个名字的作用域， 所以在过程的定义中，被声明的为形式参数的那些约束变量，就以这个过程的体作为他们的作用域。&lt;/li&gt;
+      &lt;li&gt;块结构:
+&lt;div class="highlight"&gt;&lt;pre class="highlight scheme"&gt;&lt;code&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;good-enough?&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="nv"&gt;guess&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;improve&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;good-enough?&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;lt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;abs&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;-&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;square&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;improve&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;average&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;/&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;sqrt&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;good-enough?&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="nv"&gt;guess&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;improve&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;sqrt&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;good-enough?&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="nv"&gt;guess&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;improve&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;good-enough?&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;lt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;abs&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;-&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;square&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;improve&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;average&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;/&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;sqrt&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;good-enough?&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="nv"&gt;guess&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;improve&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;))))&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;good-enough?&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;lt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;abs&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;-&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;square&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;improve&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;average&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;/&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+        &lt;p&gt;这种嵌套的定义称为 块结构， 是最简单的名字包装问题的一种正确方式。这其中还有一种简化的方法，因为所有的辅助过程定义放到内部，x在sqrt内部是受约束的。过程good-enough， improve都定义在sqrt利民啊，也就是说显示的将x传递来传递去没有必要了，我们让x作为内部定义中的自有变量。sqrt被调用时，x就确定了。这种方式称为词法作用域。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;过程与他们所产生的计算&lt;/p&gt;
+
+        &lt;ol&gt;
+          &lt;li&gt;线性的迭代和递归
+&lt;div class="highlight"&gt;&lt;pre class="highlight scheme"&gt;&lt;code&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;factorial&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="mi"&gt;1&lt;/span&gt;
+     &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;*&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;factorial&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;-&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)))))&lt;/span&gt;
+
+ &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;factorial&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;fact-iter&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+ &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;fact-iter&lt;/span&gt; &lt;span class="nv"&gt;product&lt;/span&gt; &lt;span class="nv"&gt;conter&lt;/span&gt; &lt;span class="nv"&gt;max-count&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nv"&gt;counter&lt;/span&gt; &lt;span class="nv"&gt;max-count&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="nv"&gt;product&lt;/span&gt;
+     &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;fact-iter&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;*&lt;/span&gt; &lt;span class="nv"&gt;counter&lt;/span&gt; &lt;span class="nv"&gt;product&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+&lt;/span&gt; &lt;span class="nv"&gt;counter&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="nv"&gt;max-count&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;p&gt;第一个为递归计算过程， 代换模型展开的形状是一个先逐步展开而后收缩的形状。收缩阶段为这些运算的实际执行。这种类似性的计算过程由一个推迟执行的运算链条刻画&lt;br /&gt;
+ 第二个为线性递归计算过程，解释器只需要维护函数调用的参数，就可完成函数调用。&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;过程的计算过程和形式:
+            &lt;ul&gt;
+              &lt;li&gt;过程形式： 过程的书写形式&lt;/li&gt;
+              &lt;li&gt;计算过程： 过程的计算过程&lt;/li&gt;
+              &lt;li&gt;迭代计算过程： 在计算过程中的任何一点，程序的变量都提供了一个有关计算状态的完整描述。在任何时刻计算停下来，都可以提供参数来重新计算，&lt;/li&gt;
+              &lt;li&gt;递归过程： 论述的是一个语法形式上的。说明这个过程的定义中，调用了自己。&lt;/li&gt;
+              &lt;li&gt;递归计算过程： 函数的计算过程的进展方式。而不是过程上的语法形式上的书写，他们隐含着一些信息，有解释器维持，来指明所推迟的运算形成的链条中的位置。这一计算处在何处，这个链条越长，所需要保存的信息也就越多。&lt;/li&gt;
+              &lt;li&gt;为什么需要区分 计算过程和形式过程？ 大部分语言的实践设计中，对任何递归过程的解释，所消耗的存储量总与过程调用的数目成正比，即便他所描述的计算过程是迭代的。作为这是一事实的后果就是—特殊的循环结构： for, while等。scheme 能够将形式上的递归而计算过程为递归形式，依然能够在常数空间上运行，这种实现为： 尾递归。&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+        &lt;/ol&gt;
+
+        &lt;p&gt;&lt;em&gt; fact-iter 递归过程讲产生迭代的计算过程， 因为展开的计算过程上确实是迭代的，其中的状态由三个变量保持。解释器没有额外的隐含的状态保存。&lt;/em&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;scheme相关
+    &lt;ul&gt;
+      &lt;li&gt;命名&lt;br /&gt;
+ （define &lt;name&gt; &amp;lt;body&amp;gt;）&lt;/name&gt;&lt;/li&gt;
+      &lt;li&gt;条件表达式和谓词&lt;br /&gt;
+ (cond (&lt;p1&gt; &lt;e1&gt;)
+   (&lt;p2&gt; &lt;e2&gt;)
+   ...
+   (&lt;pn&gt; &lt;en&gt;))
+ (if &lt;predicate&gt; &lt;consequent&gt; &lt;alternative&gt;)
+ (and &lt;e1&gt; ..... &lt;en&gt;)
+ (or &lt;e1&gt; ..... &lt;en&gt;)
+ (not &lt;e1&gt;)
+ and or 不是普通的过程, 其中的参数不一定都会求值，not 是过程&lt;/e1&gt;&lt;/en&gt;&lt;/e1&gt;&lt;/en&gt;&lt;/e1&gt;&lt;/alternative&gt;&lt;/consequent&gt;&lt;/predicate&gt;&lt;/en&gt;&lt;/pn&gt;&lt;/e2&gt;&lt;/p2&gt;&lt;/e1&gt;&lt;/p1&gt;&lt;/li&gt;
+      &lt;li&gt;高阶函数: 函数作为参数, 函数作为返回值&lt;/li&gt;
+    &lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight scheme"&gt;&lt;code&gt;   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sum&lt;/span&gt; &lt;span class="nv"&gt;term&lt;/span&gt; &lt;span class="nv"&gt;a&lt;/span&gt; &lt;span class="nv"&gt;next&lt;/span&gt; &lt;span class="nv"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+     &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nv"&gt;a&lt;/span&gt; &lt;span class="nv"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="mi"&gt;0&lt;/span&gt;
+         &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;term&lt;/span&gt; &lt;span class="nv"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+         &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sum&lt;/span&gt; &lt;span class="nv"&gt;term&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;next&lt;/span&gt; &lt;span class="nv"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;next&lt;/span&gt; &lt;span class="nv"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)))))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;     * lambda  (lambda &amp;lt;parameters&amp;gt; &amp;lt;body&amp;gt;)  (lambda (x) (* x x x))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="构造数据抽象复合数据"&gt;构造数据抽象（复合数据）&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;语言所包含的将数据对象组合起来的，形成 复合数据的方式。提高 设计的模块性，是我们得以在 比语言提供的基本数据对象更高的概念层次上。处理与数据有关的各种问题。&lt;br /&gt;
+复合数据能够将处理数据对象的表示部分，与 处理数据对象的使用部分相互隔离开来，这种技术具有一般性，形成了一种成为数据抽象的强有力的设计方法学。数据抽象技术能够是程序更容易设计，维护和修改。&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+  </entry>
   <entry>
     <title>格雷厄姆之道</title>
     <link rel="alternate" href="http://geniousbar.github.io/2018/01/04/benjamin-graham/"/>
@@ -279,7 +511,7 @@
     <link rel="alternate" href="http://geniousbar.github.io/2017/12/02/csapp/"/>
     <id>http://geniousbar.github.io/2017/12/02/csapp/</id>
     <published>2017-12-02T08:00:00+08:00</published>
-    <updated>2018-03-14T17:05:26+08:00</updated>
+    <updated>2018-03-15T10:30:42+08:00</updated>
     <summary type="html">&lt;h2 id="计算机系统漫游"&gt;计算机系统漫游&lt;/h2&gt;
 
 &lt;ol&gt;
@@ -1952,451 +2184,6 @@ lib/hello_web 保存web相关的代码，
 |     |-- xx_ helpers.ex
 ```
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Phoenix framework 1.3 context</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2017/08/07/phoenix-contexts/"/>
-    <id>http://geniousbar.github.io/2017/08/07/phoenix-contexts/</id>
-    <published>2017-08-07T08:00:00+08:00</published>
-    <updated>2017-10-28T11:48:51+08:00</updated>
-    <summary type="html">&lt;h2 id="design"&gt;Design&lt;/h2&gt;
-
-&lt;h3 id="思考设计"&gt;思考设计&lt;/h3&gt;
-
-&lt;p&gt;context 是专门用来 组织、暴露 相关的功能的module。比如我们每次调用Elixir标准库 Logger.info, 其实是在接触不同的context， 在内部， Elixir Logger是由 诸如 Logger.Config. Logger.Backends 的module组成的， 但是我们从来不会直接跟这些module交互， 我们使用Logger context， 因为他组织并且暴露接口。&lt;br&gt;
-  Phoenix 组织目录类似于其他的Elixir Project...&lt;/p&gt;</summary>
-    <content type="html">&lt;h2 id="design"&gt;Design&lt;/h2&gt;
-
-&lt;h3 id="思考设计"&gt;思考设计&lt;/h3&gt;
-
-&lt;p&gt;context 是专门用来 组织、暴露 相关的功能的module。比如我们每次调用Elixir标准库 Logger.info, 其实是在接触不同的context， 在内部， Elixir Logger是由 诸如 Logger.Config. Logger.Backends 的module组成的， 但是我们从来不会直接跟这些module交互， 我们使用Logger context， 因为他组织并且暴露接口。&lt;br /&gt;
-  Phoenix 组织目录类似于其他的Elixir Project， 我们拆分代码到context中， 一个context 将会组织相关的功能代码， 比如post，comment， 经常封装诸如 验证、数据存取的功能。应用context, 我们拆分系统到 容易管理、互相独立的 组成部分中。&lt;/p&gt;
-
-&lt;h3 id="建立account-context"&gt;建立Account context&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;user 是 系统中广泛接触的，以至于需要思考设计 接口。 我们的目标是设计一个 Account API 处理创建、更新、删除user、包括用户验证。 我们以基本的功能开始，然后逐步添加功能。&lt;/li&gt;
-  &lt;li&gt;Phoenix 包含了 phx.gen.html, phx.gen.json, phoenix.gen.context 脚手架来支持 拆分 应用功能到 contex中， 这些脚手架有力的推动了在 应用变大 的时候，朝着正确的方向上前进。&lt;/li&gt;
-  &lt;li&gt;为了使用 context 脚手架， 我们需要想出一个module名字，来组织相关的功能。在Ecto Guide中，我们使用Changesets 和Repo 来验证，存储user， 但是当应用变大的时候，我们不会使用这些在应用中。事实上，我们从来不会想， user应该存在于应用的什么地方，退回重新思考一下 应用中个个组成部分的不同。 在用户 需要账户登录，验证，和注册的情况下，Account context 是一个最好的地方来�存放相关的功能。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;    &lt;span class="n"&gt;mix&lt;/span&gt; &lt;span class="n"&gt;phx&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;html&lt;/span&gt; &lt;span class="no"&gt;Accounts&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="n"&gt;users&lt;/span&gt; &lt;span class="ss"&gt;name:&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="ss"&gt;username:string:&lt;/span&gt;&lt;span class="n"&gt;unique&lt;/span&gt;
-    &lt;span class="n"&gt;resources&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;/users"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;UserController&lt;/span&gt;
-    &lt;span class="n"&gt;mix&lt;/span&gt; &lt;span class="n"&gt;ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;migrate&lt;/span&gt;
-
-    &lt;span class="n"&gt;scopes&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;/"&lt;/span&gt; &lt;span class="no"&gt;HelloWeb&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="n"&gt;pipe_through&lt;/span&gt; &lt;span class="ss"&gt;:browser&lt;/span&gt;
-
-      &lt;span class="n"&gt;get&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;/"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;PageController&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:index&lt;/span&gt;
-      &lt;span class="n"&gt;resources&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;/users"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;UserController&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-  &lt;li&gt;Phoenix 生成的web相关的文件， 在 lib/hello_web/中， context文件在 lib/hello/accounts 中， 注意 这个区别， 我们使用Accounts module来管理account相关的功能， Accounts.User struct 是Ecto 来转换、验证的user的模型，&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id="starting-with-generators"&gt;starting with Generators&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;phx.gen.html  脚手架 生成了一个开箱能用的 创建，更新，删除用户。离真正的app很远。但是脚手架 是第一个也是最重要的 开始真正构建真是的功能的 学习工具和开始的地方。 脚手架不能解决所有问题，但是依然可以教你朝着一个正确的方向 来思考设计你的应用 。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="k"&gt;defmodule&lt;/span&gt; &lt;span class="no"&gt;HelloWeb&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;UserController&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-    &lt;span class="kn"&gt;use&lt;/span&gt; &lt;span class="no"&gt;HelloWeb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:controller&lt;/span&gt;
-    &lt;span class="n"&gt;alias&lt;/span&gt; &lt;span class="no"&gt;Hello&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Accounts&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_params&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="n"&gt;users&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Accounts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;list_users&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-      &lt;span class="n"&gt;render&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;index.html"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;users:&lt;/span&gt; &lt;span class="n"&gt;users&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_params&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="n"&gt;changeset&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Accounts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;change_user&lt;/span&gt;&lt;span class="p"&gt;(%&lt;/span&gt;&lt;span class="no"&gt;Hello&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Accounts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;{})&lt;/span&gt;
-      &lt;span class="n"&gt;render&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;new.html"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;changeset:&lt;/span&gt; &lt;span class="n"&gt;changeset&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;%{&lt;/span&gt;&lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;user"&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;user_params&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="no"&gt;Accounts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;create_user&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;user_params&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-        &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:ok&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
-          &lt;span class="n"&gt;conn&lt;/span&gt;
-          &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;put_flash&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:info&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;user create success"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-          &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;redirect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;to:&lt;/span&gt; &lt;span class="n"&gt;user_path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:show&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-        &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:error&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;%&lt;/span&gt;&lt;span class="no"&gt;Ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Changeset&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;changeset&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
-          &lt;span class="n"&gt;render&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;new.html"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;changeset:&lt;/span&gt; &lt;span class="n"&gt;changeset&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-  &lt;li&gt;我们注意的是， Controller如何调用Accounts context，我们可以看到index action，通过Accounts.list_users获取一系列用户，通过Accounts.create_user调用 实现创建用户，我们并不知道 Accounts，创建、获取的实现方法，然而这才是重要的， Phoenix Controller， 就是web interface， 她并不关系 关于如何获取用户， 创建的细节。我们只关心　告诉我们的应用为我们执行一些任务。我们将业务逻辑存储引擎通过web　层分离开来，如果我们转移到一个全文索引来代替sql查询，我们的Controller不需要改动。&lt;/li&gt;
-  &lt;li&gt;在这个create示例中，当我们成功的创建了一个用户，我们调用Phoenix.Controller.push_flash　来展示成功的消息　然后重定向到user_path　，　如果失败了，　我们渲染”new.html”模板，并且传递Ecto.changeset　来传递错误信息&lt;/li&gt;
-  &lt;li&gt;下面，我们会更深入的挖掘Account　context　&lt;/li&gt;
-  &lt;li&gt;在这个帐号管理系统中，我们可能需要处理用户登录凭证，用户喜好，和密, 码重置等。如果我们深入到list_users 函数中，我们可以看到获取用户的细节，Repo.all(User), 意图是对caller隐藏从Postgresql获取的细节，　这是Phoenix　生成器一个常见的主题。Phoenix会驱动我们去思考，系统中不同的组成部分，然后包装这些不同的部分到Well-named　的module中、function　让我们代码的意图更加清晰，同时屏蔽细节。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id="in-context-relationship"&gt;In-context relationship&lt;/h3&gt;
-
-&lt;p&gt;　*  我们基础的用户功能实现的非常好，让我们补充实现用户登录，我们不会实现一个完整的认证系统，而只是给我们一个系统成长的好的开始。许多的验证系统的解决方案是　凭证跟用户是一对一的。这样经常造成问题，比如支持不同的登录方式，例如social的给你路， email邮箱登录。将会造成主要代码逻辑改变，我们要建立一个凭证、用户一对一，但是容易支持其他功能。&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;就当前，用户凭证之包含email信息，我们地一个任务是决定凭证放在哪里。我们有Accounts context，用户凭证适合放在这里。Phoenix也足够聪明在已经存在的context生成代码&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;mix phx.gen.context Accounts Credenttial credentials email:string:unique user_id:references:users&lt;br /&gt;
-  我们使用phx.gen.context 区别与 phx.gen.html 除了不会生成 html，因为我们已经有了Controller&lt;br /&gt;
-  Template&lt;br /&gt;
-  我们可以从输出看到Phoenix为我们的Accounts.Credential 生成了 accounts/credential.ex , 还有migration&lt;br /&gt;
-  在执行迁移之前，我们需要修改生成的迁移文件。我们需要删除用户的凭证，当删除用户的时候，执行下面的改动&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;change&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="n"&gt;create&lt;/span&gt; &lt;span class="n"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:credentials&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-        &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="ss"&gt;:email&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:string&lt;/span&gt;
-        &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="ss"&gt;:user_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;references&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:users&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;on_delete:&lt;/span&gt; &lt;span class="ss"&gt;:nothing&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="ss"&gt;:user_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;references&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:users&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;on_delete:&lt;/span&gt; &lt;span class="ss"&gt;:delete_all&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="ss"&gt;null:&lt;/span&gt; &lt;span class="no"&gt;false&lt;/span&gt;
-        &lt;span class="n"&gt;timestamps&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="n"&gt;create&lt;/span&gt; &lt;span class="n"&gt;uniqu_index&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:credentials&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:email&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-      &lt;span class="n"&gt;create&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:credentials&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:user_id&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;我们将:on_delete 从nothing 改变为:delete_all，这就会生成外键约束，约束会删除所有的用户凭证，当用户删除的时候, 我们设定null: false 来阻止 创建没有关联用户的凭证创建。应用数据库约束，我们在数据层面限制data， 而不是在应用层面。&lt;br /&gt;
-  在我们与web 层面交互之前，我们需要 让我们的context 知道关联的user 和credentials ， 编辑lib/accoutns/user.ex&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;
-  &lt;span class="n"&gt;alias&lt;/span&gt; &lt;span class="no"&gt;Hello&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Accounts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;Credential&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-
-  &lt;span class="n"&gt;schema&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;users"&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-    &lt;span class="n"&gt;field&lt;/span&gt; &lt;span class="ss"&gt;:name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:string&lt;/span&gt;
-    &lt;span class="n"&gt;field&lt;/span&gt; &lt;span class="ss"&gt;:username&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:string&lt;/span&gt;
-    &lt;span class="n"&gt;has_one&lt;/span&gt; &lt;span class="ss"&gt;:credential&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;Credential&lt;/span&gt;
-    &lt;span class="n"&gt;timestamps&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;我们使用Ecto.Schema’s has_one macro来让Ecto知道如何关联User and Credential， 同样的编辑accounts/credential.ex&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="n"&gt;alias&lt;/span&gt; &lt;span class="no"&gt;Hello&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Accounts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="no"&gt;Credential&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="n"&gt;schema&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;credential"&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-    &lt;span class="n"&gt;field&lt;/span&gt; &lt;span class="ss"&gt;:email&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:string&lt;/span&gt;
-    &lt;span class="n"&gt;field&lt;/span&gt; &lt;span class="ss"&gt;:user_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:id&lt;/span&gt;
-    &lt;span class="n"&gt;belongs_to&lt;/span&gt; &lt;span class="ss"&gt;:user&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;
-    &lt;span class="n"&gt;timestamps&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;list_users&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-    &lt;span class="no"&gt;User&lt;/span&gt;
-    &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-    &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;preload&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:credenttial&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;get_user!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-    &lt;span class="no"&gt;User&lt;/span&gt;
-    &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;preload&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:credential&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们重写了list_user 和get_user以便于主动加载credential 关联关系，无论什么时候我们获取用户，Repo.preload 函数获取schema的关联关系。当我们操作一个集合，比如list_users， Ecto可以高效的预加载关联关系在一个sql中， 这允许我们直接调用credients，而不需要额外的 查询。&lt;br /&gt;
-  下面我们在页面中加入credential&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight html"&gt;&lt;code&gt;  + &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"form-group"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  +   &lt;span class="nt"&gt;&amp;lt;&lt;/span&gt;&lt;span class="err"&gt;%=&lt;/span&gt; &lt;span class="na"&gt;inputs_for&lt;/span&gt; &lt;span class="na"&gt;f&lt;/span&gt;&lt;span class="err"&gt;,&lt;/span&gt; &lt;span class="na"&gt;:credential&lt;/span&gt;&lt;span class="err"&gt;,&lt;/span&gt; &lt;span class="na"&gt;fn&lt;/span&gt; &lt;span class="na"&gt;cf&lt;/span&gt; &lt;span class="na"&gt;-&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt; %&amp;gt;
-  +     &lt;span class="nt"&gt;&amp;lt;&lt;/span&gt;&lt;span class="err"&gt;%=&lt;/span&gt; &lt;span class="na"&gt;label&lt;/span&gt; &lt;span class="na"&gt;cf&lt;/span&gt;&lt;span class="err"&gt;,&lt;/span&gt; &lt;span class="na"&gt;:email&lt;/span&gt;&lt;span class="err"&gt;,&lt;/span&gt; &lt;span class="na"&gt;class:&lt;/span&gt; &lt;span class="err"&gt;"&lt;/span&gt;&lt;span class="na"&gt;control-label&lt;/span&gt;&lt;span class="err"&gt;"&lt;/span&gt; &lt;span class="err"&gt;%&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  +     &lt;span class="nt"&gt;&amp;lt;&lt;/span&gt;&lt;span class="err"&gt;%=&lt;/span&gt; &lt;span class="na"&gt;text_input&lt;/span&gt; &lt;span class="na"&gt;cf&lt;/span&gt;&lt;span class="err"&gt;,&lt;/span&gt; &lt;span class="na"&gt;:email&lt;/span&gt;&lt;span class="err"&gt;,&lt;/span&gt; &lt;span class="na"&gt;class:&lt;/span&gt; &lt;span class="err"&gt;"&lt;/span&gt;&lt;span class="na"&gt;form-control&lt;/span&gt;&lt;span class="err"&gt;"&lt;/span&gt; &lt;span class="err"&gt;%&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  +     &lt;span class="nt"&gt;&amp;lt;&lt;/span&gt;&lt;span class="err"&gt;%=&lt;/span&gt; &lt;span class="na"&gt;error_tag&lt;/span&gt; &lt;span class="na"&gt;cf&lt;/span&gt;&lt;span class="err"&gt;,&lt;/span&gt; &lt;span class="na"&gt;:email&lt;/span&gt; &lt;span class="err"&gt;%&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  +   &lt;span class="nt"&gt;&amp;lt;&lt;/span&gt;&lt;span class="err"&gt;%&lt;/span&gt; &lt;span class="na"&gt;end&lt;/span&gt; &lt;span class="err"&gt;%&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  + &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-
-  &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"form-group"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;&lt;/span&gt;&lt;span class="err"&gt;%=&lt;/span&gt; &lt;span class="na"&gt;submit&lt;/span&gt; &lt;span class="err"&gt;"&lt;/span&gt;&lt;span class="na"&gt;Submit&lt;/span&gt;&lt;span class="err"&gt;",&lt;/span&gt; &lt;span class="na"&gt;class:&lt;/span&gt; &lt;span class="err"&gt;"&lt;/span&gt;&lt;span class="na"&gt;btn&lt;/span&gt; &lt;span class="na"&gt;btn-primary&lt;/span&gt;&lt;span class="err"&gt;"&lt;/span&gt; &lt;span class="err"&gt;%&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;使用 Phoenix.HTML’s inputs_for 函数来添加一个关联的嵌套的fields， 在嵌套的inputs中，我们渲染了 credfential‘s 的email error_tag 等。&lt;br /&gt;
-  展示用户的user 的email地址在用户的show页面中。添加下面的代码到show.html.eex中&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight html"&gt;&lt;code&gt;  + &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&lt;/span&gt;
-  +   &lt;span class="nt"&gt;&amp;lt;strong&amp;gt;&lt;/span&gt;Email:&lt;span class="nt"&gt;&amp;lt;/strong&amp;gt;&lt;/span&gt;
-  +   &lt;span class="nt"&gt;&amp;lt;&lt;/span&gt;&lt;span class="err"&gt;%=&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="na"&gt;user&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="na"&gt;credential&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="na"&gt;email&lt;/span&gt; &lt;span class="err"&gt;%&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  + &lt;span class="nt"&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;现在如果我们访问users/new 我们会看到email的输入框，如果保存，你会发现email自大un被护士了，没有验证告诉你字段没有被保存。&lt;br /&gt;
-  我们是哟个Ecto’s belongs_to has_one 关联关系来贯穿起来，为了关联用户输入到数据库，我们需要在changeset中处理，改动Accounts context中的create_user , update_user 函数。&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;update_user&lt;/span&gt;&lt;span class="p"&gt;(%&lt;/span&gt;&lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;attrs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-    &lt;span class="n"&gt;user&lt;/span&gt;
-    &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;changeset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;attrs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Changeset&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cast_assoc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:credential&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;with:&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="no"&gt;Credential&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;changset&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;update&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;create_user&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;attrs&lt;/span&gt; &lt;span class="p"&gt;\\&lt;/span&gt; &lt;span class="p"&gt;%{})&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-    &lt;span class="p"&gt;%&lt;/span&gt;&lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt;
-    &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;changset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;attrs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Changeset&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cast_assoc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:credential&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="err"&gt;：&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="no"&gt;Credential&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;changset&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;insert&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Ecto’s cast_assoc 告诉changset如何转换用户的输入到schema 关系中。我们使用with告诉changset使用Credential.changeset函数来转换用户输入，这样，Credential.changset 中所有的验证会应用到 User中。&lt;br /&gt;
-  最后，我们可以测试，会见到Email的验证。&lt;/p&gt;
-
-&lt;h3 id="adding-account-functions"&gt;Adding Account functions&lt;/h3&gt;
-
-&lt;p&gt;如你所见， context是一个包粗一组相关函数的module， Phoenix 生成一般的函数， 例如list_users, upate_users, 但是他们只提供一个基础的，为了使用一些真是的功能来扩展我们的Account context， 让我们修复我们应用中的明显的问题， -我们可以创建带有凭证的用户，但是却无法使用凭证登录，建立一个负载的完整的用户验证系统超出了本书的范围，让我们着手建立一个基于email的登录页面来跟踪用户的session， 这会让我们聚焦在Accounts context上， 并且给你一个建立完成的认证系统上一个好的开始。&lt;br /&gt;
-  首先，开始想名字，为了使用email地址来验证用户，我们需要一个方法来查找用户和验证凭证是否正确，我们只暴露一个函数来完成这件事情。&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;    &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Accounts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;authenticate_by_email_password&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;email&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;这看起来很好， 一个描述的名字暴露了我们代码的意图。这一功能使它清楚它充当什么目的，同时允许调用者仍然一无所知的内部细节。 lib/hello/accounts/accounts.ex&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;authenticate_by_email_password&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;email&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-       &lt;span class="n"&gt;query&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
-           &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;u&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-           &lt;span class="n"&gt;inner_join&lt;/span&gt;&lt;span class="err"&gt;：&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;assoc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:credential&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;，&lt;/span&gt;
-           &lt;span class="ss"&gt;where:&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;email&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="n"&gt;email&lt;/span&gt;
-       &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;one&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;query&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-           &lt;span class="p"&gt;%&lt;/span&gt;&lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:ok&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-           &lt;span class="no"&gt;nil&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:error&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:unauthorized&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-       &lt;span class="k"&gt;end&lt;/span&gt;
-   &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们定义的authenticate_by_email_password 函数， 我们忽略掉了password 字段，你可以使用FIX ME 留在以后构建。我们需要的函数是使用验证凭证 来寻找到user， 返回包含%Accounts.User{} and :ok tuple， 或者一个{:error, :unauthorized} 来让调用者知道他们的验证是错误的。&lt;br /&gt;
-  现在我们使用context来验证用户，我们添加一个login page 在我们的web，首先创建一个新的controller 在 lib/hello_web/controllers/session_controller.ex&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="k"&gt;defmodule&lt;/span&gt; &lt;span class="no"&gt;HelloWeb&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;SessionController&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="kn"&gt;use&lt;/span&gt; &lt;span class="no"&gt;HelloWeb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:controller&lt;/span&gt;
-      &lt;span class="n"&gt;alias&lt;/span&gt; &lt;span class="no"&gt;Hello&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Accounts&lt;/span&gt;
-
-      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-          &lt;span class="n"&gt;render&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;new.html"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt; &lt;span class="p"&gt;%{&lt;/span&gt;&lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;user"&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;%{&lt;/span&gt;&lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;email"&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;email&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;password"&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="p"&gt;}})&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-          &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="no"&gt;Accounts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;authenticate_by_email_password&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;email&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-              &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:ok&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
-                  &lt;span class="n"&gt;conn&lt;/span&gt;
-                  &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;put_flash&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:info&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;welcome back"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-                  &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;put_session&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:user_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-                  &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;configure_session&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;renew:&lt;/span&gt; &lt;span class="no"&gt;true&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-                  &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;redirect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;to:&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;/"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-              &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:error&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:unauthorized&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
-                  &lt;span class="n"&gt;conn&lt;/span&gt;
-                  &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;put_flalsh&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:error&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;bad email/password combination"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-                  &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;redirect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;to:&lt;/span&gt; &lt;span class="n"&gt;session_path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:new&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-          &lt;span class="k"&gt;end&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们定义了一个SessionController来处理用户signing and out，new action 只是简单的渲染 “new session”表单， 表单简单的post 到create action， 我们使用模式匹配然后调用 Accounts.authenticate_by_email_password， 如果成功的话，我们使用Plug.Conn.put_session 来将验证过的用户ID放到 session中， 然后跳转到home page， 我们需要调用 configure_session(conn, renew: true) 在重定向之前，来避免session fixation 个哦高年级， 如果验证错误， 我们添加一个falsh error， 并重定向 四个in-in， 我们添加一个delete action 简单的调用Plug.Conn.configure_session 来删除掉session并重定向到home page&lt;br /&gt;
-  lib/hello_web/router.ex&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="n"&gt;scope&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;/"&lt;/span&gt; &lt;span class="no"&gt;HelloWeb&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="n"&gt;pipe_through&lt;/span&gt; &lt;span class="ss"&gt;:brower&lt;/span&gt;
-
-      &lt;span class="n"&gt;get&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;/"&lt;/span&gt; &lt;span class="no"&gt;PageController&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:index&lt;/span&gt;
-      &lt;span class="n"&gt;resources&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;/users"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;UserController&lt;/span&gt;
-      &lt;span class="n"&gt;resources&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;/sessions"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;SessionController&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;only:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:new&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:create&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:delete&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="ss"&gt;singleton:&lt;/span&gt; &lt;span class="no"&gt;true&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们使用resources 来生成 一系列的routes 在”/sessions”下，使用:only 来限制我们的route 生成。因为我么只需要支持 :new, :create, :delete action， 我们添加singleton: true 选项，来定义restful routes， 但是不需要一个resource ID 在URL中。 我们不需要一个ID在URL中，因为我们的action 总是知道current_user， 这个ID总是在session中，在我们完成controller之前， 我们添加一个验证的plug 在route中来限制用户访问， lib/hello_web/router.ex&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;authenticate_user&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;get_session&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:user_id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-          &lt;span class="no"&gt;nil&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
-              &lt;span class="n"&gt;conn&lt;/span&gt;
-              &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Phoenix&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Controller&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;put_flash&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:error&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;”&lt;/span&gt;&lt;span class="n"&gt;login&lt;/span&gt; &lt;span class="n"&gt;please&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-              &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Phoenix&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Controller&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;redirect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;to:&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;/"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-              &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;halt&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-          &lt;span class="n"&gt;user_id&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
-              &lt;span class="n"&gt;assign&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:current_user&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;Hello&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Accounts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_user!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;user_id&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们定义了authenticate_user plug 在路由中，只是简单的使用get_sessioin 来检查session中的:user_id， 如果我们找到了， 以为着user 已经验证过了，我们就调用Accounts.get_user!，并在当前的connection assigns中赋值:current_user， 如果没有找到，我们就flash 一个错误信息， 重定向到 home page上， 我们使用Halt来组织后面的代码被进一步调用，&lt;br /&gt;
-  最后，我们需要SessionView来渲染模板， lib/hello_web/views/session_view.ex&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="k"&gt;defmodule&lt;/span&gt; &lt;span class="no"&gt;HelloWeb&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;SessioinView&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="kn"&gt;use&lt;/span&gt; &lt;span class="no"&gt;HelloWeb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:view&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h4 id="cross-context-dependencies"&gt;cross-context dependencies&lt;/h4&gt;
-
-&lt;p&gt;我们已经开始了 用户的 帐号与登录凭证 功能，我们开始开发我们应用的重要功能， 管理页面内容，我们开发一个支持用户创建、编辑 网站页面的cms内容。我们可以拓展用户系统。如果我们回国头来想想应用的独立性，这个并不合适，一个用户系统并不应该关心cms系统，Account context 的职责是管理用户与凭证，不处理任何的页面内容。这时候需要一个独立的context来进行管理。CMS&lt;br /&gt;
-  我们创建一个CMS context 来处理cms 的职责，在我们写代码之前，可以想想CMS 的功能有这些：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Page 的create、 update&lt;/li&gt;
-  &lt;li&gt;Page 属于创建的用户&lt;/li&gt;
-  &lt;li&gt;用户的信息应该展示在页面中&lt;br /&gt;
-  从描述中，我们清楚的知道需要一个Page resource来存储page， 那author信息怎么办？ 我们拓展现有的Account.User来包含， Role等信息， 这违反了我们定义的context原则，我们定义了User context为什么User context 需要注意到author 的信息呢？&lt;br /&gt;
-  存在用户的应用中，会自然的成为一个严重的User驱动应用。但是，我们的应用总是为用户使用设计的。与其扩展Account.User结构来追踪平台每个字段的变化，不如，让拥有职责功能的module来负责。在我们的应用中，我们创建CMS.Author 结构来管理Author中管理CMS 的字段信息。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="n"&gt;mix&lt;/span&gt; &lt;span class="n"&gt;phx&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;html&lt;/span&gt; &lt;span class="no"&gt;CMS&lt;/span&gt; &lt;span class="no"&gt;Page&lt;/span&gt; &lt;span class="n"&gt;pages&lt;/span&gt; &lt;span class="ss"&gt;title:&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="ss"&gt;body:&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="ss"&gt;views:&lt;/span&gt;&lt;span class="n"&gt;integer&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;web&lt;/span&gt; &lt;span class="no"&gt;CMS&lt;/span&gt;
-  &lt;span class="n"&gt;mix&lt;/span&gt; &lt;span class="n"&gt;ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;migrate&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="n"&gt;scope&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;/cms"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;HelloWeb&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;CMS&lt;/span&gt; &lt;span class="ss"&gt;as:&lt;/span&gt; &lt;span class="ss"&gt;:cms&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="n"&gt;pipe_through&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:bowser&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:authenticate_user&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-      &lt;span class="n"&gt;resources&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;/pages"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;PageController&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们添加了 authenticate_user 来要求在CMS scope中的路由都需要用户登录。&lt;br /&gt;
-  创建Author&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="n"&gt;mix&lt;/span&gt; &lt;span class="n"&gt;phx&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;context&lt;/span&gt; &lt;span class="no"&gt;CMS&lt;/span&gt; &lt;span class="no"&gt;Author&lt;/span&gt; &lt;span class="n"&gt;authors&lt;/span&gt; &lt;span class="ss"&gt;bio:&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="ss"&gt;role:&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="ss"&gt;gere:&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="ss"&gt;user_id:reference:users:&lt;/span&gt;&lt;span class="n"&gt;unique&lt;/span&gt;
-  &lt;span class="n"&gt;mix&lt;/span&gt; &lt;span class="n"&gt;ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;migrate&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们添加了 bio， role，genre， user_id在author中。这样可以保证，CMS API不会因为User context的改动而改动。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;change&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="n"&gt;create&lt;/span&gt; &lt;span class="n"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:authors&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-          &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="ss"&gt;:bio&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:text&lt;/span&gt;
-          &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="ss"&gt;:role&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:string&lt;/span&gt;
-          &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="ss"&gt;:genre&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:string&lt;/span&gt;
-          &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="ss"&gt;:user_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;references&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:users&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;on_delete:&lt;/span&gt; &lt;span class="ss"&gt;:nothing&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-          &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="ss"&gt;:user_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;references&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:users&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;on_delete:&lt;/span&gt; &lt;span class="ss"&gt;:delete_all&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="ss"&gt;null:&lt;/span&gt; &lt;span class="no"&gt;false&lt;/span&gt;
-
-          &lt;span class="n"&gt;timestamps&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="n"&gt;create&lt;/span&gt; &lt;span class="n"&gt;unique_index&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:authors&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:user_id&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们添加了delete_all，来限制当用户删除的时候，我们不要依靠应用代码来清理CMS author代码。&lt;br /&gt;
-  开始之前， 我们需要一个新的数据迁移，我们有一个author表，我们需要关联pages authors， 我们添加个author_id字段到pages，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="n"&gt;mix&lt;/span&gt; &lt;span class="n"&gt;ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;migration&lt;/span&gt; &lt;span class="n"&gt;add_author_id_to_pages&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;change&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="n"&gt;alter&lt;/span&gt; &lt;span class="n"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:pages&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-          &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="ss"&gt;:author_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;references&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:authors&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;on_delete:&lt;/span&gt; &lt;span class="ss"&gt;:delete_all&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="ss"&gt;null:&lt;/span&gt; &lt;span class="no"&gt;false&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-      &lt;span class="n"&gt;create&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:pages&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:author_id&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="n"&gt;mix&lt;/span&gt; &lt;span class="n"&gt;ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;migrate&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="cross-context-data"&gt;Cross-context data&lt;/h4&gt;
-
-&lt;p&gt;依赖在系统中总是不可避免的，但我们进最大的努力来限制他们，当有可能减少以来的时候，我们已经完美的使用context 来区分应用的不同部分，但是我们依然需要处理依赖。&lt;br /&gt;
-  Author 来负责CMS中的author， CMS context 会对Account context存在一个数据上的依赖。我们有两个选择，1：在Account context中暴露API 来允许我们在CMS中方便的获取User。 2：通过数据库的join操作来获取依赖部分的数据，都是可能的选项，但是join data 对于一个硬的数据依赖，对于大应用来说是很好的，如果你决定拆分context 分散到不同应用，数据中，你依然享受隔离的好处，因为你的开放的接口保持不变。&lt;br /&gt;
-  /lib/hello/cms/page.ex&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;alias&lt;/span&gt; &lt;span class="no"&gt;Hello&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;CMS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Page&lt;/span&gt;
-  &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;alis&lt;/span&gt; &lt;span class="no"&gt;Hello&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;CMS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="no"&gt;Page&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;Author&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-
-  &lt;span class="n"&gt;schema&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;pages"&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="n"&gt;field&lt;/span&gt; &lt;span class="ss"&gt;:body&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:string&lt;/span&gt;
-      &lt;span class="n"&gt;field&lt;/span&gt; &lt;span class="ss"&gt;:title&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:string&lt;/span&gt;
-      &lt;span class="n"&gt;field&lt;/span&gt; &lt;span class="ss"&gt;:views&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:integer&lt;/span&gt;
-      &lt;span class="n"&gt;belongs_to&lt;/span&gt; &lt;span class="ss"&gt;:author&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;Author&lt;/span&gt;
-      &lt;span class="n"&gt;timestamps&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;添加了author page, 之间的关联关系&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;alias&lt;/span&gt; &lt;span class="no"&gt;Hello&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;CMS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Author&lt;/span&gt;
-  &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;alias&lt;/span&gt; &lt;span class="no"&gt;Hello&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;CMS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="no"&gt;Author&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;Page&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-
-  &lt;span class="n"&gt;schema&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;authors"&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="n"&gt;field&lt;/span&gt; &lt;span class="ss"&gt;:bio&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:string&lt;/span&gt;
-      &lt;span class="n"&gt;field&lt;/span&gt; &lt;span class="ss"&gt;:genre&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:string&lt;/span&gt;
-      &lt;span class="n"&gt;field&lt;/span&gt; &lt;span class="ss"&gt;:role&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:string&lt;/span&gt;
-      &lt;span class="n"&gt;field&lt;/span&gt; &lt;span class="ss"&gt;:user_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:id&lt;/span&gt;
-
-
-      &lt;span class="n"&gt;has_many&lt;/span&gt; &lt;span class="ss"&gt;:pages&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;Page&lt;/span&gt;
-      &lt;span class="n"&gt;belongs_to&lt;/span&gt; &lt;span class="ss"&gt;:user&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;Hello&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Accounts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;User&lt;/span&gt;
-      &lt;span class="n"&gt;timestamps&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;下面我们来改变 CMS context需要一个author当更新、创建page的时候，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="n"&gt;alias&lt;/span&gt; &lt;span class="no"&gt;Hello&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;CMS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="no"&gt;Page&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;Author&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="n"&gt;alias&lt;/span&gt; &lt;span class="no"&gt;Hello&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Accounts&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;list_pages&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="no"&gt;Page&lt;/span&gt;
-      &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-      &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;preload&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;author:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;user:&lt;/span&gt; &lt;span class="ss"&gt;:credential&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;get_page!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-       &lt;span class="no"&gt;Page&lt;/span&gt;
-       &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-       &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;preload&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;author:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;user:&lt;/span&gt; &lt;span class="ss"&gt;:credential&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;get_author!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="no"&gt;Author&lt;/span&gt;
-      &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;preload&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;user:&lt;/span&gt; &lt;span class="ss"&gt;:credential&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;我们在list_pages, get_page中，preload 关联的author， user，credential 从数据库中，&lt;br /&gt;
-  我们来处理 数据的存储， 在创建、编辑page的时候，保存author， 编辑文件, lib/hello/cms/cms.ex&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;create_page&lt;/span&gt;&lt;span class="p"&gt;(%&lt;/span&gt;&lt;span class="no"&gt;Author&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;author&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;attrs&lt;/span&gt; &lt;span class="p"&gt;\\&lt;/span&gt; &lt;span class="p"&gt;%{})&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="p"&gt;%&lt;/span&gt;&lt;span class="no"&gt;Page&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt;
-      &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Page&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;changeset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;attrs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Changeset&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;put_change&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:author_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;author&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;insert&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;ensure_author_exists&lt;/span&gt;&lt;span class="p"&gt;(%&lt;/span&gt;&lt;span class="no"&gt;Accounts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-     &lt;span class="p"&gt;%&lt;/span&gt;&lt;span class="no"&gt;Author&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;user_id:&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-     &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Changeset&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;change&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-     &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Changeset&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unique_constraint&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:user_id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-     &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;insert&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-     &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;handle_existing_author&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;defp&lt;/span&gt; &lt;span class="n"&gt;handle_existing_author&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;&lt;span class="ss"&gt;:ok&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;author&lt;/span&gt;&lt;span class="p"&gt;}),&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;author&lt;/span&gt;
-
-  &lt;span class="k"&gt;defp&lt;/span&gt; &lt;span class="n"&gt;handle_existing_author&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;&lt;span class="ss"&gt;:error&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;changeset&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-     &lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_by!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="no"&gt;Author&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;user_id:&lt;/span&gt; &lt;span class="n"&gt;changeset&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;user_id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;lib/helo_web/controllers/cms/page_controller.ex&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;      &lt;span class="n"&gt;plug&lt;/span&gt; &lt;span class="ss"&gt;:require_existing_author&lt;/span&gt;
-      &lt;span class="n"&gt;plug&lt;/span&gt; &lt;span class="ss"&gt;:authorize_page&lt;/span&gt; &lt;span class="ow"&gt;when&lt;/span&gt; &lt;span class="n"&gt;action&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:edit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:update&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:delete&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-
-      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;require_existing_author&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-          &lt;span class="n"&gt;author&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CMS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ensure_author_exists&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;assigns&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;current_user&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-          &lt;span class="n"&gt;asign&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:current_author&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;author&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="k"&gt;defp&lt;/span&gt; &lt;span class="n"&gt;authorize_page&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-          &lt;span class="n"&gt;page&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CMS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_page!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;id"&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-
-          &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;assigns&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;current_author&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;page&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;author_id&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-              &lt;span class="n"&gt;assign&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:page&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;page&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-          &lt;span class="k"&gt;else&lt;/span&gt;
-              &lt;span class="n"&gt;conn&lt;/span&gt;
-              &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;put_flash&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:error&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;you can't modify this page"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-              &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;redirect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;to:&lt;/span&gt; &lt;span class="n"&gt;cms_page_path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:index&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-              &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;halt&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-          &lt;span class="k"&gt;end&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们在 CMS.PageController中添加了 两个Plug, 地一个plug， :require_existing_author, 在每个action都需要执行， 函数 调用CMS.ensure_author_exists 并传递current_user过去，当找到 或者创建author，我们使用Plug.Conn.assign 来将 current_author 传递到下去。&lt;br /&gt;
-  第二步，我们使用:authorized_page来过滤特定的action， 函数 地一个从connection params获取page，，然后跟current_author 进行验证， 如果current_author 的ID 跟Page的author_id一样，可以通过验证， 如果不一样，我们Plug.Conn.halt 来阻止， action的进一步执行。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;%{&lt;/span&gt;&lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;page"&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;page_params&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-  &lt;span class="o"&gt;+&lt;/span&gt;   &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="no"&gt;CMS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;create_page&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;assigns&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;current_author&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;page_params&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:ok&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;page&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
-        &lt;span class="n"&gt;conn&lt;/span&gt;
-        &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;put_flash&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:info&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;Page created successfully."&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;redirect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;to:&lt;/span&gt; &lt;span class="n"&gt;cms_page_path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:show&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;page&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-      &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:error&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;%&lt;/span&gt;&lt;span class="no"&gt;Ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Changeset&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;changeset&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
-        &lt;span class="n"&gt;render&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;new.html"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;changeset:&lt;/span&gt; &lt;span class="n"&gt;changeset&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;update&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;%{&lt;/span&gt;&lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;page"&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;page_params&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-  &lt;span class="o"&gt;+&lt;/span&gt;   &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="no"&gt;CMS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;update_page&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;assigns&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;page&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;page_params&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:ok&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;page&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
-        &lt;span class="n"&gt;conn&lt;/span&gt;
-        &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;put_flash&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:info&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;Page updated successfully."&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;redirect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;to:&lt;/span&gt; &lt;span class="n"&gt;cms_page_path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:show&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;page&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-      &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:error&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;%&lt;/span&gt;&lt;span class="no"&gt;Ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Changeset&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;changeset&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
-        &lt;span class="n"&gt;render&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;edit.html"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;changeset:&lt;/span&gt; &lt;span class="n"&gt;changeset&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-  &lt;span class="o"&gt;+&lt;/span&gt;   &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:ok&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_page&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CMS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;delete_page&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;assigns&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;page&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-    &lt;span class="n"&gt;conn&lt;/span&gt;
-    &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;put_flash&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:info&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;Page deleted successfully."&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;redirect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;to:&lt;/span&gt; &lt;span class="n"&gt;cms_page_path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:index&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;     
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们改变了create 的写法，从connection assign中获取current_author, authenticate_user 会存放进去， 然后我们传递current_author 到 CMS.create_page 中 来关联到page。&lt;br /&gt;
-   在web view中展示 author’s name&lt;br /&gt;
-   lib/hello_web/views/cms/page_view.ex&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight elixir"&gt;&lt;code&gt;   &lt;span class="k"&gt;defmodule&lt;/span&gt; &lt;span class="no"&gt;HelloWeb&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;CMS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;PageView&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-       &lt;span class="kn"&gt;use&lt;/span&gt; &lt;span class="no"&gt;HelloWeb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:view&lt;/span&gt;
-       &lt;span class="n"&gt;alias&lt;/span&gt; &lt;span class="no"&gt;Hello&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;CMS&lt;/span&gt;
-
-       &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;author_name&lt;/span&gt;&lt;span class="p"&gt;(%&lt;/span&gt;&lt;span class="no"&gt;CMS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Page&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;author:&lt;/span&gt; &lt;span class="n"&gt;author&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-        &lt;span class="n"&gt;author&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;
-       &lt;span class="k"&gt;end&lt;/span&gt;
-   &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;完成！我现在有两个独立的分别负担 user context 和内容管理&lt;/p&gt;
 </content>
   </entry>
 </feed>
