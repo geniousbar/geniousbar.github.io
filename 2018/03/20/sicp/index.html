@@ -1,7 +1,9 @@
-<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>计算机程序的构造和解释 | 日常学习</title><meta description="计算机程序的构造和解释  序     关注程序的创建、执行和研究。使用Lisp方言书写 本书中讨论的各种问题主要涉及到： 人的大脑，计算机程序的集合，以及计算机本身。每一个计算机程序都是现实中的或者精神中的某个过程的一个模型。通过人的头脑孵化出来，这种过程出现在人们的经验或者思维中。很少能够通过程序将这种过程模拟到永远令人满意的程度。 因为这个原因，程序也在不断的演化。当我们对模型的认识更深入、更扩大，更广泛时，我们就会修改程序。直到达到一中亚稳定状态。而在这时，程序中有会出现一个需要我们... " /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">计算机程序的构造和解释</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">March 20, 2018</span></div><div class="tag-labels"><a href="/tags/sicp/"><small class="tag-label">SICP</small></a></div><hr class="article-header-separator" /><h2 id="计算机程序的构造和解释">计算机程序的构造和解释</h2>
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>计算机程序的构造和解释 | 日常学习</title><meta description="计算机程序的构造和解释     ———  序 ---------     关注程序的创建、执行和研究。使用Lisp方言书写 本书中讨论的各种问题主要涉及到： 人的大脑，计算机程序的集合，以及计算机本身。每一个计算机程序都是现实中的或者精神中的某个过程的一个模型。通过人的头脑孵化出来，这种过程出现在人们的经验或者思维中。很少能够通过程序将这种过程模拟到永远令人满意的程度。 因为这个原因，程序也在不断的演化。当我们对模型的认识更深入、更扩大，更广泛时，我们就会修改程序。直到达到一中亚稳定状态。... " /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">计算机程序的构造和解释</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">March 20, 2018</span></div><div class="tag-labels"><a href="/tags/sicp/"><small class="tag-label">SICP</small></a></div><hr class="article-header-separator" /><p>计算机程序的构造和解释<br />
+    ———</p>
 
-<h2 id="序">序</h2>
-
+<div class="highlight"><pre class="highlight plaintext"><code>序
+---------
+</code></pre></div>
 <blockquote>
   <p>关注程序的创建、执行和研究。使用Lisp方言书写<br />
 本书中讨论的各种问题主要涉及到： 人的大脑，计算机程序的集合，以及计算机本身。每一个计算机程序都是现实中的或者精神中的某个过程的一个模型。通过人的头脑孵化出来，这种过程出现在人们的经验或者思维中。很少能够通过程序将这种过程模拟到永远令人满意的程度。 因为这个原因，程序也在不断的演化。当我们对模型的认识更深入、更扩大，更广泛时，我们就会修改程序。直到达到一中亚稳定状态。而在这时，程序中有会出现一个需要我们为之奋斗的模型。计算机程序设计领域之所以令人兴奋的源泉，就在于他所引起的连绵不绝的发现。</p>
@@ -213,5 +215,46 @@
 <ol>
   <li>语言所包含的将数据对象组合起来的，形成 复合数据的方式。提高 设计的模块性，是我们得以在 比语言提供的基本数据对象更高的概念层次上。处理与数据有关的各种问题。<br />
 复合数据能够将处理数据对象的表示部分，与 处理数据对象的使用部分相互隔离开来，这种技术具有一般性，形成了一种成为数据抽象的强有力的设计方法学。数据抽象技术能够是程序更容易设计，维护和修改。</li>
+  <li>形成复合数据的关键在于，程序设计语言提供的某种黏合剂，他们可以用于把一些数据对象组合起来，形成更复杂的数据对象，1）过程 2）闭包，用于组合数据对象的黏合剂同样适用于复合数据对象 3）符号表达式</li>
+  <li>数据导向型程序设计</li>
+  <li>数据抽象的基本思想： 设法构造出一些使用复合数据的对象的程序，使他们就像是在“抽象数据”上操作一样，我们的程序使用复合数据的方式应该是这样的：除了完成当前工作的必要东西之外，他们不对数据做任何的假设。同时，一种具体的数据表示的定义，也应该跟程序中使用数据的方式无关。这要求在我们的系统里面需要一组过程： 选择函数、构造函数。</li>
+  <li>按愿望思维方式，（从上倒下） 是一种强有力的设计方法，其中不会设计到细节，只是思考整体的数据使用方法。（复合数据结构的操作界面）</li>
+  <li>序对: cons, car, cdr 从序对 构造起来的数据对象成为表结构的数据</li>
+  <li>数据抽象的基本思想就是： 为每一类数据对象标识出 一组操作。是的对这类数据对象的所有操作都可以基于他们表述，而且在操作这些数据对象时也只使用他们。</li>
+  <li>形象化的表示了 有理数 系统的结构， 其中的水平线表示抽象屏障，他们呢隔离了系统中的不同的层次，在每一层上，这些屏障都把使用数据抽象的程序与实现数据抽象的程序隔离开来，使得有理数 的程序有理数实现提供的函数完成对有理数的操作，而这些函数又是基于构造函数和选择函数make-rat, numer denom 实现的。而make-rat等函数又是基于序对实现的。有关序对实现的细节与有理数的其余部分都完全没有u关系。每一层次中的过程构成了所定义的抽象屏障的界面，联系起来系统中的不同层次.</li>
+  <li>数据意味着什么： 我们总可以将数据定义为一组适当的选择函数和构造函数，其中这些过程必须满足某些必要条件。 （试着将这些条件放到程序中，面向对象，编译类型语言的语法检查，是不是都在某种程度上实现这些检测）<br />
+序对的概念，我们只需要定义，z = (cons x y)，那么 car(z) == x (cdr z) == y, 意味着，任何满足这三个条件的函数都可以作为实现。
+<div class="highlight"><pre class="highlight scheme"><code>    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+       <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">dispatch</span> <span class="nv">m</span><span class="p">)</span>
+           <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">=</span> <span class="nv">m</span> <span class="mi">0</span><span class="p">)</span> <span class="nv">x</span><span class="p">)</span>
+                 <span class="p">((</span><span class="nb">=</span> <span class="nv">m</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">y</span><span class="p">)</span>
+                 <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">error</span> <span class="s">"error argument "</span><span class="p">)))))</span>
+     <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">z</span><span class="p">)</span> <span class="p">(</span><span class="nf">z</span> <span class="mi">0</span><span class="p">))</span>
+     <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">z</span><span class="p">)</span> <span class="p">(</span><span class="nf">z</span> <span class="mi">1</span><span class="p">))</span>
+</code></pre></div></li>
+  <li>序对 (cons a b) cons的闭包性质是非常重要的，某种组合数据对象的操作满足闭包性质，就是说，通过他组合起来的对象得到的结果本身还可以通过同样的操作再次进行组合。闭包性质是一种组合功能的关键所在。</li>
+  <li>序列的表示： (cons 1 (cons 2 (cons 3 nil))) (list 1 2 3)</li>
+  <li>map</li>
 </ol>
+
+<div class="highlight"><pre class="highlight scheme"><code>        <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">scale-list</span> <span class="nv">items</span> <span class="nv">factor</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">items</span><span class="p">)</span>
+<span class="o">'</span><span class="p">()</span>
+      <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nb">*</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">items</span><span class="p">)</span> <span class="nv">factor</span><span class="p">)</span>
+            <span class="p">(</span><span class="nf">scale-list</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">items</span><span class="p">)</span> <span class="nv">factor</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="nf">scale-list</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">)</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">map</span> <span class="nv">proc</span> <span class="nv">items</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">items</span><span class="p">)</span>
+      <span class="o">'</span><span class="p">()</span>
+      <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nf">proc</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">items</span><span class="p">))</span>
+            <span class="p">(</span><span class="nb">map</span> <span class="nv">proc</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">items</span><span class="p">)))))</span>
+
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">scale-list</span> <span class="nv">items</span> <span class="nv">factor</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">map</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">x</span> <span class="mi">10</span><span class="p">))</span>
+       <span class="nv">items</span><span class="p">))</span>
+
+</code></pre></div><p>map 不仅仅是一种模式，更重要的建立起了一种高级抽象。在scale-list 原来的设计中，更多的注意力放在了， 循环递归的结构中，而通过map定义的scale-list 则忽略了这种细节层面的情况，强调是表到表的缩放，这两种形式上的差异并不在于计算机会执行不同的计算过程，而在于我们对这同一种过程的不同思考方式。</p>
 <div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2018 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

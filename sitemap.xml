@@ -453,11 +453,11 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/2017/08/02/</loc>
+    <loc>http://geniousbar.github.io/page/5/</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/page/5/</loc>
+    <loc>http://geniousbar.github.io/2017/07/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -637,7 +637,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/2017/07/</loc>
+    <loc>http://geniousbar.github.io/2017/08/02/</loc>
     <priority>0.5</priority>
   </url>
 </urlset>
