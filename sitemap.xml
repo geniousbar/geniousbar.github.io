@@ -201,7 +201,19 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2018/11/11/linux-interface/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/tags/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/linux/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/books/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -289,19 +301,15 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/linux/</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>http://geniousbar.github.io/tags/relearn/</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/process/</loc>
+    <loc>http://geniousbar.github.io/tags/service/</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/service/</loc>
+    <loc>http://geniousbar.github.io/tags/process/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -401,6 +409,14 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2018/11/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2018/11/11/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/2018/09/</loc>
     <priority>0.5</priority>
   </url>
@@ -465,7 +481,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/page/5/</loc>
+    <loc>http://geniousbar.github.io/2017/08/02/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -561,7 +577,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/2016/10/</loc>
+    <loc>http://geniousbar.github.io/page/5/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -649,7 +665,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/2017/08/02/</loc>
+    <loc>http://geniousbar.github.io/2016/10/</loc>
     <priority>0.5</priority>
   </url>
 </urlset>
