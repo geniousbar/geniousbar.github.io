@@ -1,4 +1,12 @@
-<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>日常学习</title><meta description="geniousbar 日常知识总结" /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title"><a href="/2016/10/21/ruby-magic/">Ruby</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">October 21, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">Ruby</small></a></div><hr class="article-header-separator" /><h3 id="排列组合">排列组合</h3>
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>日常学习</title><meta description="geniousbar 日常知识总结" /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title"><a href="/2017/01/13/postgres/">Postgres</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">January 13, 2017</span></div><div class="tag-labels"><a href="/tags/database/"><small class="tag-label">database</small></a><a href="/tags/postgres/"><small class="tag-label">postgres</small></a></div><hr class="article-header-separator" /><h3 id="pg创建只读用户">pg创建只读用户</h3>
+<div class="highlight"><pre class="highlight plaintext"><code>SELECT date_trunc('minute', dd) :: TIMESTAMP
+FROM generate_series('2016-10-01' :: TIMESTAMP, '2016-12-31' :: TIMESTAMP, '10 minute' :: INTERVAL) dd;
+
+CREATE USER read_from_pg WITH ENCRYPTED PASSWORD '...';
+GRANT CONNECT ON DATABASE test to...</code></pre></div><div class="read-more"><a href="/2017/01/13/postgres/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/11/11/firefox/">Firefox</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">November 11, 2016</span></div><div class="tag-labels"><a href="/tags/firefox/"><small class="tag-label">Firefox</small></a></div><hr class="article-header-separator" /><h3 id="如何才能使用非签名的附加组件高级用户">如何才能使用非签名的附加组件？（高级用户）</h3>
+
+<p>Firefox ESR 45版，以及 开发者版 和 Nightly 版，将允许通过改变偏好来屏蔽增强的附加组件签名要求，请在 Firefox 配置编辑器（about:config 页）将 xpinstall.signatures.required 的值改为 false。还有其它一些山寨版的 Firefox 也允许此项屏蔽。更多内容，参阅 MozillaWiki 文章 附加组件/扩展签名。</p>
+<div class="read-more"><a href="/2016/11/11/firefox/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/10/21/ruby-magic/">Ruby</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">October 21, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">Ruby</small></a></div><hr class="article-header-separator" /><h3 id="排列组合">排列组合</h3>
 <div class="highlight"><pre class="highlight plaintext"><code>arr = [1, 2, 3, 4, 5]
 arr.combination(3).to_a
 ary.each_cons(3).to_a
@@ -38,19 +46,7 @@ ary.each_cons(3).to_a
 <h3 id="linux根据关键字得到pid号">linux根据关键字得到pid号</h3>
 <p>pgrep -f keyword</p>
 <h3 id="linux创建sudo用户">linux创建sudo用户</h3>
-<p>adduser username</p><div class="read-more"><a href="/2016/09/07/linux/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/09/07/linux-tar/">linux tar command</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">September 07, 2016</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/command/"><small class="tag-label">command</small></a></div><hr class="article-header-separator" /><h1 id="zip">zip</h1>
-<p>zip可能是目前使用得最多的文档压缩格式。</p>
-
-<p>它最大的优点就是在不同的操作系统平台，比如Linux， Windows以及Mac OS上使用。缺点就是支持的压缩率不是很高，而tar.gz和tar.gz2在压缩率方面做得非常好。闲话少说，我们步入正题吧：</p>
-
-<p>我们可以使用下列的命令压缩一个目录：<br>
-zip -r archive_name.zip directory_to_compress</p>
-
-<p>下面是如果解压一个zip文档：<br>
-unzip archive_name.zip</p>
-
-<h1 id="targz">tar.gz</h1>
-<p>这种格...</p><div class="read-more"><a href="/2016/09/07/linux-tar/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/09/07/linux-swap/">linux swap</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">September 07, 2016</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a></div><hr class="article-header-separator" /><h3 id="ubuntu增加虚拟内存">Ubuntu增加虚拟内存</h3>
+<p>adduser username</p><div class="read-more"><a href="/2016/09/07/linux/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/09/07/linux-swap/">linux swap</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">September 07, 2016</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a></div><hr class="article-header-separator" /><h3 id="ubuntu增加虚拟内存">Ubuntu增加虚拟内存</h3>
 <div class="highlight"><pre class="highlight plaintext"><code>Swap作为交换区，太有用了，功能类似windows下的虚拟内存，就是利用硬盘空间来扩展内存。
 
 阿里云的系统默认都不使用swap，为了让你多买内存，而内存是最贵的一项。
@@ -63,7 +59,19 @@ unzip archive_name.zip</p>
 
 首先移除关闭swap的选项，否则后面的设置会在重启后失效，在/etc/rc.local文件中移除swapoff -a 行。
 
-然后在根目录创...</code></pre></div><div class="read-more"><a href="/2016/09/07/linux-swap/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/07/01/ruby-dsl/">Ruby Dsl</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">July 01, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">ruby</small></a><a href="/tags/dsl/"><small class="tag-label">dsl</small></a></div><hr class="article-header-separator" /><h2 id="ruby-dsl">ruby dsl</h2>
+然后在根目录创...</code></pre></div><div class="read-more"><a href="/2016/09/07/linux-swap/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/09/07/linux-tar/">linux tar command</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">September 07, 2016</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/command/"><small class="tag-label">command</small></a></div><hr class="article-header-separator" /><h1 id="zip">zip</h1>
+<p>zip可能是目前使用得最多的文档压缩格式。</p>
+
+<p>它最大的优点就是在不同的操作系统平台，比如Linux， Windows以及Mac OS上使用。缺点就是支持的压缩率不是很高，而tar.gz和tar.gz2在压缩率方面做得非常好。闲话少说，我们步入正题吧：</p>
+
+<p>我们可以使用下列的命令压缩一个目录：<br>
+zip -r archive_name.zip directory_to_compress</p>
+
+<p>下面是如果解压一个zip文档：<br>
+unzip archive_name.zip</p>
+
+<h1 id="targz">tar.gz</h1>
+<p>这种格...</p><div class="read-more"><a href="/2016/09/07/linux-tar/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/07/01/ruby-dsl/">Ruby Dsl</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">July 01, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">ruby</small></a><a href="/tags/dsl/"><small class="tag-label">dsl</small></a></div><hr class="article-header-separator" /><h2 id="ruby-dsl">ruby dsl</h2>
 
 <blockquote>
   <p>ruby中的dsl大部分都是利用方法调用，eval代码。 来执行代码, 可以参考rails， 大量的dsl</p>
@@ -91,40 +99,4 @@ unzip archive_name.zip</p>
       <li>实用的设计不回去预测未来将要发生什...</li>
 </ol>
 </li>
-</ol><div class="read-more"><a href="/2016/03/12/ruby-red-book/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/01/10/how-to-became-a-mind-person/">如何变得有思想</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">January 10, 2016</span></div><div class="tag-labels"><a href="/tags/book/"><small class="tag-label">book</small></a><a href="/tags/mind/"><small class="tag-label">mind</small></a><a href="/tags/poem/"><small class="tag-label">poem</small></a></div><hr class="article-header-separator" /><h2 id="如何变得有思想">如何变得有思想</h2>
-
-<h4 id="观点">观点</h4>
-
-<ol>
-  <li>
-    <p>如何变得有思想</p>
-
-    <blockquote>
-      <p>事实 + 前提 + 逻辑 = 观点（这其中经常包含一些隐藏的我们不宜察觉的前提、假设， 以及因为个人观点出发而带有个人色彩的事实）</p>
-    </blockquote>
-  </li>
-  <li>
-    <p>人生有900 个月</p>
-
-    <blockquote>
-      <p>作者提倡自己做一个30X30 的表格，并要求每个月划掉一个方格， 以此来证明时间的短暂。我曾经亲自尝试过，结果感觉效果不太理想，原因有2, 1： 900 实在是太多 2. 每个月划掉一个，时间太长，不太可能...</p>
-</blockquote>
-</li>
-</ol><div class="read-more"><a href="/2016/01/10/how-to-became-a-mind-person/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/01/10/dark-time-three/">暗时间 第三章</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">January 10, 2016</span></div><div class="tag-labels"><a href="/tags/book/"><small class="tag-label">book</small></a><a href="/tags/mind/"><small class="tag-label">mind</small></a><a href="/tags/dark-time/"><small class="tag-label">dark-time</small></a></div><hr class="article-header-separator" /><h2 id="跟波利亚学解题">跟波利亚学解题</h2>
-<ul>
-  <li>
-    <p>跟波利亚学解题<br>
-** 波利亚的三本书 《how to solve it》 《数学的发现》 《数学与猜想》**<br>
-大部分的书籍只是证明求解，而没有真实的求证过程</p>
-
-    <p>一些方法（解决题目，解决生活问题、生活决策）</p>
-    <ol>
-      <li>时刻不忘位置变量</li>
-      <li>用特例启发思考</li>
-      <li>反过来推导（由结论反过来推导条件）</li>
-      <li>试错 （枚举所有可能解）</li>
-      <li>调整题目条件（改变环境变量， 环境可以理解为生活中的）</li>
-      <li>类似问题（将问...</li>
-</ol>
-</li>
-</ul><div class="read-more"><a href="/2016/01/10/dark-time-three/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><div class="paginate-wrapper"><div class="previous-page"><a href="/page/3/"><i class="fa fa-arrow-left"></i> Previous Page</a></div><div class="next-page"><a href="/page/5/"><i class="fa fa-arrow-right"></i> Next Page</a></div></div><div class="page-number">Page 4 of 5</div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2018 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>
+</ol><div class="read-more"><a href="/2016/03/12/ruby-red-book/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><div class="paginate-wrapper"><div class="previous-page"><a href="/page/3/"><i class="fa fa-arrow-left"></i> Previous Page</a></div><div class="next-page"><a href="/page/5/"><i class="fa fa-arrow-right"></i> Next Page</a></div></div><div class="page-number">Page 4 of 5</div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2018 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

@@ -4,10 +4,184 @@
   <id>http://geniousbar.github.io</id>
   <link href="http://geniousbar.github.io"/>
   <link href="http://geniousbar.github.io/feed.xml" rel="self"/>
-  <updated>2018-11-11T08:00:00+08:00</updated>
+  <updated>2018-12-30T08:00:00+08:00</updated>
   <author>
     <name>geniousbar</name>
   </author>
+  <entry>
+    <title>linux-interface-04</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2018/12/30/linx-interface-04/"/>
+    <id>http://geniousbar.github.io/2018/12/30/linx-interface-04/</id>
+    <published>2018-12-30T08:00:00+08:00</published>
+    <updated>2018-12-31T15:44:31+08:00</updated>
+    <summary type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
+
+&lt;h2 id="文件io-通用的io模型"&gt;文件IO 通用的IO模型&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;文件描述符： 一个非负整数，来指代打开的文件，其中包括： 管道FIFO socket，终端 设备 普通文件&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;标准文件描述符:&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th style="text-align: left"&gt;文件描述符&lt;/th&gt;
+          &lt;th style="text-align: left"&gt;用途&lt;/th&gt;
+          &lt;th style="text-align: left"&gt;名称&lt;/th&gt;
+          &lt;th style="text-align: left"&gt;stdio&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td style="text-align: left"&gt;0&lt;/td&gt;
+     ...&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    <content type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
+
+&lt;h2 id="文件io-通用的io模型"&gt;文件IO 通用的IO模型&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;文件描述符： 一个非负整数，来指代打开的文件，其中包括： 管道FIFO socket，终端 设备 普通文件&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;标准文件描述符:&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th style="text-align: left"&gt;文件描述符&lt;/th&gt;
+          &lt;th style="text-align: left"&gt;用途&lt;/th&gt;
+          &lt;th style="text-align: left"&gt;名称&lt;/th&gt;
+          &lt;th style="text-align: left"&gt;stdio&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td style="text-align: left"&gt;0&lt;/td&gt;
+          &lt;td style="text-align: left"&gt;标准输入&lt;/td&gt;
+          &lt;td style="text-align: left"&gt;STDIN_FILENO&lt;/td&gt;
+          &lt;td style="text-align: left"&gt;stdin&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td style="text-align: left"&gt;1&lt;/td&gt;
+          &lt;td style="text-align: left"&gt;标准输出&lt;/td&gt;
+          &lt;td style="text-align: left"&gt;STDOUt_FILENO&lt;/td&gt;
+          &lt;td style="text-align: left"&gt;stdout&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td style="text-align: left"&gt;2&lt;/td&gt;
+          &lt;td style="text-align: left"&gt;标准错误&lt;/td&gt;
+          &lt;td style="text-align: left"&gt;StDERR_FILENO&lt;/td&gt;
+          &lt;td style="text-align: left"&gt;stderr&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;主要的系统调用&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;open(pathname, flags, mode) open创建新文件时候， 即 flags 中包含 O_creat 标志，mode制定了文件的访问权限。flags还有许多的可选参数， 包括O_APPEND, O_ASYNC等等。&lt;/li&gt;
+      &lt;li&gt;read(fd, buffere, count), read 调用成功返回 实际读取的字节数， 如果遇到文件结束EOF 则返回0， 出席那错误 -1， 一次read 可能返回的 字节数可能小于count， fd为文件时候， 可能是文件靠近结尾，（所以文件尾部时候是不是小于count还是一个0？），fd为其他类型时候， socket， 终端，例如在终端遇到\n read调用就会结束。在有需要注意， C语言， 如果输入缓冲区， buffere 需要一个表示终止的空字符串，需要自己显示添加&lt;/li&gt;
+      &lt;li&gt;write(fd, buffer, count), write 为将buffer中的数据写入fd中，error 返回-1， 其他返回写入的字节数， 写入字节数可能小于count （进程资源对文件大小的限制，磁盘满等， 造成部分写），write成功并不能保证已经写入到文件中，而是高速缓冲区，系统会缓存磁盘IO。&lt;/li&gt;
+      &lt;li&gt;close(fd) close error -1，success 0， 文件属于有限资源，文件描述符关闭失败可能导致一个进程将资源消耗殆尽。编写长期运行的程序，比如网络服务器显得尤为重要。所以，总是显式的关闭文件描述符。&lt;/li&gt;
+      &lt;li&gt;lseek(fd, offset, whence) 改变文件偏移量。文件偏移量是下一个read， write 等的起始点。文件打开指向文件头，read, write 自动调整偏移量。&lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;/proc/PID/fdinfo 目录下，可以获取系统任一进程中文件描述符的相关信息。针对进程中的每一个已打开的文件描述符，该目录下都有对应的文件， 以对应的文件描述符的数值命名，其中文件中的pos为文件偏移量， flags字段 则为一个八进制数, 其格式形如&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   pos:  0
+   flags: 02
+   mnt_id: 9
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</content>
+  </entry>
+  <entry>
+    <title>linux-interface-02</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2018/12/06/linux-interface-02/"/>
+    <id>http://geniousbar.github.io/2018/12/06/linux-interface-02/</id>
+    <published>2018-12-06T08:00:00+08:00</published>
+    <updated>2018-12-31T15:41:43+08:00</updated>
+    <summary type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
+
+&lt;h2 id="系统编程概念"&gt;系统编程概念&lt;/h2&gt;
+
+&lt;p&gt;无论何时，执行了系统调用或者库函数，检查调用的返回状态以确定调用是否成功,是一条编程铁律。(消灭nil就好了)&lt;/p&gt;
+
+&lt;h3 id="系统调用"&gt;系统调用&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;借助这一机制，进程可以请求内核以自己的名义去执行动作，以API 的形式，内核提供一系列服务供程序访问。（创建进程， IIO操作等）可以参考 csapp中的 异常控制流章节。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;系统调用有以下特征：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;系统调用将CPU 从用户态切换到 内核态，以便CPU访问受保护的内存等（越过...&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    <content type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
+
+&lt;h2 id="系统编程概念"&gt;系统编程概念&lt;/h2&gt;
+
+&lt;p&gt;无论何时，执行了系统调用或者库函数，检查调用的返回状态以确定调用是否成功,是一条编程铁律。(消灭nil就好了)&lt;/p&gt;
+
+&lt;h3 id="系统调用"&gt;系统调用&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;借助这一机制，进程可以请求内核以自己的名义去执行动作，以API 的形式，内核提供一系列服务供程序访问。（创建进程， IIO操作等）可以参考 csapp中的 异常控制流章节。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;系统调用有以下特征：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;系统调用将CPU 从用户态切换到 内核态，以便CPU访问受保护的内存等（越过保护机制）&lt;/li&gt;
+  &lt;li&gt;系统调用的组成是固定的。每个系统调用都由一个唯一的数字来标识。（程序通过名称标识系统调用，对编号方案无需关心）&lt;/li&gt;
+  &lt;li&gt;每个系统调用都有一套对应的参数，对用户态内核态的参数传递有一定规范&lt;br /&gt;
+  下面是一个系统调用的示例：&lt;/li&gt;
+  &lt;li&gt;应用程序调用C语言的函数库中的外壳（wrapper） 函数，来发起系统调用&lt;/li&gt;
+  &lt;li&gt;外壳函数保证所有的系统调用参数可用，并将参数复制到寄存器&lt;/li&gt;
+  &lt;li&gt;外壳函数会将系统调用编号复制到%eax中，用于区分不同的系统调用&lt;/li&gt;
+  &lt;li&gt;外壳函数执行一条中断机器指令，引发CPU从用户态切换到内核态，并执行 todo&lt;/li&gt;
+  &lt;li&gt;内核调用 system_call 来处理中断，&lt;br /&gt;
+    1) 在内核栈中保存寄存器数值&lt;br /&gt;
+    2）验证 系统调用的 编号有效性&lt;br /&gt;
+    3) 通过系统调用编号 发现对应的系统调用服务例程，检查参数的有效性，执行对应的代码逻辑。最后将结果状态返回给system_call&lt;br /&gt;
+    4) 从内核栈中回复各个寄存器值，并将系统调用返回值置于栈中&lt;br /&gt;
+    5) 返回值外壳函数，通知讲CPU切换到用户态&lt;/li&gt;
+  &lt;li&gt;系统调用的服务例程返回值代表调用有误， 外壳函数会使用该值设定全局变量errno。外壳函数会返回到调用程序，并返回一个整数，标志系统调用是否成功。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id="库函数"&gt;库函数&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;库函数 的设计 是为了提供比底层系统 调用更为方便的调用接口,例如 printf函数 可提供格式化输出和数据缓存， 而write 系统调用只能输出 字节块， malloc, free 函数包装了 内存的释放和分配工作&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id="处理错误"&gt;处理错误&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;几乎所有的 系统调用都会返回某种类型的错误,用以表明 调用成功与否，要了解是否调用成功则必须坚持对状态进行检查。若调用失败则必须采取相应的行动，至少应该输出错误。 不检查状态，少写几行代码，听起来很诱人。实际上却会浪费掉大把的程序调试时间&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;这段陈述适用于 任何领域的编程工作， 简单的就是 人们常讲的 nil是一个百万的设计错误 一样。nil让他们忽略对他的检查，因为假定 变量不是nil的代码很清爽，可以减少很多的if判断，造成了nil是一个非常常见，频率高的错误。 那么正确的设计应该是什么样子呢？ 答案或许是Option + 强制类型（弱类型语言不必要了，因为没有人可以阻止你不检查错误）&lt;/em&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;系统错误处理&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;通常返回值为-1 表示出错，系统调用失败后， 会将全局变量设定 errno 设定为一个正值来标记具体错误。但是如果系统调用和库函数成功，errno并不会被重置为0，所以单独的检查errno的设定来判断错误是错误的，因为可能是上个调用错误设定的数值。少数系统调用 在调用成功后(getpriority)依然返回-1， 要判断此类错误需要调用前将errno 设定为0， 然后根据errno判断是否错误。&lt;br /&gt;
+ 打印错误， perror(“string”), char *strerror(int errorcode), strerror返回的字符串 指针是静态分配的，后续的调用会覆盖之前的调用。两个函数都是 locale-sensitive 语言环境敏感型，所以现实的是本地语言。&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;库函数的错误处理&lt;br /&gt;
+&lt;strong&gt;不同的库函数在调用发生错误时候，返沪的数据类型和数值也各不相同，可以划分为几个类型:&lt;/strong&gt;&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;同系统调用完全相同, (remove 会调用unlink 或者rmdir)&lt;/li&gt;
+      &lt;li&gt;出错时会返回-1之外的其他值，然后设定errno表明出错的具体情况 (fopen 出错返回 NULL 指针，同时设定errno)&lt;/li&gt;
+      &lt;li&gt;根本不使用errno&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</content>
+  </entry>
   <entry>
     <title>linux-interface</title>
     <link rel="alternate" href="http://geniousbar.github.io/2018/11/11/linux-interface/"/>
@@ -736,1464 +910,6 @@
       &lt;li&gt;市场的非理性行为。 这有可能造成价值回归的迟缓。在价值回归之前，可能新的决定因素会出现。&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-&lt;/ol&gt;
-</content>
-  </entry>
-  <entry>
-    <title>CSAPP(深入理解计算机系统)</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2017/12/02/csapp/"/>
-    <id>http://geniousbar.github.io/2017/12/02/csapp/</id>
-    <published>2017-12-02T08:00:00+08:00</published>
-    <updated>2018-03-15T10:30:42+08:00</updated>
-    <summary type="html">&lt;h2 id="计算机系统漫游"&gt;计算机系统漫游&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;代码从文本到可执行文件的过程（c语言示例）：
-    &lt;ul&gt;
-      &lt;li&gt;预处理阶段，处理 #inlcude &amp;lt;stadI/O.h&amp;gt;， #define MAX 100&lt;/li&gt;
-      &lt;li&gt;编译阶段：将文本编译成汇编程序，hello.s&lt;/li&gt;
-      &lt;li&gt;汇编阶段：汇编器将上一步的程序翻译成机器指令。hello.o&lt;/li&gt;
-      &lt;li&gt;链接阶段就：hello 中调用的printf函数，而函数存在一个printf.o 单独的编译完成文件，需要以某种方式合并到hello.o 中。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
- ...&lt;/ol&gt;</summary>
-    <content type="html">&lt;h2 id="计算机系统漫游"&gt;计算机系统漫游&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;代码从文本到可执行文件的过程（c语言示例）：
-    &lt;ul&gt;
-      &lt;li&gt;预处理阶段，处理 #inlcude &amp;lt;stadI/O.h&amp;gt;， #define MAX 100&lt;/li&gt;
-      &lt;li&gt;编译阶段：将文本编译成汇编程序，hello.s&lt;/li&gt;
-      &lt;li&gt;汇编阶段：汇编器将上一步的程序翻译成机器指令。hello.o&lt;/li&gt;
-      &lt;li&gt;链接阶段就：hello 中调用的printf函数，而函数存在一个printf.o 单独的编译完成文件，需要以某种方式合并到hello.o 中。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;系统的硬件组成
-    &lt;ul&gt;
-      &lt;li&gt;总线&lt;/li&gt;
-      &lt;li&gt;I/O设备&lt;/li&gt;
-      &lt;li&gt;主存&lt;/li&gt;
-      &lt;li&gt;处理器， 指令集合： 加载(复制内容到寄存器）， 存储（从寄存器到存储），操作（加减乘除等计算）， 跳转（覆盖程序计数器PC的数值，执行代码跳转）&lt;/li&gt;
-      &lt;li&gt;缓存， 高速缓存&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;操作系统如何管理硬件
-    &lt;ul&gt;
-      &lt;li&gt;任何的硬件通过操作系统提供服务， 所有应用程序都是建立在操作系统之上的。&lt;/li&gt;
-      &lt;li&gt;OS 的基本功能： 1. 防止硬件被滥用， 2. 提供一套简单一致的机制来控制复杂度而又大相径庭的低级硬件设备。&lt;/li&gt;
-      &lt;li&gt;OS 的抽象： 文件 -&amp;gt; I/O， 虚拟存储器 -&amp;gt; 主存+磁盘， 进程 -&amp;gt; 处理器，主存，I/O设备的抽象&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;抽象
-    &lt;ul&gt;
-      &lt;li&gt;进程： 计算机科学中最重要并且成功的概念。
-        &lt;blockquote&gt;
-          &lt;p&gt;提供一种假象， 好像系统上只有这个程序在运行，看上去只有这个程序在使用处理器、主存、和I/O设备. 这是通过处理器在进程间切换来实现的。  操作系统实现这种交错执行的机制为 &lt;strong&gt;上下文切换&lt;/strong&gt;, 实现进程这个抽象概念需要低级硬件和操作系统软件之间的紧密合作。&lt;/p&gt;
-        &lt;/blockquote&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;线程：每个线程都运行在进程的上下文中，并共享同样的代码和全局数据，服务器对于并行处理的需求，导致线程编程成为越来越重要的编程模型， 一般来说，多线程之间更容易共享数据，也比进程更轻量。&lt;/li&gt;
-  &lt;li&gt;虚拟存储器： 为进程提供了一个抽象、一致的存储空间，称为虚拟地址空间。包括： 程序代码和数据，堆，共享库，栈，内核虚拟存储器。&lt;/li&gt;
-  &lt;li&gt;文件： 字节序列。包括磁盘，键盘，显示器，网络，都可以视为文件。&lt;/li&gt;
-  &lt;li&gt;并行跟并发的区分： 并发: &lt;strong&gt;好像&lt;/strong&gt; 同时具有多个活动在系统中。 并行：真正的并行。&lt;/li&gt;
-  &lt;li&gt;抽象： 抽象的使用是计算机科学中最为重要的概念之一，因为，程序员无需了解它内部的工作变可以使用这些代码。在处理器中，指令集结构提供了对实际处理器硬件的抽象。机器代码程序表现的好像是运行在一个一次执行一条指令的处理器上。底层的硬件币抽象描述的要复杂精细的多，它并行的执行多条指令，但又总是与那个简单有序的模型保持一致。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src="../../../../images/interface-a1bd7fad.png" alt="计算机抽象" /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;计算机系统中一个重大的主题就是  提供不同层次的抽象表示，来 隐藏实际实现的复杂性&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id="信息的表示和处理"&gt;信息的表示和处理&lt;/h2&gt;
-
-&lt;p&gt;因为只是介绍了二进制、无符号数、有符号数、以及小数的表示方法， 计算机教程中都有介绍，所以省略不写了。只是简单的摘录重要的。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;在相同长度的无符号和有符号整数之间 进行强制类型转换时候，大多数C语言实现遵循 原则是 底层的位模式不变。而是改变位的解释方法。&lt;/li&gt;
-  &lt;li&gt;编码的存储长度有限。可能导致数值溢出。需要非常注意。&lt;/li&gt;
-  &lt;li&gt;整数和浮点数的表示方法，有所区别，导致， 整数可以进行移位、结合等优化方法，但是浮点数则不行，如 x * y * z 不等于 y * z * x 需要注意&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="程序的机器级别表示"&gt;程序的机器级别表示&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;精通细节是理解更深和更基本概念的先决条件， 所以魔鬼隐藏在细节之中。&lt;/strong&gt;*&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;机器代码的产生过程
-    &lt;blockquote&gt;
-      &lt;p&gt;机器代码， 用字节序列编码低级的操作，包括处理数据、管理存储器、读写存储设备上的数据、以及利用网络通信。 编译器机基于编程语言的原则、目标机器的指令和操作系统遵循的原则， 经过一系列的阶段产生机器代码。GCC C语言编译器以汇编代码的形式产生输出，然后调用 汇编器和链接器从而根据汇编代码生成可执行的机器代码。&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-  &lt;li&gt;抽象：
-    &lt;ul&gt;
-      &lt;li&gt;指令集体系结构（ISA）： 屏蔽了处理器的硬件实现，将指令的执行描述为，简单的顺序执行(处理器的硬件远远比描述的精细复杂)&lt;/li&gt;
-      &lt;li&gt;存储抽象： 抽象成一个大的字节数组，存储器的实现是，将多层硬件存储器和操作系统软件的结合&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;主要内容：
-    &lt;ul&gt;
-      &lt;li&gt;了解C语言中的控制结构， 比如if while switch 语句的实现方法。&lt;/li&gt;
-      &lt;li&gt;过程的实现， 包括程序如何维护一个运行栈来支持过程间数据和控制的传递以及局部变量的存储&lt;/li&gt;
-      &lt;li&gt;数组、结构、联合这样的数据结构的实现方法&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;指令集：
-    &lt;ul&gt;
-      &lt;li&gt;指令操作数&lt;/li&gt;
-      &lt;li&gt;源数据： 常数、寄存器、存储器&lt;/li&gt;
-      &lt;li&gt;类型： 立即数（常数）、寄存器、存储器&lt;/li&gt;
-      &lt;li&gt;C 语言的指针就是地址，间接引用指针就是将该指针放在一个寄存器中，然后在存储器引用中，使用这个寄存器， 局部变量通常保存在寄存器中。&lt;/li&gt;
-      &lt;li&gt;数据传送指令: mov&lt;/li&gt;
-      &lt;li&gt;算数逻辑操作： add， sub， imul， sal， shl， leal, imull, mull, idivl, divl&lt;/li&gt;
-      &lt;li&gt;控制：条件码，跳转指令，test, sete, sets, setg etc, cmp, jmp, &lt;strong&gt;条件码一般使用比较、算数、直接设定三种方式， 跳转指令则利用，条件码来进行跳转或者间接跳转&lt;/strong&gt;&lt;/li&gt;
-      &lt;li&gt;栈： push, pop&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;C 语言 控制结构 汇编表示
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;while, for &lt;strong&gt;一般是先将 for 循环转变为等价的 while 循环，while 循环 套用固定的汇编代码 模式。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   do
-    body-statement
-    while(test-expr)
-
-  loop:
-    body-statement
-    t = test-expr;
-    if(t)
-      goto loop;
-  done:
-
-
-  while(test-expr)
-    body-statement
-
-    t = test-expr;
-    if(!t)
-      goto done;
-  loop:
-    body-statement
-    t = test-expr;
-    if(t)
-      goto loop;
-  done:
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;switch 的实现&lt;br /&gt;
-使用跳转表 实现，来达到 执行时间跟 开关数量无关。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;条件传送指令&lt;br /&gt;
-因为现代处理器的流水线设计，导致在条件判断时候，才能确定下一条执行指令的位置，而导致按照顺序执行 准备的代码可能被抛弃，而对应的准备工作则变为了浪费。 而 条件传送 指令先计算出条件操作的两种结果，然后根据条件来选择满足的结果。从而避免了 因为跳转指令 带来的资源浪费。另一方面现代处理器都采用了 分支预测 逻辑，来试图猜测每条跳转指令是否被执行。（处理器设计试图达到 90%的正确率），正确的预测可以没有代价，然而额错误的预测则会带来严重恩惩罚，大约 20-40 的时钟周期的浪费，导致性能严重下降。&lt;br /&gt;
-举例： 例如简单 三目运算符， x &amp;gt; y ? x+y : x-y, 当两个表达式具有副作用的时候则不能应用。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;结构实现:
-    &lt;ul&gt;
-      &lt;li&gt;数组分配和访问： 基本实现为, 在存储器中分配一个连续的 T A[N], L * N 字节的连续大小的空间。 L为T类型的字节大小。而C语言中数字指针的实现（ptr ++ ）则实现为单纯的 地址运算。嵌套数组 则以 行优先、列优先 的方式进行展开。&lt;/li&gt;
-      &lt;li&gt;Struct 的实现， 变量为 首地址 + 偏移量。&lt;/li&gt;
-      &lt;li&gt;数据对齐： 计算机系统对 基本数据结构类型的大小做了限制，8的倍数等。这种 对齐限制，简化了 处理器和存储系统之间的硬件设计。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;过程实现&lt;br /&gt;
-  &lt;strong&gt;过程调用 包括数据传递（过程参数、返回值）、控制跳转。在进入是为过程的局部变量分配空间，并在退出时候释放这些空间。&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;简单指令:&lt;br /&gt;
-转移控制： call, leave, ret.&lt;br /&gt;
-call: 将返回地址入栈（call之后的下一条命令的地址） 2. 跳转到被调用的过程处。&lt;br /&gt;
-ret： 从栈中弹出地址，并跳转到此位置。需要将栈指针指向call指令存储的放回地址的位置（需要自己控制）&lt;br /&gt;
-leave:     movl %ebp, %esp; popl %ebp 为ret 返回做好准备工作&lt;/p&gt;
-
-        &lt;p&gt;如果使用整数，指针作为返回值的话，可以使用%eax传递。（其他的呢？）&lt;br /&gt;
-寄存器使用： 寄存器是计算中公用的资源。为了保证 被调用者不会覆盖调用者时候用的寄存器的数值。需要遵守规范。&lt;br /&gt;
-%eax, %edx, %ecx 调用者保存寄存器， %ebx, %esi, %edi 被调用者保存寄存器。 需要调用者与被调用者配合来保护共享的寄存器内容。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;实现过程:&lt;br /&gt;
- 函数调用过程的两个寄存器 %ebp(帧指针), %esp（栈指针） 帧指针保存当前过程的最高位置，%esp则向下增长， 用于分配必要的地址空间，调用函数参数等。 在调用时， 首先压入调用参数，返回地址， 压入%ebp, 调用后，将 %ebp 重置为当前的%esp， 标记确定当前的 函数的最高地址。返回时, movl %ebp, %esp; popl %ebp; ret; 恢复调用函数之前的样子。天生的具有递归属性。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;&lt;img src="../../../../images/call_stack-e95021fa.png" alt="计算机抽象" /&gt;&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;什么时候需要帧指针:
-        &lt;ul&gt;
-          &lt;li&gt;局部变量太多，不能都存在在寄存器中&lt;/li&gt;
-          &lt;li&gt;有些局部变量是数组或者结构&lt;/li&gt;
-          &lt;li&gt;函数用取地址操作符&amp;amp;，来计算一个局部变量的地址&lt;/li&gt;
-          &lt;li&gt;函数必须将栈上的某些参数传递到另一个函数&lt;/li&gt;
-          &lt;li&gt;在修改一个被调用者保存寄存器之前，需要保存它的状态&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;X86-64 中对于过程的 一些具体优化：
-        &lt;ul&gt;
-          &lt;li&gt;参数通过寄存器传递到过程，而不是在栈上，消除了在栈上存储和检索值的开销&lt;/li&gt;
-          &lt;li&gt;call 指令将一个64位的返回地址存储在栈上&lt;/li&gt;
-          &lt;li&gt;许多函数不需要栈帧，只有那些不能将所有局部变量存储在寄存器中的函数才需要在栈上分配空间&lt;/li&gt;
-          &lt;li&gt;&lt;strong&gt;没有帧指针，作为替代，对栈位置的引用相对于栈指针。&lt;/strong&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;C 语言 指针
-    &lt;ul&gt;
-      &lt;li&gt;每个指针都对应一个具体的类型： 指针类型不是机器代码中的一部分，C语言提供的一种抽象，地址运算，来避免寻址错误。&lt;/li&gt;
-      &lt;li&gt;每个指针都有一个值， 这个值是某个指定类型对象的地址。&lt;/li&gt;
-      &lt;li&gt;指针用&amp;amp; 运算符创建&lt;/li&gt;
-      &lt;li&gt;运算符 * 用于指针的 间接引用&lt;/li&gt;
-      &lt;li&gt;数组与指针紧密关联&lt;/li&gt;
-      &lt;li&gt;指针类型转换： 只改变类型，而不是值&lt;/li&gt;
-      &lt;li&gt;指针可以指向函数，指向 函数机器代码中的 第一条 指令地址&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;C语言跟汇编指令 的差别很大，在汇编语言中，各种数据类型之间的差距很小，程序以指令序列来表示。每条指令是一个单独的操作。编译器必须提供多条指令来产生和操作各种数据结构，来实现像条件、循环、和过程这样的控制结构、抽象机制。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id="处理器体系结构"&gt;处理器体系结构&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;一个处理器支持的指令和指令的字节编码称为它的 指令集体系结构 （ISA）ISA的编译器编写者和处理器设计人员之间提供了一个&lt;strong&gt;概念抽象层。现代处理器的实际工作方式可能跟ISA 隐含的计算模型大相径庭&lt;/strong&gt; –&amp;gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;目的
-    &lt;ul&gt;
-      &lt;li&gt;设计 Y86 处理器，首先是基于顺序的、功能正确的处理器设计&lt;/li&gt;
-      &lt;li&gt;创建一个流水线化的处理。处理器可以同时执行五条指令的不同阶段&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Y86 指令编码，
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;具体的描述了， 指令的机器字节表示。字节编码必须有唯一 的解释，任何一个字节序列要么是一个唯一的指令序列的编码，要么就不是一个合法的字节序列。 每条指令的第一个字节码都有唯一的代码和功能组合。给定这个字节，我们就可以决定所有的其他的附加字节的长度和含义。这个性质确保处理器可以无二义性的执行目标代码程序。反汇编程序的翻译解释，就是如此。&lt;/p&gt;
-
-        &lt;p&gt;&lt;img src="../../../../images/command_sample-8e624c4a.png" alt="编码示例" /&gt;&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;blockquote&gt;
-      &lt;p&gt;RISC（精简指令集） 和 CISC（复杂指令集）：简单的指令集形式可以产生更搞笑的代码， 实际上，许多加到指令集中的高级指令很难被编译器产生，所以也很少被利用。90年代，沉沦逐渐平息，无论是淡出的RISC，还是单纯的CISC都不如结合两者思想精华的设计。今天的RISC机器的指令表，已经有数百条指令，几乎与  精简指令集机器 的名字不相符了。那种将实现细节暴露给机器级程序的思想已经被证明是目光短浅的。（RISC做过这样的事情？）&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Y86 的实现：
-    &lt;ol&gt;
-      &lt;li&gt;拆分指令为阶段：
-        &lt;ul&gt;
-          &lt;li&gt;取指： 取指阶段从存储器读取指令字节，地址为程序计数器的值，从指令中 抽取出 指令的，icode， ifun， 操作的字符， rA， rB, 常数&lt;/li&gt;
-          &lt;li&gt;译码： 译码阶段从寄存器文件读入最多两个操作数，得到值， valA， valB等。&lt;/li&gt;
-          &lt;li&gt;执行： ALU运算，&lt;/li&gt;
-          &lt;li&gt;访存： 可以将数据写入存储器，或者从存储器读出数据。&lt;/li&gt;
-          &lt;li&gt;写回： 将结果写回到寄存器文件&lt;/li&gt;
-          &lt;li&gt;更新PC： 将PC设置成为下一条指令的地址&lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;blockquote&gt;
-          &lt;p&gt;在设计硬件时候， 一个非常简单而一致的结构是非常重要的。降低复杂度的一种方法是，让不同的指令共享尽量多的硬件，因为在硬件上复制逻辑快比用软件来处理困难的多。&lt;/p&gt;
-        &lt;/blockquote&gt;
-
-        &lt;p&gt;&lt;img src="../../../../images/command_flow-ef59c07b.png" alt="指令阶段" /&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;硬件结构 (SEQ)
-        &lt;ul&gt;
-          &lt;li&gt;组合电路从本质上讲，不存储任何信息，他们只是简单的响应输入信号。 产生等于输入的某个函数的输出。&lt;/li&gt;
-          &lt;li&gt;时钟寄存器： 存储单个位，或字，时钟信号控制寄存器加载输入值&lt;/li&gt;
-          &lt;li&gt;随进访问寄存器： 存储多个字，用地址来选择该读或者写。应用有：寄存器文件， %eax etc&lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;p&gt;&lt;img src="../../../../images/register-c8184b41.png" alt="指令阶段" /&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;流水线通用原理：
-        &lt;blockquote&gt;
-          &lt;p&gt;流水线化的一个重要特性就是增加了&lt;strong&gt;系统的吞吐量&lt;/strong&gt;（单位时间内服务的顾客的总数），代价是可能稍微的增加了延迟（服务一个用户所需的时间）。举例来说， 一个客户需要沙拉，在一个非流水线化的服务中，非常简单，只需要在沙拉阶段停留。但是在一个流水线化的服务中，则需要无谓的其他阶段的等待。&lt;/p&gt;
-        &lt;/blockquote&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;流水线的局限性： &lt;strong&gt;运行时钟的速率是由最慢的阶段的延迟限制的&lt;/strong&gt;。所以对于硬件设计者来说，将系统计算设计成 具有相同延迟的阶段 是一个严峻的挑战。&lt;/li&gt;
-          &lt;li&gt;预测下一个PC：
-            &lt;ol&gt;
-              &lt;li&gt;流水线的设计目的是 每个时钟周期 都发射一条指令，也就说每个时钟周期都有一条新的指令进入执行阶段并最终完成。&lt;/li&gt;
-              &lt;li&gt;要做到这一点就 需要在取出当前指令之后，马上确认下一条指令。&lt;/li&gt;
-              &lt;li&gt;如果取出的指令是条件分支指令，要到几个周期之后，才能确定是否要选择分支。(jxx)类似的是ret&lt;/li&gt;
-              &lt;li&gt;分支预测和处理预测错误&lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-          &lt;li&gt;流水线冒险： 将流水线引入一个带反馈的系统，当相邻指令间存在相关时会导致出现问题， 这些相关可能会导致流水线产生计算错误，称为&lt;strong&gt;冒险&lt;/strong&gt;。
-            &lt;ol&gt;
-              &lt;li&gt;数据相关: 下一条指令会用到这一条指令计算出的结果。(数据冒险)&lt;/li&gt;
-              &lt;li&gt;控制相关: 一条指令要确定下一条指令的位置。例如执行条件跳转。(控制冒险)&lt;br /&gt;
-  &lt;img src="../../../../images/flow_command-11e52d84.png" alt="指令阶段" /&gt;&lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-          &lt;li&gt;控制逻辑：
-            &lt;ol&gt;
-              &lt;li&gt;处理ret&lt;/li&gt;
-              &lt;li&gt;加载使用冒险&lt;/li&gt;
-              &lt;li&gt;预测错误的分支： 在分支逻辑发现不应该选择分支之前，分支目标处的几条指令已经进入到了流水线中，必须从流水线中舍弃这些操作&lt;/li&gt;
-              &lt;li&gt;当一条指令发生异常，需要禁止后面的指令更新 程序员可见状态，并且在异常指令到达写回阶段时，停止执行。&lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-          &lt;li&gt;通用的冒险简单解决办法：
-            &lt;ol&gt;
-              &lt;li&gt;暂停来避免冒险： 让一条指令停留在译码阶段，直到他需要的操作数的指令通过了写回阶段，这样来避免数据冒险。 虽然这一机制实现起来相当简单，但是得到的性能却并不好，一条指令更新一个寄存器，紧随其后的指令使用被更新过的寄存器的事情非常普遍，为了保证正确的执行，在其中不断的加入nop，导致流水线暂停长达三个周期，这严重的降低了 整体的吞度量。&lt;/li&gt;
-              &lt;li&gt;转发来避免冒险： 将结果直接从一个流水线阶段&lt;strong&gt;传到较早阶段&lt;/strong&gt;的技术称为 数据转发， 也就是较早的反馈到需要的阶段。比如 译码阶段。&lt;/li&gt;
-              &lt;li&gt;控制逻辑的特殊处理： 控制逻辑的优化，有些繁杂，需要结合 时钟周期、代码执行阶段来 具体分析。&lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-          &lt;li&gt;未考虑的方面：
-            &lt;ol&gt;
-              &lt;li&gt;多周期指令，一些复杂的操作 例如乘法、除法。一种方法是 同步到特殊单元来进行处理，流水线继续处理其他指令(并发执行)。但是&lt;strong&gt;不同的单元操作需要是同步&lt;/strong&gt;的，以避免 出错。&lt;/li&gt;
-              &lt;li&gt;存储器接口： 涉及到存储器的命令，具体来说是 是以存储器位置的虚拟地址来引用他们，这涉及到， 地址翻译（将虚拟地址翻译成物理地址），然后对存储器进行操作。在有些情况，被引用的存储器位置储存在硬盘上，硬件会产生一个 缺页 异常信号，这个异常会导致处理器调用操作系统的缺页代码，然后访问磁盘数据到高速缓存中，访问 磁盘就需要数百万个 时钟周期。所以其导致的性能下降是非常严重的。&lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;总结
-        &lt;ul&gt;
-          &lt;li&gt;ISA指令集结构，提供了代码到处理器具体实现的一层抽象。也就是一条指令执行完了，下一条指令执行。&lt;/li&gt;
-          &lt;li&gt;流水线化 通过让不同的阶段并行操作，改进了系统的吞度量性能，然而我们必须小心，以便流水线化 执行与程序的顺序执行得到相同的程序行为。&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="优化程序性能"&gt;优化程序性能&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;代码标准：
-    &lt;ul&gt;
-      &lt;li&gt;清晰简洁的代码，能够很容的理解代码。&lt;/li&gt;
-      &lt;li&gt;运行的快（比如实时处理视频帧，网络包）&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;如何编写高效率的代码：
-    &lt;ol&gt;
-      &lt;li&gt;组合正确的数据结构和算法，&lt;/li&gt;
-      &lt;li&gt;需要编写出编译器能够有效优化以转换成高效可执行代码的源代码。对于第二点，理解编译器的能力和局限性是非常重要的&lt;/li&gt;
-      &lt;li&gt;并行计算&lt;/li&gt;
-    &lt;/ol&gt;
-
-    &lt;blockquote&gt;
-      &lt;p&gt;在算法级别上， 几分钟就能编写一个插入排序，而搞笑的是排序算法程序可能需要一天或更长的时间 来实现和优化，在代码级上， 许多低级别的优化往往会降低程序的可读性和模块性，是的程序容易出错，并且难以修改和扩展，对于在性能重要的环境中反复执行的代码，进行广泛的优化比较合适。一个挑战就是尽管做了广泛的优化，但还是要维护代码一定程度的简洁和可读性。一个很有用的策略是，只写到编译器能够产生有效代码的程度就好了。&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-  &lt;li&gt;程序优化:
-    &lt;ul&gt;
-      &lt;li&gt;消除不必要的内容，让代码尽可能有效的执行期望的工作。这包括不必要的函数调用，条件测试，存储器引用。并且这些是不依赖于目标环境的（思想通用）&lt;/li&gt;
-      &lt;li&gt;利用处理器提供的指令级表示进行优化。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;编译器的局限性
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;   &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-   &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;func1&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt;
-     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-   &lt;span class="p"&gt;}&lt;/span&gt;
-   &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;func2&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt;
-     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-   &lt;span class="p"&gt;}&lt;/span&gt;
-
-   &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;counter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-   &lt;span class="n"&gt;in&lt;/span&gt; &lt;span class="n"&gt;func1&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt;
-     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;counter&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-   &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-    &lt;blockquote&gt;
-      &lt;p&gt;func1 函数具有副作用，他修改了程序状态的一部分，改变了整体程序的行为，大多数编译器不会试图判断一个函数是否具有副作用，所以，编译器会保持函数调用不变， 并不会按照人们预期的 进行函数调用优化&lt;/p&gt;
-    &lt;/blockquote&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;另一个示例&lt;br /&gt;
-消除循环的低效率代码； 例如for(i = 0; i&amp;lt; strlen(s); i++) 中，strlen的调用，我们可能会假想strlen函数只调用一次，然而编译器并不会这么做，他假定每次strlen的函数调用是不同的。从而在每次循环中多增加了一次函数调用。&lt;/p&gt;
-
-        &lt;blockquote&gt;
-          &lt;p&gt;示例说明一个问题： 一个看上去无足轻重的代码片段有隐藏的渐进低效率，通常人们会在一个小的数据集中进行测试和分析程序，对此程序的性能是足够的。不过， 当程序最终部署好以后，过程完全可能应用在一个100万个字符串上。突然，这段无危险的代码变成了程序的主要性能瓶颈。大型编程项目中出现这样的问题的故事比比皆是。一个有经验的程序员工作的一部分就是避免引入这样的渐进低效率。&lt;br /&gt;
-  这个优化是常见的一类优化例子： 代码移动， 这类优化包括识别要执行的多次但是计算结果不会改变的计算。因而可以将计算移动到代码前面不会被多次求值的部分，编译器会试图进行代码移动，他们不能够发现一个函数是否会有副作用，因而假设函数会有副作用。所以，程序员经常需要显示的完成代码移动。&lt;/p&gt;
-        &lt;/blockquote&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;手动优化的几个建议：
-    &lt;ul&gt;
-      &lt;li&gt;减少过程调用： 一个纯粹主义者可能会说这种变换严重损害了程序的模块性。比较实际的程序员会争辩说 这种变换是获得高性能结果的必要步骤。对于性能至关重要的应用来说。为了速度，经常必要的损害一些功能模块性和抽象性，为了防止以后修改代码，添加一些文档是很明智的，说明采用了那些变换以及导致这些变换的假设。&lt;/li&gt;
-      &lt;li&gt;消除不必要的存储器引用&lt;/li&gt;
-      &lt;li&gt;循环展开： 一种程序变换， 通过增加每次迭代计算的元素数量，减少循环的迭代次数，循环展开能够从两方面改善程序的性能。 1. 减少 不直接有助于程序结果 的操作的数目， 例如&lt;strong&gt;循环索引计算和条件分支&lt;/strong&gt; 2. 提供了一些方法，有助于减少整个计算中关键路径上的操作数量。&lt;/li&gt;
-      &lt;li&gt;提高并行性: &lt;strong&gt;程序是受运算单元的延迟限制的。执行加法和乘法的功能单元 是完全流水线化的&lt;/strong&gt;。这意味着他们可以每个时钟周期开始一个新操作。代码不能利用这种能力。即使是使用循环展开也不能，这是因为我们将积累值放在一个单独的变量acc中，在前面的计算完成之前，都不能计算acc的新值。打破这种顺序关系是问题的关键。1， 多个累积变量。 2. 重新结合变换。减少计算中的关键路径上的操作数量。通过更好地利用功能单元的流水线能力得到更好点性能，大多数编译器不会对浮点数做重新结合，因为这些运算是不符合结合律的。通常我们发现， 循环展开和并行的积累在多个值，是提高程序性能的更可靠的方法。&lt;/li&gt;
-      &lt;li&gt;分支预测和预测错误的处罚： 书写适合用条件传送实现的代码。分支预测错误，会招致严重的处罚&lt;/li&gt;
-      &lt;li&gt;存储器性能： 只考虑所有的数据都存放在高速缓存中的情况。（在下一章节中，进行详细的介绍）&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;对循环展开和多个累计变量，重新结合变化的代码示例
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;   &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;combine4&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vect_ptr&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data_t&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dest&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-   &lt;span class="p"&gt;{&lt;/span&gt;
-     &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-     &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;vect_length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-     &lt;span class="n"&gt;data_t&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_vec_start&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-     &lt;span class="n"&gt;data_t&lt;/span&gt; &lt;span class="n"&gt;acc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-     &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-       &lt;span class="n"&gt;acc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;acc&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-     &lt;span class="p"&gt;}&lt;/span&gt;
-     &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dest&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;acc&lt;/span&gt;
-   &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;&lt;img src="../../../../images/combine4-c7b62e6a.png" alt="combine 4" /&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;   &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;combine5&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vec_ptr&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data_r&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dest&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-   &lt;span class="p"&gt;{&lt;/span&gt;
-     &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-     &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;vect_length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-     &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;limit&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-     &lt;span class="n"&gt;data_t&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_vec_start&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-     &lt;span class="n"&gt;data_t&lt;/span&gt; &lt;span class="n"&gt;acc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-     &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;limit&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;+=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-       &lt;span class="n"&gt;acc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;acc&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-     &lt;span class="p"&gt;}&lt;/span&gt;
-
-     &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-       &lt;span class="n"&gt;acc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;acc&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-     &lt;span class="p"&gt;}&lt;/span&gt;
-     &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dest&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="n"&gt;acc&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-   &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;&lt;img src="../../../../images/combine5-4dd0d808.png" alt="combine 5" /&gt;&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;   &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;combine6&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vec_ptr&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data_r&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dest&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-   &lt;span class="p"&gt;{&lt;/span&gt;
-     &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-     &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;vect_length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-     &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;limit&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-     &lt;span class="n"&gt;data_t&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_vec_start&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-     &lt;span class="n"&gt;data_t&lt;/span&gt; &lt;span class="n"&gt;acc0&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-     &lt;span class="n"&gt;data_t&lt;/span&gt; &lt;span class="n"&gt;acc1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-     &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;limit&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;+=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-       &lt;span class="n"&gt;acc0&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;acc0&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-       &lt;span class="n"&gt;acc1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;acc1&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-     &lt;span class="p"&gt;}&lt;/span&gt;
-
-     &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-       &lt;span class="n"&gt;acc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;acc0&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-     &lt;span class="p"&gt;}&lt;/span&gt;
-     &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dest&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="n"&gt;acc0&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;acc1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-   &lt;span class="p"&gt;}&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;&lt;img src="../../../../images/combine6-15034d94.png" alt="combine 6" /&gt;&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;   &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;combine7&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vec_ptr&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data_r&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dest&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-   &lt;span class="p"&gt;{&lt;/span&gt;
-     &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-     &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;vect_length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-     &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;limit&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-     &lt;span class="n"&gt;data_t&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_vec_start&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-     &lt;span class="n"&gt;data_t&lt;/span&gt; &lt;span class="n"&gt;acc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-     &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;limit&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;+=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-       &lt;span class="n"&gt;acc0&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;acc&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-     &lt;span class="p"&gt;}&lt;/span&gt;
-
-     &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-       &lt;span class="n"&gt;acc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;acc&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-     &lt;span class="p"&gt;}&lt;/span&gt;
-     &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dest&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="n"&gt;acc&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-   &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;```&lt;br /&gt;
- &lt;img src="../../../../images/combine7-011509b3.png" alt="combine 7" /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;总结 优化程序效率的层次以及方法：
-    &lt;ul&gt;
-      &lt;li&gt;高级设计： 选择恰当的算法和数据结构，避免使用那些会渐进的产生糟糕的性能的算法和编码技术&lt;/li&gt;
-      &lt;li&gt;基本编码原则：避免限制优化的因素
-        &lt;ol&gt;
-          &lt;li&gt;消除连续的函数调用。在可能时，可以牺牲模块性来获得更大的效率&lt;/li&gt;
-          &lt;li&gt;消除不必要的存储器引用： 引入临时变量来存储结果，只在 最后的时候，将结果存放到数组变量、全局变量中&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;低级优化
-        &lt;ol&gt;
-          &lt;li&gt;展开循环&lt;/li&gt;
-          &lt;li&gt;多个累积变量 和重新结合的技术，找到方法提高指令级别的并行（利用指令的流水线化）&lt;/li&gt;
-          &lt;li&gt;用功能的风格重新条件操作，使编译器采用条件数据传送。&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;profiling
-        &lt;blockquote&gt;
-          &lt;p&gt;警惕在优化效率时候引入错误，引入新变量，改变循环边界 使得代码整体上更为复杂，很容易导致错误，需要测试来保证优化代码的正确性。&lt;/p&gt;
-        &lt;/blockquote&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="存储器层次结构"&gt;存储器层次结构&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;认识存储器系统
-    &lt;ul&gt;
-      &lt;li&gt;存储器系统: 是一个&lt;strong&gt;具有不同容器、成本和访问时间&lt;/strong&gt;的存储设备的&lt;strong&gt;层次结构&lt;/strong&gt;，CPU寄存器保存最常用的数据，高速缓冲区作为一部分存储在相对慢速的主存储器中的数据和指令的缓冲区， 主存暂时存放存储在容量较大、慢速的磁盘上的数据，而磁盘常常作为存储在通过网络连接的其他机器的磁盘上的数据的缓冲区。&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;存储器层次结构&lt;/strong&gt;: 对应用程序的性能有着巨大的影响，CPU寄存器中的数据在0个周期可以访问，在高速缓冲中1-30个周期，主存中50-200个周期，如果存储在磁盘上，大概需要 几千万个周期。&lt;/li&gt;
-      &lt;li&gt;存储器层次结构是可行的，一个编写良好的程序倾向于频繁的访问某一个层次上的存储设备。存储器实现的整体效果是，其成本与层次结构底层最便宜的存储设备相当。 但是却以最接近于层次结构顶部存储设备的高速率向程序提供数据。&lt;/li&gt;
-      &lt;li&gt;局部性： 一个计算机程序的基本属性。具有良好局部性的程序倾向于一次又一次的访问相同的数据项集合。或是倾向于访问邻近的数据项集合。具有良好局部性的程序比局部程序差的程序更倾向于访问更高层次的数据项，其运行速度也可以相差20倍。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;存储技术：
-    &lt;ul&gt;
-      &lt;li&gt;静态RAM： SRAM， 双稳态特性。&lt;/li&gt;
-      &lt;li&gt;动态RAM：DRAM， DRAM 存储器单元对干扰非常敏感，暴露在光线之下会导致电容电压的改变，数据照相机摄像机中的传感器本质就是DRAM，DDR(2 位), DDR2(4位), DDR3(8位)双倍数据速率同步DRAM， (Double Data-rate Synchronous)&lt;/li&gt;
-      &lt;li&gt;总线： 数据通过总线 共享电子电路在处理器和DRAM主存之间来来回回，每次CPU和主存之间的数据传送都是通过一系列步骤来完成的。这些步骤通过总线事务。总线是一组并行的导线， 能携带地址、数据、控制信号。控制总线携带的信号会同步事务，并区分当前正在被执行的事务类型。例如， 当前得儿事务是主存，还是磁盘，以及其他磁盘设备，信息是地址，还是数据，事务是读还是写。&lt;/li&gt;
-      &lt;li&gt;总线接口 — I/O桥 —— 主存， I/O桥将系统总线的信号翻译成存储器总线的电子信号。&lt;/li&gt;
-      &lt;li&gt;磁盘存储， 画图&lt;/li&gt;
-      &lt;li&gt;固态硬盘（Solid State Disk SSD） ssd 的性能特性， 顺序读和写性能相当，顺序℃比顺序写稍微快一点，但是按照随机顺序访问逻辑快时， 写比读慢一个数量级。一个闪存是由B个块的序列组成。每个块有P页组成，通常页的大小是512-4Kb， 块是32-128页组成的。树蕨是以页单位读写的。只有一页所属的真个块被擦除之后，才能写这一页，不过一旦一个块被擦除了，块中每一个都可以不需要在进行擦除就可以写了，大约在100000次重复写之后，块就会损坏。速记写慢的原因： 1. 擦出块需要相对较长的时间，1ms级别，比访问页所需时间要高出一个数量级，2. 如果写操作试图修改一个包含已经有数据的页，那么这个块中所有有用数据的页都必须拷贝到一个新块，才能进行对页p的写。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;局部性：&lt;br /&gt;
-  一个编写良好的程序具有良好的局部性， 他倾向于引用邻近其他最近引用过的数据项的数据，或者最近应用过的数据项，这种倾向性被称为局部性原理。1. 时间局部性， 2. 空间局部性
-    &lt;ul&gt;
-      &lt;li&gt;时间局部性： 被引用一次的存储器位置很可能在不远的将来再被多次引用。&lt;/li&gt;
-      &lt;li&gt;空间局部性： 一个存储器位置被引用了，那么程序很可能在不远的将来引用附近的一个存储位置&lt;/li&gt;
-    &lt;/ul&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;   &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;sumec&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-   &lt;span class="p"&gt;{&lt;/span&gt;
-     &lt;span class="kt"&gt;int&lt;/span&gt;  &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sum&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-     &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-     &lt;span class="p"&gt;{&lt;/span&gt;
-         &lt;span class="n"&gt;sum&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-     &lt;span class="p"&gt;}&lt;/span&gt;
-     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-   &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;空间局部性很好， 时间局部性很差, 在一个连续的向量模式中，每隔k个元素进行访问， 就被称为步长为k的引用模式，一般而言，随着步长的增加， 空间局部性下降。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;存储器层次结构&lt;br /&gt;
-  图片
-    &lt;ul&gt;
-      &lt;li&gt;缓存命中：&lt;/li&gt;
-      &lt;li&gt;缓存不命中：&lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;ul&gt;
-      &lt;li&gt;第k层的缓存从第k+1缓存中 取出包含的那个块，如果k层的缓存已经满了的话，就需要覆盖现存的一个块。 成为替换或驱逐这个块，倍驱逐的这个块儿，称为 牺牲块，决定该替换那个块是有缓存的替换策略来控制的。比如随机替换策略和最近最少被使用的（LRU）替换策略&lt;/li&gt;
-      &lt;li&gt;缓存不命中的种类： 冷缓存： 一个空的缓存，他是短暂的事件，不会在反复访问存储器是的缓存暖身之后的稳定状态中出现。2. 只要发生了不命中，k层的缓存就必须执行某个放置策略，确定它从第k+1层中的数据放在哪里。&lt;/li&gt;
-      &lt;li&gt;冲突不命中： 被引用的数据对象，映射到同一个缓存块，缓存会一直不命中
-        &lt;ul&gt;
-          &lt;li&gt;容量不命中： 一个嵌套的循环可能会反复的访问同一个数组的元素，这个块的集合称为这个阶段的工作集，当工作集的大小超过了缓存的大小，就会发生 容量不命中的&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="链接"&gt;链接&lt;/h2&gt;
-
-&lt;p&gt;TODO&lt;/p&gt;
-
-&lt;p&gt;链接 是将各种代码和数据部分收集起来并组合成为一个单一文件的过程，链接可以执行于 编译时（compile time 也就是在源代码被翻译成机器代码时）也可以执行于加载时（load time在程序倍加载器加载到存储器并运行时）甚至执行于运行时（run time 有应用程序来执行）&lt;br /&gt;
-链接器 在软件开发中，扮演者一个关键的角色，因为他们使得的分离编译 成为可能，我们不用将一个大型的应用程序组织为一个巨大的源文件，而是可以把她分解为更小，更好管理的模块，可以独立的修改和编译这些模块。当我们修改一个文件时候，简单的编译她，并重新连接应用，而不必重新编译整个项目。&lt;/p&gt;
-
-&lt;p&gt;链接器产生的可执行文件在重要的系统功能中扮演者重要的角色，比如 加载和运行程序，虚拟存储器，分页，和存储器映射。随着共享库和动态连接在 操作系统中的重要性加强，链接成为一个复杂的过程。linux elf目标文件格式。&lt;/p&gt;
-
-&lt;h2 id="异常控制流"&gt;异常控制流&lt;/h2&gt;
-
-&lt;blockquote&gt;
-
-  &lt;p&gt;异常控制流(ExceptI/Onal Control Flow ECF): 异常控制流发生在计算机的各个层次。&lt;br /&gt;
-  硬件层: 硬件检测的事情会触发控制突然转移到异常处理程序&lt;br /&gt;
-  操作系统层: 内核通过 上下文切换 将控制从一个用户进程转移到另一个用户进程&lt;br /&gt;
-  应用层面: 一个进程可以通过发送信号到另一个进程， 而接受者将转移到信号处理程序&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;异常控制流：
-    &lt;ul&gt;
-      &lt;li&gt;是操作系统用来实现I/O、进程、和虚拟存储器的基本机制&lt;/li&gt;
-      &lt;li&gt;是应用程序与操作系统交互的方式： 应用程序通过一个陷阱（trap）或 系统调用(system call) 的形式，向操作系统请求服务。&lt;/li&gt;
-      &lt;li&gt;操作系统为程序提供了强大的ECF机制，创建进程、等待进程、通知其他进程系统中的异常事件等&lt;/li&gt;
-      &lt;li&gt;ECF是计算机实现并发的基本机制&lt;/li&gt;
-      &lt;li&gt;提供程序方面的异常机制，try， catch。 setjmp, longjmp）&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;异常：
-    &lt;ul&gt;
-      &lt;li&gt;异常是异常控制流的一种形式。&lt;/li&gt;
-      &lt;li&gt;实现： 硬件 + 操作系统， 随着系统不同而不同，但是基本思想相同，&lt;/li&gt;
-      &lt;li&gt;控制流中的突变， 用来响应处理器状态中的某些变化。也称为事件， 比如： 发生虚拟存储器缺页，算数溢出， I/O请求完成等。&lt;/li&gt;
-      &lt;li&gt;事件放生时候， 处理器通过 异常表(exceptI/On table， 间接跳转表) 来调用 操作系统子程序—异常处理程序（一个专门设计来处理这种事件的操作系统子程序）&lt;/li&gt;
-      &lt;li&gt;异常处理类似于函数调用， 但是不同于函数调用：
-        &lt;ol&gt;
-          &lt;li&gt;异常处理程序运行在内核模式下，这意味着他们对所有的系统资源都有完全的访问权限&lt;/li&gt;
-          &lt;li&gt;如果控制从一个用户态转到内核态，那么所有的项目都需要压到内核栈中&lt;/li&gt;
-          &lt;li&gt;过程调用， 在跳转到程序之前，处理器将返回地址压倒栈中， 异常：返回地址要么是当前指令，要么是 下一台指令。&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;异常类型： 中断（interrupt）, 陷阱（trap）， 故障（fault）终止（abort）
-    &lt;ul&gt;
-      &lt;li&gt;中断： 来自处理器外部的I/O设备的信号的结果， 异步， 硬件中断的异常处理程序 通常称为 中断处理程序。&lt;/li&gt;
-      &lt;li&gt;陷阱： 有意的异常，是执行一条指令的结果。陷阱的重要用途是： &lt;strong&gt;在用户程序和内核之间提供一个像过程一样的接口，叫系统调用&lt;/strong&gt;。 从程序员的角度来看， 系统调用和函数调用是一样的，然而其中的内部实现是非常不同的。 普通的函数运行在用户模式中， 用户模式限制了函数可以执行的指令的类型&lt;/li&gt;
-      &lt;li&gt;故障： 由错误引起的，故障发生时， 处理器将控制转移到故障处理程序，如果处理程序能够处理修正错误，他将控制权转移到引起故障的指令，从而重新执行。否则，处理程序返回到内核中的abort函数，从而终止程序。 一个经典的故障示例是缺页异常， 指令引用的一个虚拟地址，与该虚拟地址关联的物理页面不在 存储器中，从而发生故障。缺页处理程序 从磁盘加载到存储器中之后，将控制权转交到 程序指令， 程序执行再次执行，就不会发生故障了。&lt;/li&gt;
-      &lt;li&gt;终止： 是不可以修复的致命错误造成的结果， 通常是一些硬件错误。终止处理程序，不会将控制返回到应用程序，而是终止应用程序。&lt;/li&gt;
-      &lt;li&gt;linux 中的异常示例：
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;linux 故障和终止：&lt;/p&gt;
-
-            &lt;table&gt;
-              &lt;thead&gt;
-                &lt;tr&gt;
-                  &lt;th style="text-align: left"&gt;异常号&lt;/th&gt;
-                  &lt;th style="text-align: left"&gt;描述&lt;/th&gt;
-                  &lt;th style="text-align: left"&gt;异常类型&lt;/th&gt;
-                &lt;/tr&gt;
-              &lt;/thead&gt;
-              &lt;tbody&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;0&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;除法错误&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;故障&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;13&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;一般保护故障&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;故障&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;14&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;缺页&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;故障&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;18&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;机器检查&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;终止&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;32-127&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;操作系统定义的异常&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;中断或陷阱&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;128&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;系统调用&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;陷阱&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;129-255&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;操作系统定义的异常&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;中断或陷阱&lt;/td&gt;
-                &lt;/tr&gt;
-              &lt;/tbody&gt;
-            &lt;/table&gt;
-          &lt;/li&gt;
-          &lt;li&gt;linux 系统调用： 每个系统调用都有一个唯一的整数号， 对应于一个到内核中的跳转表的偏移量。&lt;/li&gt;
-          &lt;li&gt;系统调用是通过 指令 int 0x80 调用的， 参数传递都是通过寄存器而不是栈传递的。 %eax为系统调用号， 寄存器%ebx, %ecx …为调用参数， 标准C函数库提供了包装函数， 这些包装函数将参数打包在一起， 以适当系统调用号陷入内核。然后将系统调用的返回状态传递给调用函数，完成包装任务。&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;进程：
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;一个执行中的程序的示例。 系统中的每个程序都是运行在某个进程的上下文中的。上下文是程序正确运行所需要的状态的组成&lt;/strong&gt;。包括， 程序代码和数据，栈，通用寄存器的内容，程序计数器等&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;异常是允许 操作系统提供进程的概念所需要的基本构造块&lt;/strong&gt;。&lt;/li&gt;
-      &lt;li&gt;在外壳程序中输入可执行目标文件的名字， 外壳会创建一个新的进程，然后在这个进程的上下文中 运行这个可执行目标文件。&lt;/li&gt;
-      &lt;li&gt;进程提供的关键抽象有：
-        &lt;ol&gt;
-          &lt;li&gt;一个独立的逻辑控制流，提供一个独占使用处理器的假象&lt;/li&gt;
-          &lt;li&gt;一个私有的地址空间，提供一个独占存储系统的假象&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;并发与并行:
-        &lt;ol&gt;
-          &lt;li&gt;逻辑控制流：因为进程提供每个程序单独使用处理器的假象。所以程序计数器（PC）的值的序列叫做 逻辑控制流&lt;/li&gt;
-          &lt;li&gt;并发: 并发流(concurrent)一个逻辑控制流 的执行时间 与另一个逻辑控制流重叠, 称为并发的执行。多个流并发的执行称为并发，&lt;/li&gt;
-          &lt;li&gt;一个进程与其他进程轮流运行成为多任务&lt;/li&gt;
-          &lt;li&gt;并行流（parallel follow） 是并发流的一个真子集， 如果两个流并发的运行在不同的处理器核或者计算机上，我们称为并行流，&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;私有地址空间： n为地址的机器上， 0,1,2……z**n - 1， 地址空间顶部是保留给内核的，该部分是内核在代表进程执行指令时使用的代码，数据和栈&lt;/li&gt;
-      &lt;li&gt;用户模式、内核模式:
-        &lt;ol&gt;
-          &lt;li&gt;为了提供一个无懈可击的进程抽象，处理器提供一种机制，来限制一个应用可以执行的指令以及他可以访问的地址空间。( 为了一个无懈可击的抽象？还是因为安全， 比如内核模式应该可以对用户模式，掩盖 地址抽象的细节，而不是，让用户破坏这种抽象)&lt;/li&gt;
-          &lt;li&gt;一般是处理器通过一个寄存器中的一个模式位(mode bit)来提供这种功能的。该寄存器 描述了进程当前的特权， 设定了位模式， 进程在内核模式，反之在用户模式&lt;/li&gt;
-          &lt;li&gt;内核模式: 一个运行在内核模式中的程序可以执行指令集中的任何指令，并可以访问系统中的任何存储位置。&lt;/li&gt;
-          &lt;li&gt;用户模式:  不允许执行执行特权命令，比如：停止处理器， 发起一个I/O操作。&lt;/li&gt;
-          &lt;li&gt;&lt;strong&gt;进程进入到内核模式的唯一方法是：通过，中断、故障、或者陷入（系统调用）来进入到内核模式&lt;/strong&gt;。&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;上下文切换：
-        &lt;ul&gt;
-          &lt;li&gt;上下文切换: 操作系统通过这种&lt;strong&gt;较高层次的异常控制流&lt;/strong&gt;来实现多任务。上下文切换机制是建立在 中断，陷阱，故障，终止 较低异常层次机制之上的。&lt;/li&gt;
-          &lt;li&gt;上下文: 就是内核重启一个被抢占进程所需要的数据状态。包括，寄存器，程序计数器，内核栈，和各种数据结构等。内核为每一个进程提供一个上下文。&lt;/li&gt;
-          &lt;li&gt;调度: 在进程执行的某些时刻（那些？），内核可以决定抢占 当前进程，并重新开始一个进程， 这种决定叫做调度。有内核中成为调度器的代码处理。在内核调度了一个进程运行后，她就抢占了当前进程，使用上下文切换机制来将控制转移到新的进程。
-            &lt;ol&gt;
-              &lt;li&gt;保存当前进程的上下文&lt;/li&gt;
-              &lt;li&gt;恢复某个先前被抢占的进程被保存的上下文&lt;/li&gt;
-              &lt;li&gt;将控制转移到新的进程&lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-          &lt;li&gt;上下文切换的几个简单示例：
-            &lt;ul&gt;
-              &lt;li&gt;&lt;strong&gt;中断(任何时候): 所有系统都有某种产生周期性定时器中断的机制，典型的为1毫秒， 每次发生定时器中断时，内核就能够判断 当前进程是否执行了足够的时间，并切换到一个新的进程。(操作系统赖以生存的控制机制)&lt;/strong&gt;&lt;/li&gt;
-              &lt;li&gt;阻塞：系统调用时候，因为等待某个事件而发生阻塞，可能发生上下文切换。比如 read 系统请求磁盘访问，内核可能进行上下文切换， 来执行其他操作，而不是等待I/O, Sleep 系统调用， 显示的请求让调用进程休眠。&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;进程控制：
-    &lt;ol&gt;
-      &lt;li&gt;进程创建和终止： 从程序员的角度来看 进程总是处于3个状态： 运行， 停止，终止，
-        &lt;ul&gt;
-          &lt;li&gt;停止： 进程的执行被挂起。 且不会被调度， 当收到SIGSTOP, SIGTSTP, SIDTTIN, SIGTTOUT 进程就会停止，并保持停止直到它收到一个SIGCONT 程序再次执行&lt;/li&gt;
-          &lt;li&gt;终止： 进程永远停止。原因有： 1. 收到一格信号，该信号默认行为是终止进程 2. 从主程序返回 3. 调用exit函数&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;fork
-        &lt;ul&gt;
-          &lt;li&gt;子进程得到与父进程用户级虚拟地址空间相同的 一份拷贝， 文本，数据，bss，堆等。 子进程还获得父进程任何打开文件描述符的相同的拷贝。 这意味子进程可以读写父进程中打开的任何文件。最大的区别在于PID。&lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;fork函数 只被调用一次， 却返回两次。在父进程中 fork返回子进程的PID， 在子进程中，返回0，因为子进程的PID为非零，所以提供了一种明确的方法，来分辨程序在 父进程中，还是子进程中执行。&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;  &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-  &lt;span class="p"&gt;{&lt;/span&gt;
-      &lt;span class="n"&gt;pid_t&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-      &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-      &lt;span class="n"&gt;pid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Fork&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pid&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"child :x %d&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-        &lt;span class="n"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-      &lt;span class="p"&gt;}&lt;/span&gt;
-      &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"parent： x %d&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-      &lt;span class="n"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;          &lt;/li&gt;
-          &lt;li&gt;调用一次返回两次： fork函数被父进程 调用一次， 但是却返回两次， 一次返回到父进程中，一次返回到子进程中，对于只fork一次的程序来说，这还是相当简单直接的，但是对于多次fork的程序来说，需要谨慎的分析&lt;/li&gt;
-          &lt;li&gt;并发执行：父进程和子进程是并发运行的独立进程。也就说不能够假定 进程的执行顺序。&lt;/li&gt;
-          &lt;li&gt;相同的但是独立的地址空间&lt;/li&gt;
-          &lt;li&gt;共享文件：子进程继承了父进程的所有的打开文件。&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;回收子进程：wait/waitpid
-        &lt;ul&gt;
-          &lt;li&gt;回收： 当一个进程终止时，内核并不是把它从系统中清除出去，而是保持终止状态，直到父进程回收。当父进程回收已经终止的子进程时，内核将子进程的退出状态传递给父进程。然后抛弃已终止的进程。改进程就不存在了，&lt;/li&gt;
-          &lt;li&gt;僵死进程: 一个终止了但是还没有被回收的进程,&lt;/li&gt;
-          &lt;li&gt;僵死进城处理： 父进程还没有回收僵死进程就退出了，那么内核会安排init进程来回收他们。init 进程PID 为1在系统初始化时候有内核创建。&lt;/li&gt;
-          &lt;li&gt;waitpid 函数
-            &lt;ol&gt;
-              &lt;li&gt;waitpid(pid_t pid, int * status, int optins)&lt;/li&gt;
-              &lt;li&gt;pid &amp;gt; 0 等待单个pid， pic = -1， 等待 父进程的所有子进程。&lt;/li&gt;
-              &lt;li&gt;optI/Ons：
-                &lt;ul&gt;
-                  &lt;li&gt;WNOHANG: 等待集合中的任何子进程都还没有终止， 那么就立即返回, 默认行文是 挂起调用进程， 直到所有子进程终止，&lt;/li&gt;
-                  &lt;li&gt;WUNTRACED： 挂起调用进程， 直到 等待集合中一个进程变成 已终止或者被停止，返回， 返回的PID为引起返回的 进程PID， 默认行为：返回已经终止的子进程&lt;/li&gt;
-                  &lt;li&gt;WHOHANG | WUNTRACED, 立即返回， 如果等待集合中没有任何子进程被停止或已终止， 那么返回值为0， 或者返回那个停止的终止的进程PPID&lt;/li&gt;
-                &lt;/ul&gt;
-              &lt;/li&gt;
-              &lt;li&gt;如果status参数非空，waitpid在status中放置 关于导致返回子进程的状态信息。下面是解释status参数的几个宏
-                &lt;ul&gt;
-                  &lt;li&gt;WIFEXITED(status): 如果子进程通过调用exit或者一个返回(return) 正常终止。就返回真&lt;/li&gt;
-                  &lt;li&gt;WEXITSTATUS(status): 返回一个正常终止的子进程的退出状态，只有在WIFEXITED 返回为真时了， 才会定义这个状态。&lt;/li&gt;
-                  &lt;li&gt;WIFSIGNALED(status): 如果子进程是因为一个未被捕获的信号终止的。那么返回真&lt;/li&gt;
-                  &lt;li&gt;WTERMSIG(status): 返回导致子进程终止的信号的编码， 只有咋WIFESIGNailed为真 才定义这个状态&lt;/li&gt;
-                  &lt;li&gt;WIFSTOPPED(status): 如果引起返回的子进程当前是被停止的。那么就返回真。&lt;/li&gt;
-                  &lt;li&gt;WSTOPSIG(status): 返回引起子进程停止的信号的数量，只有 wifstopped 返回为真时，才定义这个状态。&lt;/li&gt;
-                &lt;/ul&gt;
-              &lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-          &lt;li&gt;wait 函数是waitpid 的 简单版本， wait(int * status) === waitpid(-1, &amp;amp; status, 0)&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;让进程休眠
-        &lt;ul&gt;
-          &lt;li&gt;sleep：休眠一定秒数&lt;/li&gt;
-          &lt;li&gt;pause：函数让调用进程休眠，直到该进程收到一个信号&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;加载并运行程序 execve:
-        &lt;ol&gt;
-          &lt;li&gt;execve(char * filename, char * argsv[], char * envp[])&lt;/li&gt;
-          &lt;li&gt;函数加载并运行可执行目标文件filename, 并传递参数argv, 环境变量 envp execve 调用一次 并不返回 fork函数在新的子进程中运行相同的程序，新的子进程是父进程的一个复制品。 execve 函数在当前进程的上下文中加载并运行一个新的程序，他会覆盖当前进程的地址空间。但是并没有创建一个新进程。新进程依然有相同的PID， 已打开的文件描述符&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;信号
-    &lt;ul&gt;
-      &lt;li&gt;信号概念
-        &lt;ul&gt;
-          &lt;li&gt;更高层的软件异常形式。允许中断其他进程&lt;/li&gt;
-          &lt;li&gt;man 7 signal 得到信号列表&lt;/li&gt;
-          &lt;li&gt;每个信号类型都对应于 某种系统事件， 底层的硬件异常 是由内核异常处理程序处理的。正常情况下， 对用户进程是不可见的。信号提供了一种机制，来通知用户发生了这些异常。&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;发射信号 到接受者的过程 相关概念：
-        &lt;ol&gt;
-          &lt;li&gt;发送信号： 内核通过更新目的进程的上下文中的某个状态，来发送一个信号到目的进程，发射信号的原因有： 1. 内核检测到一个事件，通知进程， 2. 一个进程调用kill函数， 要求内核发送信号。&lt;/li&gt;
-          &lt;li&gt;接受信号： 当目的进程被内核强迫以某种形式对信号的发送做出反应时，反应有： 1. 忽略信号， 2. 终止 3. 执行信号处理程序的用户函数&lt;/li&gt;
-          &lt;li&gt;待处理信号：一个发出而没有被接受的信号，任何时刻， 一种类型至多只会有一个待处理信号。如果一个进程有一个类型为k的待处理信号，那么任何接下来的发送到进程的类型为k的信号，都会被简单的丢弃。&lt;/li&gt;
-          &lt;li&gt;阻塞信号： 一个进程可以设定阻塞一种类型的信号。可以被发送，但是不会被接受。&lt;/li&gt;
-          &lt;li&gt;实现： pending 位向量 维护待处理信号集合， blocked 位向量，维护被阻塞信号集合。传递类型为k的信号， pending 的k位 被标记， 接收了 清除标记。&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;发送信号
-        &lt;ol&gt;
-          &lt;li&gt;进程组： 提供了大量向进程发送信号的机制， 所有这些机制都是基于进程组的。每个进程都属于一个进程组，&lt;/li&gt;
-          &lt;li&gt;kill 程序发送信号&lt;/li&gt;
-          &lt;li&gt;键盘发送信号， 外壳程序 创建程序执行，ctrl-c 会发送一个SIGINT信号到 外壳， 外壳程序捕获到该信号，然后发送SIGINT 信号到这个前台进程中的每个进程。ctrl-z则会发送 SIGTSTP 信号&lt;/li&gt;
-          &lt;li&gt;kill 函数调用&lt;/li&gt;
-          &lt;li&gt;alarm 函数发送信号 SIGALRM 信号， 在sec 秒中发送信号&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;接受信号
-        &lt;ol&gt;
-          &lt;li&gt;当内核从一个异常处理程序中返回，准备将控制传递到进程p时，他会检查进程p的未被阻塞的待处理信号的集合。 如果这个集合不为空， 那么内核选择集合中的某个信号k， 并且强制p接受信号k， 触发进程的某个行为， 每个信号类型都有一个预订的默认行为如下：
-            &lt;ul&gt;
-              &lt;li&gt;进程终止&lt;/li&gt;
-              &lt;li&gt;进程终止并转存储器&lt;/li&gt;
-              &lt;li&gt;进程停止知道倍SIGCONT 信号重启&lt;/li&gt;
-              &lt;li&gt;进程忽略该信号&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;进程可以通过signal函数修改和信号相关联的默认行为， 唯一的例外是： SIGSTOP， SIGKILL他们的默认行为是不可以修改的。 signal(int signum, sighandler_t handler) 设置信号处理程序选项
-            &lt;ul&gt;
-              &lt;li&gt;如果handler 是SIG_IGN, 那么忽略类型为 signum 的信号&lt;/li&gt;
-              &lt;li&gt;如果handler 是SIG_DFL，那么类型为signum的信号行为修改未默认&lt;/li&gt;
-              &lt;li&gt;否则handler是用户定义的 信号处理程序地址，&lt;/li&gt;
-              &lt;li&gt;调用信号处理程序成为捕获信号， 执行信号处理程序为 处理信号。处理程序会调用会传递一个参数k，为信号类型， 因此， 同一个函数可以设定为处理多个信号处理程序&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;设定阻塞，和取消阻塞， sigismember(sigset_t * set, int signum)&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;信号处理问题：
-        &lt;ol&gt;
-          &lt;li&gt;待处理信号被阻塞： Unix信号处理程序通常会阻塞当前处理程序正在处理类型的待处理信号。如果一个进程捕获一个SIGINT信号，并运行处理程序，如果另外一个SIGINT 信号传递到这个进程， 那么这个SIGINT将变成待处理的，但是不会被接受，直到处理程序返回&lt;/li&gt;
-          &lt;li&gt;待处理信号不会排队等待，任意类型至多只有一个待处理信号&lt;/li&gt;
-          &lt;li&gt;&lt;strong&gt;系统调用可以被中断&lt;/strong&gt;，慢系统调用， read， wait， accept等会阻塞进程一段时间，某些系统中当捕获一个信号时，被中断的慢系统调用不会被继续而是返回错误&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;非本地跳转： 它将控制直接从一个函数转移到另一个当前正在执行的函数，而不需要经过正常的调用–返回序列。(setjump longjump, sigsetjmp, siglongjmp)
-        &lt;ul&gt;
-          &lt;li&gt;setjump 函数在env 缓冲区中保存当前调用环境&lt;/li&gt;
-          &lt;li&gt;longjmp 从env缓冲区中恢复调用环境，然后触发一个从最近一次初始化env的setjmp调用的返回，然后setjmp返回，并带有非零的返回值retval&lt;/li&gt;
-          &lt;li&gt;从深层嵌套函数调用中立刻返回&lt;/li&gt;
-          &lt;li&gt;信号处理程序分支到一个特殊的代码位置，而不是返回到倍信号到达中断了的指令位置&lt;/li&gt;
-          &lt;li&gt;C++， java提供的异常机制是较高层次的，是C语言的setjmp， longjmp更结构化的版本。&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;总结
-    &lt;ul&gt;
-      &lt;li&gt;异常控制流发生在计算机系统的个个层次，是计算机系统中提供并发的基本机制&lt;/li&gt;
-      &lt;li&gt;硬件层面， 异常是有处理器中的事件 触发的控制流突变。控制流传递给一个软件处理程序，止呕返回给被中断的控制流&lt;/li&gt;
-      &lt;li&gt;异常类型： 中断 故障 终止 陷阱&lt;/li&gt;
-      &lt;li&gt;在操作系统层面， 内核用ECF 提供进程的基本概念&lt;/li&gt;
-      &lt;li&gt;在应用层面， C语言使用分本地跳转来规避正常的调用、返回栈 规则(try catch 等的实现类似)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="虚拟存储器"&gt;虚拟存储器&lt;/h2&gt;
-&lt;p&gt;TODO&lt;/p&gt;
-
-&lt;h2 id="系统级-io"&gt;系统级 I/O&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;I/O 主要在主存和外部设备之间拷贝数据的过程， 输入操作是从I/O 设备拷贝数据到主存， 而输出操作是从主存拷贝数据到 I/O设备&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;I/O
-    &lt;ul&gt;
-      &lt;li&gt;是系统中不可或缺的一部分，经常会遇到I/O和其他系统概念循环依赖的情景：I/O 在进程的创建和执行扮演着关键角色，反过来，进程创建在不同进程间的文件共享中扮演关键角色。&lt;/li&gt;
-      &lt;li&gt;所有的I/O设备，如网络、磁盘、终端 都被模型化为文件。而所有的输入和输出都被当做对应的文件的读写操作。这种将设备优雅的映射为文件的方式，允许Unix内核引出一个简单的低级的应用接口，成为Unix I/O, 这使得所有的输入和输出都以统一、一致的方式来执行。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;操作
-    &lt;ul&gt;
-      &lt;li&gt;打开文件： 用程序通过 要求内核打开相应的文件，来访问一个I/O设备， 内核返回一个小的非负数的&lt;strong&gt;描述符&lt;/strong&gt;。后续的操作都通过这个描述符&lt;/li&gt;
-      &lt;li&gt;seek: 改变当前的文件位置, 对于每个打开的文件，内核保持着一个文件位置k，标志着从文件开头起始的字节偏移量。seek操作可以显示的设定位置&lt;/li&gt;
-      &lt;li&gt;读写文件： 读操作就从文件拷贝 n &amp;gt; 0个字节，k 为当前文件位置， m 为文件大小, k+n &amp;gt;=m 的操作，会触发一个end-of-file(EOF) 的条件。应用程序能够检测到这个条件， 在文件结尾处并没有明确的 “EOF” 符号。&lt;/li&gt;
-      &lt;li&gt;关闭文件： 当应用完成了文件的访问之后， 他通知内核关闭这个文件。内核释放文件打开时创建的数据结构，并将描述符恢复到可用的描述符池中。无论一个进程因为什么原因终止，内核都会关闭所有打开的文件并释放存储器资源。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;共享文件
-    &lt;ul&gt;
-      &lt;li&gt;描述符表(descriptor table)：
-        &lt;ol&gt;
-          &lt;li&gt;每个进程都拥有独立的描述符表&lt;/li&gt;
-          &lt;li&gt;描述符: 每个打开的描述符索引 文件表 中的一个表项&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;文件表(file table)：
-        &lt;ol&gt;
-          &lt;li&gt;所有的进程共享&lt;/li&gt;
-          &lt;li&gt;所有的打开的文件的集合组成的 文件表&lt;/li&gt;
-          &lt;li&gt;文件表项 包括当前的文件的位置、引用计数、以及一个指向 v-node 表中对应表项的指针&lt;/li&gt;
-          &lt;li&gt;关闭一个描述符会减少响应的文件的表 表项中的引用计数。为零时，内核会删除表项&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;v-node 表：
-        &lt;ol&gt;
-          &lt;li&gt;所有的进程共享&lt;/li&gt;
-          &lt;li&gt;包含文件的大多数信息。包含st_mode, st_size 等成员，&lt;/li&gt;
-          &lt;li&gt;todo， 补充文件元信息的数据结构&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;场景
-    &lt;ul&gt;
-      &lt;li&gt;打开同一个file 两次， 会产生， 两个文件表表项， 来标注两个文件不同的文件位置，引用计数等。&lt;/li&gt;
-      &lt;li&gt;fork： 子进程会copy 一个 父进程描述符表表项的副本，指向相同的 文件表表项。所以子进程跟父进程共享同一个文件位置，增加文件引用计数。&lt;br /&gt;
- &lt;img src="../../../../images/IO-53973330.png" alt="计算机抽象" /&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;总结
-    &lt;blockquote&gt;
-      &lt;p&gt;unix 提供了少量的系统级别函数， 他们允许应用程序打开、关闭、读和写文件、提取文件的元数据，以及执行I/O重定向。Unix内核使用三个相关的数据结构来表示打开的文件。描述符表项指向文件表表项， 文件表表项指向v-node 表项，每个进程都有自己的描述符表项，所有进程共享 文件表和v-node表。理解这些数据结构，利于，理解，fork， 已经I/O重定向的实现。标准I/O库是基于UnixI/O实现的，标准I/O更简单，优于unix I/O， 因为对标准I/O和网络文件一些相互不兼容的问题，Unix I/O 更适合网络应用程序&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="网络编程"&gt;网络编程&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;网络应用随处可见，web浏览器，email，wechat，有趣的是，所有的网络应用都是基于相同的基本编程模型，有着相似的整体逻辑结构， 并且依赖相同的编程接口。&lt;br /&gt;
-网络应用依赖于许多概念： 进程、信号、字节序列、存储器映射以及动态分配存储， 都扮演者重要的角色&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;套接字：
-    &lt;blockquote&gt;
-      &lt;p&gt;客户端和服务器 混合使用套接字接口函数和 Unix I/O函数来进行通讯，套接字函数典型的是作为会陷入内核的系统调用来实现。并调用各种内核模式和TCP/IP 函数&lt;/p&gt;
-    &lt;/blockquote&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;int socket(int domain, int type, int protocol)&lt;/li&gt;
-      &lt;li&gt;int connect(int sockfd, struct sockaddr, int addrlen): 客户端通过调用 connect 函数 建立服务端的连接， connect函数会阻塞，一直到成功建立连接，或是发生错误，如果成功， sockfd 描述符可以进行读写了， 并且得到连接套接字对(x:y, serv_addr,:serv_addr.sin_port) x表示客户端的ip地址，y表示临时窗口，他唯一确定了客户端主机上的进程&lt;/li&gt;
-      &lt;li&gt;bind(int sockfd, struct sockaddr * my_addr, int addrlen): bind函数告诉内核将my_addr中的服务器套接字地址和套接字描述符sockfd联系起来&lt;/li&gt;
-      &lt;li&gt;listen(int sockfd, int backlog): 服务器调用listen函数告诉内核， 描述符是被服务器而不是客户端使用的。listen函数将sockfd 从一个主动套接字转化为一个监听套接字（listening socket） 该套接字可以接受来自客户端的连接请求，backlog 表示内核在开始拒绝请求之前， 应该放入队列中等待的未完成连接的请求的数目。backlog参数的确切含义要求退TCPIP协议的理解。&lt;/li&gt;
-      &lt;li&gt;accept(int listenfd, struct sockaddr * addr, int * addrlen): accept函数等待客户端到达listenfd的连接请求，然后在addr中填入客户端的套接字地址，并返回一个已连接描述符(connected descriptor)这个描述符 可以使用unix I/O进行操作与客户端通讯&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;&lt;img src="../../../../images/socket_api-59735e54.png" alt="socket api" /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;监听描述符和已连接描述符的区别：
-    &lt;ul&gt;
-      &lt;li&gt;监听描述符: 是作为客户端连接请求的一个端点， 创建一次， 并存在于服务器的整个生命周期&lt;/li&gt;
-      &lt;li&gt;已连接描述符: 是客户端与服务端已经建立连接起来的一个端点。服务器每次接受请求都会创建一次，他只存在于服务器为一个客户端服务的过程中&lt;/li&gt;
-      &lt;li&gt;然而区分： 这两者， 被证明是很有用的。因为他使得我们可以简历并发服务器，他能够同时处理许多客户端连接，例如，每一个请求到达监听描述符时， 我们可以fork一个进程去处理，他可以通过已连接描述符对客户端进行通讯，&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;HTTP
-    &lt;ul&gt;
-      &lt;li&gt;Web服务器， web客户端和服务器之间的交互是一个基于文本应用级协议，叫做HTTP， 其内容是一个与Mime（multipurpose internet Mail ExtensI/Ons 多用途网际邮件扩充协议）类型关联的字节序列。&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;table&gt;
-      &lt;thead&gt;
-        &lt;tr&gt;
-          &lt;th style="text-align: left"&gt;MIME 类型&lt;/th&gt;
-          &lt;th style="text-align: left"&gt;描述&lt;/th&gt;
-        &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td style="text-align: left"&gt;text/html&lt;/td&gt;
-          &lt;td style="text-align: left"&gt;HTML 页面&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td style="text-align: left"&gt;text/plain&lt;/td&gt;
-          &lt;td style="text-align: left"&gt;无格式文本&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td style="text-align: left"&gt;applicatI/On/postscript&lt;/td&gt;
-          &lt;td style="text-align: left"&gt;postscript 文档&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td style="text-align: left"&gt;image/gif&lt;/td&gt;
-          &lt;td style="text-align: left"&gt;gif 格式编码的图片&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td style="text-align: left"&gt;image/jpeg&lt;/td&gt;
-          &lt;td style="text-align: left"&gt;jpeg格式编码的图片&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;服务动态内容： 客户端如何将程序参数传递给服务器, 服务器如何将这些参数传递给 他所创建的子进程？ 子进程 将他的输出发送到哪里？一个成为CGI(common Gateway Interface) 通用网关接口的实际标准解决了这些问题。
-    &lt;ol&gt;
-      &lt;li&gt;客户端如何将程序参数传递给服务器: ?, &amp;amp;分割开来&lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;服务器如何将参数传递给 子进程： CGI设定环境变量 QUERY_STRING=name=xx&amp;amp;age=xxx, 子进程可以通过getenv函数获得&lt;/p&gt;
-
-        &lt;table&gt;
-          &lt;thead&gt;
-            &lt;tr&gt;
-              &lt;th style="text-align: left"&gt;环境变量&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;描述&lt;/th&gt;
-            &lt;/tr&gt;
-          &lt;/thead&gt;
-          &lt;tbody&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;SERVER_PORT&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;父进程监听的port&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;QUERY_STRING&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;url 参数&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;REQUEST_METHOD&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;get or post etc&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;REMOTE_HOST&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;客户端域名&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;REMOTE_ADDR&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;客户端ip&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;CONTENT_TYPE&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;请求体的MIME&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;CONTENT_LENGTH&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;请求体的大小&lt;/td&gt;
-            &lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
-      &lt;/li&gt;
-      &lt;li&gt;子进程将输出到哪里？ 一个CGI程序将动态内容发送到标准输出， 在子进程加载并运行CGI程序之前， 使用unix dup21将标准输出重定向到客户端相关的已连接描述符。 因为CGI程序小入到标准输出的东西，会直接送到客户端。&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id="并发编程"&gt;并发编程&lt;/h2&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;逻辑控制流在时间上重叠，就称为并发。（concurrency）出现在计算机系统的多个层面上， 硬件异常处理， 进程和Unix信号处理程序&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;应用层面上的并发 在下面的场景非常有用：
-    &lt;ul&gt;
-      &lt;li&gt;访问慢速I/O设备， 应用需要等待I/O设备的数据到达时候，内核会运行其他进程，使得CPU保持繁忙。每个应用都可以按照类似的方式，通过交替执行I/O请求和其他有用的工作进行并发&lt;/li&gt;
-      &lt;li&gt;服务多个网络客户端： 为每个客户端创建创建一个单独的控制流，允许服务器同时服务多个客户端服务。避免慢速I/O操作独占服务器&lt;/li&gt;
-      &lt;li&gt;多个内核机器上的并行计算&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;操作系统提供并发的基本方法：
-    &lt;ul&gt;
-      &lt;li&gt;进程： 每个逻辑控制流都是一个进程， 有内核进行维护调度，进程间通讯通过使用显示的进程间通讯（IPC） 机制&lt;/li&gt;
-      &lt;li&gt;I/O多路复用： 应用程序在一个进程的上下文中显示的调度他们自己的逻辑控制流，逻辑流被模型化为状态机，数据达到文件描述符后，主程序显示的从一个状态转换到另一个状态，因为程序是一个单独的进程，所以所有的流都共享一个地址空间&lt;/li&gt;
-      &lt;li&gt;线程： 是运行在一个单一进程上下文中的逻辑流，想进程流一样有内核进行调度，像I/O多路复用一样 共享同一个虚拟地址。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;基于进程的并发编程：
-    &lt;ol&gt;
-      &lt;li&gt;服务器 接受请求之后，父进程fork一个子进程。子进程获得服务器描述符表的完整拷贝。&lt;/li&gt;
-      &lt;li&gt;子进程关闭他拷贝的监听描述符， 父进程关闭他的已连接描述符， 因为子父子进程描述符指向同一个文件表表项，所以父进程关闭已连接描述符 是至关重要， 否则， 将永远不会释放已连接描述符的文件表条目，由此引发的存储器泄露 将最终消耗尽所有的存储器，导致系统崩溃  (为什么没有说 子进程关闭 监听描述符呢？以为子进程总是早于 父进程死掉，所以总是可以释放？)&lt;/li&gt;
-      &lt;li&gt;父进程回收子进程&lt;/li&gt;
-      &lt;li&gt;优劣：
-        &lt;ul&gt;
-          &lt;li&gt;非常清晰的并发模型： 共享文件表，不共享用户地址空间。&lt;/li&gt;
-          &lt;li&gt;独立的地址空间容易 使得进程共享状态信息变得更加困难。 为了共享信息，需要使用IPC机制， 2. 慢， 进程控制和IPC 的开销太高&lt;br /&gt;
-&lt;img src="../../../../images/prcess_base-a1f7a7e6.png" alt="基于进程的并发" /&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;I/O 多路复用并发编程：
-    &lt;ul&gt;
-      &lt;li&gt;用来做 并发事件驱动(event-driven) 程序的基础， 在事件驱动程序中，流是因为某种事件而前进的。&lt;/li&gt;
-      &lt;li&gt;I/O并发模型中的 逻辑流模型 转换为状态， 不严格的说， 一个状态机就是一组状态(state)， 输入事件(input event)， 和转移(transitI/On) 其中转移就是将输入事件和状态映射到另一个状态。&lt;/li&gt;
-      &lt;li&gt;自循环（self loop） 是同一个输入和输出状态之间的转移。&lt;/li&gt;
-      &lt;li&gt;服务器使用I/O 多路复用。 select 函数检测输入事件的发生。 当一个已连接描述符准备好读取的时候，服务器作为响应的状态机 执行转移&lt;/li&gt;
-      &lt;li&gt;优劣：
-        &lt;ul&gt;
-          &lt;li&gt;优点：
-            &lt;ol&gt;
-              &lt;li&gt;比基于进程设计的设计给了程序员更多的对程序行为的控制，&lt;/li&gt;
-              &lt;li&gt;事件驱动服务器运行在单一的进程上下文中， 因为每个逻辑控制流都能否访问该进程的全部地址空间。这是的在流之间 共享数据变得容易。&lt;/li&gt;
-              &lt;li&gt;调试起来变得简单，就像顺序程序一样&lt;/li&gt;
-              &lt;li&gt;事件驱动 常常比基于进程的设计的要高效的多，因为他们不需要进程上下文的调度&lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-          &lt;li&gt;缺点：
-            &lt;ol&gt;
-              &lt;li&gt;编码复杂， 不幸的是， 随着并发粒度的减小， 复杂性还会上升，&lt;/li&gt;
-              &lt;li&gt;不能够充分利用多核处理器&lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;基于线程的并发模型：
-    &lt;ol&gt;
-      &lt;li&gt;概念:
-        &lt;ul&gt;
-          &lt;li&gt;是运行在进程上下文中的逻辑流， 有内核自动调度，每个线程都有自己的线程上下文， 包括一个唯一的整数线程ID(thread ID TID)， 栈，栈指针，程序计数器，etc，&lt;/li&gt;
-          &lt;li&gt;基于线程的并发模型是结合 进程、I/O多路复用流的特性。 同进程一样内核自动调度， 同I/O复用一样， 多个线程运行在单一进程的上下文， 因此共享相同的虚拟地址空间， 代码，数据等&lt;/li&gt;
-          &lt;li&gt;主线程: 每个进程开始生命周期时候是单一线程，这个线程成为主线程。 然后创建对等线程。 这个时间点开始，两个线程开始并发的执行。然后被 系统进行调度。&lt;/li&gt;
-          &lt;li&gt;与进程的不同： 线程的上线文要比进程的上下文小得多。不严格按照父子层次来组织。和一个进程相关的线程组成一个对等（线程池），主线程和其他线程的区别在于他总是进程中的第一个运行的线程，对等线程池的概念的主要影响是： 一个线程可以杀死他的任何对等进程，或者等待他的任何对等线程终止，每个对等线程都能读写相同的共享数据。&lt;/li&gt;
-          &lt;li&gt;结合、分离： 在任何一个时间点， 线程是可结合的， 或者是分离的。一个可结合的线程能够被其他线程收回其他资源和杀死。在被其他线程回收之前，他的存储器资源是没有倍释放的。相反。 一个分离的线程是不能被其他线程回收或杀死的。他的存储资源在它终止由系统自动释放。 所以要么显示的回收，要么 pthread_join , pthread_detach. 在现实中，很好的理由要使用分离线程， web浏览器请求时都创建一个新的对等线程， 因为每个连接都是有一个单独的线程独立处理的。  对于服务器而言，就没有必要等待所有的对等线程终止，所以直接使用分离线程，在他们终止之后，资源就自动回收了。&lt;br /&gt;
- &lt;img src="../../../../images/thread_base-b287bb4d.png" alt="基于进程的并发" /&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;多线程序中的共享变量
-        &lt;ul&gt;
-          &lt;li&gt;线程存储模型： 线程都有自己的线程上下文， 线程ID， 栈， 栈指针， 程序计数器，条件码 和通用的寄存器，每个线程和其他线程一起共享进程上下文中的其他部分，包括用户虚拟地址空间（制度文本代码， 读写数据，堆，已经所有的共享库代码和数据区域）也同样共享打开的文件集合。&lt;/li&gt;
-          &lt;li&gt;变量映射到线程：
-            &lt;ul&gt;
-              &lt;li&gt;全局变量： 定义在函数之外，只有一个实例， 任何线程都可以引用。&lt;/li&gt;
-              &lt;li&gt;本地自动变量： 定义在函数内，没有static的变量。每个线程栈都包含它自己的所有本地变量的实例。&lt;/li&gt;
-              &lt;li&gt;本地静态变量： 函数内部static变量。多个线程共享。&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;同步线程 信号量：
-        &lt;ul&gt;
-          &lt;li&gt;为了共享全局数据结构的并发程序的正确执行。&lt;/li&gt;
-          &lt;li&gt;P(s) ： s ！= 0 那么将s - 1 并返回， 如果s == 0 那么挂起这个线程，直到等待V操作会重启这个线程， p操作继续将S-1，执行。&lt;/li&gt;
-          &lt;li&gt;V(s) ： 将s + 1 ， 重启任何一个阻塞的线程。&lt;/li&gt;
-          &lt;li&gt;使用信号量， 实现互斥。 应用， 生产者— 消费者， 读者—写者，&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;并发问题：
-        &lt;ul&gt;
-          &lt;li&gt;线程安全：
-            &lt;ol&gt;
-              &lt;li&gt;不保护共享变量的函数： 全局变量， static变量&lt;/li&gt;
-              &lt;li&gt;保持调用状态的函数， 例如rand函数不是线程安全的。当前调用结果依赖前次调用的中间结果， 使rand函数线程安全的方法是， 重写他，使其不在依赖static变量。&lt;/li&gt;
-              &lt;li&gt;返回指向静态变量的函数&lt;/li&gt;
-              &lt;li&gt;调用线程不安全函数的函数&lt;/li&gt;
-              &lt;li&gt;主要韩式，使用，返回，依赖，共享变量的问题。&lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-          &lt;li&gt;可重入函数：
-            &lt;ul&gt;
-              &lt;li&gt;特点在于倍多个线程调用时，不会引用任何共享数据，可重入是线程安全的 真子集。&lt;/li&gt;
-              &lt;li&gt;可重入函数通常要比线程安全的函数要高效一点： 因为他们不需要同步操作，&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;竞争，死锁&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;基于预线程化的并发服务器： 通过生产者消费者一个模型，
-        &lt;ol&gt;
-          &lt;li&gt;服务器是有一个主线程和一组工作者线程构成的&lt;/li&gt;
-          &lt;li&gt;主线程不断的接受来自客户端的连接请求，并讲的到的连接请求描述符放到一个缓冲区中&lt;/li&gt;
-          &lt;li&gt;每一个工作者线程 反复的从共享缓冲区中消费描述符。&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;使用线程提高并行性： 操作系统内核在多个核上并行的调度这些并发线程。并行程序常常被写为 每个核上只运行一个线程。&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;总结：&lt;br /&gt;
-    1. 进程由内核调度，因为拥有独立的虚拟地址空间， 所以需要显示的IPC机制，来实现共享数据，同时 编程模型简单一致 （ 能否利用多核？）&lt;br /&gt;
-    2. 事件驱动 使用I/O多路复用 显示的调度 并发逻辑流。以为在同一个进程中，所以共享数据变得简单, 复杂度比较高 (只能是单核应用了，但是能够高效利用IO，)&lt;br /&gt;
-    3. 线程是两个的结合, 能够充分利用多核优势。但是调用函数，必须具有一种成为线程安全的性质。（信息同步，信号量，线程安全函数， 使得编程起来比较困难）&lt;br /&gt;
-    4. 无论那种并发机制，同步对共享数据的访问都是一个困难的问题&lt;/li&gt;
-&lt;/ol&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Art of UNIX programming</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2017/10/21/art_of_unix_programming/"/>
-    <id>http://geniousbar.github.io/2017/10/21/art_of_unix_programming/</id>
-    <published>2017-10-21T08:00:00+08:00</published>
-    <updated>2018-03-28T14:02:53+08:00</updated>
-    <summary type="html">&lt;h2 id="the-art-of-unix-programming"&gt;The Art of unix programming&lt;/h2&gt;
-
-&lt;h2 id="哲学"&gt;哲学&lt;/h2&gt;
-&lt;h5 id="哲学基础"&gt;哲学基础：&lt;/h5&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;unix 哲学并不算是一种正规设计方法， 不打算从计算机科学的理论高度产生出完美的软件， 那些毫无动力、松松垮垮的，薪水微薄的程序员，能在短短期限内，如同神灵附体般的创造出稳定而又新颖的软件， 这只不过是经理人永远的梦呓罢了。  (社会经济学基础)&lt;br&gt;
-   unix 哲学，是自下而上的，注重实效，立足于丰富的经验，你不会在正规的方法学和标准中找到她，她更接近与隐性的 半本能知识，UNIX 文化所传播的 专业经...&lt;/p&gt;
-&lt;/blockquote&gt;</summary>
-    <content type="html">&lt;h2 id="the-art-of-unix-programming"&gt;The Art of unix programming&lt;/h2&gt;
-
-&lt;h2 id="哲学"&gt;哲学&lt;/h2&gt;
-&lt;h5 id="哲学基础"&gt;哲学基础：&lt;/h5&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;unix 哲学并不算是一种正规设计方法， 不打算从计算机科学的理论高度产生出完美的软件， 那些毫无动力、松松垮垮的，薪水微薄的程序员，能在短短期限内，如同神灵附体般的创造出稳定而又新颖的软件， 这只不过是经理人永远的梦呓罢了。  (社会经济学基础)&lt;br /&gt;
-   unix 哲学，是自下而上的，注重实效，立足于丰富的经验，你不会在正规的方法学和标准中找到她，她更接近与隐性的 半本能知识，UNIX 文化所传播的 专业经验。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;«Notes on C programming» 中表述的Unix哲学：
-    &lt;ol&gt;
-      &lt;li&gt;你无法判断程序会在什么地方耗费运行时间，瓶颈经常会出现在想不到的地方，所以别急于胡乱找个地方改代码，除非你已经证实哪儿就是瓶颈所在。&lt;/li&gt;
-      &lt;li&gt;估量，在没有对代码进行估量，别去优化速度。&lt;/li&gt;
-      &lt;li&gt;花哨的算法在n很小的时候通常很慢，而n通常很小，花哨算法的常数复杂度很大，除非你确定n总是很大，否则不要使用花哨算法。&lt;/li&gt;
-      &lt;li&gt;花哨算法相比于简单算法，通常更容易出bug，更难实现，尽量使用简单的算法配合简单的数据结构&lt;/li&gt;
-      &lt;li&gt;数据压倒一切，正确的算法不言自明，编程的核心是数据结构，而不是算法。&lt;/li&gt;
-      &lt;li&gt;没有原则 6&lt;br /&gt;
-&lt;strong&gt;Ken Thompson 对第4点进行了，强调， 拿不准就穷举&lt;/strong&gt;&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Unix 本身的体现:
-    &lt;ol&gt;
-      &lt;li&gt;模块原则： 使用简洁的接口拼合简单的部件 计算机编程的本质是控制复杂度。要编制复杂的软件而又不至于一败涂地的唯一方法就是降低其整体复杂度—– 用清晰的接口把若干简单的模块组合成一个复杂软件，如此一来，多数问题，只会局限于局部，而不是牵一发而动全身。&lt;/li&gt;
-      &lt;li&gt;清晰原则： 清晰胜于机巧&lt;/li&gt;
-      &lt;li&gt;组合原则： 设计时考虑拼接组合&lt;br /&gt;
-  多数程序都尽可能采用过滤器的形式， 即将一个输入的简单文本流处理为一个简单的文本流输出.&lt;/li&gt;
-      &lt;li&gt;分离原则： 策略同机制分离，接口同引擎分离&lt;/li&gt;
-      &lt;li&gt;简洁原则： 设计要简洁，复杂度能低就底&lt;/li&gt;
-      &lt;li&gt;吝啬原则： 除非确无它法， 不要编写庞大的程序&lt;/li&gt;
-      &lt;li&gt;透明性原则： 设计要可见， 以便于审核和测试&lt;/li&gt;
-      &lt;li&gt;健壮原则： 健壮源于透明性与简洁&lt;/li&gt;
-      &lt;li&gt;表示原则： 把知识深入到数据以求逻辑质朴而健壮&lt;br /&gt;
-  数据要比编程逻辑更容易驾驭，在设计中，你应该主动的将代码的复杂度转移到数据中&lt;/li&gt;
-      &lt;li&gt;通俗原则： 接口设计避免标新立异&lt;br /&gt;
-  最少惊奇原则&lt;/li&gt;
-      &lt;li&gt;缄默原则： 如果一个程序没什么好说，就沉默&lt;/li&gt;
-      &lt;li&gt;补救原则： 出现异常是，立马退出并给出错误信息&lt;/li&gt;
-      &lt;li&gt;经济原则： 宁化机器一份，不花程序员一秒&lt;/li&gt;
-      &lt;li&gt;生成原则： 避免手工hack， 尽量编写程序生成代码&lt;/li&gt;
-      &lt;li&gt;优化原则： 雕琢之前先得有原型，跑之前先学会走&lt;br /&gt;
-  过早优化是万恶之源， 先只做原型，在进行细琢，优化之前先确保能用。&lt;/li&gt;
-      &lt;li&gt;多样原则： 绝不相信所谓的不二法门，&lt;/li&gt;
-      &lt;li&gt;扩展原则： 设计招眼未来，未来总是比预想快&lt;br /&gt;
-  设计代码时候， 需要很好的组织， 让将来的开发者增加新功能是无需拆毁或重建整个架构，当然这个原则并不是说你能随意的增加根本用不上的功能。而是建议在编写代码时候考虑未来的需要，使以后增加功能比较容易，程序结合更灵活。&lt;br /&gt;
-  其实其中很不容易取舍。&lt;/li&gt;
-      &lt;li&gt;KISS keep it simple, stupid&lt;/li&gt;
-      &lt;li&gt;如果不确定什么是对的，那么就只做最少的工作，确保任务完成就行，至少知道知道什么是对的。（善用工具，尽可能的将一切都自动化）&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id="模块性-保持清晰保持简洁"&gt;模块性: 保持清晰，保持简洁&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;代码划分，又一个自然的层次体系， 一开始，一切都是机器吗，最早的过程语言引入了子程序来划分代码的概念，再后来发明了独立地址空间和可以互相通讯的进程，今天，习以为常的把程序系统分布到个个主机上。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;要编写复杂的软件又不至于一败涂地的唯一方法： 用定义清晰的接口把若干简单模块组合起来，如此一来，多数问题只会出现在局部。&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;封装和最佳模块的大小： 模块直接通过应用程序编程接口(API) 来进行通信。&lt;br /&gt;
-    1. 实现层面API，阻止各自的内部细节被其他模块知晓。&lt;br /&gt;
-    2. 设计层面， API，定义了真个系统（验证API是否定义良好，试着使用纯人类语言来描述设计，能够把事情说清楚？先开始定义接口，进行描述，然后开始实践，使用代码阐述设计。）&lt;br /&gt;
-    3. 模块过大或者过小都会造成更多的bug， 400-800 之间的代码是最佳点。&lt;/li&gt;
-  &lt;li&gt;紧凑性和正交性：&lt;br /&gt;
-    1. 紧凑性： 一个设计是否能够被人脑理解，需不需要操作手册，引导指南？（功能集合）&lt;br /&gt;
-    2. 正交性： 有助于是复杂设计也能紧凑的最重要特性之一， 纯粹的设计中，任何操作都应该是没有副作用的。（不知道为什么是使复杂设计紧凑的重要特性，而不是，将模块解耦？所以模块越紧凑越 少耦合）《程序员修炼之道》对其中有很深入的讨论。&lt;br /&gt;
-    3. SPOT原则（Single Point of Truth, DRY，Don’t repeat yourself）, 保持任何一个知识点，在系通中是唯一的，明确的。&lt;br /&gt;
- 如果有大量的样板式代码，是不是可以用单一的高层次的表现形式来生成呢?&lt;/li&gt;
-  &lt;li&gt;自顶向下设计和自底向上设计&lt;br /&gt;
-    1. 区分： 问问设计是否围绕 &lt;strong&gt;主事件循环&lt;/strong&gt; 组织的。还是围绕着主循环可能调用的所有操的服务库组织的。自顶向下的设计者通常先考虑程序的主事件循环，然后才插入具体的事件。自底向上通常考虑封装具体的任务，然后再按照某种次序将这些操作粘合在一起。&lt;br /&gt;
-    2. 应该双管齐下，自底向上中，能够很好的封装操作原语，从而易于变动，重用底层代码，但是容易做与逻辑无关的工作。自顶向下：可能面临应用逻辑需要的跟真正能够实现的操作原语不同。从而让然封装底层的代码操作。&lt;br /&gt;
-    3. 双管齐下的设计下：就需要胶合层的出现，来缓解冲突。&lt;/li&gt;
-  &lt;li&gt;unix 和 面向对象&lt;br /&gt;
-    1. 面向对象编程中，作用于具体的数据结构的函数，和数据一起封装在 可视为单元的一个对象中。非OO中，数据跟函数的联系变的毫无规律。&lt;br /&gt;
-    2. OO的设计理念在 图形系统，图形用户界面中得到非常多的认可。然而，其他领域则很难发现有多少显著的优点。&lt;br /&gt;
-    3. OO语言鼓励 『复杂的抽象层次』， 在简单事情中，使事情变得很复杂。使程序员容易陷入过度分层的抽象中，过多的层次破坏了透明性。无在头脑中理清楚代码到底在干什么、如何运行的。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="好协议产生好实践"&gt;好协议产生好实践&lt;/h2&gt;
-
-&lt;h2 id="透明性来点光let-there-be-light最有效的方法-就是不要在具体操作的代码上叠放太多的抽象层"&gt;透明性：来点光（Let There Be light）&lt;strong&gt;最有效的方法： 就是不要在具体操作的代码上叠放太多的抽象层&lt;/strong&gt;&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;需要思考的问题:&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;程序调用层次最大的静态深度是多少？&lt;/li&gt;
-  &lt;li&gt;代码是否具有强大、明显的不变性质。不变性质帮助人们推演代码和发现有问题的情况&lt;/li&gt;
-  &lt;li&gt;各个函数是否正交？是否有太多的特征标记和模式位，使得一个调用要完成多个任务，完全避免模式标志会导致混乱， 里面包含太多的一模一样的代码，但是频繁的使用模式标志更容易产生错误。（代码中常见）&lt;/li&gt;
-  &lt;li&gt;程序的数据结构或者分类和他们所代表的外部实体之间，是否存在一对一的映射？（不必要，设计中不必一对一）&lt;/li&gt;
-  &lt;li&gt;是否容易找到给定函数的部分代码？不论单个模块，函数，需要花多少时间读懂？&lt;/li&gt;
-  &lt;li&gt;代码是增加了特殊情况还是避免了特殊情况？ 每一个特殊情况可能对任何其他特殊情况产生影响和隐含的冲突，特殊情况是的代码更难以理解。&lt;/li&gt;
-  &lt;li&gt;代码简单最好，但是如果代码很好的解决了以上问题，则代码也可以复杂。而且不会对维护人员造成认知负担。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="多道程序设计-分离进程为独立的功能"&gt;多道程序设计： 分离进程为独立的功能&lt;/h2&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;Unix 最具特点的程序模块化技法： 就是将大型程序分解成为多个协作进程。但是，几乎没有好的实践方法。尽管将程序划分成协作进程带来了全局复杂度的降低，蛋代价是我们必须更多的关注在进程间传递消息和命令的协议设计。和 通信各方设计状态机的问题。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Unix为多进程提供的有：&lt;/strong&gt;&lt;br /&gt;
-    1. 降低多进程 生成的开销&lt;br /&gt;
-    2. 提供方法、IO、管道、消息传递、套接字 简化进程通信&lt;br /&gt;
-    3. 提倡使用能有管道、套接字传递的简单、透明的文本数据格式&lt;/li&gt;
-  &lt;li&gt;进程： 为了降低复杂度，而非为了利用并发提升性能。线程： 为了提高性能，然而，线程并不是降低而是提高的全局复杂度。除非万不得已，不要使用线程。&lt;/li&gt;
-  &lt;li&gt;Unix IPC 方法分类：&lt;br /&gt;
-    1. shell调用其他程序，这种情形的要点在于， 专门程序在运行时不需要跟父进程交流，只要任意一方接受了 另外一个程序的输入。&lt;br /&gt;
-    2. 管道、重定向、过滤器： 管道线中的所有阶段的程序是并发运行的。注意到这一点很重要，每一段在等待前一段的输出作为输入。管道已经成为老古董，被套接字取代。&lt;br /&gt;
-    3. 从进程&lt;br /&gt;
-    4. 对等进程间通讯： 通常意味着数据能够自由的双向流动。
-    &lt;ul&gt;
-      &lt;li&gt;临时文件： 文件名字冲突（shell脚本中的管理实在临时文件命中包含’$$’，这个shell变量将被展开为载入shell进程的ID， 从而保证文件名的唯一性）&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;信号： Unix信号是一种软中断形式，每个信号对接受进程产生默认作用（杀掉它），进程可以声明 信号处理程序，让信号处理程序覆盖默认行为，信号最初被涉及到Unix中，最初是最为操作系统就某些错误或关键事件通知程序的一种方式， 举例来说， SIGHUP信号，会在会话结束时被发送给每一个该指定终端会话启动的程序，例： 在用户键入中断（Ctrl-c）时候， 发送给当前每一个连接键盘的程序，然而，信号经常被用作，守护程序的控制通道，随着信号IPC经常使用的一种技法是所谓的pidfile， 需要信号的程序会向已知的位置写入一个包含进程ID的文件(/var/run)其他程序可以通过该文件来获取PID， 如果守护程序只允许一个实例运行，该pidfile， 也作为隐含的文件锁使用。&lt;/strong&gt;&lt;/li&gt;
-      &lt;li&gt;套接字： 一种封装网络数据访问的方法， 使用协议族来告诉网络层如何解释套接字的名称， AF_UNIX作为同一台机器上两个进程之间的通信方式.&lt;/li&gt;
-      &lt;li&gt;共享内存： 要求生产者和消费者都必须在一个机器上，但是如果通信进程能够访问同一块物理内存，则共享内存为最快的信息传递方法。需要处理竞争和死锁问题.&lt;/li&gt;
-      &lt;li&gt;要避免的问题和方法
-        &lt;ol&gt;
-          &lt;li&gt;废弃的Unix IPC方法， System V IPC， Steams&lt;/li&gt;
-          &lt;li&gt;&lt;strong&gt;远程过程调用（RPC）， 最成功的RPC应用，是网络文件系统，都是那些在应用定义域上本来就只涉及很少量简单数据类型的应用。支持RPC的理由通常是， 允许更丰富的接口，但是更不简介，（Unix 强烈赞成使用透明，可显的接口， 这是Unix文化不断坚持文本协议的动力）。RPC旺旺更多延迟的原因有： a： 无法准确估算一个指令调用会涉及到多少数据的列表和散列，b：RPC模型鼓励程序员忽视网络交易成本，造成网络时间消耗。&lt;/strong&gt;&lt;/li&gt;
-          &lt;li&gt;线程： 共享全局内存，在这个共享地址空间管理竞争和临界区的任务相当困难，增加整体复杂度。随着锁定机制复杂度的增加意外交互作用所造成的竞争和死锁机会也会增加。锁定共享数据结构以防止互相干涉的开销非常昂贵，最关键的难题在于，各个系统中实现的标准，没有标准，所以不可能进行移植。&lt;/li&gt;
-          &lt;li&gt;线程的使用应该是最后一招而不是第一招，如果能够使用优先的共享内存和信号量，使用SIGIO的一部I/O，poll，select 而不是使用线程，那就保持简单。&lt;/li&gt;
-          &lt;li&gt;&lt;strong&gt;线程、远程过程调用、重量级的面向对象设计结合使用的时候，非常危险，如果你被邀请加入到使用这三者的项目中，逃之夭夭并不丢面子（快屁股走人，但是现在的似乎并不少，因为大家实在是现有的稳定的软件API，进行隔离，并没有自己写bug ಥ_ಥ）&lt;/strong&gt;&lt;/li&gt;
-          &lt;li&gt;编程是控制复杂度。能够管理复杂度的工具是好工具，但是如果不是，扔掉！永远不要忘记这一点，它是UNIX智慧的重要组成部分。&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="微型语言"&gt;微型语言：&lt;/h2&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;对软件错误模式进行大量研究得出的一个一致的结论就是： 程序员每百行代码出错率，和所使用的编程语言在很大程度上相关。更高级的语言可以使用更少的行数完成更多的任务，也意味着更少的bug.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id="生成-提升规格说明的层次"&gt;生成： 提升规格说明的层次&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;人类更善于肉眼观察数据，而不是推到控制流程。不同的方式在透明性和清晰性方面具有非常显著的差别。数据比程序更容易驾驭。尽可能的把设计的复杂度从程序代码中转移到数据中是个很好的实践。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;数据驱动编程&lt;br /&gt;
-    需要把代码跟代码作用的数据结构划分清楚。&lt;br /&gt;
-    跟面向对象区分是： 数据驱动编程中，数据不仅仅是某个对象的状态，实际上还定义了程序的控制流程。 b：OO首先考虑的封装，而数据驱动编程看中的事编写尽可能少的固定代码。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="配置-starting-on-the-right-foot"&gt;配置： Starting on the Right foot&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;配置在哪里?&lt;br /&gt;
-    * /etc 下的运行控制文件(配置文件)&lt;br /&gt;
-    * 有系统设定的环境变量&lt;br /&gt;
-    * 用户主目录下的控制文件&lt;br /&gt;
-    * 用户设置的环境变量&lt;br /&gt;
-    * 启动程序命令行所传递的开关、参数&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   后面的会覆盖前面的参数
-   考虑使用何种机制想程序传递配置数据时候， 要考虑参数的使用周期。
-    1. 对调用时可能发生变化项： 使用命令开关。
-    2. 改动很少但是确实应该由每个用户控制的项： 用户主目录的运行控制文件
-    3. 需要管理员控制，而不是用户能够改变的系统级项： 系统的控制文件
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;ol&gt;
-  &lt;li&gt;运行控制文件（配置文件的格式）&lt;br /&gt;
-    1. 通常只在程序启动时，一次性读取，因此性能不是主要考虑的问题， 互用性和透明性要求我们使用文本格式。&lt;br /&gt;
-    2. 特例： 如果程序是某种解释器，那么应该是用 该语言语言写成，并在启动时候，执行命令文件。（mina deploy.rb, 不知道静态语言是不是会费点劲？）&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="优化-optimization"&gt;优化： Optimization&lt;/h2&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;关于性能优化， Unix经验告诉我们，最主要的就是如何知道合适不去优化， 其次，最有效的优化往往是优化之外的其他事情，比如干净的设计。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;程序员工具箱中最强大的优化技术就是不做优化&lt;/li&gt;
-  &lt;li&gt;先估量，后优化。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="复杂度-尽可能简单但是别简单的过了头as-simple-as-possible-but-note-simpler"&gt;复杂度： 尽可能简单，但是别简单的过了头（As simple as possible, but Note Simpler）&lt;/h2&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th style="text-align: left"&gt;偶然复杂&lt;/th&gt;
-      &lt;th style="text-align: left"&gt;违反SPOT原则&lt;/th&gt;
-      &lt;th style="text-align: left"&gt;过早优化&lt;/th&gt;
-      &lt;th style="text-align: left"&gt;非正交性&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style="text-align: left"&gt;选择复杂度&lt;/td&gt;
-      &lt;td style="text-align: left"&gt;方法学开销&lt;/td&gt;
-      &lt;td style="text-align: left"&gt;别的一切&lt;/td&gt;
-      &lt;td style="text-align: left"&gt;有效功能&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style="text-align: left"&gt;本质复杂度&lt;/td&gt;
-      &lt;td style="text-align: left"&gt;开发工具&lt;/td&gt;
-      &lt;td style="text-align: left"&gt;核心数据结构&lt;/td&gt;
-      &lt;td style="text-align: left"&gt;功能需求&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style="text-align: left"&gt; &lt;/td&gt;
-      &lt;td style="text-align: left"&gt;代码库规模&lt;/td&gt;
-      &lt;td style="text-align: left"&gt;实现复杂度&lt;/td&gt;
-      &lt;td style="text-align: left"&gt;接口复杂度&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;偶然复杂度经常来源于&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;接口设计并非正交– 即 没有仔细的分解接口操作以使得每个操作只完成一件事情。&lt;/li&gt;
-  &lt;li&gt;过早优化&lt;br /&gt;
-  本质接口复杂度： 通常无法去除，除非调整软件的基本功能需求，代码库的本质大小同选择的开发工具有关，其中最重要的因素可能就是实现语言的选择。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;blockquote&gt;
-
-  &lt;p&gt;复杂度的不同来源必须以不同的方法应对： 代码库规模可以采用更好的工具来解决， 实现复杂度可以选择更好的算法来处理，接口的复杂度必须着眼于更好的交互设计。&lt;br /&gt;
-  处理各种复杂度： 必然更依赖于见识而非方法，通过发现更简单的方法，可以去除偶然复杂度，依赖上下文环境判断哪些功能值得去做，可以去除选择复杂度。而要去除本质复杂度， 只能依赖于对现实真谛的洞察和顿悟，从根本上重新定义所要解决的问题。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;当简洁不能胜任：&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;对于Unix坚持简单的精神，常常伴随着一种错误的理解方式， Unix程序员常常认为似乎所有的可能复杂度都是偶然复杂度, 更为甚者， 在Unix传统中存在一个强烈的偏好，宁可去掉功能，也不能接受可能的复杂性。&lt;br /&gt;
-  计算资源以及人类的思考，同财富一样，不是靠储藏而是靠消费来证明其价值的。同其他美学形势一样，我们需要主义何时设计上的简约已经不在是有价值的自律形式，——而开始成为一件伪装的苦行者外衣—— 实际上把美德作为接口来敷衍工作的纵容方式。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;编辑器的适当规模&lt;br /&gt;
-  所有真正有用的程序都想变成瑞士军刀， Unix世界之外大型的成功商业整合应用程序套件通常也证实了这一点，而且直接挑战了Unix的最简（基础）哲学。Zawinski&lt;br /&gt;
-  定律是正确的，他表明有些程序需要小巧，有些程序需要庞大，但中间的路是行不通的。vi编辑器的表面问题可以归咎于历史，然而更深次的问题应该追溯到增加功能的压力同vi信徒，添加新功能根本考虑不到对整体设计的复杂度影响。&lt;br /&gt;
-  Emacs和Wily的例子进一步证明， 为什么有些程序需要做的如此庞大： 这样几个相关任务就可以共享环境。从实现者的角度，编辑和版本控制是独立的，但是用户更愿意有一个大的环境让他们能够指向文本部分，无需要在程序之间切来切去。&lt;br /&gt;
-  更普遍的， 让我们假设整个Unix环境可以视作是社区的单一设计工作。那么『小巧锐利工具』的教义，降低接口复杂度和代码库规模的压力，可能正好导向过手工陷阱——– 用户不得不自己维护所有共享的上下文环境，因为工具并不会替他们完成此项工作。&lt;br /&gt;
-  选择 复杂度的价值依赖于对目标的选择。而在所有与任务相关的面相文本工具间共享上下文环境的能力是非常有价值的。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Emacs 是个反传统Unix的例子吗？
-    &lt;blockquote&gt;
-      &lt;p&gt;Emacs 这样庞大的程序会使Unix程序员极不舒服，恰恰因为他们强迫我们面对这些冲突， 这些程序表明， 旧学派的Unix的简约主义作为一个原则虽然有其价值，蛋我们可能已经陷入教条主义的错误中。&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Unix风格的小巧伶俐工具存在数据共享的困难， 除非他们生存在彼此之间通讯便利的框架中，Emacs就是这样的一个框架，而对共享上下文环境的统一管理，正是其选择复杂度换来的（共享上下文统一管理的实际效果就是用户不需要负担底层的命名和资源管理问题， 旧学派的unix中唯一的框架就是管道，重定向以及Shell，而共享上下文本质上就是文件系统本身，但这并不是进化的终点。）&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;最简原则暗示： 选择需要管理的上下文环境，并按照边界所允许的最小化方式架构程序。 这就是『尽可能的简单，而不是过于简单』，集中关注选择共享上下文环境，实际上，这并不仅仅适用于框架，也是用于应用和程序系统。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;然而， 究竟共享上下文环境该有多大实在很容易草率对待，隐藏在Zawinski定律后的压力往往驱使应用程序需要为便利性而共享上下文环境，很容易因为负载太多任务， 太多需求设想而最终失败，也很容易就把程序编制的过于复杂、臃肿、庞大。&lt;/strong&gt;&lt;br /&gt;
-  &lt;strong&gt;矫正这种趋势的方法直接来源于旧学派Unix的赞美诗集。这就是吝啬原则： 只有实证了其他方法行不通时才写庞大的程序—-也就是，已经尝试过分解问题但遭遇失败。 格言表明对待庞大程序的一种严谨怀疑态度以及一种谨慎的做法： 首先寻找小巧程序的解决方案，如果单个小程序无法完成任务，尝试在现有框架结构内构造一个协作小程序工具包来解决问题，如果两者都失败了，才可以自由的构建一个巨型的程序，而不会觉得已经完败于设计。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;但编制一个框架时，牢记分离原则。框架实际值，尽可能少的包含策略。再多数情况中，根本就不需要策略，尽可能多的将行为分解到使用框架的模块中。编制或重用框架的好处之一，是能够有益于将『不这样做会是大块策略』的东西分离到独立的模块，模式或工具—- 可以有效的同其他程序重新组合起来的部分中去。&lt;br /&gt;
-  这些准则是颇有价值和启发性的方法，但是Unix传统深处的这种矛盾冲突，并不能将任何给定的工程划分为合理的最佳规模，并分而治之。具体情况具体分析，而锻炼良好的判断力和品位恰好是软件设计者所追求的。行程才是目的，顿悟在每日的实践中。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id="未来-危机与机遇"&gt;未来： 危机与机遇&lt;/h2&gt;
-&lt;p&gt;Unix 设计中的问题：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Unix文件就是一大袋字节： 没有其他的文件属性， 特别是没有能力存储有关文件类型的信息。&lt;/li&gt;
-  &lt;li&gt;Unix对GUI的支持羸弱&lt;/li&gt;
-  &lt;li&gt;文件删除不可撤销&lt;/li&gt;
-  &lt;li&gt;Unix假定文件系统是静态的（假定程序的运行总是暂时的，所以文件和目录环境在整个执行中都是可以作为静态的，如果某个指定的文件或目录发生了改变，没有标准的、良好的方式让系统通知应用程序，当编写长期运行的用户界面软件时候，这将成为重大的问题。）&lt;/li&gt;
-  &lt;li&gt;Unix API并没有异常，C语言缺乏抛出附带数据的命名异常机制。&lt;/li&gt;
 &lt;/ol&gt;
 </content>
   </entry>

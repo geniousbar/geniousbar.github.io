@@ -1,0 +1,60 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>linux-interface-02 | 日常学习</title><meta description="The linux programming interface  系统编程概念  无论何时，执行了系统调用或者库函数，检查调用的返回状态以确定调用是否成功,是一条编程铁律。(消灭nil就好了)  系统调用    借助这一机制，进程可以请求内核以自己的名义去执行动作，以API 的形式，内核提供一系列服务供程序访问。（创建进程， IIO操作等）可以参考 csapp中的 异常控制流章节。   系统调用有以下特征：    系统调用将CPU 从用户态切换到 内核态，以便CPU访问受保护的内存等（越过... " /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">linux-interface-02</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">December 06, 2018</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/books/"><small class="tag-label">books</small></a></div><hr class="article-header-separator" /><h2 id="the-linux-programming-interface">The linux programming interface</h2>
+
+<h2 id="系统编程概念">系统编程概念</h2>
+
+<p>无论何时，执行了系统调用或者库函数，检查调用的返回状态以确定调用是否成功,是一条编程铁律。(消灭nil就好了)</p>
+
+<h3 id="系统调用">系统调用</h3>
+<blockquote>
+  <p>借助这一机制，进程可以请求内核以自己的名义去执行动作，以API 的形式，内核提供一系列服务供程序访问。（创建进程， IIO操作等）可以参考 csapp中的 异常控制流章节。</p>
+</blockquote>
+
+<p>系统调用有以下特征：</p>
+<ol>
+  <li>系统调用将CPU 从用户态切换到 内核态，以便CPU访问受保护的内存等（越过保护机制）</li>
+  <li>系统调用的组成是固定的。每个系统调用都由一个唯一的数字来标识。（程序通过名称标识系统调用，对编号方案无需关心）</li>
+  <li>每个系统调用都有一套对应的参数，对用户态内核态的参数传递有一定规范<br />
+  下面是一个系统调用的示例：</li>
+  <li>应用程序调用C语言的函数库中的外壳（wrapper） 函数，来发起系统调用</li>
+  <li>外壳函数保证所有的系统调用参数可用，并将参数复制到寄存器</li>
+  <li>外壳函数会将系统调用编号复制到%eax中，用于区分不同的系统调用</li>
+  <li>外壳函数执行一条中断机器指令，引发CPU从用户态切换到内核态，并执行 todo</li>
+  <li>内核调用 system_call 来处理中断，<br />
+    1) 在内核栈中保存寄存器数值<br />
+    2）验证 系统调用的 编号有效性<br />
+    3) 通过系统调用编号 发现对应的系统调用服务例程，检查参数的有效性，执行对应的代码逻辑。最后将结果状态返回给system_call<br />
+    4) 从内核栈中回复各个寄存器值，并将系统调用返回值置于栈中<br />
+    5) 返回值外壳函数，通知讲CPU切换到用户态</li>
+  <li>系统调用的服务例程返回值代表调用有误， 外壳函数会使用该值设定全局变量errno。外壳函数会返回到调用程序，并返回一个整数，标志系统调用是否成功。</li>
+</ol>
+
+<h3 id="库函数">库函数</h3>
+
+<p><strong>库函数 的设计 是为了提供比底层系统 调用更为方便的调用接口,例如 printf函数 可提供格式化输出和数据缓存， 而write 系统调用只能输出 字节块， malloc, free 函数包装了 内存的释放和分配工作</strong></p>
+
+<h3 id="处理错误">处理错误</h3>
+<p><strong>几乎所有的 系统调用都会返回某种类型的错误,用以表明 调用成功与否，要了解是否调用成功则必须坚持对状态进行检查。若调用失败则必须采取相应的行动，至少应该输出错误。 不检查状态，少写几行代码，听起来很诱人。实际上却会浪费掉大把的程序调试时间</strong></p>
+
+<p><em>这段陈述适用于 任何领域的编程工作， 简单的就是 人们常讲的 nil是一个百万的设计错误 一样。nil让他们忽略对他的检查，因为假定 变量不是nil的代码很清爽，可以减少很多的if判断，造成了nil是一个非常常见，频率高的错误。 那么正确的设计应该是什么样子呢？ 答案或许是Option + 强制类型（弱类型语言不必要了，因为没有人可以阻止你不检查错误）</em></p>
+
+<ol>
+  <li>
+    <p>系统错误处理</p>
+
+    <blockquote>
+      <p>通常返回值为-1 表示出错，系统调用失败后， 会将全局变量设定 errno 设定为一个正值来标记具体错误。但是如果系统调用和库函数成功，errno并不会被重置为0，所以单独的检查errno的设定来判断错误是错误的，因为可能是上个调用错误设定的数值。少数系统调用 在调用成功后(getpriority)依然返回-1， 要判断此类错误需要调用前将errno 设定为0， 然后根据errno判断是否错误。<br />
+ 打印错误， perror(“string”), char *strerror(int errorcode), strerror返回的字符串 指针是静态分配的，后续的调用会覆盖之前的调用。两个函数都是 locale-sensitive 语言环境敏感型，所以现实的是本地语言。</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>库函数的错误处理<br />
+<strong>不同的库函数在调用发生错误时候，返沪的数据类型和数值也各不相同，可以划分为几个类型:</strong></p>
+    <ul>
+      <li>同系统调用完全相同, (remove 会调用unlink 或者rmdir)</li>
+      <li>出错时会返回-1之外的其他值，然后设定errno表明出错的具体情况 (fopen 出错返回 NULL 指针，同时设定errno)</li>
+      <li>根本不使用errno</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2018 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>
