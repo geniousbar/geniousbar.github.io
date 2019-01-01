@@ -42,58 +42,61 @@
 <ol>
   <li>如何确定一个类是否具有单一职责
     <blockquote>
-      <ol>
-        <li>将类的每个方法都改述为一个问题（例如：齿轮请问你的直径多大） 2. 尝试使用一句话描述方法做的事情，这件事情的描述应该很简单。而不是需要使用 “和” 这样的字眼。</li>
-      </ol>
+      <p>将类的每个方法都改述为一个问题（例如：齿轮请问你的直径多大） 2. 尝试使用一句话描述方法做的事情，这件事情的描述应该很简单。而不是需要使用 “和” 这样的字眼。</p>
     </blockquote>
   </li>
   <li>解决问题的方法
     <ol>
       <li>依赖行为而不是数据（变量） // ruby中对这样的支持非常好， att_accessor 等元编程</li>
-      <li>隐藏数据结构。</li>
-    </ol>
+      <li>隐藏数据结构
+<div class="highlight"><pre class="highlight ruby"><code><span class="c1"># 代码示例</span>
+<span class="k">class</span> <span class="nc">Example</span>
+   <span class="nb">attr_reader</span> <span class="ss">:data</span>
+   <span class="c1"># data 的数据结构应该为[[one, two], [three, four]]</span>
+   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+       <span class="vi">@data</span> <span class="o">=</span> <span class="n">data</span>
+   <span class="k">end</span>
 
-    <p>```ruby<br />
-   # 代码示例<br />
-   class Example<br />
-      attr_reader :data<br />
-      # data 的数据结构应该为[[one, two], [three, four]]<br />
-      def initialize(data)<br />
-          @data = data<br />
-      end</p>
 
-<div class="highlight"><pre class="highlight plaintext"><code>  def sum
-      data.inject(0) do |sum, item|
-          sum += item[0] * item[1]
-      end
-  end    end
-# 重构之后的代码 （这里使用了额外的类，来隔离具体的数据结构）    class Example
-  attr_read :data
-  def initialize(data)
-      @data = data.map do |item|
-          Infer.new(item[0], item[1])
-      end
-  end
-  def sum
-      @data.inject(0) &amp;:product
-  end    end
-</code></pre></div>
-    <p>class Infer<br />
-      attr_reader :one, :two<br />
-      def initialize(one, two)<br />
-          @one, @two = one, two<br />
-      end</p>
+   <span class="k">def</span> <span class="nf">sum</span>
+       <span class="n">data</span><span class="p">.</span><span class="nf">inject</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">item</span><span class="o">|</span>
+           <span class="n">sum</span> <span class="o">+=</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+       <span class="k">end</span>
+   <span class="k">end</span>
+<span class="k">end</span>
+ <span class="c1"># 重构之后的代码 （这里使用了额外的类，来隔离具体的数据结构）</span>
+<span class="k">class</span> <span class="nc">Example</span>
+   <span class="n">attr_read</span> <span class="ss">:data</span>
+   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+       <span class="vi">@data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+           <span class="no">Infer</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+       <span class="k">end</span>
+   <span class="k">end</span>
+   <span class="k">def</span> <span class="nf">sum</span>
+       <span class="vi">@data</span><span class="p">.</span><span class="nf">inject</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span><span class="ss">:product</span>
+   <span class="k">end</span>
+<span class="k">end</span>
 
-<div class="highlight"><pre class="highlight plaintext"><code>  def product
-      one * two
-  end    end
- ```
+<span class="k">class</span> <span class="nc">Infer</span>
+   <span class="nb">attr_reader</span> <span class="ss">:one</span><span class="p">,</span> <span class="ss">:two</span>
+   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">two</span><span class="p">)</span>
+       <span class="vi">@one</span><span class="p">,</span> <span class="vi">@two</span> <span class="o">=</span> <span class="n">one</span><span class="p">,</span> <span class="n">two</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">product</span>
+       <span class="n">one</span> <span class="o">*</span> <span class="n">two</span>
+   <span class="k">end</span>
+<span class="k">end</span>
 </code></pre></div></li>
+    </ol>
+  </li>
+  <li>将外在的依赖关系尽量的隔离开来
+    <blockquote>
+      <p>将经常重复的代码封装，将对外在的依赖尽量隔离在一个地方（建立单独的方法，统一隔离对外在的依赖关系，思想类似与 依赖方法而不是数据）</p>
+    </blockquote>
+  </li>
 </ol>
 
-<div class="highlight"><pre class="highlight plaintext"><code> 3. 将外在的依赖关系尽量的隔离开来
- &gt; 将经常重复的代码封装，将对外在的依赖尽量隔离在一个地方（建立单独的方法，统一隔离对外在的依赖关系，思想类似与 依赖方法而不是数据）
-</code></pre></div>
 <h3 id="管理依赖关系">管理依赖关系</h3>
 <blockquote>
   <p>消息的三中类型， 1. 自身实现 2. 继承 3. 依赖（指代发送消息）</p>
@@ -109,10 +112,8 @@
     </ol>
   </li>
   <li>解决依赖关系的方法
-    <ol>
-      <li>注入依赖关系（依赖注入）</li>
-    </ol>
-
+    <ul>
+      <li>注入依赖关系（依赖注入）
 <div class="highlight"><pre class="highlight ruby"><code>  <span class="k">class</span> <span class="nc">Gear</span>
       <span class="nb">attr_reader</span> <span class="ss">:chainring</span><span class="p">,</span> <span class="ss">:cog</span><span class="p">,</span> <span class="ss">:rim</span><span class="p">,</span> <span class="ss">:tire</span>
       <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">chainring</span><span class="p">,</span> <span class="n">cog</span><span class="p">,</span> <span class="n">rim</span><span class="p">,</span> <span class="n">trie</span><span class="p">)</span>
@@ -142,62 +143,62 @@
    <span class="k">end</span>
    <span class="no">Gear</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="no">Wheel</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">)).</span><span class="nf">gear_inches</span>
 </code></pre></div></li>
-  <li>隔离脆弱的外部信息</li>
+      <li>隔离脆弱的外部信息
+<div class="highlight"><pre class="highlight ruby"><code> <span class="k">def</span> <span class="nf">gear_inches</span>
+     <span class="n">ratio</span> <span class="o">*</span> <span class="n">wheel</span><span class="p">.</span><span class="nf">diameter</span>
+ <span class="k">end</span>
+
+ <span class="k">def</span> <span class="nf">gear_inches</span>
+     <span class="sr">//</span> <span class="o">......</span>
+     <span class="n">wheel</span><span class="p">.</span><span class="nf">diameter</span>
+     <span class="sr">//</span><span class="o">......</span>
+ <span class="k">end</span>
+ <span class="c1"># 现在对wheel.diameter的引用嵌入在一个复杂的应用过程中， 这样做会变得更加脆弱</span>
+ <span class="k">def</span> <span class="nf">gear_inches</span>
+     <span class="sr">//</span><span class="o">.....</span>
+     <span class="n">diameter</span>
+     <span class="sr">//</span><span class="o">.....</span>
+ <span class="k">end</span>
+
+ <span class="k">def</span> <span class="nf">diameter</span>
+     <span class="n">wheel</span><span class="p">.</span><span class="nf">diameter</span>
+ <span class="k">end</span>
+ <span class="c1">#移除依赖关系，并将其封装在自己的某个方法中</span>
+</code></pre></div>        <blockquote>
+          <p>当一个类包含了对某个可能发生变化的消息的嵌入引用时，这样的技术变得非常有用。另一种方法为：将依赖关系反转（后面）</p>
+        </blockquote>
+      </li>
+    </ul>
+  </li>
+  <li>为什么需要管理依赖关系：
+    <ol>
+      <li>依赖关系是可以被改变的（通过函数的参数改变）</li>
+      <li>依赖关系的方向的选择会对未来的变化产生影响</li>
+    </ol>
+  </li>
+  <li>选择依赖方向：
+    <ol>
+      <li>有些类比其他类更容易发生变化</li>
+      <li>具体类比抽象类更容易发生变化（例如ruby中方法参数建立在抽象上，java建立在具体类上）</li>
+      <li>更改拥有多的依赖关系的类会造成广泛的影响
+        <blockquote>
+          <p>依赖于那些变化情况比你所做的更改还要少的事情</p>
+        </blockquote>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>总结：</p>
+
+    <p>对依赖关系的管理时创建面向未来的应用程序的核心。</p>
+    <ol>
+      <li>依赖注入 可以建立松耦合的依赖关系</li>
+      <li>依赖于抽象 可以降低面对变化的可能行（建立在更高层次的抽象上）</li>
+      <li>管理依赖的关键时管理依赖的方向（依赖于更不容易变化的对象）</li>
+    </ol>
+  </li>
 </ol>
 
-<div class="highlight"><pre class="highlight plaintext"><code>```ruby
-def gear_inches
-    ratio * wheel.diameter
-end
-
-def gear_inches
-    // ......
-    wheel.diameter
-    //......
-end
-# 现在对wheel.diameter的引用嵌入在一个复杂的应用过程中， 这样做会变得更加脆弱
-def gear_inches
-    //.....
-    diameter
-    //.....
-end
-
-def diameter
-    wheel.diameter
-end
-#移除依赖关系，并将其封装在自己的某个方法中
-
-```
-</code></pre></div>
-<blockquote>
-  <p>当一个类包含了对某个可能发生变化的消息的嵌入引用时，这样的技术变得非常有用。另一种方法为：将依赖关系反转（后面）</p>
-  <ol>
-    <li>为什么需要管理依赖关系：
-      <ol>
-        <li>依赖关系是可以被改变的（通过函数的参数改变）</li>
-        <li>依赖关系的方向的选择会对未来的变化产生影响</li>
-      </ol>
-    </li>
-    <li>选择依赖方向：
-      <ol>
-        <li>有些类比其他类更容易发生变化</li>
-        <li>具体类比抽象类更容易发生变化（例如ruby中方法参数建立在抽象上，java建立在具体类上）</li>
-        <li>更改拥有多的依赖关系的类会造成广泛的影响
-          <blockquote>
-            <p>依赖于那些变化情况比你所做的更改还要少的事情</p>
-          </blockquote>
-        </li>
-      </ol>
-    </li>
-    <li>总结：</li>
-  </ol>
-</blockquote>
-
-<div class="highlight"><pre class="highlight plaintext"><code>  对依赖关系的管理时创建面向未来的应用程序的核心。
-  1. 依赖注入 可以建立松耦合的依赖关系
-  2. 依赖于抽象 可以降低面对变化的可能行（建立在更高层次的抽象上）
-  3. 管理依赖的关键时管理依赖的方向（依赖于更不容易变化的对象）
-</code></pre></div>
 <h3 id="创建灵活的接口类里面的接口">创建灵活的接口（类里面的接口）</h3>
 
 <ol>
