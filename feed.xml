@@ -13,7 +13,7 @@
     <link rel="alternate" href="http://geniousbar.github.io/2018/12/30/linx-interface-04/"/>
     <id>http://geniousbar.github.io/2018/12/30/linx-interface-04/</id>
     <published>2018-12-30T08:00:00+08:00</published>
-    <updated>2019-01-01T14:36:49+08:00</updated>
+    <updated>2019-01-13T21:43:25+08:00</updated>
     <summary type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
 
 &lt;h3 id="文件io-通用的io模型"&gt;文件IO 通用的IO模型&lt;/h3&gt;
@@ -176,7 +176,233 @@
       &lt;li&gt;clearenv&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
+  &lt;li&gt;ABI, 应用程序二进制接口，一套规则。 规定了二进制可执行文件在运行时应该如何与某些服务（诸如内核或函数库所提供的服务）交换信息， ABI特别规定了使用那些寄存器和栈地址交换信息以及所交换数值的含义，一旦针对某个特定ABI进行了编译，其二进制可执行文件应该能在ABI相同的任何系统上运行。与之想法，标准化的API仅能通过编译源代码来保证应用程序的可移植性。&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;h2 id="内存分配"&gt;内存分配&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;在堆上分配内存， 进程呢个可以通过增加堆的大小来分配内存， 堆就是一段长度可变的连续的虚拟内存，初始于 进程未初始化的数据段末尾，随着内存的分配和释放而增减。通常将堆当前内存边界成为 program break
+    &lt;ul&gt;
+      &lt;li&gt;brk(vodi * end_data_segment), sbrk(int increment), 两个系统调用可以改变 program break 的位置， 位置调升以后，程序可以访问新分配区域内的任何内存地址。内核会在进程首次访问新分配的地址时，会自动分配实际的物理内存页。brk 直接改变 program break 的地址， sbrk 增量的改变 break 地址， 在原有的 break 地址上 增加increment 的空间，函数返回之前的break地址，也就是新分配的地址空间的起始处，sbrk(0) 返回现有的 program break 地址。&lt;/li&gt;
+      &lt;li&gt;malloc(size_t size), free(void * ptr)： 库函数(建立在系统调用， brk, sbrk的基础上封装而成)，比较与系统调用， 库函数拥有不少的优点， 明显的有 &lt;strong&gt;允许随意的释放内存块，他们被维护于一张空闲的内存列表中，在后续的内存分配调用时候循环使用&lt;/strong&gt;,
+        &lt;ol&gt;
+          &lt;li&gt;malloc: 分配成功返回void* 类型指针， 因为void类型所以可以随意使用， 调用失败可能是因为program break 已经触顶，（已经没有堆空间可以分配） 则返回NULL， 虽然出错的概率很小，但是依然需要进行错误检查。&lt;/li&gt;
+          &lt;li&gt;free： 函数释放ptr所指向的内存块，一般情况下， free并不会降低 program break 的位置， 而是将该内存块放入到空闲的内存列表中，以便供后续的malloc使用。有如下的好处， 1）尽量的减少了 sbrk的系统调用此处&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+      &lt;li&gt;调用free还是不呢？: 当进程终止时， 所有的内存都会返回给操作系统，基于内存的这一自动释放机制，对于那些分配内存并持续使用的程序而言，可以忽略free，因为在多次调用free时候不但消耗大量的cpu时间，还是使代码趋向于复杂。&lt;/li&gt;
+      &lt;li&gt;
+        &lt;table&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td&gt;malloc, free 的实现: 数据结构为 双向链表， len&lt;/td&gt;
+              &lt;td&gt;pre&lt;/td&gt;
+              &lt;td&gt;next&lt;/td&gt;
+              &lt;td&gt;space&lt;/td&gt;
+              &lt;td&gt;其中len 表示该空闲内存块 的大小， pre,next 为双向链表指针，指向上一个下一个空闲内存块， space为空闲内存&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;ol&gt;
+          &lt;li&gt;malloc(size_t size) 会扫描空闲链表，以找到适合大小的内存块
+            &lt;ul&gt;
+              &lt;li&gt;空闲链表中的len == size 时，则直接返回给z调用者&lt;/li&gt;
+              &lt;li&gt;len &amp;gt; size: 对其切割（将会出现一个合适大小的内存块+一个空闲的内存块）&lt;/li&gt;
+              &lt;li&gt;len &amp;lt; size: 没有找到符合要求的内存块时，调用sbrk 重新分配适合的内存块（为了更少的系统调用sbrk, 通常mallock 会以更大的increment 调用sbrk ）&lt;/li&gt;
+              &lt;li&gt;更新 空闲块链表&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;free(void * ptr) : free函数通过 ptr 内存块中 len来知道内存块大小，然后加入到 空闲块链表中。&lt;/li&gt;
+          &lt;li&gt;因为free， malloc的实现导致， 1）ptr指针需要完全正确，以避免对空闲链表的错误操作。（非malloc返回的指针，绝不能调用free）， 2）不能重复释放同一个指针&lt;/li&gt;
+          &lt;li&gt;除了mallock, C函数库还提供了其他的 内存分配算法版本的 内存分配函数实现。 calloc, realloc, memalign, posix_memalign, alloca（该函数从栈上分配内存，因为栈的特殊性使其有两个特点 1）只有当调用函数的位于顶部时候可用 2）不需要free， 因为函数返回时代码会重置栈指针。）&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="用户和组"&gt;用户和组&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;每个用户都存在唯一的UID， 并可以归属于多个GID&lt;/li&gt;
+  &lt;li&gt;UID， GID 的主要用途有 1）确定各种系统资源的所有权， 2）对进程的操作资源的权限加以控制&lt;/li&gt;
+  &lt;li&gt;/et/passwd, 用于记录用户相关的UID， home, shell etc等。 /etc/shadow 维护对应UID的加密密码。组文件 /etc/group, 维护GID， 以及对应的用户列表，&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="进程凭证"&gt;进程凭证&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;每个进程都有一套数字表示UID和GID 具体如下：
+    &lt;ol&gt;
+      &lt;li&gt;real user id, real group id, 实际用户id，实际组id， 确定了进程所属的用户和组，作为登陆过程之一，登陆shell 从/etc/passwd中读取相应用户密码记录的3，4字段，设定为其实际用户id &amp;amp; 组id，当创建进程时，将从父进程中继承这些&lt;/li&gt;
+      &lt;li&gt;effective user id, effective group id, 有效用户id， 有效组id。 系统通常通过结合有效用户id，组id 连同辅助组id 来授予进程权限。&lt;/li&gt;
+      &lt;li&gt;saved user id, saved group id, 保存的用户id， 保存的组id&lt;/li&gt;
+      &lt;li&gt;file-system user id, file-system group id, 文件系统用户id， 文件系统组id&lt;/li&gt;
+      &lt;li&gt;辅助组id&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;set-user-id, set-group-id 程序， set-user-id 程序会将进程的有效用户id设为可执行文件的用户id， 从而获得不具备的权限。set-group-id 程序有类似的效果。可执行文件拥有两个特别的权限位 set-user-id和set-group-id位，（实际上所有文件都有，只有可执行文件比较有用）ls -l program, x 变成 代表 拥有set-user-id or set-group-id. 当运行set-user-id程序时候，内核会将进程的有效用户id变为可执行文件的用户id， set-group-id 执行类似的操作。 linux系统中常用的passwd, mount, unmount, wall(用户向tty组下所有终端写入消息)等都为set-user-id程序(set-user-id-root 来特指 root用户所拥有的 set-user-id 程序)&lt;/li&gt;
+  &lt;li&gt;保存用户id(saved-user-id) 当执行程序时，会发生如下事情：
+    &lt;ol&gt;
+      &lt;li&gt;可执行文件的set-user-id权限位开启，将进程等的有效用户id 设定为 可执行文件的属主，未设定则进程有效用户id不变&lt;/li&gt;
+      &lt;li&gt;复制 有效id 到 set-user-id&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;有不少的系统调用，允许将set-user-id 程序的有效用户id在实际用户id和保存set-user-id之间切换。对于与执行文件用户id相关的任何权限，程序能够随时在两种状态间切换。&lt;/li&gt;
+  &lt;li&gt;文件系统用户id： 在进行linux中 打开文件、改变文件属主 、修改文件权限之类的文件操作时，决定其操作权限的是 文件系统用户id， 而非 有效用户id。通常 文件系统用户id和组id都等于相应的有效用户和组id， 并且只要有效用户id发生变化，相应的文件系统用户id也会发生变化，只有linux特有的两个系统调用setfsuid(), setfsgid()才能刻意的制造出 文件系统用户id 不等于 有效用户id。因此   大部分情况下，可以忽视文件系统用户id，等同于检查 有效用户id&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;[ ] 完成对应的系统调用&lt;/li&gt;
+  &lt;li&gt;[ ] 如何在进程中调用 特权程序?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id="时间"&gt;时间&lt;/h2&gt;
+&lt;p&gt;大多数计算机体系结构都内置有硬件始终，是的内核得以计算真实时间和进程时间。&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;日历时间: Unix 系统内部对时间的表示，以 Epoch以来的秒数来度量（UTC 时间）。存储于time_t类型的变量中。（time_t是一个有符号整数 理论上当前许多的32位unix系统都面临着一个2038 的理论问题，如果执行的计算工作涉及到未来时间，那么在2038年问题都会出现，事实上在此之前所有的unix系统可能都已经升级到了64位系统，然而32位嵌入式系统的寿命要长的多，依然面临着这个问题）
+    &lt;ul&gt;
+      &lt;li&gt;gettimeofday(timeval *tv, timezone *tz): struct timeval { time_t tv_sec; suseconds_t tv_usec;} 其中 tv_usec提供了微秒级别的精度，参数tz是一个历史产物，应该总为NULL，&lt;/li&gt;
+      &lt;li&gt;time_t time(time_t *timep): 函数有两种方式返回同样的结果， UTC秒数， timep 不为NULL，将秒数放在timep 的指针中， timep NULL返回一个数值&lt;/li&gt;
+      &lt;li&gt;时间转换函数： 类型包含如下 time_t， 打印格式， 分解时间(即是： struct tm {int tm_sec; int tm_min; int tm_hour; int tm_mday; int tm_year; int tm_mon; etc})， 转换函数即是 用来在上面的类型中 进行转换的函数，方便使用。其中包括， strftime, mktime, gmtime, localtime 等。&lt;/li&gt;
+      &lt;li&gt;时区： 时区信息被系统使用标准格式保存于文件中。 /usr/share/zoneinfo, 该目录中的每个文件都包含了一个特定国家或地区的时区制度，系统的本地时间在 /etc/localtime 中定义，通常链接到 /usr/share/zoneinfo中的一个文件。使用TZ环境变量来为一个程序指定时区，其值为 “:“ + 时区名称组成的字符串。设定时区会自动影响到 ctime, locatime, mktime, strftime 等，&lt;/li&gt;
+      &lt;li&gt;setlocale(int category, char * locale) : 设定和查询程序的当前地区, category 可选项为 表中的数值 + LC_ALL, LANG, LANGUAGE, 其中，LC_ALL 为设定所有值而准备， LANG为设定所有为明确指定的变量而准备. setlocale 参数中的locale可以为 “”空字符串，表示可以从环境变量中却的地区的设定， 大部分的程序代码 setlocale(LC_ALL, “”) 来使用程序中的环境变量设定地区，如果调用被省略，这些环境变量将不会对程序的地区设定生效。&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;文件名&lt;/td&gt;
+          &lt;td&gt;目的&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;LC_TYPE&lt;/td&gt;
+          &lt;td&gt;包含字符分类以及大小写转换规则&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;LC_COLLATE&lt;/td&gt;
+          &lt;td&gt;包含针对一字符集的排序规则&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;LC_MONETARY&lt;/td&gt;
+          &lt;td&gt;对货币格式化规则&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;LC_NUMERIC&lt;/td&gt;
+          &lt;td&gt;对货币意外的数字格式化规则&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;LC_TIME&lt;/td&gt;
+          &lt;td&gt;对日期和时间的格式化规则&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;LC_MESSAGES&lt;/td&gt;
+          &lt;td&gt;针对肯定和否定响应，就格式以及数值做了规定&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;进程时间:&lt;br /&gt;
+&lt;strong&gt;软件时钟： 进程时间受限于 系统软件时钟的分辨率，度量单位 为jiffies（定义在内核代码中的常量HZ, jiffies 为1s内 cpu增加的记数，100HZ(jiffies) 时候， 1 jiffies(hz) 的时间为10毫秒）这是内核按照round-robin的分时调度算法分配cpu进程的单位。因为CPU 的速度大大提高，2.6.0的内核时钟速度已经提高了1000hz， 更高的分辨率意味着更高的时间精度，然而并非可以任意的提高时钟频率，因为每个时钟中断都对耗费少量的CPU时间&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;用户CPU时间： 在用户模式下执行所花费的时间数量&lt;/li&gt;
+      &lt;li&gt;系统CCPU时间： 在内核模式中执行所花费的时间数量&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="系统和进程信息"&gt;系统和进程信息&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;为了提供简单的方法来访问内核信息， 现在的UNIX实现提供了一个/proc 虚拟文件系统（并非存储于磁盘上，恶热是内核在进程访问信息时候动态生成的），其中包含了各种用于展示内核信息的文件。并允许进程通过常规的IO系统调用来访问，有些还可以对信息进行修改。&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;/proc/PID： 内核提供了对应PID进程的目录结构，&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;文件&lt;/td&gt;
+          &lt;td&gt;描述&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;cmdline&lt;/td&gt;
+          &lt;td&gt;以 \0分割的命令行参数&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;cwd&lt;/td&gt;
+          &lt;td&gt;指向当前工作目录的符号连接&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Environ&lt;/td&gt;
+          &lt;td&gt;NAME=value 键值对的环境列表&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;exe&lt;/td&gt;
+          &lt;td&gt;指向正在执行文件的符号连接&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;fd&lt;/td&gt;
+          &lt;td&gt;文件目录包含了指向由进程打开文件的符号连接&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;maps&lt;/td&gt;
+          &lt;td&gt;内存映射&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;mem&lt;/td&gt;
+          &lt;td&gt;进程虚拟内存&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;mounts&lt;/td&gt;
+          &lt;td&gt;进程的安装点&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;root&lt;/td&gt;
+          &lt;td&gt;指向根目录的符号链接&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;status&lt;/td&gt;
+          &lt;td&gt;各类信息&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;/proc/PID/fd： 目录 为进程打开的每个文件描述符都包含了一个符号连接，每个符号连接的名称都与描述符的数值向匹配（/proc/pid/1 为 标准输出）， 任何进程都可以使用符号连接 /proc/self 来访问自己的/proc/PID 目录&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;/proc 目录下的系统信息:&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;目录&lt;/td&gt;
+          &lt;td&gt;描述&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;/proc/net&lt;/td&gt;
+          &lt;td&gt;网路和套接字的状态信息&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;/proc/sys/fs/&lt;/td&gt;
+          &lt;td&gt;文件系统相关的设定&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;/proc/sys/kernel/&lt;/td&gt;
+          &lt;td&gt;各种常规的内核设定&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;/proc/sys/net&lt;/td&gt;
+          &lt;td&gt;网络和套接字设定&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;/proc/sys/vm/&lt;/td&gt;
+          &lt;td&gt;内存管理设定&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;uname(utsname * utsbuf): 系统调用返回主机系统的标识信息&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id="文件io缓冲"&gt;文件IO缓冲&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;出于效率的考虑， 系统IO调用，以及 函数库IO函数，都在文件IO操作中对数据进行了缓冲&lt;/strong&gt;&lt;/p&gt;
 </content>
   </entry>
   <entry>
