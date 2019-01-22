@@ -4,10 +4,190 @@
   <id>http://geniousbar.github.io</id>
   <link href="http://geniousbar.github.io"/>
   <link href="http://geniousbar.github.io/feed.xml" rel="self"/>
-  <updated>2018-12-30T08:00:00+08:00</updated>
+  <updated>2019-01-14T08:00:00+08:00</updated>
   <author>
     <name>geniousbar</name>
   </author>
+  <entry>
+    <title>linux-interface-socket</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2019/01/14/linux-interface-socket/"/>
+    <id>http://geniousbar.github.io/2019/01/14/linux-interface-socket/</id>
+    <published>2019-01-14T08:00:00+08:00</published>
+    <updated>2019-01-22T09:31:45+08:00</updated>
+    <summary type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
+
+&lt;h3 id="socket"&gt;Socket&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;socket是一种IPC方法， 它允许位于同意主机或者网络连接的不同主机 上的应用程序之间交换数据(第一个被广泛接受的socket API 实现于 1983年，现在这组API 已经被移植到了大部分的计算机系统上)&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;57 介绍UNIX domain socket， 允许同一主机上的系统上的应用程序之间通讯。 58 介绍TCP/IP之间联网协议的关键特性。， 59 描述internet domain socket...&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    <content type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
+
+&lt;h3 id="socket"&gt;Socket&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;socket是一种IPC方法， 它允许位于同意主机或者网络连接的不同主机 上的应用程序之间交换数据(第一个被广泛接受的socket API 实现于 1983年，现在这组API 已经被移植到了大部分的计算机系统上)&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;57 介绍UNIX domain socket， 允许同一主机上的系统上的应用程序之间通讯。 58 介绍TCP/IP之间联网协议的关键特性。， 59 描述internet domain socket, 允许位于不同主机上的应用程序通过一个TCP/IP王璐进行通讯， 60 讨论socket的服务设计， 61： 介绍一些高级主题， 包括socket IO的， TCP协议的细节信息，已经socket选项来获取修改socket的各种特性。&lt;/li&gt;
+  &lt;li&gt;socket(domain, type, protocol): 系统调用
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;domain: 1） 识别 socket 地址的格式， 2） 确定范围， 实在同一个主机上的不同应用程序还是， 在一个网络上的不同主机&lt;/p&gt;
+
+        &lt;table&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th style="text-align: left"&gt;DOMAIN&lt;/th&gt;
+              &lt;th style="text-align: left"&gt;执行的通讯&lt;/th&gt;
+              &lt;th style="text-align: left"&gt;应用程序间的通讯&lt;/th&gt;
+              &lt;th style="text-align: left"&gt;地址格式&lt;/th&gt;
+              &lt;th style="text-align: left"&gt;地址结构&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td style="text-align: left"&gt;AF_UNIX&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;内核中&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;同一主机&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;路径名&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;sockaddr_un&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style="text-align: left"&gt;AF_INET&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;通过IPv4&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;IPv4 连接起来的网络&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;32为IP地址+ 16位端口号&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;sockaddr_in&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style="text-align: left"&gt;AF_INET6&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;通过IPv6&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;IPv6 连接起来的网络&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;128为IP地址+ 16位端口号&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;sockaddr_in6&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;type: sock_stream, sock_dgram&lt;/p&gt;
+
+        &lt;table&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th style="text-align: left"&gt;属性&lt;/th&gt;
+              &lt;th style="text-align: left"&gt;流(SOCK_STREAM)&lt;/th&gt;
+              &lt;th style="text-align: left"&gt;数据包 (SOCK_DGRAM)&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td style="text-align: left"&gt;可靠的传输?&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;是&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;否&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style="text-align: left"&gt;边界消息保留?&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;否&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;是&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style="text-align: left"&gt;面向连接？&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;是&lt;/td&gt;
+              &lt;td style="text-align: left"&gt;否&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/li&gt;
+      &lt;li&gt;流: 提供了一个可靠的双向的字节流的通讯通道。 (因为需要一对 相互连接的socket，因为被称为面向连接的socket）其中：
+        &lt;ol&gt;
+          &lt;li&gt;可靠的： 表示可以保证发送者传输的数据会完整的传递到接受者应用程序 （假设接受者发送者应用程序不会崩溃）&lt;/li&gt;
+          &lt;li&gt;双向的： 数据可以在socket 之间的任意方向上传输&lt;/li&gt;
+          &lt;li&gt;字节流： 表示与管道一样不存在 消息边界的概念&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+      &lt;li&gt;数据报 socket： 允许数据以 数据报的消息形式进行交换， 在数据报socket中， 消息边界得到了保留，但是数据传输是不可靠的，消息的到达顺序 可能是无需的、重复的、或者根本无法到达的。数据包socket是一个更一般的无连接socket概念的一个示例， 与流socket连接，一个数据报 socket 在使用时候，无需与另一个socket 连接，现在internet domain 中， 数据包socket使用了UDP（用户数据报协议）, 而流socket 则使用了TCP（传输控制协议）（是否意味着更多的协议的存在？）&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;socket 相关的系统调用：
+    &lt;ul&gt;
+      &lt;li&gt;socket(int domain, int type, int protocol): 其中domain， type 在上面有所描述。protocol 总是为0， 在一些socket类型中会使用非0数值，socket成功后会返回一个socket的文件描述符&lt;/li&gt;
+      &lt;li&gt;bind(int sockfd, struct sockaddr * addr, socklen_t addrlen): sockfd 为 socket调用返回的文件描述符，addr 为socket绑定到的地址结构指针，结构详细取决于 socket domain, addrlen 为结构地址大小。一般来讲服务器会将socket 绑定到一个 约定的地址上。&lt;/li&gt;
+      &lt;li&gt;listen(int sockfd, int backlog): 系统调用将会sockfd设定为 『被动』， 接受主动连接的请求。 backlog 用于 设定 服务器端 保持等待连接的数量。（在backlog之内的连接会立即成功，等待accept， 更多的连接会阻塞一直到有等待中的连接被accept并冲等待连接中删除掉）（backlog的限制在sys/socket.h 中的 somaxconn 常量设定， linux中 这个常量设定为128,从内核 2.4.25起 linux允许在运行时通过 特有的/proc/sys/net/core/somaxconn 文件来调整这个限制）&lt;/li&gt;
+      &lt;li&gt;accept(int sockfd, struct sockaddr * addr, socklen_t * addrlen): 系统调用在 sockfd 的文件描述符 引用的监听流socket上接受一个接入连接。如果在调用accpet时不存在 未决 的连接，那么调用就会阻塞直到 有连接请求为止。参数 addr, addrlen, 会返回连接socket 的地址信息。理解accept 的关键点在于
+        &lt;ul&gt;
+          &lt;li&gt;accept 会创建一个新的scoket， 这个socket与执行connect的客户端scoket进行连接。&lt;/li&gt;
+          &lt;li&gt;accpet调用返回的结果是 已连接的 socket文件描述符，监听 socketfd 会保持打开状态。并可以接受后续连接。&lt;/li&gt;
+          &lt;li&gt;典型的 服务器应用 会创建一个 监听socketfd， 将其绑定到一个约定的地址上。然后 accept 该socketfd 上 的连接 来处理所有的客户端请求。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;connect(int sockfd, struct sockaddr * addr, scoklen_t addrlen): 系统调用将sockfd 主动连接到 地址addr 指定的监听socket上。如果连接失败，标准的可以移植的方法为，关闭socket，创建一个新的socket，并重新连接&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;流 socket 提供了一个在两个端点之间 一个双向通信的通道，流socket IO 上的操作与 管道 IO的操作类似
+    &lt;ul&gt;
+      &lt;li&gt;可以使用 read， write，因为socket是双向的，所以两端都可以使用&lt;/li&gt;
+      &lt;li&gt;socket可以使用close来关闭，之后对应的另一端的socket 在读取数据时候会收到文件结束的标志，如果进行写入 会收到一个SIGPIPE的信号，并且系统调用会返回一个EPIPE的错误。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;数据包 socket(SOCK_DGRAM):
+    &lt;ol&gt;
+      &lt;li&gt;socket 系统调用创建一个邮箱，&lt;/li&gt;
+      &lt;li&gt;bind 到一个约定的地址上， 来允许 一个应用程序发送数据报 到这里，一般来讲， 一个服务器会将其socket 绑定到一个地址上，客户端会向改地址发送一个数据报 来发起通讯 （在一个domain 特别是UNIX domain 中，客服端想接收到服务器发送来的数据报的话，也需要bind到一个地址上）&lt;/li&gt;
+      &lt;li&gt;sendto(int sockfd, vodi * buffer, size_t length, int flags, sockaddr * dest_addr, socklen_t addrlen): 用来发送一个数据报, flags 用来控制一些socket的特性，dest_addr置顶了目标接受者的socket地址,&lt;/li&gt;
+      &lt;li&gt;recvfrom(int sockfd, void * buffer, size_t length, int flags, sockaddr * src_addr, socklen_t addrlen): 用来接受数据报，在没有数据报时候会阻塞应用。犹豫recvfrom允许获取发送者的地址，因为可以发送一个响应（这在 发送者的socket没有绑定到一个地址上是有用的，正如bind中的描述所说，unix domain中也需要 客服端 来bind一个地址，才能接收到服务器的响应）其中 src_addr 用来获取发送数据报的远程socket地址，如果并不关心发送者的地址，可以传递NULL，length 数值 用来限制recvfrom获取的数据大小，如果超过length，则会进行截断。（如果使用了recvmsg 则可以找出被截断的数据报）&lt;/li&gt;
+      &lt;li&gt;数据报通讯无法保证 数据报 接受的顺序，甚至无法保证数据是到达的 或者是 多次到达&lt;/li&gt;
+      &lt;li&gt;connect： 尽管数据报socket是无连接的，但是依然可以使用connect调用，
+        &lt;ul&gt;
+          &lt;li&gt;发送者 socket connect之后，数据报的发送可以使用write，来完成，而无需使用sendto，并每次传递addr地址。&lt;/li&gt;
+          &lt;li&gt;接受者 socket connect之后，只能接受由对等的socket 发送的数据报&lt;/li&gt;
+          &lt;li&gt;数据报socket connect的明显优势在于 可以使用更简单的IO 系统调用，在一些TCP/IP实践中，将一个数据报的socket连接到一个对等socket（connect）能够带来性能上的提升&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id="socket-unix-domain"&gt;Socket: Unix domain&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Unix domain socket address:&lt;br /&gt;
+  unix domain socket的地址以路径名来表示，其中sun_path 的大小，早期为 108, 104，现在的一般为 92，可移植的需要小一些，应该使用strncpy 以避免缓冲区溢出问题，使用 路径名 初始化 sun_path 来初始化 socket address&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;    &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr_un&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="n"&gt;sa_family_t&lt;/span&gt; &lt;span class="n"&gt;sun_family&lt;/span&gt;
+      &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;sun_path&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;108&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+  &lt;li&gt;当绑定 UNIX domain socket 时， bind会在 文件系统中创建一个条目， 文件的所有权会根据文件的创建规则来确定，并标记为一个socket， ls -l 第一列 为s， stat()返回的结构中st_mode字段中的文件类型部分为 S_IFSOCK，&lt;/li&gt;
+  &lt;li&gt;无法姜i一个socket绑定到 现有的路径名上。&lt;/li&gt;
+  &lt;li&gt;通常将一个socket绑定到绝对路径上&lt;/li&gt;
+  &lt;li&gt;一个socket只能绑定到一个路径名上，相应的一个路径名只能被一个socket绑定&lt;/li&gt;
+  &lt;li&gt;无法使用open打开一个socket&lt;/li&gt;
+  &lt;li&gt;不在需要socket时，使用unlink 来删除其路径&lt;/li&gt;
+  &lt;li&gt;示例中通常将socket绑定到/tmp目录下，这并不是一个好的设计，在现实中不要这么做，因为/tmp 此类公共可写的目录中创建文件会导致安全问题，所以应该将socket绑定到一个有安全措施的绝对路径上&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;socketpair(int domain, int type, int protocol, int sockfd[2]): 该系统调用 用于创建一对 互相连接的socket，
+    &lt;ul&gt;
+      &lt;li&gt;只能用在UNIX domain中(也就是说 domain 必须指定为 AF_UNIX) type 可以为sock_dgram, sock_stream, protocol必须为0，&lt;/li&gt;
+      &lt;li&gt;sockfd 数组返回了 引用这两个相互连接的socket文件描述符。type 为sock_stream 相当于创建了一个双向管道，一般来讲 socket对的使用方式与管道的使用方式类似，在调用完socketpair()之后，可以fork出一个子进程，然后子父进程可以通过这一对socket来进行IPC了。&lt;/li&gt;
+      &lt;li&gt;与 手动闯将一对相互连接的socket的做法的优势： socketpair 创建的socket不会绑定到任意的地址上（即其他的创建放大都需要bind 到一个地址上）这样就能避免安全问题，因为这一对socket对其他进程是不可见的&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;linux 抽象socket 命名空间&lt;br /&gt;
+  &lt;strong&gt;所谓的抽象命名空间 是linux特有的特性。他允许将一个UNIX domain socket绑定到一个名字上但不会在文件系统上创建该名字&lt;/strong&gt; 优势有：
+    &lt;ul&gt;
+      &lt;li&gt;无需担心与文件系统中的既有名字冲突&lt;/li&gt;
+      &lt;li&gt;没有必要在使用完一个socket之后，删除socket路径名，当socket被关闭之后会自动删除这个抽象名&lt;/li&gt;
+      &lt;li&gt;无需为socket创建一个文件系统路径名了&lt;/li&gt;
+      &lt;li&gt;创建一个抽象的绑定，只需要将sun_path字段的第一个字节指定为null，用于区分抽象socket 与传统的UNIX domain socket&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</content>
+  </entry>
   <entry>
     <title>linux-interface-04</title>
     <link rel="alternate" href="http://geniousbar.github.io/2018/12/30/linx-interface-04/"/>
@@ -950,272 +1130,6 @@
        &lt;span class="nv"&gt;items&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;map 不仅仅是一种模式，更重要的建立起了一种高级抽象。在scale-list 原来的设计中，更多的注意力放在了， 循环递归的结构中，而通过map定义的scale-list 则忽略了这种细节层面的情况，强调是表到表的缩放，这两种形式上的差异并不在于计算机会执行不同的计算过程，而在于我们对这同一种过程的不同思考方式。&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>格雷厄姆之道</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2018/01/04/benjamin-graham/"/>
-    <id>http://geniousbar.github.io/2018/01/04/benjamin-graham/</id>
-    <published>2018-01-04T08:00:00+08:00</published>
-    <updated>2018-09-05T09:23:15+08:00</updated>
-    <summary type="html">&lt;h2 id="格雷厄姆之道如何在中国实践价值投资"&gt;格雷厄姆之道（如何在中国实践价值投资）&lt;/h2&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;现在已然衰朽者， 将来可能重放异彩；现在备受青睐者，，将来却可能日渐衰朽。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id="原理"&gt;原理&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;价值投资：
-    &lt;blockquote&gt;
-      &lt;p&gt;价值投资不会让你一夜暴富，但它可以在保证本金安全的前提下让你的财产增值&lt;/p&gt;
-    &lt;/blockquote&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;价值投资：用远低于公司内在价值的价格购买该公司的股票&lt;/li&gt;
-      &lt;li&gt;金融思维和商业思维： 商业思维 这个公司值多少钱，股票价格 = 公司价格 / 股票数量。 金融思维： 股票价格 = 每股收益 * 市盈率（PE）金融...&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;</summary>
-    <content type="html">&lt;h2 id="格雷厄姆之道如何在中国实践价值投资"&gt;格雷厄姆之道（如何在中国实践价值投资）&lt;/h2&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;现在已然衰朽者， 将来可能重放异彩；现在备受青睐者，，将来却可能日渐衰朽。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id="原理"&gt;原理&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;价值投资：
-    &lt;blockquote&gt;
-      &lt;p&gt;价值投资不会让你一夜暴富，但它可以在保证本金安全的前提下让你的财产增值&lt;/p&gt;
-    &lt;/blockquote&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;价值投资：用远低于公司内在价值的价格购买该公司的股票&lt;/li&gt;
-      &lt;li&gt;金融思维和商业思维： 商业思维 这个公司值多少钱，股票价格 = 公司价格 / 股票数量。 金融思维： 股票价格 = 每股收益 * 市盈率（PE）金融思维中 &lt;strong&gt;每股收益 在决定股票价格时候占了大部分比重。而市盈率本身也很大程度上是由收益趋势外推决定的&lt;/strong&gt;&lt;/li&gt;
-      &lt;li&gt;金融思维的弊端：
-        &lt;ol&gt;
-          &lt;li&gt;采用正常的商业思维， 并购一家公司要对 &lt;strong&gt;资产和收益&lt;/strong&gt; 进行双重考量，双重考量要比单一强调收益的评估方式更可靠。&lt;/li&gt;
-          &lt;li&gt;与资产相比，每股收益的变化更加剧烈，这样在股票估值时候，就包含了一个被夸大的不稳定性。&lt;/li&gt;
-          &lt;li&gt;每股收益很容易被人为的操控&lt;/li&gt;
-          &lt;li&gt;市盈率 跟 每股收益 相关性比较大，所以导致，每股价格 严重相关 每股收益&lt;/li&gt;
-        &lt;/ol&gt;
-
-        &lt;blockquote&gt;
-          &lt;p&gt;要想在一生中获得投资的成功，并不需要顶尖的智商、超凡的商业智慧或内幕消息，而是需要一个稳妥的知识体系作为决策的基础。并且有能力控制自己的情绪，使其不会对这种体系造成侵蚀（比如达里奥的模型系统，决策系统，都在某一个方面上在避免情绪决策，贪婪和恐惧很容易影响人的判断能力）&lt;br /&gt;
-  杰出的收益 = 投资方面的知识和努力 * 股票市场的愚蠢程度&lt;/p&gt;
-        &lt;/blockquote&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;市场波动、估值、安全边际
-    &lt;ul&gt;
-      &lt;li&gt;了解市场，需要对不同的证券在不同条件下的表现有足够的认识 (忘掉过去的人，容易重蹈覆辙， 比如后面不同的资本结构， 不同的行业性质都会在相同的条件下有不同的反应)&lt;/li&gt;
-      &lt;li&gt;安全边际： 是价值投资的核心思想。安全边际就是证券的市场价格低于证券内在价值的差额。充足的安全边际 可以帮助投资人在犯错误的情况下依然保证本金的安全。安全边际越大投资就越安全。未来的潜在收益就更高&lt;/li&gt;
-      &lt;li&gt;投资原则： 股价应该是内在价值的三分之二&lt;/li&gt;
-      &lt;li&gt;足够的安全边际，不仅可以赚取 公司价值增长的钱，还有 股票价值回归的钱&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;内在价值：
-    &lt;ul&gt;
-      &lt;li&gt;一个大概的估算价格范围&lt;/li&gt;
-      &lt;li&gt;股价偏离内在价值的原因: 股市给股票定价的过程就是市场心里变化的过程。而市场心里变化的过程通常是不合逻辑的。&lt;/li&gt;
-      &lt;li&gt;股票价值回归： 股票市场短期是一个投票机，长期来看，却是一个称重器。
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   又一个投资人死了，去见上帝，求上帝安排他到天堂去。
-   上帝说： 『天堂里都是你们这些高投资的，都满了，只有地狱还有空位』
-   投资人说： 『那麻烦你跟他们说一句： 地狱了发现了石油』
-   过了一阵， 天堂里的人都开始往地狱里跑。
-   上帝对投资人说： 『你可以搬到天堂里了，他们都下地狱了』
-   投资人说：『不行，我也得去地狱看看，万一是真的呢』
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="估值"&gt;估值&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;资产
-    &lt;ul&gt;
-      &lt;li&gt;资产至少同收益同样重要      (资产要比收益稳定的多, 收益确实很重要，市场也在不断进行收益预测，但是，就算是能够准确的预测下一年的收益，也很难判断 这个盈利预期 是否已经体现在当前的价格中了 priced-in)&lt;/li&gt;
-      &lt;li&gt;市净率 = 每股股价 / 每股净资产，   股票价格低于每股有形资产账面价值 的 2/3， 不管什么股票，都不应该以两倍市净率买入&lt;/li&gt;
-      &lt;li&gt;流动资产价值 = 流动资产 - 所有负债,     现金资产价值 = 现金资产 - 所有负债。    股票价格 低于 流动资产价值 的2/3&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;收益：
-    &lt;ul&gt;
-      &lt;li&gt;市盈率（PE） = 每股价格 / 每股收益,     市盈率越高 表示股票卖的越贵， 以当前股价买入股票，回本需要更长的时间。&lt;/li&gt;
-      &lt;li&gt;盈利率 = 1 / 市盈率 = 每股收益  / 每股股价,     盈利率至少为长期AAA（国债）级债券收益率的2倍。&lt;/li&gt;
-      &lt;li&gt;股价和股息： 股息收益率应该为AAA债券级的2/3 （对股息发放的形式和方法，需要补充）&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;盈利能力
-    &lt;ul&gt;
-      &lt;li&gt;盈利能力： 过十年的年度盈利增长率至少为 7%&lt;/li&gt;
-      &lt;li&gt;收益质量：需要的是实实在在的赚钱，而不是靠会计手段赚钱。不能单一看利润表，必须要用资产负债表对利润表进行审核，来发现公司当年收益对公司财务状况的真正影响。&lt;/li&gt;
-      &lt;li&gt;未来收益：投机者和投资者都是以未来收益而非过去收益作为投资基础，但是投资者对未来的收益分析需要有理有据，并且尽量保守&lt;/li&gt;
-      &lt;li&gt;不要关注某一年的利润，而是公司正常情况下的盈利能力，&lt;/li&gt;
-      &lt;li&gt;折旧和摊销费用： 需要特别关注，他们不代表当前相应的现金支出。而是代表因为损耗原因，引起的固定资产和资本资产价值的减少。折旧是针对固定资产而言，摊销是对无形资产而言。&lt;/li&gt;
-      &lt;li&gt;归属母公司利润 / 总股本 = 每股收益&lt;/li&gt;
-      &lt;li&gt;在过去十年间经营状况波动巨大的情况下，收益一直表现稳定&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;财务状况：
-    &lt;ul&gt;
-      &lt;li&gt;营运资金 = 流动资产 - 流动负债,      流动比率 = 流动资产/流动负债,      速冻比率 = (流动资产 - 存货) / 流动负债&lt;/li&gt;
-      &lt;li&gt;流动资产 至少为 流动负债 的2倍&lt;/li&gt;
-      &lt;li&gt;不包括存货的流动资产 至少等于 流动负债（速动比率大于1）&lt;/li&gt;
-      &lt;li&gt;总负债小于股东权益&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;股票划分标准：
-    &lt;ul&gt;
-      &lt;li&gt;市盈率 在 20倍 以上， 也就是盈利率低于 5% 的成长股&lt;/li&gt;
-      &lt;li&gt;市盈率 在 7-20 之间，也就是盈利率 在5% - 15% 之间的股票&lt;/li&gt;
-      &lt;li&gt;市盈率在7倍一下，也就是盈利率高于15%，但是不受欢迎的股票&lt;/li&gt;
-      &lt;li&gt;第一个是首市场热捧的高成长性股票，第三组股票体现了人们对其前景的悲观预期。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;同质性行业和异质性行业：
-    &lt;ul&gt;
-      &lt;li&gt;同质性行业： 未来的发展变化影响到所有的公司： 全行业一荣俱荣一损俱损， 比如： 铁路、电力、热力、煤炭、棉花等。&lt;/li&gt;
-      &lt;li&gt;异质性行业： 行业各家公司宣传和销售各自的品牌，这样的行业一家公司的兴往往建立在牺牲竞争对手的利益的基础上。&lt;/li&gt;
-      &lt;li&gt;越是异质性行业，对定性分析的要求就越高。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;定性分析： 是对公司的业务性质和前景、管理层能力、未来收益的趋势、业务的内在稳定性等统计数据无法表达的因素进行分析。有一点非常重要，&lt;strong&gt;对公司的数据进行定量分析，只有得到定性分析的支持时才可靠&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;标准
-    &lt;ul&gt;
-      &lt;li&gt;估价是否被低估
-        &lt;ul&gt;
-          &lt;li&gt;盈利率 至少为 长期AAA级债券收益率 的2倍&lt;/li&gt;
-          &lt;li&gt;市盈率位于最低的10%的区间内 (市盈率（PE） = 每股价格 / 每股收益 )&lt;/li&gt;
-          &lt;li&gt;股息收益率 至少是 长期AAA级债券 的收益的2/3&lt;/li&gt;
-          &lt;li&gt;股票价格 低于 每股有形资产账面价值 的2/3&lt;/li&gt;
-          &lt;li&gt;股票价格 低于 流动资产价值 的2/3&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;盈利的标准：
-        &lt;ul&gt;
-          &lt;li&gt;前十年 的年度盈利增长率至少为7%&lt;/li&gt;
-          &lt;li&gt;在过去十年，年度盈利下跌幅度 超过5%的期间不能超过2年&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;财务安全状况：
-        &lt;ul&gt;
-          &lt;li&gt;流动资产至少为流动负债的2倍&lt;/li&gt;
-          &lt;li&gt;债务股本比低于1&lt;/li&gt;
-          &lt;li&gt;总负债低于流动资产价值的2倍&lt;/li&gt;
-          &lt;li&gt;平均收益和市场价格之间的比率令人满意财务状况足够稳健，营运资金充足&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="投资组合管理"&gt;投资组合管理&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;买入
-    &lt;ol&gt;
-      &lt;li&gt;价值投资有效的两个原因： 1. 他始终关注者价值和价格之间的联系。 2. 他利用了人性的弱点。&lt;/li&gt;
-      &lt;li&gt;市场（人性）的弱点：
-        &lt;ul&gt;
-          &lt;li&gt;对当前收益的夸大，这个特定为我们不断的带来投资机会， 逆向做，&lt;/li&gt;
-          &lt;li&gt;股息变化夸大&lt;/li&gt;
-          &lt;li&gt;诉讼夸大&lt;/li&gt;
-          &lt;li&gt;合并分拆夸大&lt;/li&gt;
-          &lt;li&gt;趋势外推（错误、简单的认为 现有趋势，会继续发展下去）然而经验表明 这只是例外情况&lt;/li&gt;
-          &lt;li&gt;冷门股的市场行为： 热门股票的股价几乎总是对其收益变化迅速做出反应。而冷门股 则可能远远滞后于 收益变化
-            &lt;blockquote&gt;
-              &lt;p&gt;你可以想象自己正在戏院看戏，当所有人都在安静的看戏时，你觉得很精彩，你第一个起来故障。你在做着与大众主题意见相反的事情，所以价值投资理论很简单。但是做起来却非常困难（克服从众心理） 1. 必须正确思考，2. 必须独立思考，需要回归基本常识，弄清楚股票，而不是每天上下波动的数字。&lt;/p&gt;
-            &lt;/blockquote&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;持有：
-    &lt;ol&gt;
-      &lt;li&gt;第一次买入计划的 50%&lt;/li&gt;
-      &lt;li&gt;股价下跌后，做更多的研究，如果买入的决定是正确的，我们会更多的买入，这也是价值投资困难的地方，大多数人无法坚持运用价值投资的原因，在于，当买入股票时，股价肯能继续下跌，这样会严重影响情绪，甚至导致做出错误的判断。&lt;/li&gt;
-      &lt;li&gt;持股时间： 3，4，5年&lt;/li&gt;
-      &lt;li&gt;换股： 不会&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;卖出&lt;br /&gt;
-卖出的东西，总是让别人觉得有利可图，这样别人才会买，不要等到股价已经被高估了，就有风险了。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id="投资方法"&gt;投资方法&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;简易策略&lt;br /&gt;
-    * 购买管理费用极低的指数基金&lt;br /&gt;
-    * 定期定额投资指数基金&lt;/li&gt;
-  &lt;li&gt;债股平衡： 5 ：5， 2.5 ：7.5&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="总结"&gt;总结&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;投资、投机的区别
-    &lt;blockquote&gt;
-      &lt;p&gt;投资活动和投机活动都必经受未来的检测。&lt;/p&gt;
-    &lt;/blockquote&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;投资: 1. 防范未来可能的风险 2. 不会建立在对未来的预测上  (投资 不会依靠预测未来牟利，如果未来能够改善，这当然很好，但投资不会建立在对未来的预测上)&lt;/li&gt;
-      &lt;li&gt;投机: 总是建立在对未来的基础上, 股票投机 主要就是这样一个活动，即A想要弄清楚B、C、D 可能会怎么想， 而B、C、D也在做同样的事情。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;相对于看K线图炒股，价值投资有什么优势吗？
-    &lt;ul&gt;
-      &lt;li&gt;价值投资可以通过坚持安全边际的原则，即使判断错误，交易结果依然可以令人满意。&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;几乎所有的技术分析&lt;/strong&gt; 都采用这样的原则： 根据市场上涨而买入，同时根据市场下跌而卖出。这种方法是与正常的合乎逻辑的商业逻辑是背道而驰的，所以很难在股市获得成功。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;有可能通过各种经济因素进行市场分析吗？&lt;br /&gt;
-  在经济领域并&lt;strong&gt;不存在真正可靠的预测方法&lt;/strong&gt;（达里奥似乎在这方面做的不错）&lt;/li&gt;
-  &lt;li&gt;基于股票近期前景的预期进行投资可行吗？&lt;br /&gt;
-  我必须坦率的说，你通过掷硬币的方式预测和从华尔街专家的预测结果差不多。为什么呢？我的解释是， 华尔街每个人都很聪明，无论他们已经知道什么，都已经很大程度上反应到了股价上了，而股票的未来走势是由他们不知道的事情来决定的。首先： 有关于下一年收益的预测是错误的。其次： 即使预测正确，股票当前价格也有可能已经体现了市场对该公司的预期，甚至已经过度体现了。&lt;/li&gt;
-  &lt;li&gt;买入创业项目新股票可行吗？&lt;br /&gt;
-  新上市的股票没有历史数据做定量分析，而且股票价格都不太便宜。只有极少数上市的公司，价格足够便宜，但这样的情况很少见。&lt;/li&gt;
-  &lt;li&gt;高价买入成长股可行吗？&lt;br /&gt;
-  大部分投机者都自认为是成长型投资者，而我发现这群人的投资失败率非常高，成长股收益不及预期下跌时，代表市场情绪的市盈率也会降低，这样对股价就造成了双杀，价值股本身留有安全边际，市场对价值股的收益期望值比较低，市盈率本来就很低，当价值股的收益不及预期时，价值股的波动幅度不会想成长股那样大。&lt;/li&gt;
-  &lt;li&gt;低价股的算数优势&lt;br /&gt;
-  低价股蕴含的机会要远大于高价股，预期收益相同的情况下，应该购买价格更低的股票。&lt;/li&gt;
-  &lt;li&gt;大公司与小公司
-    &lt;ul&gt;
-      &lt;li&gt;好公司：
-        &lt;ol&gt;
-          &lt;li&gt;行业内领先，令人满意的盈利&lt;/li&gt;
-          &lt;li&gt;资金雄厚的公司，普遍认为其未来收益成长前景很好&lt;/li&gt;
-          &lt;li&gt;优势： 比起二三流的公司来说，领先公司对于经济萧条的抵抗能力更强，起恢复盈利的能力也更强&lt;/li&gt;
-          &lt;li&gt;缺点： 其本身的规模会阻碍其进一步增长， 2. 投资的高回报率容易收到新加入竞争和监管的冲击 3. 龙头股具有无常性。&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;成功的小规模公司，可以实现比大规模公司更加显著的成长。
-        &lt;blockquote&gt;
-          &lt;p&gt;大多数人通过对公司未来发展前景的判断，试图找到类似的潜在成长股，甚至不惜高价购买这样的股票。而不是在前景普通的股票中寻找廉价股的投资机会。 实战经验是我们更请来在前景普通的股票中寻找廉价股票的投资方是，只要我们 推测未来时保持谨慎的态度，并在市场整体高估时适度离场。这种在前景普通的股票中寻找廉价股的投资方式去的陈工的概率往往更大。&lt;/p&gt;
-        &lt;/blockquote&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;我们有可能抓住股价波动的反转点吗？&lt;br /&gt;
-  试图抓住股价波动的反转点是不切实际的，这样的愿望是很难实现的。他们会在短暂的成功后以全盘失败而告终。&lt;/li&gt;
-  &lt;li&gt;只有承担高风险，才能获得高收益吗？&lt;br /&gt;
-  &lt;strong&gt;收益并不总是与风险成正比&lt;/strong&gt;，投资者的目标收益是由能够为投资付出的智慧决定的。&lt;/li&gt;
-  &lt;li&gt;什么是风险？&lt;br /&gt;
-  有效市场理论将风险等同于短期股价波动。这个理论假设的前提是错误的，结论也必然是错误的。&lt;br /&gt;
-  &lt;strong&gt;风险的真正定义式亏损的可能性&lt;/strong&gt;。真正应该关注的风险是公司的基本商业价值，公司的生意是否能够创造价值，不仅仅是股东，还有客户。看公司是否创造新的财富来增加他们的价值，这些都与股价的短期波动没有任何的关系。&lt;/li&gt;
-  &lt;li&gt;证券分析中的主要障碍有哪些呢？
-    &lt;ul&gt;
-      &lt;li&gt;数据不足或者不够准确， 大多数的数据错误都来自于会计造假&lt;/li&gt;
-      &lt;li&gt;未来的不确定性。 未来的变化往往是不可预测的，我们分析中假定 公司过去的记录至少对未来能够起到指示作用。 对这一前提的怀疑越多，分析的价值也就越低。 所以这种分析方法应用于 稳定特性的行业比富于变化的行业更加有用。在比较正常的一般情况下比在充满变化的不确定的情况下更加有用。&lt;/li&gt;
-      &lt;li&gt;市场的非理性行为。 这有可能造成价值回归的迟缓。在价值回归之前，可能新的决定因素会出现。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
 </content>
   </entry>
 </feed>
