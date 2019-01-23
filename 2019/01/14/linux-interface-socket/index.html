@@ -31,7 +31,7 @@
               <td style="text-align: left">AF_INET</td>
               <td style="text-align: left">通过IPv4</td>
               <td style="text-align: left">IPv4 连接起来的网络</td>
-              <td style="text-align: left">32为IP地址+ 16位端口号</td>
+              <td style="text-align: left">32为IPoe 地址+ 16位端口号</td>
               <td style="text-align: left">sockaddr_in</td>
             </tr>
             <tr>
@@ -96,7 +96,8 @@
           <li>典型的 服务器应用 会创建一个 监听socketfd， 将其绑定到一个约定的地址上。然后 accept 该socketfd 上 的连接 来处理所有的客户端请求。</li>
         </ul>
       </li>
-      <li>connect(int sockfd, struct sockaddr * addr, scoklen_t addrlen): 系统调用将sockfd 主动连接到 地址addr 指定的监听socket上。如果连接失败，标准的可以移植的方法为，关闭socket，创建一个新的socket，并重新连接</li>
+      <li>connect(int sockfd, struct sockaddr * addr, scoklen_t addrlen): 系统调用将sockfd 主动连接到 地址addr 指定的监听socket上。如果连接失败，标准的可以移植的方法为，关闭socket，创建一个新的socket，并重新连接<br />
+<img src="../../../../images/pending_socket-84aa5943.png" alt="udp" /></li>
     </ul>
   </li>
   <li>流 socket 提供了一个在两个端点之间 一个双向通信的通道，流socket IO 上的操作与 管道 IO的操作类似
@@ -116,7 +117,8 @@
         <ul>
           <li>发送者 socket connect之后，数据报的发送可以使用write，来完成，而无需使用sendto，并每次传递addr地址。</li>
           <li>接受者 socket connect之后，只能接受由对等的socket 发送的数据报</li>
-          <li>数据报socket connect的明显优势在于 可以使用更简单的IO 系统调用，在一些TCP/IP实践中，将一个数据报的socket连接到一个对等socket（connect）能够带来性能上的提升</li>
+          <li>数据报socket connect的明显优势在于 可以使用更简单的IO 系统调用，在一些TCP/IP实践中，将一个数据报的socket连接到一个对等socket（connect）能够带来性能上的提升<br />
+   <img src="../../../../images/udp_socket-cce037cc.png" alt="udp" /></li>
         </ul>
       </li>
     </ol>
