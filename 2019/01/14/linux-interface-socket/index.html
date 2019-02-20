@@ -1082,13 +1082,7 @@
                       <li>在应用程序维护的列表中，轮转调度 进行一定限度的 IO操作。（不是从 上一步 epoll_wait调用中返回的 文件描述列表 遍历处理）当相关的非阻塞IO调用出现EAGAIN 或者 EWOULDBLOCK错误，从应用程序维护的列表中移除</li>
                     </ol>
                   </li>
-                  <li>在信号和文件描述符上等待  ？ （不知道为什么会出现有关竞争的问题？）以及出现pselect 调用， self-pipe技巧
-                    <h3 id="问题列表">问题列表</h3>
-                  </li>
-                  <li>DNS 负载 如何实现？</li>
-                  <li>信号 相关的设定 是如何的？ 为什么会出现 如此复杂的设计，race conditoin，</li>
-                  <li>epoll 中 一小段不能交换的内存是？新概念吗？</li>
-                  <li>epoll 的内部实现</li>
+                  <li>在信号和文件描述符上等待  ？ （不知道为什么会出现有关竞争的问题？）以及出现pselect 调用， self-pipe技巧</li>
                 </ol>
               </li>
             </ul>
@@ -1098,4 +1092,12 @@
     </ul>
   </li>
 </ul>
+
+<h3 id="问题列表">问题列表</h3>
+<ol>
+  <li>DNS 负载 如何实现？</li>
+  <li>信号 相关的设定 是如何的？ 为什么会出现 如此复杂的设计，race conditoin，</li>
+  <li>epoll 中 一小段不能交换的内存是？新概念吗？</li>
+  <li>epoll 的内部实现</li>
+</ol>
 <div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2019 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>

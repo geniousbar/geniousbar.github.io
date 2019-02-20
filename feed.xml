@@ -4,16 +4,83 @@
   <id>http://geniousbar.github.io</id>
   <link href="http://geniousbar.github.io"/>
   <link href="http://geniousbar.github.io/feed.xml" rel="self"/>
-  <updated>2019-01-14T08:00:00+08:00</updated>
+  <updated>2019-02-05T08:00:00+08:00</updated>
   <author>
     <name>geniousbar</name>
   </author>
+  <entry>
+    <title>fifo-pipe</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2019/02/05/fifo-pipe/"/>
+    <id>http://geniousbar.github.io/2019/02/05/fifo-pipe/</id>
+    <published>2019-02-05T08:00:00+08:00</published>
+    <updated>2019-02-20T10:17:42+08:00</updated>
+    <summary type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
+
+&lt;h3 id="管道-fifo"&gt;管道, FIFO&lt;/h3&gt;
+&lt;p&gt;管道是UNIX系统上最古老的一种IPC方法，可以用来在相关进程间传递数据。FIFO 则是 管道 概念的一个变体, 区别在于 FIFO可以用于 任意进程间的通信&lt;/p&gt;
+
+&lt;h4 id="管道"&gt;管道&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;shell命令中使用管道最为常见。比如 ls | wc -l, 示意图如下： 为执行该命令， shell创建了两个进程来分别执行ls、wc&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;管道的几个特征：
+    &lt;ol&gt;
+      &lt;li&gt;一个管道是一个字节流 （不存在消息...&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    <content type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
+
+&lt;h3 id="管道-fifo"&gt;管道, FIFO&lt;/h3&gt;
+&lt;p&gt;管道是UNIX系统上最古老的一种IPC方法，可以用来在相关进程间传递数据。FIFO 则是 管道 概念的一个变体, 区别在于 FIFO可以用于 任意进程间的通信&lt;/p&gt;
+
+&lt;h4 id="管道"&gt;管道&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;shell命令中使用管道最为常见。比如 ls | wc -l, 示意图如下： 为执行该命令， shell创建了两个进程来分别执行ls、wc&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;管道的几个特征：
+    &lt;ol&gt;
+      &lt;li&gt;一个管道是一个字节流 （不存在消息边界的概念，读取进程可以读取任意大小的数据块，数据是顺序的、但是管道中没有离散消息的概念）&lt;/li&gt;
+      &lt;li&gt;从管道中读取数据： 试图从一个当前为空的 管道中 读取数据将会被阻塞 直到至少 有一个字节被写入到管道中为止，写入端被关闭后，在读取完 所有数据之后 会读取到 文件结束&lt;/li&gt;
+      &lt;li&gt;单向的： 数据传递的方向是单向的，一端为读写 一端为写入 （一些UNIX 的实现上 管道 是双向的，但是应该避免依赖这种语义，使用UNIX domain socket 来代替）&lt;/li&gt;
+      &lt;li&gt;可以保证 写入不超过PIPE_BUF 字节的操作是原子的： 单个进程写入管道 无需关心PIPE_BUF的取值，多个进程写入同一个管道在一时刻写入的数据量超过PIPE_BUF字节大小时，那么就可以保证写入的数据不会出现 互相混合的情况。（多个写入进程，那么大的数据块写入可能会被拆分成 任意大小的数据段，导致会出现与其他进程 写入的数据交叉的现象， 因为并没有 原子性的写入）&lt;/li&gt;
+      &lt;li&gt;管道的容量是有限的： 管道是内核内存中维护的一个缓冲器，这个缓冲器的存储能力是有限的。管道被填满之后，写入的操作会被阻塞知道读取操作从缓冲器中移除一些数据为止。（一个应用程序无需知道 管道的实际存储能力，使用较大的缓冲器会提升效率，每当缓冲器被充满时，内核需要执行调度来消耗管道中的数据，较大的缓冲器意味着更少的调度、进程上下文切换的需要）&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;创建使用管道：int pipe(int fields[2]), 成功会在数组中 filedes 中返回两个打开的文件描述符，0 为读端， 1 为写端，与所有 文件描述符一样，可以使用read、write 系统调用在管道上执行IO，也可以使用stdio 函数等（但是需要首先fdopen获取一个fileds文件描述符对应的文件流）常见的使用场景如下：&lt;/li&gt;
+  &lt;li&gt;父进程同子进程从同一个管道 中读取和写入数据 的这种做法并不常见，因为会产生竞争 （�当然 阻塞IO 的系统调用是一个原子操作，不会产生数据错乱，但是竞争条件是在所难免的，非阻塞IO中 则不容易判断 IO数据到底归属于那个进程）一个更简单的方法 则是： 创建两个管道，在两个进程间发送数据的两个方向上各使用一个，但是这种继续需要避免死锁问题（阻塞IO需要，因为两个端同时等待 IO 读取，而无法写入）&lt;/li&gt;
+  &lt;li&gt;允许相关进程间的通信：管道可以在任意两个相关进程之间 通信，在 fork创建新的子进程 之前， 父进程创建管道 在 子进程之间使用。 shell所做的工作就是 父进程创建管道， 然后创建子进程，并在子进程中使用。（这里的相关进程存在一个特殊情况，即允许UNIX doamin 传递 文件描述符给其他的进程）&lt;/li&gt;
+  &lt;li&gt;关闭未使用的管道文件描述符： 对于正确使用管道是非常重要的一环。读取进程需要关闭写入描述符，这样当写入进程完成输出并关闭写入描述符时候，�读进程才能够看到读取到文件结尾。（也就是说在 文件结尾 的情况是 文件描述符完全被关闭？验证的逻辑的话： 需要3个进程，两个写入，一个读取， 读取一直读， 写入分别 间隔时间关闭， 然后观察情况，文件并不适合这种情况， 文件没有读写端的概念）写入进程关闭其持有的读取描述符的原因在于： 进程对一个没有 读取描述符 的管道 写入时候，内核会发送SIGPIPE信号，返回EPIPE错误（已损坏的管道），而这些是对进程有用的，为了保证 写入进程 能够收到这些消息、避免错误，所以需要主动关闭。其他的原因在于，只有写入进程持有读取描述符， 导致 没有接收端， 但是依然可以写入，最后管道缓冲区被填满，导致永远阻塞。&lt;/li&gt;
+  &lt;li&gt;使用管道连接 过滤器： 管道被创建后， 为 读写端  分配的文件描述符是可用的描述符中数值最小的两个， 过滤器 约束规则是 从stdin 读取，写入到 stdout。所以shell需要保证 执行过滤器的 进程 标准输入、输出为 管道的读写端， 这里需要用到dup、dup2 系统调用&lt;/li&gt;
+  &lt;li&gt;popen()/ pclose(): 用于 执行一个shell命令并读取其输出或发送一些输入， 其大概是示意图如下： images&lt;br /&gt;
+  &lt;img src="../../../../images/fifo-240871a7.png" alt="fifo" /&gt;&lt;/li&gt;
+  &lt;li&gt;stdio 缓冲问题： popen调用返回的文件流指针 没有引用一个终端。 stdio库会对这种文件流应用块缓冲。意味着mode 为w时候 popen的调用，只有当stdio缓冲器被充满或者使用 pclose 关闭管道 之后才会将输出发送到另一端。如果要求子进程能够 从管道中立即收到数据，那么需要手动fflush,或者setbuf(fp, NULL) 禁用stdio缓冲来做到，pipe的创建的管道 同样。popen进程使用r调用时候，那么就需要子进程的编码中调用fflush， setbuf 来保证父进程 及时收到消息。（如果无法修改源代码， 可以使用伪终端来替换管道， 对进程来说是一个终端，stdio库 会逐行输出缓冲器的数据）
+    &lt;h4 id="fifo"&gt;FIFO&lt;/h4&gt;
+  &lt;/li&gt;
+  &lt;li&gt;与管道类似， 最大的差别在于， FIFO在文件系统中存在一个名称（也被称为 命名管道 ）， 并且与打开一个普通文件的方式是一样的，这样就可以用于非相关进程之间的通信，&lt;/li&gt;
+  &lt;li&gt;FIFO也有一个写入端和读取端， 并且从管道中 读取数据的顺序与写入的顺序是一样的，先入先出，所以被称为FIFO&lt;/li&gt;
+  &lt;li&gt;mkfifo [-m mode] pathname (shell命令), int mkfifo(const char * pathnamne, mode_t mode); （系统调用） 其中mode为权限（同chmod） ls -\l FIFO文件的类型为p， ls -F 在路径名后面附加一个 | 符号&lt;/li&gt;
+  &lt;li&gt;FIFO 被创建之后， 任何进程都可以打开它，只要符合权限 限制即可&lt;/li&gt;
+  &lt;li&gt;推荐FIFO的使用方法： 一个写端，一个读端， 打开一个FIFO会同步读取进程和写入进程，即： 打开FIFO 以读取方式 会阻塞到 一个以写入方式 的打开 的产生， 以写入方式的打开 会阻塞到 一个 以读取方式的产生 （O_RDWR mode 打开会绕开 FIFO 的阻塞行为， 因为其不具有可移植性，开发人员应该避免使用， 而是应该是用O_NONBLOCK的方式进行）&lt;/li&gt;
+  &lt;li&gt;使用 FIFO, tee 创建双重管道: shell管道线是线性的，每个进程读取前一个进程的产生的输出数据，然后产生输出数据，成为下一个进程的输入数据。使用FIFO就能创建新的管道线，需要使用到tee， tee 将输入数据复制成两份 分别输出， 将tee的一分输出 输入到FIFO中就可以产生两条管道线。 下面为大概的演示的命令行：具体的 tee的 &lt;a href="https://linux.101hacks.com/unix/tee-command-examples/"&gt;参数参考&lt;/a&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;  mkfifo myfifo
+  wc &lt;span class="nt"&gt;-l&lt;/span&gt; &amp;lt; myfifo &amp;amp;
+  &lt;span class="nb"&gt;ls&lt;/span&gt; &lt;span class="nt"&gt;-l&lt;/span&gt; | tee myfifo | sort &lt;span class="nt"&gt;-n&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;&lt;img src="../../../../images/fifo_tee-12e712cd.png" alt="fifo_tee" /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</content>
+  </entry>
   <entry>
     <title>linux-interface-socket</title>
     <link rel="alternate" href="http://geniousbar.github.io/2019/01/14/linux-interface-socket/"/>
     <id>http://geniousbar.github.io/2019/01/14/linux-interface-socket/</id>
     <published>2019-01-14T08:00:00+08:00</published>
-    <updated>2019-02-05T13:58:55+08:00</updated>
+    <updated>2019-02-20T10:19:34+08:00</updated>
     <summary type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
 
 &lt;h3 id="socket"&gt;Socket&lt;/h3&gt;
@@ -1105,13 +1172,7 @@
                       &lt;li&gt;在应用程序维护的列表中，轮转调度 进行一定限度的 IO操作。（不是从 上一步 epoll_wait调用中返回的 文件描述列表 遍历处理）当相关的非阻塞IO调用出现EAGAIN 或者 EWOULDBLOCK错误，从应用程序维护的列表中移除&lt;/li&gt;
                     &lt;/ol&gt;
                   &lt;/li&gt;
-                  &lt;li&gt;在信号和文件描述符上等待  ？ （不知道为什么会出现有关竞争的问题？）以及出现pselect 调用， self-pipe技巧
-                    &lt;h3 id="问题列表"&gt;问题列表&lt;/h3&gt;
-                  &lt;/li&gt;
-                  &lt;li&gt;DNS 负载 如何实现？&lt;/li&gt;
-                  &lt;li&gt;信号 相关的设定 是如何的？ 为什么会出现 如此复杂的设计，race conditoin，&lt;/li&gt;
-                  &lt;li&gt;epoll 中 一小段不能交换的内存是？新概念吗？&lt;/li&gt;
-                  &lt;li&gt;epoll 的内部实现&lt;/li&gt;
+                  &lt;li&gt;在信号和文件描述符上等待  ？ （不知道为什么会出现有关竞争的问题？）以及出现pselect 调用， self-pipe技巧&lt;/li&gt;
                 &lt;/ol&gt;
               &lt;/li&gt;
             &lt;/ul&gt;
@@ -1121,6 +1182,14 @@
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;h3 id="问题列表"&gt;问题列表&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;DNS 负载 如何实现？&lt;/li&gt;
+  &lt;li&gt;信号 相关的设定 是如何的？ 为什么会出现 如此复杂的设计，race conditoin，&lt;/li&gt;
+  &lt;li&gt;epoll 中 一小段不能交换的内存是？新概念吗？&lt;/li&gt;
+  &lt;li&gt;epoll 的内部实现&lt;/li&gt;
+&lt;/ol&gt;
 </content>
   </entry>
   <entry>
@@ -1788,283 +1857,6 @@
   &lt;li&gt;[EM] 依赖&lt;/li&gt;
   &lt;li&gt;[eval] 依赖&lt;/li&gt;
 &lt;/ul&gt;
-</content>
-  </entry>
-  <entry>
-    <title>计算机程序的构造和解释</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2018/03/20/sicp/"/>
-    <id>http://geniousbar.github.io/2018/03/20/sicp/</id>
-    <published>2018-03-20T08:00:00+08:00</published>
-    <updated>2018-09-13T12:37:09+08:00</updated>
-    <summary type="html">&lt;p&gt;计算机程序的构造和解释&lt;br&gt;
-    ———&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;序
----------
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;关注程序的创建、执行和研究。使用Lisp方言书写&lt;br&gt;
-本书中讨论的各种问题主要涉及到： 人的大脑，计算机程序的集合，以及计算机本身。每一个计算机程序都是现实中的或者精神中的某个过程的一个模型。通过人的头脑孵化出来，这种过程出现在人们的经验或者思维中。很少能够通过程序将这种过程模拟到永远令人满意的程度。 因为这个原因，程序也在不断的演化。当我们对模型的认识更深入、更扩大，更广泛时，我们就会修改程序。直到达到一中亚稳定状态。...&lt;/p&gt;
-&lt;/blockquote&gt;</summary>
-    <content type="html">&lt;p&gt;计算机程序的构造和解释&lt;br /&gt;
-    ———&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;序
----------
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;关注程序的创建、执行和研究。使用Lisp方言书写&lt;br /&gt;
-本书中讨论的各种问题主要涉及到： 人的大脑，计算机程序的集合，以及计算机本身。每一个计算机程序都是现实中的或者精神中的某个过程的一个模型。通过人的头脑孵化出来，这种过程出现在人们的经验或者思维中。很少能够通过程序将这种过程模拟到永远令人满意的程度。 因为这个原因，程序也在不断的演化。当我们对模型的认识更深入、更扩大，更广泛时，我们就会修改程序。直到达到一中亚稳定状态。而在这时，程序中有会出现一个需要我们为之奋斗的模型。计算机程序设计领域之所以令人兴奋的源泉，就在于他所引起的连绵不绝的发现。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;组织技术&lt;br /&gt;
- 一致性和正确性在程序变得更大更复杂的时候，非常值得怀疑了。很少能够看到有关大型程序正确性的完全形式化的论述。&lt;br /&gt;
- 组织技术: 是理解 程序设计这种具有设计、创造性的事业中 的本质。&lt;br /&gt;
- 因为大的程序是从小的东西成长起来的。所以，开发一个标准化的程序结构的武器库，并保证其中每种结构的正确性。再通过组织技术，将这些结构组合成更大的结构。这些都是至关重要的。发现并掌握这种强有力的组织技术，将提升我们构造大型重要程序的能力,反过来，因为构造大型程序的费力，导致我们去发明新的方法，来减轻构造大型程序的沉重负担。&lt;/p&gt;
-
-    &lt;p&gt;在任何非常大的程序设计工作中，一个非常有用的组织原则就是 通过发明新语言， 去控制和隔离作业模块之间的信息流动。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;算法&lt;br /&gt;
-  执行了某个精确函数的程序 我们称为算法。 特别需要关注的两个参数是：执行的事件、对数据存储的需要。 程序员应该追求好的算法&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;计算机语言不仅仅是让计算机执行操作的一种形式，更重要的是，他是一种表述有关方法学的思想的形式化媒介。&lt;/li&gt;
-  &lt;li&gt;所以， 程序是写给人读的，然后才是去执行&lt;/li&gt;
-  &lt;li&gt;最基本的材料不是 特定程序的语法，不是某种巧妙的算法。而是一些能够用于控制大型软件系统的智力复杂性的技术。（创建抽象去控制复杂性，通过建立约定的界面，以便能够用一种 混合与匹配的方式组合在一起， 建立一些新的语言去描述各种设计，每种语言强调设计中的一个特定方面并降低其他方面的重要性，以控制复杂度）&lt;/li&gt;
-  &lt;li&gt;计算机科学并不是一种科学，而且其重要性也与计算机本身并无太大关系。计算机革命是有关我们如何去思考的方式，以及我们如何去表达自己思考的一个革命。这其中最基本的东西是，过程性认知论的现象，就是如何从一种命令式的观点去研究知识的结构，这是一种与经典数学领域总所采用的更具有说明性的观点完全不同。数学为精准处理 “是什么的” 提供了一种框架，而计算则为精准处理“怎样做” 的概念提供了一种框架。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="过程构造抽象"&gt;过程构造抽象&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;心智活动主要表现如下三个方面
-    &lt;ol&gt;
-      &lt;li&gt;将若干简单的认识组合为一个复杂的认识，由此产生出复杂的认识&lt;/li&gt;
-      &lt;li&gt;将两个认识放在一起做对照，不管他们如何简单或者复杂。这样做并不将他们合二为一，由此得到的有关他们相互关系的认知。&lt;/li&gt;
-      &lt;li&gt;将有关认识与那些实际中和他们同在懂得所有其他的认识隔离开，这就是抽象。所有具有普遍性的认识都是这样得到的&lt;/li&gt;
-    &lt;/ol&gt;
-
-    &lt;p&gt;计算过程的Lisp描述， 本身又可以作为Lisp的数据来表示和操作。现在的语言都在填平 『被动的数据』和『主动的过程』之间的传统划分，（划分是什么？）能够将过程表示为数据的能力，Lisp的这种能力使Lisp成为编写那些必须将其他程序当做数据去操作的程序的最佳语言，比如： 计算机语言的解释器和编译器。 macro&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;程序设计的基本元素
-    &lt;ul&gt;
-      &lt;li&gt;语言提供的将简单的认识组合起来成为更复杂认识 三种机制：
-        &lt;ol&gt;
-          &lt;li&gt;基本表达形式: 组成语言的最小单位，个体&lt;/li&gt;
-          &lt;li&gt;组合的方法： 通过他们可以将简单的组合成为复杂的&lt;/li&gt;
-          &lt;li&gt;抽象的方法：通过他们将复杂对象命名，并将他们作为单元去使用&lt;br /&gt;
-  程序中需要处理 过程和数据两种元素，数据是一种我们需要去处理的东西，过程就是我们操作数据的规则的描述。 任何语言都需要 能够表述基本的数据和基本的的过程，还需要提供对过程和数据进行抽象组合的方法。&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;具体语言的实现：
-        &lt;ol&gt;
-          &lt;li&gt;表达式&lt;br /&gt;
-  (操作符 参数1 参数2)&lt;br /&gt;
-  解释器总是按照  从终端读入一个表达式，对这个表达式求值，而后打印出得到的结果，称为读入—求值—打印 的循环， REPL&lt;/li&gt;
-          &lt;li&gt;命名&lt;br /&gt;
-  (define radius 10)&lt;br /&gt;
-  创建名字–对象的关联。 鼓励人们采用递增的方式去开发和调试程序。其中需要注意的是，其中隐含着 环境的概念，其中保持着 名字—值的关联&lt;br /&gt;
-  环境在确定表达式中各个符号的意义是十分重要的，如果没有相关环境的任何信息，那么说表达式(+ x 1) 是没有任何意义的。因为需要环境提供x的意义。环境是具有普遍性的概念。他为求值过程提供了一种上下文。对我们理解程序的执行起着重要的作用。&lt;/li&gt;
-          &lt;li&gt;组合式的求值
-            &lt;ol&gt;
-              &lt;li&gt;求值该组合式的各个子表达式&lt;/li&gt;
-              &lt;li&gt;将作为最左表达式的值的那个过程应用与相应的实际参数。所谓实际参数就是各个子表达式的求值结果&lt;br /&gt;
-   为了实现对一个组合式的求值过程， 我们必须先对组合式里的每个元素执行同样的求值过程。 因此，在性质上，这一求值过程是递归的。&lt;/li&gt;
-              &lt;li&gt;反复的执行第一步骤，最终会到达求值中的一个点，在这里遇到的不是组合式而是基本表达式。例如内部运算符或者其他名字
-                &lt;ul&gt;
-                  &lt;li&gt;数的值就是他们所表示的数值&lt;/li&gt;
-                  &lt;li&gt;内部运算符 的值就是能完成相应操作的机器指令序列， fun&lt;/li&gt;
-                  &lt;li&gt;其他名字的值就是在环境中关联与这一名字的那个对象， 变量&lt;br /&gt;
-   &lt;em&gt; 可以将第二种情况看做最后一种情况的特殊情况，像 +， - 等，相应的指令序列就是与之关联的值&lt;/em&gt;&lt;/li&gt;
-                &lt;/ul&gt;
-              &lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;特殊形式&lt;br /&gt;
-  (define x 3) 并不是一个组合式，一般性的求值规则的这种例外称为 特殊形式。各种不同类型的表达式（有着不同的求值规则） 组成了程序设计语言的语法形式。&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight scheme"&gt;&lt;code&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="p"&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;p&gt;条件表达式， 谓词 并不是普通的过程（表达式不一定都需要求值）&lt;br /&gt;
-  (if &lt;predicate&gt; &lt;consequent&gt; &lt;alternative&gt;)
-  (cond (&lt;p1&gt; &lt;e1&gt;)
-   (&lt;p2&gt; &lt;e2&gt;)
-   ...
-   (&lt;pn&gt; &lt;en&gt;))&lt;/en&gt;&lt;/pn&gt;&lt;/e2&gt;&lt;/p2&gt;&lt;/e1&gt;&lt;/p1&gt;&lt;/alternative&gt;&lt;/consequent&gt;&lt;/predicate&gt;&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;代换模型
-            &lt;ul&gt;
-              &lt;li&gt;组合式的求值递归过程&lt;/li&gt;
-              &lt;li&gt;正则序求值： 完全展开而后归约&lt;/li&gt;
-              &lt;li&gt;应用序求值： 先求值参数而后应用&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;过程
-    &lt;ul&gt;
-      &lt;li&gt;形式参数， 约束变量、自由变量: 在过程体中扮演者一种非常特殊的角色，形式参数的具体名字是什么，完全没有关系，这样的名字称为。 一个过程的定义约束了他所有的形式参数，如果一个变量不是被约束的，我们就称他为自由的。一个名字的定义被约束于的那一个表达式称为这个名字的作用域， 所以在过程的定义中，被声明的为形式参数的那些约束变量，就以这个过程的体作为他们的作用域。&lt;/li&gt;
-      &lt;li&gt;块结构:
-&lt;div class="highlight"&gt;&lt;pre class="highlight scheme"&gt;&lt;code&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;good-enough?&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="nv"&gt;guess&lt;/span&gt;
-    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;improve&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
-
-&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;good-enough?&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;lt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;abs&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;-&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;square&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="p"&gt;))&lt;/span&gt;
-&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;improve&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;average&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;/&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
-&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;sqrt&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-
-&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;good-enough?&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="nv"&gt;guess&lt;/span&gt;
-    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;improve&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
-
-
-
-&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;sqrt&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;good-enough?&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="nv"&gt;guess&lt;/span&gt;
-      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;improve&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;good-enough?&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;lt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;abs&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;-&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;square&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="p"&gt;))&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;improve&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;average&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;/&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-
-&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;sqrt&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;good-enough?&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="nv"&gt;guess&lt;/span&gt;
-      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;improve&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;))))&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;good-enough?&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;lt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;abs&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;-&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;square&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="p"&gt;))&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;improve&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;average&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;/&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt; &lt;span class="nv"&gt;guess&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt-iter&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-        &lt;p&gt;这种嵌套的定义称为 块结构， 是最简单的名字包装问题的一种正确方式。这其中还有一种简化的方法，因为所有的辅助过程定义放到内部，x在sqrt内部是受约束的。过程good-enough， improve都定义在sqrt利民啊，也就是说显示的将x传递来传递去没有必要了，我们让x作为内部定义中的自有变量。sqrt被调用时，x就确定了。这种方式称为词法作用域。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;过程与他们所产生的计算&lt;/p&gt;
-
-        &lt;ol&gt;
-          &lt;li&gt;线性的迭代和递归
-&lt;div class="highlight"&gt;&lt;pre class="highlight scheme"&gt;&lt;code&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;factorial&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-     &lt;span class="mi"&gt;1&lt;/span&gt;
-     &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;*&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;factorial&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;-&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)))))&lt;/span&gt;
-
- &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;factorial&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;fact-iter&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
- &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;fact-iter&lt;/span&gt; &lt;span class="nv"&gt;product&lt;/span&gt; &lt;span class="nv"&gt;conter&lt;/span&gt; &lt;span class="nv"&gt;max-count&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nv"&gt;counter&lt;/span&gt; &lt;span class="nv"&gt;max-count&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-     &lt;span class="nv"&gt;product&lt;/span&gt;
-     &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;fact-iter&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;*&lt;/span&gt; &lt;span class="nv"&gt;counter&lt;/span&gt; &lt;span class="nv"&gt;product&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-       &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+&lt;/span&gt; &lt;span class="nv"&gt;counter&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-       &lt;span class="nv"&gt;max-count&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;p&gt;第一个为递归计算过程， 代换模型展开的形状是一个先逐步展开而后收缩的形状。收缩阶段为这些运算的实际执行。这种类似性的计算过程由一个推迟执行的运算链条刻画&lt;br /&gt;
- 第二个为线性递归计算过程，解释器只需要维护函数调用的参数，就可完成函数调用。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;过程的计算过程和形式:
-            &lt;ul&gt;
-              &lt;li&gt;过程形式： 过程的书写形式&lt;/li&gt;
-              &lt;li&gt;计算过程： 过程的计算过程&lt;/li&gt;
-              &lt;li&gt;迭代计算过程： 在计算过程中的任何一点，程序的变量都提供了一个有关计算状态的完整描述。在任何时刻计算停下来，都可以提供参数来重新计算，&lt;/li&gt;
-              &lt;li&gt;递归过程： 论述的是一个语法形式上的。说明这个过程的定义中，调用了自己。&lt;/li&gt;
-              &lt;li&gt;递归计算过程： 函数的计算过程的进展方式。而不是过程上的语法形式上的书写，他们隐含着一些信息，有解释器维持，来指明所推迟的运算形成的链条中的位置。这一计算处在何处，这个链条越长，所需要保存的信息也就越多。&lt;/li&gt;
-              &lt;li&gt;为什么需要区分 计算过程和形式过程？ 大部分语言的实践设计中，对任何递归过程的解释，所消耗的存储量总与过程调用的数目成正比，即便他所描述的计算过程是迭代的。作为这是一事实的后果就是—特殊的循环结构： for, while等。scheme 能够将形式上的递归而计算过程为递归形式，依然能够在常数空间上运行，这种实现为： 尾递归。&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-        &lt;/ol&gt;
-
-        &lt;p&gt;&lt;em&gt; fact-iter 递归过程讲产生迭代的计算过程， 因为展开的计算过程上确实是迭代的，其中的状态由三个变量保持。解释器没有额外的隐含的状态保存。&lt;/em&gt;&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;scheme相关
-    &lt;ul&gt;
-      &lt;li&gt;命名&lt;br /&gt;
- （define &lt;name&gt; &amp;lt;body&amp;gt;）&lt;/name&gt;&lt;/li&gt;
-      &lt;li&gt;条件表达式和谓词&lt;br /&gt;
- (cond (&lt;p1&gt; &lt;e1&gt;)
-   (&lt;p2&gt; &lt;e2&gt;)
-   ...
-   (&lt;pn&gt; &lt;en&gt;))
- (if &lt;predicate&gt; &lt;consequent&gt; &lt;alternative&gt;)
- (and &lt;e1&gt; ..... &lt;en&gt;)
- (or &lt;e1&gt; ..... &lt;en&gt;)
- (not &lt;e1&gt;)
- and or 不是普通的过程, 其中的参数不一定都会求值，not 是过程&lt;/e1&gt;&lt;/en&gt;&lt;/e1&gt;&lt;/en&gt;&lt;/e1&gt;&lt;/alternative&gt;&lt;/consequent&gt;&lt;/predicate&gt;&lt;/en&gt;&lt;/pn&gt;&lt;/e2&gt;&lt;/p2&gt;&lt;/e1&gt;&lt;/p1&gt;&lt;/li&gt;
-      &lt;li&gt;高阶函数: 函数作为参数, 函数作为返回值&lt;/li&gt;
-    &lt;/ul&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight scheme"&gt;&lt;code&gt;   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sum&lt;/span&gt; &lt;span class="nv"&gt;term&lt;/span&gt; &lt;span class="nv"&gt;a&lt;/span&gt; &lt;span class="nv"&gt;next&lt;/span&gt; &lt;span class="nv"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-     &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nv"&gt;a&lt;/span&gt; &lt;span class="nv"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-         &lt;span class="mi"&gt;0&lt;/span&gt;
-         &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;term&lt;/span&gt; &lt;span class="nv"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-         &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sum&lt;/span&gt; &lt;span class="nv"&gt;term&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;next&lt;/span&gt; &lt;span class="nv"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;next&lt;/span&gt; &lt;span class="nv"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)))))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;     * lambda  (lambda &amp;lt;parameters&amp;gt; &amp;lt;body&amp;gt;)  (lambda (x) (* x x x))
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="构造数据抽象复合数据"&gt;构造数据抽象（复合数据）&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;语言所包含的将数据对象组合起来的，形成 复合数据的方式。提高 设计的模块性，是我们得以在 比语言提供的基本数据对象更高的概念层次上。处理与数据有关的各种问题。&lt;br /&gt;
-复合数据能够将处理数据对象的表示部分，与 处理数据对象的使用部分相互隔离开来，这种技术具有一般性，形成了一种成为数据抽象的强有力的设计方法学。数据抽象技术能够是程序更容易设计，维护和修改。&lt;/li&gt;
-  &lt;li&gt;形成复合数据的关键在于，程序设计语言提供的某种黏合剂，他们可以用于把一些数据对象组合起来，形成更复杂的数据对象，1）过程 2）闭包，用于组合数据对象的黏合剂同样适用于复合数据对象 3）符号表达式&lt;/li&gt;
-  &lt;li&gt;数据导向型程序设计&lt;/li&gt;
-  &lt;li&gt;数据抽象的基本思想： 设法构造出一些使用复合数据的对象的程序，使他们就像是在“抽象数据”上操作一样，我们的程序使用复合数据的方式应该是这样的：除了完成当前工作的必要东西之外，他们不对数据做任何的假设。同时，一种具体的数据表示的定义，也应该跟程序中使用数据的方式无关。这要求在我们的系统里面需要一组过程： 选择函数、构造函数。&lt;/li&gt;
-  &lt;li&gt;按愿望思维方式，（从上倒下） 是一种强有力的设计方法，其中不会设计到细节，只是思考整体的数据使用方法。（复合数据结构的操作界面）&lt;/li&gt;
-  &lt;li&gt;序对: cons, car, cdr 从序对 构造起来的数据对象成为表结构的数据&lt;/li&gt;
-  &lt;li&gt;数据抽象的基本思想就是： 为每一类数据对象标识出 一组操作。是的对这类数据对象的所有操作都可以基于他们表述，而且在操作这些数据对象时也只使用他们。&lt;/li&gt;
-  &lt;li&gt;形象化的表示了 有理数 系统的结构， 其中的水平线表示抽象屏障，他们呢隔离了系统中的不同的层次，在每一层上，这些屏障都把使用数据抽象的程序与实现数据抽象的程序隔离开来，使得有理数 的程序有理数实现提供的函数完成对有理数的操作，而这些函数又是基于构造函数和选择函数make-rat, numer denom 实现的。而make-rat等函数又是基于序对实现的。有关序对实现的细节与有理数的其余部分都完全没有u关系。每一层次中的过程构成了所定义的抽象屏障的界面，联系起来系统中的不同层次.&lt;/li&gt;
-  &lt;li&gt;数据意味着什么： 我们总可以将数据定义为一组适当的选择函数和构造函数，其中这些过程必须满足某些必要条件。 （试着将这些条件放到程序中，面向对象，编译类型语言的语法检查，是不是都在某种程度上实现这些检测）&lt;br /&gt;
-序对的概念，我们只需要定义，z = (cons x y)，那么 car(z) == x (cdr z) == y, 意味着，任何满足这三个条件的函数都可以作为实现。
-&lt;div class="highlight"&gt;&lt;pre class="highlight scheme"&gt;&lt;code&gt;    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;cons&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt; &lt;span class="nv"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-       &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;dispatch&lt;/span&gt; &lt;span class="nv"&gt;m&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-           &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;cond&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="nb"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;m&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-                 &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="nb"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;m&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-                 &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;error&lt;/span&gt; &lt;span class="s"&gt;"error argument "&lt;/span&gt;&lt;span class="p"&gt;)))))&lt;/span&gt;
-     &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;car&lt;/span&gt; &lt;span class="nv"&gt;z&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;z&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-     &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;cdr&lt;/span&gt; &lt;span class="nv"&gt;z&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;z&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-  &lt;li&gt;序对 (cons a b) cons的闭包性质是非常重要的，某种组合数据对象的操作满足闭包性质，就是说，通过他组合起来的对象得到的结果本身还可以通过同样的操作再次进行组合。闭包性质是一种组合功能的关键所在。&lt;/li&gt;
-  &lt;li&gt;序列的表示： (cons 1 (cons 2 (cons 3 nil))) (list 1 2 3)&lt;/li&gt;
-  &lt;li&gt;map&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight scheme"&gt;&lt;code&gt;        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;scale-list&lt;/span&gt; &lt;span class="nv"&gt;items&lt;/span&gt; &lt;span class="nv"&gt;factor&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;null?&lt;/span&gt; &lt;span class="nv"&gt;items&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="o"&gt;'&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;cons&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;car&lt;/span&gt; &lt;span class="nv"&gt;items&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;factor&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;scale-list&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;cdr&lt;/span&gt; &lt;span class="nv"&gt;items&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;factor&lt;/span&gt;&lt;span class="p"&gt;))))&lt;/span&gt;
-
-&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;scale-list&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;map&lt;/span&gt; &lt;span class="nv"&gt;proc&lt;/span&gt; &lt;span class="nv"&gt;items&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;null?&lt;/span&gt; &lt;span class="nv"&gt;items&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="o"&gt;'&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;cons&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;proc&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;car&lt;/span&gt; &lt;span class="nv"&gt;items&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;map&lt;/span&gt; &lt;span class="nv"&gt;proc&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;cdr&lt;/span&gt; &lt;span class="nv"&gt;items&lt;/span&gt;&lt;span class="p"&gt;)))))&lt;/span&gt;
-
-
-&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;scale-list&lt;/span&gt; &lt;span class="nv"&gt;items&lt;/span&gt; &lt;span class="nv"&gt;factor&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;map&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;*&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-       &lt;span class="nv"&gt;items&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;map 不仅仅是一种模式，更重要的建立起了一种高级抽象。在scale-list 原来的设计中，更多的注意力放在了， 循环递归的结构中，而通过map定义的scale-list 则忽略了这种细节层面的情况，强调是表到表的缩放，这两种形式上的差异并不在于计算机会执行不同的计算过程，而在于我们对这同一种过程的不同思考方式。&lt;/p&gt;
 </content>
   </entry>
 </feed>

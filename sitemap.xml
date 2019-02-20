@@ -217,6 +217,10 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2019/02/05/fifo-pipe/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/tags/</loc>
     <priority>0.5</priority>
   </url>
@@ -329,7 +333,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/acl/</loc>
+    <loc>http://geniousbar.github.io/tags/bash/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -337,7 +341,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/bash/</loc>
+    <loc>http://geniousbar.github.io/tags/acl/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -418,6 +422,14 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/2019/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2019/02/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2019/02/05/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -601,11 +613,11 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/page/2/</loc>
+    <loc>http://geniousbar.github.io/2016/</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/2016/11/</loc>
+    <loc>http://geniousbar.github.io/tags/page/2/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -705,7 +717,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/2016/</loc>
+    <loc>http://geniousbar.github.io/2016/11/</loc>
     <priority>0.5</priority>
   </url>
 </urlset>
