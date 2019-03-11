@@ -1,4 +1,13 @@
-<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>日常学习</title><meta description="geniousbar 日常知识总结" /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title"><a href="/2017/06/22/linux-process/">Linux process</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 22, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/process/"><small class="tag-label">process</small></a></div><hr class="article-header-separator" /><h2 id="linux-process">linux process</h2>
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>日常学习</title><meta description="geniousbar 日常知识总结" /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../stylesheets/style-408849a5.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../javascripts/all-ae915a3d.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li></ul></div></div></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title"><a href="/2017/06/22/linux-crontab/">Linux crontab</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 22, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/crontab/"><small class="tag-label">crontab</small></a></div><hr class="article-header-separator" /><h2 id="linux-crontab-例行性工作排程">linux crontab （例行性工作排程）</h2>
+
+<h5 id="at">at</h5>
+<ul>
+  <li>执行一次就结束的程序指令</li>
+  <li>开启 /etc/init.d/atd restart</li>
+  <li>at任务记录在 /var/spool/at/中</li>
+  <li>权限 /etc/at.allow, /etc/at.deny, 规则： 1. 先寻找at.allow，写入这个文档的使用者才能使用，没有写入的不能使用 2. 寻找 /etc/at.deny， 写入文档的不能使用， 没有写入的可以使用, 3.两个文档都不存在的，只有root可以使用。</li>
+  <li>按照...</li>
+</ul><div class="read-more"><a href="/2017/06/22/linux-crontab/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/22/linux-process/">Linux process</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 22, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/process/"><small class="tag-label">process</small></a></div><hr class="article-header-separator" /><h2 id="linux-process">linux process</h2>
 
 <h5 id="程序">程序</h5>
 <ul>
@@ -9,32 +18,25 @@
     <h4 id="工作管理">工作管理</h4>
   </li>
   <li>background job...</li>
-</ul><div class="read-more"><a href="/2017/06/22/linux-process/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/22/linux-crontab/">Linux crontab</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 22, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/crontab/"><small class="tag-label">crontab</small></a></div><hr class="article-header-separator" /><h2 id="linux-crontab-例行性工作排程">linux crontab （例行性工作排程）</h2>
+</ul><div class="read-more"><a href="/2017/06/22/linux-process/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/22/linux-service/">Linux service</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 22, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/service/"><small class="tag-label">service</small></a></div><hr class="article-header-separator" /><h2 id="linux-service">linux service</h2>
 
-<h5 id="at">at</h5>
-<ul>
-  <li>执行一次就结束的程序指令</li>
-  <li>开启 /etc/init.d/atd restart</li>
-  <li>at任务记录在 /var/spool/at/中</li>
-  <li>权限 /etc/at.allow, /etc/at.deny, 规则： 1. 先寻找at.allow，写入这个文档的使用者才能使用，没有写入的不能使用 2. 寻找 /etc/at.deny， 写入文档的不能使用， 没有写入的可以使用, 3.两个文档都不存在的，只有root可以使用。</li>
-  <li>按照...</li>
-</ul><div class="read-more"><a href="/2017/06/22/linux-crontab/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/19/linux-relearn-shell/">Linux Shell</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/bash/"><small class="tag-label">bash</small></a><a href="/tags/shell/"><small class="tag-label">shell</small></a></div><hr class="article-header-separator" /><h2 id="linux-shell">linux shell</h2>
+<h4 id="service">service</h4>
+<blockquote>
 
-<h4 id="常用命令">常用命令</h4>
-<ul>
-  <li>history, alias, type, 变量，echo, unset, env, declare, set, read, array</li>
-  <li>系统变量， HOME, SHELL, HISISIZE, PATH, LANG, RANDOM, $, $?, OSTYPE, HOSTTYPE, MACHTYPE,</li>
-  <li>read, read -p ‘please enter you name’ -t 100 name</li>
-  <li>declare, declare ...</li>
-</ul><div class="read-more"><a href="/2017/06/19/linux-relearn-shell/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/19/linux-relearn/">Linux Relearn</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/bash/"><small class="tag-label">bash</small></a><a href="/tags/shell/"><small class="tag-label">shell</small></a></div><hr class="article-header-separator" /><h2 id="linux-bash">linux bash</h2>
+  <p>简单的说,系统为了某些功能必须要提供一些服务 (丌讳是系统本身还是网络方面),这个服务就称为 service 。 但是 service 的提供总是需要程序的运作吧!否则如何执行呢?所以达成这个 service 的程序我们就称呼他为 daemon 啰</p>
+</blockquote>
 
-<h4 id="常用命令">常用命令</h4>
 <ul>
-  <li>history, alias, type, 变量，echo, unset, env, declare, set, read, array</li>
-  <li>系统变量， HOME, SHELL, HISISIZE, PATH, LANG, RANDOM, $, $?, OSTYPE, HOSTTYPE, MACHTYPE,</li>
-  <li>read, read -p ‘please enter you name’ -t 100 name</li>
-  <li>declare, declare -a...</li>
-</ul><div class="read-more"><a href="/2017/06/19/linux-relearn/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/19/linux-acl/">Linux Acl</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/acl/"><small class="tag-label">ACL</small></a><a href="/tags/shell/"><small class="tag-label">shell</small></a></div><hr class="article-header-separator" /><h2 id="linux-acl-控制管理">linux ACl 控制管理</h2>
+  <li>super daemon,
+    <ul>
+      <li>multi-threaded  多线程,</li>
+      <li>single-threaded 单线程,</li>
+    </ul>
+  </li>
+  <li>
+    <p>stand...</p>
+</li>
+</ul><div class="read-more"><a href="/2017/06/22/linux-service/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/19/linux-acl/">Linux Acl</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/acl/"><small class="tag-label">ACL</small></a><a href="/tags/shell/"><small class="tag-label">shell</small></a></div><hr class="article-header-separator" /><h2 id="linux-acl-控制管理">linux ACl 控制管理</h2>
 
 <h4 id="常用命令">常用命令</h4>
 <ul>
@@ -47,7 +49,23 @@
 <blockquote>
 
   <p>/etc/passwd...</p>
-</blockquote><div class="read-more"><a href="/2017/06/19/linux-acl/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/15/linux-relearn/">linux relearn</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 15, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a></div><hr class="article-header-separator" /><p>linux 重新复习</p>
+</blockquote><div class="read-more"><a href="/2017/06/19/linux-acl/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/19/linux-relearn/">Linux Relearn</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/bash/"><small class="tag-label">bash</small></a><a href="/tags/shell/"><small class="tag-label">shell</small></a></div><hr class="article-header-separator" /><h2 id="linux-bash">linux bash</h2>
+
+<h4 id="常用命令">常用命令</h4>
+<ul>
+  <li>history, alias, type, 变量，echo, unset, env, declare, set, read, array</li>
+  <li>系统变量， HOME, SHELL, HISISIZE, PATH, LANG, RANDOM, $, $?, OSTYPE, HOSTTYPE, MACHTYPE,</li>
+  <li>read, read -p ‘please enter you name’ -t 100 name</li>
+  <li>declare, declare -a...</li>
+</ul><div class="read-more"><a href="/2017/06/19/linux-relearn/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/19/linux-relearn-shell/">Linux Shell</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 19, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/relearn/"><small class="tag-label">relearn</small></a><a href="/tags/bash/"><small class="tag-label">bash</small></a><a href="/tags/shell/"><small class="tag-label">shell</small></a></div><hr class="article-header-separator" /><h2 id="linux-shell">linux shell</h2>
+
+<h4 id="常用命令">常用命令</h4>
+<ul>
+  <li>history, alias, type, 变量，echo, unset, env, declare, set, read, array</li>
+  <li>系统变量， HOME, SHELL, HISISIZE, PATH, LANG, RANDOM, $, $?, OSTYPE, HOSTTYPE, MACHTYPE,</li>
+  <li>read, read -p ‘please enter you name’ -t 100 name</li>
+  <li>declare, declare ...</li>
+</ul><div class="read-more"><a href="/2017/06/19/linux-relearn-shell/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/06/15/linux-relearn/">linux relearn</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">June 15, 2017</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a></div><hr class="article-header-separator" /><p>linux 重新复习</p>
 
 <h1 id="档案管理">档案管理</h1>
 
@@ -106,18 +124,4 @@
 
       <span class="nb">autoload</span> <span class="ss">:AttributeAssignment</span>
       <span class="nb">autoload</span> <span class="ss">:AttributeMethods</span>
-      <span class="nb">autoload</span> <span class="ss">:BlockValidator</span><span class="p">,</span> <span class="s1">'active_model/validator...</span></code></pre></div><div class="read-more"><a href="/2017/04/25/rails-activemodel/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/04/20/rails-activerecord/">Rails ActivRecord源码（未完成）</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">April 20, 2017</span></div><div class="tag-labels"><a href="/tags/rails/"><small class="tag-label">rails</small></a><a href="/tags/sourcecode/"><small class="tag-label">sourcecode</small></a></div><hr class="article-header-separator" /><h2 id="rails-activerecord-源码">rails activerecord 源码</h2>
-
-<h2 id="数据库的连接调用过程">数据库的连接调用过程</h2>
-
-<ol>
-  <li>
-    <p>activercord base中的代码</p>
-
-<div class="highlight"><pre class="highlight ruby"><code>   <span class="c1"># activerecord/lib/active_record/railtie.rb</span>
-     <span class="no">ActiveSupport</span><span class="p">.</span><span class="nf">on_load</span><span class="p">(</span><span class="ss">:active_record</span><span class="p">)</span> <span class="k">do</span>
-       <span class="nb">self</span><span class="p">.</span><span class="nf">configurations</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">database_configuration</span>
-
-       <span class="k">begin</span></code></pre></div>
-</li>
-</ol><div class="read-more"><a href="/2017/04/20/rails-activerecord/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><div class="paginate-wrapper"><div class="previous-page"><a href="/page/2/"><i class="fa fa-arrow-left"></i> Previous Page</a></div><div class="next-page"><a href="/page/4/"><i class="fa fa-arrow-right"></i> Next Page</a></div></div><div class="page-number">Page 3 of 5</div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2019 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>
+      <span class="nb">autoload</span> <span class="ss">:BlockValidator</span><span class="p">,</span> <span class="s1">'active_model/validator...</span></code></pre></div><div class="read-more"><a href="/2017/04/25/rails-activemodel/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><div class="paginate-wrapper"><div class="previous-page"><a href="/page/2/"><i class="fa fa-arrow-left"></i> Previous Page</a></div><div class="next-page"><a href="/page/4/"><i class="fa fa-arrow-right"></i> Next Page</a></div></div><div class="page-number">Page 3 of 5</div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2019 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>
