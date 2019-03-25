@@ -361,4 +361,8 @@
 
 <h2 id="文件io缓冲">文件IO缓冲</h2>
 <p><strong>出于效率的考虑， 系统IO调用，以及 函数库IO函数，都在文件IO操作中对数据进行了缓冲</strong></p>
+
+<p>###: 内核缓冲区： 缓冲区 高速缓存： read, write 系统调用： 系统调用并不会直接发起磁盘调用，而仅仅是在 用户空间缓冲区 与 内核缓冲区高速缓存(kernel buffer cache) 中间复制数据。 write(fd, “abc”, 3) 的详细步骤： 1. 将数据从 用户空间内存传递到 内核 缓冲区中， 2. write 返回， 3）后续的某个时刻， 内核会将其 缓冲区的数据写入到 磁盘上。 read系统调用 则会产生 缺页中断， 进程挂起，知道 内核从磁盘中读取数据 并 存储到 内核缓冲区中，进程执行 从内核缓冲区中读取数据。</p>
+
+<h3 id="stdio库的缓冲-缓冲大块数据以减少系统调用-c语言函数库的io函数-fprintf-fgetsfputs-fputc-等能够使">stdio库的缓冲： 缓冲大块数据以减少系统调用， C语言函数库的IO函数， fprintf, fgets,fputs, fputc 等能够使</h3>
 <div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="copyright"><i class="fa fa-copyright"></i> 2019 <a href="/">日常学习</a> - geniousbar</div></div></footer></body></html>
