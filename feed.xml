@@ -4,10 +4,512 @@
   <id>http://geniousbar.github.io</id>
   <link href="http://geniousbar.github.io"/>
   <link href="http://geniousbar.github.io/feed.xml" rel="self"/>
-  <updated>2019-03-24T08:00:00+08:00</updated>
+  <updated>2019-06-14T08:00:00+08:00</updated>
   <author>
     <name>geniousbar</name>
   </author>
+  <entry>
+    <title>linux-interface-14</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2019/06/14/linux-interface-14/"/>
+    <id>http://geniousbar.github.io/2019/06/14/linux-interface-14/</id>
+    <published>2019-06-14T08:00:00+08:00</published>
+    <updated>2019-06-17T13:59:44+08:00</updated>
+    <summary type="html">&lt;h2 id="文件系统"&gt;文件系统&lt;/h2&gt;
+
+&lt;h3 id="文件系统是对文件和目录的组织集合"&gt;文件系统是对文件和目录的组织集合&lt;/h3&gt;
+
+&lt;h2 id="设备"&gt;设备&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;划分
+    &lt;ul&gt;
+      &lt;li&gt;实际设备（键盘、鼠标、磁盘）和虚拟设备（不存在与之对应的硬件，内核为其提供的一种抽象。比如ssh登录？）&lt;/li&gt;
+      &lt;li&gt;字符类型，块设备。字符类型有键盘、终端等。典型的块类型设备是磁盘&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;设备专用文件: 与系统的某个设备相对应，每个设备类型都有与之相对应的设备驱动程序。用来处理设备的所有IO请求。设备驱动程序属于内核代码，由设备驱动程序提供的API是固定的，主要包含（open, close...&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    <content type="html">&lt;h2 id="文件系统"&gt;文件系统&lt;/h2&gt;
+
+&lt;h3 id="文件系统是对文件和目录的组织集合"&gt;文件系统是对文件和目录的组织集合&lt;/h3&gt;
+
+&lt;h2 id="设备"&gt;设备&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;划分
+    &lt;ul&gt;
+      &lt;li&gt;实际设备（键盘、鼠标、磁盘）和虚拟设备（不存在与之对应的硬件，内核为其提供的一种抽象。比如ssh登录？）&lt;/li&gt;
+      &lt;li&gt;字符类型，块设备。字符类型有键盘、终端等。典型的块类型设备是磁盘&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;设备专用文件: 与系统的某个设备相对应，每个设备类型都有与之相对应的设备驱动程序。用来处理设备的所有IO请求。设备驱动程序属于内核代码，由设备驱动程序提供的API是固定的，主要包含（open, close, read, write, mmap, ioctl）,由于这些统一一致的API，隐藏了每个设备在操作方面的差异。&lt;/li&gt;
+  &lt;li&gt;如何确定驱动程序:
+    &lt;ol&gt;
+      &lt;li&gt;设备文件的I节点中记录了设备的主、辅ID。&lt;/li&gt;
+      &lt;li&gt;主、辅ID:  主ID标识一般的设备等级，内核用来寻找设备驱动程序，辅号在主ID中的标识唯一的特定设备。ls -l 会展现出设备文件的主、辅ID。（不知道是不是需要对于设备类型文件才行）&lt;/li&gt;
+      &lt;li&gt;设备驱动程序会向内核注册 自己与特定 主ID的关联关系。内核基于此建立 设备到设备驱动程序的关联关系。（内核是不会通过设备文件名来查找驱动程序的，猜想也是如此， 不可能根绝简单的字符串来匹配驱动程序）&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id="磁盘"&gt;磁盘&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;磁盘分区: 可以将磁盘分成一个或者多个分区，内核将每个分区视为/dev路径下的单独设备。可以使用fdisk 来决定磁盘分区的编号、大小和类型。fdisk -l 列出磁盘的所有分区， linux 文件/proc/partitions 记录了分区的主辅设备编号、大小和名称。&lt;/li&gt;
+  &lt;li&gt;磁盘分区可以容纳任何类型的信息，但通常包含以下:
+    &lt;ul&gt;
+      &lt;li&gt;文件系统&lt;/li&gt;
+      &lt;li&gt;数据区域，作为裸设备对其进行访问&lt;/li&gt;
+      &lt;li&gt;交换区域: 供内核的内存管理用。可以通过mkswap命令创建交换区域，系统调用swapon, swapoff, 启用、关闭磁盘作为内存交换区。linux文件 /proc/swaps 用来查看当前激活的交换区信息。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id="文件系统-1"&gt;文件系统&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;linux支持的文件系统有:
+    &lt;ul&gt;
+      &lt;li&gt;传统的ext2&lt;/li&gt;
+      &lt;li&gt;各种原生的UNIX文件系统，比如Minix， System V以及BSD文件系统&lt;/li&gt;
+      &lt;li&gt;微软的FAT，FAT32已经NTFS文件系统&lt;/li&gt;
+      &lt;li&gt;ISO9660 CD-ROM文件系统&lt;/li&gt;
+      &lt;li&gt;Apple Macintosh 的 HFS&lt;/li&gt;
+      &lt;li&gt;一系列日志文件系统: 还包括etx3, ext4， JFS，XFS等&lt;/li&gt;
+      &lt;li&gt;linux 2.6.14中添加了 FUSE（用户空间文件系统）工具，采用这一机制，可谓内核添加挂钩，以便以用户空间程序 来是实现完整的文件系统，而无需对内核进行修补和重新编译&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id="以下为ext2文件系统-为例"&gt;以下为ext2文件系统 为例&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;文件系统的组成部分:
+    &lt;ul&gt;
+      &lt;li&gt;引导块: 文件系统的首块，不能为文件系统所用，用来引导操作系统的信息。操作系统只需要一个引导块，但是所有的文件系统都设有引导块。&lt;/li&gt;
+      &lt;li&gt;超级块: 紧随引导块之后的一个独立块。其包含文件系统有关的详细参数: 1）i节点表容量。 2）文件系统中的逻辑块大小， 3）以逻辑块计，文件系统的大小。驻留于同一块磁盘上的不同文件系统，其类型、大小以及参数设定都有所不同（比如逻辑块）这也是将一块磁盘划分多个分区的原因之一。&lt;/li&gt;
+      &lt;li&gt;i节点表:与文件系统中的每个文件、目录 一一对应。记录了文件的相关信息&lt;/li&gt;
+      &lt;li&gt;数据块: 用于存放数据，占据文件系统空间中的大部分空间&lt;br /&gt;
+&lt;img src="../../../../images/file_system_partition-810c09f5.png" alt="file_system" /&gt;  &lt;br /&gt;
+&lt;img src="../../../../images/file_system_i_node_list-ebd188e1.png" alt="i_node_list" /&gt;
+        &lt;h3 id="i节点"&gt;i节点&lt;/h3&gt;
+        &lt;p&gt;&lt;strong&gt;对于文件系统中的每个文件（所有东西，包括:目录、链接、etc） 都有一个i节点与之对应。对i节点的标识为顺序数字，ls -li命令第一列为i节点号&lt;/strong&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;其维护的信息主要有
+    &lt;ul&gt;
+      &lt;li&gt;文件类型（常规文件、目录、符号链接、设备等）&lt;/li&gt;
+      &lt;li&gt;文件属主（UID）&lt;/li&gt;
+      &lt;li&gt;文件属主（GID）&lt;/li&gt;
+      &lt;li&gt;3个权限&lt;/li&gt;
+      &lt;li&gt;3个时间戳&lt;/li&gt;
+      &lt;li&gt;指向文件的硬链接数（hard link）&lt;/li&gt;
+      &lt;li&gt;文件的大小（字节为单位）&lt;/li&gt;
+      &lt;li&gt;实际分配给时间的块数量 （不同于上面的文件大小，因为文件空洞的存在）&lt;/li&gt;
+      &lt;li&gt;指向文件数据块的指针(i-node-entry)&lt;br /&gt;
+&lt;img src="../../../../images/file_system_i_node_data_block_pointers-67ea4037.png" alt="i_node_list" /&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id="虚拟文件系统vfs"&gt;虚拟文件系统(VFS)&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;是一种内核特征，通过为文件系统操作创建抽象层来解决、屏蔽，各种不同文件系统的不同的实现细节&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;VSF对文件系统定义了一套通用接口，所有与文件相关的程序都会使用这一接口&lt;/li&gt;
+  &lt;li&gt;每种文件系统都会提供VFS接口的实现&lt;/li&gt;
+  &lt;li&gt;接口的操作与涉及文件系统和目录的所有常规系统调用相对应，有: open, read, write, lseek, close, truncate, stat, mount, umount, mmap, mkdir, link, unlink, symlink, rename&lt;/li&gt;
+  &lt;li&gt;并不是所有的文件系统都支持所有的VFS操作，对于这种情况， 底层文件系统调用将错误代码传回VFS层面，并传递到应用层面&lt;br /&gt;
+  &lt;img src="../../../../images/file_system_vfs-f6afa08a.png" alt="i_node_list" /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id="挂载-mount"&gt;挂载 mount&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;mount 命令:
+    &lt;ul&gt;
+      &lt;li&gt;mount device directory, 将device的文件系统挂在到directory所指定的目录下。可以使用umount卸载，并在其他地方重新挂载。（linux 2.4.19） 之后内核支持针对每个进程的挂载空间，每个进程都能够拥有自己的挂载空间。&lt;/li&gt;
+      &lt;li&gt;mount 不带参数， 可以列出当前已挂载的文件系统&lt;/li&gt;
+      &lt;li&gt;linux /proc/mounts 可以查看当前已经挂载的文件系统列表。因为是内核数据结构的接口，所以是比较精确的。在引入经程级别的挂载空间后， /proc/PID/mouns 为进程的挂载信息，而 /proc/mounts 链接到 /proc/self/mounts&lt;/li&gt;
+      &lt;li&gt;/etc/mtab 包含同样的信息，只是会更加详细些，其中会包含了传递mount命令的参数， mount,umount 命令会自动维护 该文件，然而 系统调用 mount, umount 并不会维护该文件，导致可能会不够准确&lt;/li&gt;
+      &lt;li&gt;/proc/mounts, /etc/mtab 文件的格式如下:
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;/dev/sda1 / ext2 rw 0 0
+从左到右的意思是: 挂载设备名，挂载点，文件系统类型， 挂载标志， （后面的详细参看手册）
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;相关系统调用:&lt;br /&gt;
+&lt;strong&gt;mount系统调用中的mountflags具有重要作用，其决定着对整个设备文件系统类型的处理。例如， MS_RDONLY, 以只读方式挂载，在此文件系统上只能读，而不能创建和修改。&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;在多个挂载点挂载文件系统: 在挂载点一做出的改变，在挂载点二下立即可见。因为存在进程级别的挂载空间，所以操作并不影响之前的进程，只影响之后的进程挂载点。&lt;/li&gt;
+      &lt;li&gt;umount, umount2 系统调用卸载已挂载的文件系统。无法卸载正在使用中的文件系统， 这一文件系统中有文件被打开，或者进程的当前工作目录在此文件系统下，是无法被卸载的，返回EBUSY错误。&lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;umount2(const char * target, int flags): 其中flags有如下几个选项， MNT_DETACH(lazy卸载， 不在允许新的进程访问挂载点， 等使用中进程不在使用挂载点时候，卸载文件系统), MNT_EXPIRE（首次调用并且处于空闲状态，将被标记 为到期，非空闲失败，二次调用，仍处于到期状态，则卸载文件系统。可用于卸载在某段时间内未用的文件系统）, MNT_FORCE（强行卸载文件系统，可能会造成数据丢失）&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;绑定挂载: 可以在文件系统目录层级 挂载目录或者文件。将导致文件或者目录在两处都可见。不同于多个挂载点挂载、有些类似于硬链接，区别在于: 1） 绑定挂载可以跨越多个文件系统挂载点 2）可针对目录执行绑定挂载。绑定挂载需要指定特殊标志才能够递归的挂载 子挂载&lt;br /&gt;
+&lt;code&gt;shell
+mkdir d1
+mkdir d2
+mount --bind d1 d2
+&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id="虚拟内存文件系统tmpfs"&gt;虚拟内存文件系统（tmpfs）:&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;linux支持驻留于内存的虚拟文件系统。tmpfs最为复杂。不仅使用RAM还能够利用交换空间。/proc/mount 即是此类文件系统的实现，可以创建tmpfs文件系统并挂载至/tmp来改善编译器类似的频繁使用/tmp目录的应用程序的性能。&lt;/strong&gt;&lt;br /&gt;
+内核还将此类文件系统用于:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;实现System V共享内存和共享匿名内存映射&lt;/li&gt;
+  &lt;li&gt;挂载于/dev/shm的tmpfs文件系统，为glibc用以实现POSIX共享内存和信号量&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id="文件属性"&gt;文件属性&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;int stat(const char * pathname, stuct stat * statbuf): 系统调用: 获取与文件有关的信息， 大部分都来自于i节点, struct stat结构如下:
+&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;&lt;span class="n"&gt;stuct&lt;/span&gt; &lt;span class="n"&gt;stat&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="n"&gt;dev_t&lt;/span&gt; &lt;span class="n"&gt;st_dev&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
+&lt;span class="n"&gt;dev_t&lt;/span&gt; &lt;span class="n"&gt;st_rdev&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
+&lt;span class="n"&gt;ino_t&lt;/span&gt; &lt;span class="n"&gt;st_ino&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;mode_t&lt;/span&gt; &lt;span class="n"&gt;std_mode&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;n_link_t&lt;/span&gt; &lt;span class="n"&gt;st_nlink&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;uid_t&lt;/span&gt; &lt;span class="n"&gt;st_uid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;g_id_t&lt;/span&gt; &lt;span class="n"&gt;st_gid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;time_t&lt;/span&gt; &lt;span class="n"&gt;st_atime&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;time_t&lt;/span&gt; &lt;span class="n"&gt;st_mtime&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;time_t&lt;/span&gt; &lt;span class="n"&gt;st_ctime&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;部分详细解释：&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;st_devo 字段标识文件所驻留的设备。st_ino 为文件的i节点，两者标识文件系统中的唯一文件。设备文件的i节点，st_rdev 字段包含了主、辅ID， 否则st_dev 包含信息&lt;/li&gt;
+      &lt;li&gt;st_uid, st_gid 标识文件属主。 st_nlink 包含了指向文件的硬链接数目。 st_mode 标识了文件类型、已经权限。&lt;/li&gt;
+      &lt;li&gt;st_atime, st_mtime, st_ctime, 为文件时间戳， 分别标识: 文件上次访问时间、修改时间、以及文件状态修改时间。&lt;/li&gt;
+      &lt;li&gt;系统调用: utime, utimes, utimensat 都可以修改文件的时间戳。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;新建文件的属性: 新建文件时的属主取决于进程的有效用户ID。新建文件的组ID是多变的，下面为ext2下面新建文件组ID所遵循的规则:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;文件系统mount选项&lt;/th&gt;
+      &lt;th&gt;父目录设定set-group-id 标记&lt;/th&gt;
+      &lt;th&gt;新建文件的组ID取值&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-o grpid, -o bsdgroups&lt;/td&gt;
+      &lt;td&gt;忽略&lt;/td&gt;
+      &lt;td&gt;父目录组ID&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-o nogrpid, -0 sysvgroups&lt;/td&gt;
+      &lt;td&gt;无&lt;/td&gt;
+      &lt;td&gt;进程的组id&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-o nogrpid, -0 sysvgroups&lt;/td&gt;
+      &lt;td&gt;有&lt;/td&gt;
+      &lt;td&gt;父目录组id&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;chown 系统调用， 可以更改文件属主， 权限为: 1）特权级别进程（root） 2）进程的有效用户ID与文件的用户ID匹配。当文件的属主或者属组发生了改变时，set-user-id, set-group-id 权限位会关闭。改变的是目录的时候， 其set-group-id并不会发生改变。目录的set-group-id 并不是为了创建 set-group-id程序，而是为了控制在该目录下创建文件的所有权。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;目录下的权限&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;权限:&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;ul&gt;
+      &lt;li&gt;读权限: 可以ls 目录下的内容。&lt;/li&gt;
+      &lt;li&gt;写权限: 可在目录下创建、删除文件（删除文件对文件本身并不需要权限）&lt;/li&gt;
+      &lt;li&gt;可执行权限: 可访问目录中的文件，也成为search权限&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;访问文件时候， 需要拥有对路径名所有的目录的执行权限， /home/mtk/x, 需要对 /、/home、/home/mtk 拥有可执行权限。但是若在/home/mtk/sub1下，通过相对路径 ../sub2/x 访问。那么只需要 /home/mtk 、/home/mtk/sub2 这两个目录的可执行权限，而不需要 /、/home 的权限。（奇怪，应该保持一致性比较好）&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;对目录权限的解释: &lt;br /&gt;
+因为目录的特殊结构（目录的内容其下的文件、目录等的i节点列表），可以这样理解设定三种权限的理由: 读权限， 可以访问目录的数据结构。可执行权限，则可以查看目录内容的i节点详细信息。写权限，意味着可以修改目录内容，所以可以删除目录下的文件（即是修改目录内容的i节点列表）&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;若是拥有对目录的可执行权限， 而没有读权限。只需要知道目录内的文件名称，则仍可以进行访问，但不能列出目录下的内容。在控制对公共目录内容的访问时，非常有用。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;文件系统的权限检查（包含目录、文件):只在初次调用时候，进行检查，open文件之后的fd，再次对其进行操作，是不再会进行检查的。规则如下:
+    &lt;ul&gt;
+      &lt;li&gt;特权进程， 授予访问权限&lt;/li&gt;
+      &lt;li&gt;若进程的有效用户ID与文件的用户ID相同，内核会根据文件的属主权限，授予进程相同的权限。&lt;/li&gt;
+      &lt;li&gt;若进程的有效组ID或任意附属组ID与文件的组ID相匹配。根据文件的属组权限，授予进程&lt;/li&gt;
+      &lt;li&gt;若上面都不满足， 内核根绝other授予进程权限。&lt;br /&gt;
+  内核检查会在最后时候，即是未能通过调用规则的检查的时候，才会检查检查是否属于特权进程。&lt;br /&gt;
+  上述检查可能造就一些奇怪的现象（从代码逻辑上来看是正常的）: 比如文件的owner没有rw权限， &lt;br /&gt;
+同样适用于目录的权限检查， 但是特权进程总是拥有可执行权限（即是总是可以搜索），特权进程总是拥有通过任何的权限检查&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Sticky位: 现在的UNIX的Sticky权限位 其限制删除的作用，为目录设定权限位时候， 表明非特权进程时，只有对目录有写权限+为文件或目录的属主时才能对目录下的文件进行 删除、重命名操作。（可以用于建立多个用户共享的目录文件， 每个用户管理自己的文件、访问其他人的文件。但是不能删除其他人的文件） 典型的应用在/tmp 目录下， chmod +t 可以添加 sticky位，&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;进程的文件创建掩码: umask 是一种进程属性， 当进程创建文件或者目录时候，该属性执行屏蔽那些权限位。进程的umask通常继承父shell， 所以可以在shell中使用umask来改变shell进程的umask，进而影响所有的shell子进程。umask(mode_t mask) 系统调用总是调用成功，并返回之前的umask数值。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;i节点扩展属性（EA）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="目录和链接的实现结构"&gt;目录和链接的实现结构&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;目录的实现结构:
+    &lt;ul&gt;
+      &lt;li&gt;i节点的类型标记为目录&lt;/li&gt;
+      &lt;li&gt;目录内容是经过特殊组织的文件表格(硬链接列表): 文件名和i-node编号。&lt;/li&gt;
+      &lt;li&gt;不能够read目录内容， 直接编辑目录内容是不允许的，不具有可移植性。需要使用相关的系统调用， open, link, mkdir, symlink ,unlink, rmdir etc&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;硬链接: 创建链接指向相同的i-node节点，成为硬链接。会改变 指向文件的i-node节点的 链接数。限制有: 1) 因为采用i-node编号，导致不能跨越文件系统。 2）不能为目录创建硬链接，会导致诸多的系统程序陷入混乱的链接环路中。&lt;/li&gt;
+  &lt;li&gt;符号链接: 特殊的文件类型， 内容为另一个文件的名称（字符串）
+    &lt;ul&gt;
+      &lt;li&gt;ln -s 创建， 内容可以是绝对路径和相对路径，解释相对路径时，以链接本身的位置作为参照点。&lt;/li&gt;
+      &lt;li&gt;符号链接的地位不如硬链接，i节点并不体现符号链接数量。即便移除了文件，链接依然存在，成为空连接。甚至可以创建不存在文件的链接。&lt;/li&gt;
+      &lt;li&gt;因为符号链接的内容为字符串，所以可以跨越文件系统。一些系统调用中对符号链接进行解析，因为可能存在环路问题，所以规定了街引用的一个次数范围。_POSIX_SYMLOOP_MAX 常量规定了最大次数限制。（无论系统调用是否对符号链接进行解析，其总是对符号链接中的目录部分进行接引用，区分在于是否对文件接引用），&lt;/li&gt;
+      &lt;li&gt;权限为引用的文件的权限。&lt;br /&gt;
+&lt;img src="../../../../images/file_system_dir-34782625.png" alt="dir" /&gt;&lt;br /&gt;
+&lt;img src="../../../../images/file_system_symbol_link-b005d109.png" alt="dir" /&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id="系统调用"&gt;系统调用:&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;link（const char * oldpath, const char * newpath）; 创建硬链接， oldpath 不应为符号链接，否则不具有可移植性。&lt;/li&gt;
+  &lt;li&gt;unlink(const char * pathname): 如果此链接为最后一个指向文件的，此操作还会删除文件本身。&lt;/li&gt;
+  &lt;li&gt;都不能操作目录， 与符号链接&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;文件内容的删除: 内核除了维持i-node节点的链接数目之外，还对文件的打开文件描述符计数。只有全部的计数为0时候，文件才会真正的消失。这意味着， 存在多个硬链接， 只有删除全部删除硬链接的时候，才会删除文件本身，且不存在打开的文件描述符。否则文件本身依然存在，并且可以被读取。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;rename(const char * oldpath, const char * newpath): 可以重命名文件、目录。 调用仅仅操作目录条目， 而不移动数据，更名既不影响指向该文件的硬链接，也不影响打开文件描述符的任何进程。（这些文件描述符在open调用返回之后，与文件名再无瓜葛）&lt;br /&gt;
+规则:
+    &lt;ul&gt;
+      &lt;li&gt;newpath 存在则将其覆盖&lt;/li&gt;
+      &lt;li&gt;newpath与oldpath 指向同一文件， 则不操作&lt;/li&gt;
+      &lt;li&gt;系统调用不对参数进行解引用，意味着可以操作符号链接&lt;/li&gt;
+      &lt;li&gt;oldpath 是文件的时候，不能更名为目录&lt;/li&gt;
+      &lt;li&gt;oldpath是目录的情况下， newpath目录不能存在或者是空目录。且newpath不能包含oldpath的前缀， 如 /home/mtk, -&amp;gt; /home/mtk/bin&lt;/li&gt;
+      &lt;li&gt;oldpath、newpath 需要为同一文件系统，因为目录的内容为硬链接列表组成。硬链接的i-node节点指向必须是同一文件系统。（区别于 mv系统命令， mv能够跨越文件系统， 其操作 复制内容， 其在同文件系统上的表现还需要验证）&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;symlink(const char * filepath, const char * linkpath): 创建filepath（路径名）文件、目录的一个新的符号链接。filepath 可是相对路径或者绝对路径，相对路径会经常显现一些超乎意外的情况，所以建议是绝对路径。filepath 可以存在或者不存在，因为即便存在依然可能会被删除，造成linkpath的空连接。&lt;/li&gt;
+  &lt;li&gt;readlink(const chart *pathname, char * buffer, size_t bufsiz): 获取符号链接本身的内容，系统调用将符号链接的内容放到buffer中。&lt;/li&gt;
+  &lt;li&gt;mkdir(const char * pathname, mode_t mode): pathname可以使相对路径或绝对路径，目录的set-user-id 总是关闭（因为没有作用）， mode 中的 set-group-id 设定会被忽略。系统调用所创建的只是路径名中最后的部分，如果中间部分不存在则调用失败。 SUSv3 并未要求目录中包含.、.., 只是要求存在时候能够正确解释，所以，可移植性的程序不能假定总是存在这些条目。&lt;/li&gt;
+  &lt;li&gt;rmdir(const char * pathname):要求被删除目录内容为空，才能调用成功。&lt;/li&gt;
+  &lt;li&gt;remove(const char *pathname):c标准库中的函数， 并不是系统调用。 不会解引用。移除一个文件或一个空目录。pathname 为文件，remove 会调用unlink， 是目录时，remove 调用rmdir.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id="进程都有两个目录相关属性-1根目录-2工作目录没想到过还可以修改根目录"&gt;进程都有两个目录相关属性: 1）根目录， 2）工作目录。没想到过还可以修改根目录&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;进程的当前工作目录:定义了该进程解析相对路径的起点， 继承自父进程。
+    &lt;ul&gt;
+      &lt;li&gt;getcwd(char * wdbuf, size_t size): 拥有获取当前进程的工作目录， 当前工作目录的最大字符串长度应小于4096 的字节限制。超出将不再可靠。&lt;/li&gt;
+      &lt;li&gt;chdir(const char *pathname): 更改调用进程的当前工作目录，可以为符号链接。&lt;/li&gt;
+      &lt;li&gt;/proc/PID/cwd 为进程当前工作目录的映射&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;进程的根目录: 该目录是解释绝对路径的起点，继承自父进程。
+    &lt;ul&gt;
+      &lt;li&gt;chroot(const char *pathname): 系统调用改变进程的根目录，目的为监理一个chroot监禁区。将所有对绝对路径的解释设定为一个目录的起点。将应用程序设定为文件系统的特定区域。&lt;/li&gt;
+      &lt;li&gt;需要将 根目录的 .与.. 设定为自身， 防止根据相对路径，逃出监禁区&lt;/li&gt;
+      &lt;li&gt;并不是所有的程序都可以运行在监禁区，因为大多数程序与共享库之间采用动态链接的方式。因为需要复制一套标准的共享库来实现运行动态链接的程序（通过绑定挂载可以实现共享库共享）&lt;/li&gt;
+      &lt;li&gt;不能在监禁区中方式set-user-id-root 程序，方式获取root的权限&lt;/li&gt;
+      &lt;li&gt;需要chdir， 防止通过相对路径逃出监禁区&lt;/li&gt;
+      &lt;li&gt;如果进程之前持有监禁区之外的文件描述符，可以逃出监禁区&lt;/li&gt;
+      &lt;li&gt;可以通过套接字传递监禁区之外的文件描述符，所以需要避免&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;总结: chroot调用并不能真正的成为安全的控制机制，因为逃出监禁区的方式有很多，还不如实现更加现代的docker容器技术来避免。&lt;br /&gt;
+realpath(const char * pathname, char * resolved_path): 对路径解析为绝对路径。&lt;br /&gt;
+dirname, basename: 将路径名解析成， 目录和文件名两部分。&lt;/li&gt;
+&lt;/ol&gt;
+
+</content>
+  </entry>
+  <entry>
+    <title>daily-learn</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2019/05/23/daily-learn/"/>
+    <id>http://geniousbar.github.io/2019/05/23/daily-learn/</id>
+    <published>2019-05-23T08:00:00+08:00</published>
+    <updated>2019-06-17T13:59:45+08:00</updated>
+    <summary type="html">&lt;p&gt;mysql_conn doam_217_realm1 -e “show tables” &amp;gt; ~/tables.txt&lt;br&gt;
+cat ~/tables.txt | grep 2019 &amp;gt; ~/i_tables.txt&lt;br&gt;
+mysqldump $(echo ~/i_tables.txt) -h 10.9.88.246 -pdragonsmobile doam_217_realm1 -u dragonsmobile -d –add-drop-database&lt;/p&gt;
+
+&lt;p&gt;邓小平时代&lt;/p&gt;
+
+&lt;p&gt;作者：哈佛大学傅高义，以中外的...&lt;/p&gt;</summary>
+    <content type="html">&lt;p&gt;mysql_conn doam_217_realm1 -e “show tables” &amp;gt; ~/tables.txt&lt;br /&gt;
+cat ~/tables.txt | grep 2019 &amp;gt; ~/i_tables.txt&lt;br /&gt;
+mysqldump $(echo ~/i_tables.txt) -h 10.9.88.246 -pdragonsmobile doam_217_realm1 -u dragonsmobile -d –add-drop-database&lt;/p&gt;
+
+&lt;p&gt;邓小平时代&lt;/p&gt;
+
+&lt;p&gt;作者：哈佛大学傅高义，以中外的不同视角描绘了，解读邓小平的政治生涯及其行为逻辑，。对中美建交、华国锋历史评估、改革开放的幕后曲折、邓小平和诸多当时关键人物之关系、香港问题、邓小平南巡等重大议题均有详述及剖析。《邓小平时代》既具学院研究的严谨专精，又对中国现实政治与事理人情有透彻把握，被誉为邓小平研究“纪念碑式”的著作。&lt;/p&gt;
+
+&lt;p&gt;以下是一个简单的概览。&lt;/p&gt;
+
+&lt;p&gt;为什么是邓？&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;首先邓是一个军人，因为其生平路线多以军事为主，所以其有着极高的军事威望。能够得到军队的拥护。&lt;/li&gt;
+  &lt;li&gt;毛的选择：与毛的关系密切，曾因为坚持用户毛的政策而被撤职下放。但因为毛担心邓不会坚持自己的路线而失落。&lt;/li&gt;
+  &lt;li&gt;邓的思想、执政方式： 邓在决策时特别注重把握整体氛围，不勉强，力求实现“水到渠成”。这是邓能够得到拥戴、政策能够得到稳步推进，改革开放、思想转变 得以顺利进行的一个重要支撑。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;华的作用？&lt;/p&gt;
+
+&lt;p&gt;毛在临终前，确实是指定华为接班人，也得到了叶的支持。（邓因为可能并不能坚持毛的路线而被放弃，也有猜想是因为苏联、美国的共同压力导致，毛发动了文革，从而延缓了美苏对中国的下手，度过了危机，而将衣钵留给了邓（听着有点瞎扯）），华在拨乱反正，清灭四人帮的过程中起到了重要的作用。并启用邓，让邓出来主持工作。华因为害怕得不到支持而错误的提出了『两个凡是』，但其基本思想、政策方针 是值得肯定的。其在 毛 邓的过度时期 起到了重要的作用。&lt;/p&gt;
+
+&lt;p&gt;主持大局&lt;/p&gt;
+
+&lt;p&gt;华因为根基浅显，是导致邓起的重要原因。邓首先巧妙的重新解释了毛的思想的现实意义，使其能够帮助、促进、为现代化发展提供了理论根基。邓通过军中根基，进行了精兵简政，削减了政策开支，转而发展民生。邓通过鼓励、包容 以 万里、赵紫阳 等实干派、智囊团。来进行小范围的尝试。开辟新的思路、思想方法。让事实来推动整体思想氛围的转变。典型的是 『家庭联产承包责任制』 得推进，改革开放的深圳，则更是标志性的胜利。&lt;/p&gt;
+
+&lt;p&gt;对外标志性的事件有： 与美日建交，推动了与美日的关系，日本的企业对中国的现代化发展提供了非常大的技术支持与帮助。一国两制 收复香港、澳门、稳定了西藏局势。并通过对 越南 的自卫战，阻止了苏联的进一步扩展，稳定了东南亚局势。为经济发展创造了一个稳定的外部环境。（然而在越难自卫战中，是否如传闻的一样，势如破竹，直捣黄龙的说法，书中给出了另外的一种视角，大多数的视角认为，战虽然赢了，但是打的异常艰难，中方损失过大，暴露了许多问题）， 关于现在形态，在邓造访美国时候，已经做出了评论，邓认为美方的三权分立形式太过内耗，浪费精力，更不能有效的集中力量办大事，而且对于我们来说一个多民族多融合的国家来说，容易造成分裂。关于组织， 邓在期间并没有改进，依然沿用 由上层任命、罢免下层的方式来控制地方，只是选人方式改成了择优录用而不再是参杂政治阶级，其考核目标则有经济发展代替了阶级斗争。&lt;/p&gt;
+
+&lt;p&gt;关于舆论： 邓放弃了阶级斗争，允许百花齐放，但是是建立在坚持统一、团结的基础上。&lt;/p&gt;
+
+&lt;p&gt;作用、功过是非？&lt;br /&gt;
+推荐 邓小平时代&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <title>rails-time-zone</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2019/05/21/rails-time-zone/"/>
+    <id>http://geniousbar.github.io/2019/05/21/rails-time-zone/</id>
+    <published>2019-05-21T08:00:00+08:00</published>
+    <updated>2019-05-21T20:37:52+08:00</updated>
+    <summary type="html">&lt;h1 id="rails-timezone"&gt;Rails Timezone&lt;/h1&gt;
+
+&lt;p&gt;TimeZone 是 rails 为ruby扩展的一个 有用工具。&lt;/p&gt;
+
+&lt;p&gt;application.rb&lt;br&gt;
+config.time_zone = “Beijing”&lt;br&gt;
+可以指定整个应用的timezone。 然而， 使用timezone依然需要一个特定的方法调用，才能够使用rails 提供的扩展。&lt;/p&gt;
+
+&lt;p&gt;相关代码如下:&lt;/p&gt;
+
+&lt;p&gt;activesupport/lib/active_support/core_ext/time/zones.rb&lt;/p&gt;
+
+&lt;p&gt;为 ruby 的TIme class 提...&lt;/p&gt;</summary>
+    <content type="html">&lt;h1 id="rails-timezone"&gt;Rails Timezone&lt;/h1&gt;
+
+&lt;p&gt;TimeZone 是 rails 为ruby扩展的一个 有用工具。&lt;/p&gt;
+
+&lt;p&gt;application.rb&lt;br /&gt;
+config.time_zone = “Beijing”&lt;br /&gt;
+可以指定整个应用的timezone。 然而， 使用timezone依然需要一个特定的方法调用，才能够使用rails 提供的扩展。&lt;/p&gt;
+
+&lt;p&gt;相关代码如下:&lt;/p&gt;
+
+&lt;p&gt;activesupport/lib/active_support/core_ext/time/zones.rb&lt;/p&gt;
+
+&lt;p&gt;为 ruby 的TIme class 提供了， zone, zone=, use_zone（在临时设定timezone，并yield之后，重置 timezone）, fine_zone！， in_time_zone(转到换 一个timezone的时间表示) 扩展，&lt;/p&gt;
+
+&lt;p&gt;zone 为一个ActiveSupport::TimeZone instance, 提供now, today, at, utc_to_local 等， 配置， timezones简单别名映射&lt;br /&gt;
+ActiveSupport::TimeWithZone, 则是简单的一个包含timezone， utc time， 的封装， 包含了一些对界面的映射， to_s, to_yml, httpdate, strftime （其中包含了 ::Timezone 表示） 等&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>book-advise</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2019/05/20/book-advise/"/>
+    <id>http://geniousbar.github.io/2019/05/20/book-advise/</id>
+    <published>2019-05-20T08:00:00+08:00</published>
+    <updated>2019-05-21T15:44:40+08:00</updated>
+    <summary type="html">&lt;h1 id="书籍推荐"&gt;书籍推荐&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;深入理解计算机系统&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;神书， 其令人惊艳的地方在于，真正的做到了漫游了计算机系统，名副其实， 从硬件到软件、从 逻辑硬件到 流水线cpu设计架构，从 指令集 到 高级语言， 从顺序执行到并发执行。。。。 其包罗万象、贯穿了整个计算机，而又不失深度。&lt;br&gt;
+这本书大概可以作为计算机各个领域的一个敲门砖，因为计算机发展到今天已经足够深， 所以在单独的领域中依然需要专门的数据来深入探讨。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;程序的构造和解释&lt;br&gt;
+神书， 现在市面上的大部分书籍教的都是框架，如何在xxx框...&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    <content type="html">&lt;h1 id="书籍推荐"&gt;书籍推荐&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;深入理解计算机系统&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;神书， 其令人惊艳的地方在于，真正的做到了漫游了计算机系统，名副其实， 从硬件到软件、从 逻辑硬件到 流水线cpu设计架构，从 指令集 到 高级语言， 从顺序执行到并发执行。。。。 其包罗万象、贯穿了整个计算机，而又不失深度。&lt;br /&gt;
+这本书大概可以作为计算机各个领域的一个敲门砖，因为计算机发展到今天已经足够深， 所以在单独的领域中依然需要专门的数据来深入探讨。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;程序的构造和解释&lt;br /&gt;
+神书， 现在市面上的大部分书籍教的都是框架，如何在xxx框架上写代码。很少有涉猎教如何写代码，更少有教如何有思考的写代码。这本书大概会教会你这些。虽然不仅仅如此而已。 自上而下 将问题拆分，层层求解，亦或 自下而上 搭积木一般层级而上 大概是 最舒适的构建代码方式了， 然而 现实是复杂的，依然需要我们 从两种方法出发的求证来完成构建。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;UNIX编程艺术&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;有关计算机的书已经汗牛充栋，然而，却很少涉及对 复杂度的讨论。作者不仅简单的介绍了UNIX 的编程哲学，还继续深入的讨论了 这些哲学在现代编程中遇到的问题，通过对比vim emacs 的讨论， 从而深层次的 引导出了 『复杂度』的本质概念。作者 将UNiX 编程哲学的简单 进行了更广泛的推广， 认为 任何规模的程序都应该是简单的但是不能简单的过了头，因为 项目解决问题 决定了项目的复杂度， 一个复杂的问题，无论是何种语言 也注定是无法简单的。只能是足够简单。&lt;/p&gt;
+
+&lt;p&gt;作者还详细的对复杂度进行了归类划分，以及对应的解决办法。作者对复杂度的讨论，笔者第一次听到过，简直醍醐灌顶，原来我大概一直在错误的尽力的保持代码的整洁和简单，然而，有一些依然是我解决不了的，因为代码解决的问题本身就决定了代码一定是复杂的&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Linux/UNIX系统编程手册&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;笔者是一个应用的开发工程师，所以难免在 进行多年枯燥的 应用级别编程之后，对底层有些好奇，因为 反复的写下来，都有一个Linux系统在其进行支撑，屏蔽了一些诸如文件、进程、调度、通讯上的细节。进而了解linux系统大概是不可避免的。本书名叫编程手册，所以其内容难免枯燥，反锁。然而 魔鬼隐藏在细节中，而Linux值得这些细节。&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <title>shuidichou</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2019/05/11/shuidichou/"/>
+    <id>http://geniousbar.github.io/2019/05/11/shuidichou/</id>
+    <published>2019-05-11T08:00:00+08:00</published>
+    <updated>2019-05-11T13:46:59+08:00</updated>
+    <summary type="html">&lt;h2 id="charles-munger---查理芒格"&gt;Charles munger —- 查理芒格&lt;/h2&gt;
+
+&lt;h2 id="公用品悲剧的水滴筹与搞笑的德云社"&gt;公用品悲剧的水滴筹与搞笑的德云社&lt;/h2&gt;
+
+&lt;p&gt;是一種涉及個人利益與公共利益對資源分配有所衝突的社會陷阱&lt;/p&gt;
+
+&lt;p&gt;是一类涉及个人利益与公众利益 对资源分配有所冲突的社会陷阱。那由最大人数所共享的事物，卻只得到最少的照顾。&lt;/p&gt;
+
+&lt;p&gt;公共草地上，有一群牧羊人，每一个牧羊人都想要多获利一些，所以某个牧羊人就带了大量的羊來放牧，虽然他知道过度放牧，草地可能会承受不住。但他依然获利了，而后所有的牧羊人都跟進，所以草地牧草耗竭，悲剧因而发生了。&lt;/p&gt;
+
+&lt;p&gt;德云社成员 众筹捐款 医疗费 ...&lt;/p&gt;</summary>
+    <content type="html">&lt;h2 id="charles-munger---查理芒格"&gt;Charles munger —- 查理芒格&lt;/h2&gt;
+
+&lt;h2 id="公用品悲剧的水滴筹与搞笑的德云社"&gt;公用品悲剧的水滴筹与搞笑的德云社&lt;/h2&gt;
+
+&lt;p&gt;是一種涉及個人利益與公共利益對資源分配有所衝突的社會陷阱&lt;/p&gt;
+
+&lt;p&gt;是一类涉及个人利益与公众利益 对资源分配有所冲突的社会陷阱。那由最大人数所共享的事物，卻只得到最少的照顾。&lt;/p&gt;
+
+&lt;p&gt;公共草地上，有一群牧羊人，每一个牧羊人都想要多获利一些，所以某个牧羊人就带了大量的羊來放牧，虽然他知道过度放牧，草地可能会承受不住。但他依然获利了，而后所有的牧羊人都跟進，所以草地牧草耗竭，悲剧因而发生了。&lt;/p&gt;
+
+&lt;p&gt;德云社成员 众筹捐款 医疗费 事件。引起的社会反响 类同于 很早 之前 留下几套房子为自己养老， 为大儿子将来 而 在水滴筹 为癌症女儿捐款一样。本身是 公用品 社会爱心 被悲剧的滥用问题，如同 以在地铁上 装残疾可怜 乞讨卖艺 当工作的人一样。是 典型的 公用品悲剧案例。&lt;/p&gt;
+
+&lt;p&gt;为什么会 公用品悲剧的发生， 简单的推导是有如下几个原因： 1. 错误的奖励机制， 滥用社会资源并不会受到 其对应的惩罚 而制止行为的在此发生，而 行为导致对应的对个人利益的收益。而导致 行为的纵容与。 为什么 后续依然会发生这样的行为呢？因为 并没有政策 来限制这样的行为， 欺骗 同情获得的收益 与 0 惩罚对应起来 简直是美味。2. 为什么我们会捐钱？ 一大部分大概是因为  同情心理， 而另外一个重要的原因则是： 康德式公平代开的心理误判， 我们期待 当我们遭遇同样的情况时，会获得其他的接济。正如 排队一样，我们一样期待着。&lt;/p&gt;
+
+&lt;p&gt;如何避免  公用品悲剧呢？&lt;/p&gt;
+
+&lt;p&gt;现在有的对策是： 立法、惩戒、教育&lt;br /&gt;
+如果现有的 处置污染企业的 政策一般，通过行政手段 来 规范、处罚惩戒  排污企业，提高起 污染成本。对企业污染形成一个 正确的引导其不污染的惩罚、奖励机制。&lt;/p&gt;
+
+&lt;p&gt;教育： 因为是人类心理，所以其&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>charles-munger</title>
     <link rel="alternate" href="http://geniousbar.github.io/2019/03/24/charles-munger/"/>
@@ -740,1767 +1242,6 @@
 &lt;/ol&gt;
 
 &lt;h3 id="lapalooza倾向-数种心理倾向共同作用造成极端后果的倾向"&gt;lapalooza倾向— 数种心理倾向共同作用造成极端后果的倾向&lt;/h3&gt;
-</content>
-  </entry>
-  <entry>
-    <title>linux-progress-group</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2019/02/23/linux-progress-group/"/>
-    <id>http://geniousbar.github.io/2019/02/23/linux-progress-group/</id>
-    <published>2019-02-23T08:00:00+08:00</published>
-    <updated>2019-03-11T12:10:01+08:00</updated>
-    <summary type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
-
-&lt;h3 id="进城组会话和作业控制"&gt;进城组、会话和作业控制&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;进程组和会话在进程之间形成了一种 两层的层次关系。 进程组： 是 相关进程的集合， 会话： 是 相关进程组的集合。其目的是为了支持shell的作业控制，而定义的抽象概念，使用户通过shell能够交互的在前台或后台运行命令&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;进程组： 一个或多个共享同一进程组标识PGID的进程组成。PGID的数值为 进程组首进程的进程ID，该进程为进程组的第一个进程 或创建该进程组的进程，子进程会继承父进程 的PGID...&lt;/li&gt;
-&lt;/ol&gt;</summary>
-    <content type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
-
-&lt;h3 id="进城组会话和作业控制"&gt;进城组、会话和作业控制&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;进程组和会话在进程之间形成了一种 两层的层次关系。 进程组： 是 相关进程的集合， 会话： 是 相关进程组的集合。其目的是为了支持shell的作业控制，而定义的抽象概念，使用户通过shell能够交互的在前台或后台运行命令&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;进程组： 一个或多个共享同一进程组标识PGID的进程组成。PGID的数值为 进程组首进程的进程ID，该进程为进程组的第一个进程 或创建该进程组的进程，子进程会继承父进程 的PGID。进程组的结束时间为，最后一个进程成员退出组的时刻 （进程可能终止或加入另一个进程组而退出进程组）&lt;/li&gt;
-  &lt;li&gt;会话： 一组进程组的集合，由 SID 标志 （同进程ID 一样为pid_t类型）其数值为 会话首进程 的进程ID，新进程会继承 父进程的 SID。 一个会话中的所有进程共享单个控制终端，控制终端在回话首进程 首次打开一个终端时候建立，该进程成为 该终端的控制进程，在连接断开时，内核会发送信号给该进程。一个终端最多成为一个会话的控制终端。在一个会话中只有一个 进程组会成为 前台进程组，其他的成为 后台进程组，只有 前台进程组能够从控制终端中读取输入，在控制终端中输入一个信号（即 按键会产生信号， liru c-\ c-z c-c）时，该信号会被发送到 前台 进程组的所有成员。&lt;/li&gt;
-  &lt;li&gt;通过linux特有的/proc/PID/stat 文件，能够确定任意的进程组ID和会话ID， 此外还能确定进程的控制终端的设备ID 和对应的控制进程ID&lt;/li&gt;
-  &lt;li&gt;一个具体的例子为： 登录shell是 会话首进程和终端的控制进程， 从shell中发出的每个命令 都会导致一个或多个进程的创建（通过管道会创建多个进程）并将所有进程放到共一个进程组中，以&amp;amp;结束的命令 会在后台进程组中运行。所有在shell中创建的子进程都会成为该会话的一部分。
-&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt; &lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$$&lt;/span&gt;
- &lt;span class="nv"&gt;$ &lt;/span&gt;find / 2&amp;gt; /dev/null | wc &lt;span class="nt"&gt;-l&lt;/span&gt; &amp;amp;
- | sort &amp;lt; longlist | uniq &lt;span class="nt"&gt;-c&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;&lt;img src="../../../../images/process-group.png" alt="process-group" /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id="进程组"&gt;进程组&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;每个进程都有一个 进程组ID， 表示该进程的所属进程组。子进程会继承 父进程的 进程组ID。&lt;/li&gt;
-  &lt;li&gt;pid getpgrp(void): 获取进程的进程组ID。进程组首进程 的进程组ID同进程ID相同&lt;/li&gt;
-  &lt;li&gt;int setpgid(pid_t pid, pid_t pgid): 将 进程ID为pid的进程 的进程组修改为pgid， pid 0 i表示设定进程自身， pgid为0 表示 设定 pid进程的进程组ID为pid。 使用该调用可以创建新的进程组，或者移动 进程 到另一个进程组, 其中存在如下限制：
-    &lt;ul&gt;
-      &lt;li&gt;pid 参数 仅可以指定为 调用进程或 其子进程， 违反会导致 ESRCH 错误&lt;/li&gt;
-      &lt;li&gt;在进程组之间移动，  调用进程、pid进程， 以及移动目标组必须同属于一个会话，违法导致 EPERM 错误&lt;/li&gt;
-      &lt;li&gt;一个进程在其子进程已经执行exec后，就无法修改该子进程的进程组ID了，违法导致EACCES错误, 这个规则导致： 一个 任务， 中的所有进程 必须放置在同一个进程组中， 这一步允许shell通过killpg 来同事想进程组中的所有成员进程发送作业控制信号，2）每个子进程在exec执行程序之前，需要分配到进程组中，因为程序本身是不会修改进程组ID的。 这其中引伸出来的问题， 在于 fork 之后， 并确定 子进程，父进程的执行顺序， 因此需要在  父进程和子进程中都需要调用setpgid()来修改子进程的进程组ID， 父进程需要忽略EACCES错误&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id="会话"&gt;会话&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;会话是一组进程组的集合， 一个进程的会话成员关系是由其会话ID 来确定的恩，新进程会进程其父进程的会话ID。&lt;/li&gt;
-  &lt;li&gt;getsid(pid_t pid): pid 为0，那么返回调用进程的会话ID&lt;/li&gt;
-  &lt;li&gt;setsid(void): 调用进程不是 进程组 首进程，那么调用会创建一个新会话。 （为什么不能 是  进程组首进程呢？）： 创建新会话的步骤如下：
-    &lt;ol&gt;
-      &lt;li&gt;调用几次会成为新会话的首进程 和该会话中的新进程组的首进程， 会话ID 为 进程ID， 包会新的进程组ID&lt;/li&gt;
-      &lt;li&gt;调用进程没有控制终端，所有之前的控制终端的链接都会断开
-        &lt;ul&gt;
-          &lt;li&gt;如果是进程组首进程来 调用setsid, 会返回 EPERM错误，避免的方式很简单， 执行fork， 由 子进程来调用即可。 约束 调用者的身份是重要的， 因为：如果进程组 首进程调用就能够将自身迁移到一另一个会话中，而该进程组中的其他成员仍然位于原来的会话中（这里并不会创建新的进程组，因为根据定义， 进程组首进程的 进程组ID 等于 其 进程ID，如果创建的话， 那么存在进程组ID相同的两个进程组） 这回破坏进程组和会话的层级关系， 音带要求一个进程组的所有成员必须属于同一个会话&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id="控制终端-和-控制进程"&gt;控制终端 和 控制进程&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;一个会话中可以拥有一个控制终端， 会话在创建的时候是没有控制终端的， 会话首进程 首次打开一个 没有成为其他会话的控制终端的终端时 会建立 控制终端， 会话首进程 打开 控制终端之后，会成为 该终端的控制进程， 在中断断开之后，内核会发送SIGHUP信号到 控制进程，进程 可以通过打开特殊文件 /dev/tty 来获取 终端的文件描述符 没有控制终端则返回 ENXIO 错误（可以在 进程 的标准输入输出 被重定向之后 确保自己确实在于控制终端进程通信是非常有用的 ）控制终端 会被 由 fork 创建的子进程 进程并且在exec中保持&lt;/li&gt;
-  &lt;li&gt;终端  以及 控制终端 的概念到底是怎样的？ 如何对应到现实中的 键盘输入 现实生活中。&lt;br /&gt;
-删除 进程与 控制终端之间的关联关系： ioctl(fd, TIOCNOTTY): 能够删除进程与文件描述符fd指定的 控制终端之间的关联关系， 在调用函数之后，再次打开 /dev/tty 文件的话就会失败， 调用者为 终端的控制进程，在控制基础终止时， （？为什么是终止时候，而不是调用函数之后） 会发生如下事情； 1）会话中的所有进程将会失去 与控制终端之间的关联关系， 2） 控制终端失去了与该会话 之间的关联关系， 另一个会话首进程能够获取该终端已成为控制基础， 3） 内核会想前台进程组的所有成员 发送一个SIGHUP信号，来通知他们控制终端的丢失&lt;/li&gt;
-  &lt;li&gt;ctermid(char * ttyname): 返回表示控制终端的路径名， 通常返回结果为 /dev/ttyname&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id="前台后台进程组"&gt;前台、后台进程组：&lt;/h4&gt;
-&lt;p&gt;一个会话中，在同一时刻只有一个进程能够成为前台进程，会话中的其他所有进程都是后台进程组，前台进程组 是唯一能够自由的读取和写入控制终端的进程组， 在控制终端中输入 产生信号的字符时，终端驱动器 会相应的 发送信号给前台进程组的成员&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;tcgetpgrp(int fd): 函数返回文件描述符fd 所指定的中断的前台进程组的进程组ID， fd为 控制终端&lt;/li&gt;
-  &lt;li&gt;tcsetpgrp(int fd, pid_t pgid): 修改一个终端的前台进程组&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id="sighup信号"&gt;SIGHUP信号：&lt;/h4&gt;
-&lt;p&gt;一个控制基础时区与终端链接之后，内核会发送一个SIGHUP信号，还会发送一个SIGCONT 信号，以确保 当该进程之前被一个喜好停止时，重新开始该进程。 出现该场景的情况有：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;中断驱动器检测到连接断开后， 表明 调制解调器（网络ssh？）或终端行上信号的丢失&lt;/li&gt;
-  &lt;li&gt;当 工作站上的终端窗口被关闭时，发生这种清库激昂是因为最近打开的与终端窗口哦关联的伪终端主侧 的文件描述符被关闭了 ？？？？？&lt;br /&gt;
-控制基础接收到SIGHUP信号，会引起炼石反应， 从而导致将SIGHUP信号发送给其他的进程， 这个过程以如下两种方式发生；&lt;/li&gt;
-  &lt;li&gt;控制基础通常是一个shell， shell建立了一个 SIGHUP 信号的处理器， 这样在进程终止之前，能够将SIGHUP 信号 发送给由他 创建的各个任务。默认情况下， 这个信号会终止那些任务， 但是如果他们呢不活了这个信号，就能够知道 shell进程已经终止了&lt;/li&gt;
-  &lt;li&gt;控制基础终止时，内核会解除会话中的所有进程与该控制终端之间的关联关系以及控制终端与会话的关联关系，并向前台进程组 发送SIGHUP信号来通知他们控制终端的丢失&lt;/li&gt;
-&lt;/ol&gt;
-</content>
-  </entry>
-  <entry>
-    <title>fifo-pipe</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2019/02/05/fifo-pipe/"/>
-    <id>http://geniousbar.github.io/2019/02/05/fifo-pipe/</id>
-    <published>2019-02-05T08:00:00+08:00</published>
-    <updated>2019-02-23T17:56:30+08:00</updated>
-    <summary type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
-
-&lt;h3 id="管道-fifo"&gt;管道, FIFO&lt;/h3&gt;
-&lt;p&gt;管道是UNIX系统上最古老的一种IPC方法，可以用来在相关进程间传递数据。FIFO 则是 管道 概念的一个变体, 区别在于 FIFO可以用于 任意进程间的通信&lt;/p&gt;
-
-&lt;h4 id="管道"&gt;管道&lt;/h4&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;shell命令中使用管道最为常见。比如 ls | wc -l, 示意图如下： 为执行该命令， shell创建了两个进程来分别执行ls、wc&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;管道的几个特征：
-    &lt;ol&gt;
-      &lt;li&gt;一个管道是一个字节流 （不存在消息...&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;/ol&gt;</summary>
-    <content type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
-
-&lt;h3 id="管道-fifo"&gt;管道, FIFO&lt;/h3&gt;
-&lt;p&gt;管道是UNIX系统上最古老的一种IPC方法，可以用来在相关进程间传递数据。FIFO 则是 管道 概念的一个变体, 区别在于 FIFO可以用于 任意进程间的通信&lt;/p&gt;
-
-&lt;h4 id="管道"&gt;管道&lt;/h4&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;shell命令中使用管道最为常见。比如 ls | wc -l, 示意图如下： 为执行该命令， shell创建了两个进程来分别执行ls、wc&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;管道的几个特征：
-    &lt;ol&gt;
-      &lt;li&gt;一个管道是一个字节流 （不存在消息边界的概念，读取进程可以读取任意大小的数据块，数据是顺序的、但是管道中没有离散消息的概念）&lt;/li&gt;
-      &lt;li&gt;从管道中读取数据： 试图从一个当前为空的 管道中 读取数据将会被阻塞 直到至少 有一个字节被写入到管道中为止，写入端被关闭后，在读取完 所有数据之后 会读取到 文件结束&lt;/li&gt;
-      &lt;li&gt;单向的： 数据传递的方向是单向的，一端为读写 一端为写入 （一些UNIX 的实现上 管道 是双向的，但是应该避免依赖这种语义，使用UNIX domain socket 来代替）&lt;/li&gt;
-      &lt;li&gt;可以保证 写入不超过PIPE_BUF 字节的操作是原子的： 单个进程写入管道 无需关心PIPE_BUF的取值，多个进程写入同一个管道在一时刻写入的数据量超过PIPE_BUF字节大小时，那么就可以保证写入的数据不会出现 互相混合的情况。（多个写入进程，那么大的数据块写入可能会被拆分成 任意大小的数据段，导致会出现与其他进程 写入的数据交叉的现象， 因为并没有 原子性的写入）&lt;/li&gt;
-      &lt;li&gt;管道的容量是有限的： 管道是内核内存中维护的一个缓冲器，这个缓冲器的存储能力是有限的。管道被填满之后，写入的操作会被阻塞知道读取操作从缓冲器中移除一些数据为止。（一个应用程序无需知道 管道的实际存储能力，使用较大的缓冲器会提升效率，每当缓冲器被充满时，内核需要执行调度来消耗管道中的数据，较大的缓冲器意味着更少的调度、进程上下文切换的需要）&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;创建使用管道：int pipe(int fields[2]), 成功会在数组中 filedes 中返回两个打开的文件描述符，0 为读端， 1 为写端，与所有 文件描述符一样，可以使用read、write 系统调用在管道上执行IO，也可以使用stdio 函数等（但是需要首先fdopen获取一个fileds文件描述符对应的文件流）常见的使用场景如下：&lt;/li&gt;
-  &lt;li&gt;父进程同子进程从同一个管道 中读取和写入数据 的这种做法并不常见，因为会产生竞争 （�当然 阻塞IO 的系统调用是一个原子操作，不会产生数据错乱，但是竞争条件是在所难免的，非阻塞IO中 则不容易判断 IO数据到底归属于那个进程）一个更简单的方法 则是： 创建两个管道，在两个进程间发送数据的两个方向上各使用一个，但是这种继续需要避免死锁问题（阻塞IO需要，因为两个端同时等待 IO 读取，而无法写入）&lt;/li&gt;
-  &lt;li&gt;允许相关进程间的通信：管道可以在任意两个相关进程之间 通信，在 fork创建新的子进程 之前， 父进程创建管道 在 子进程之间使用。 shell所做的工作就是 父进程创建管道， 然后创建子进程，并在子进程中使用。（这里的相关进程存在一个特殊情况，即允许UNIX doamin 传递 文件描述符给其他的进程）&lt;/li&gt;
-  &lt;li&gt;关闭未使用的管道文件描述符： 对于正确使用管道是非常重要的一环。读取进程需要关闭写入描述符，这样当写入进程完成输出并关闭写入描述符时候，�读进程才能够看到读取到文件结尾。（也就是说在 文件结尾 的情况是 文件描述符完全被关闭？验证的逻辑的话： 需要3个进程，两个写入，一个读取， 读取一直读， 写入分别 间隔时间关闭， 然后观察情况，文件并不适合这种情况， 文件没有读写端的概念）写入进程关闭其持有的读取描述符的原因在于： 进程对一个没有 读取描述符 的管道 写入时候，内核会发送SIGPIPE信号，返回EPIPE错误（已损坏的管道），而这些是对进程有用的，为了保证 写入进程 能够收到这些消息、避免错误，所以需要主动关闭。其他的原因在于，只有写入进程持有读取描述符， 导致 没有接收端， 但是依然可以写入，最后管道缓冲区被填满，导致永远阻塞。&lt;/li&gt;
-  &lt;li&gt;使用管道连接 过滤器： 管道被创建后， 为 读写端  分配的文件描述符是可用的描述符中数值最小的两个， 过滤器 约束规则是 从stdin 读取，写入到 stdout。所以shell需要保证 执行过滤器的 进程 标准输入、输出为 管道的读写端， 这里需要用到dup、dup2 系统调用&lt;/li&gt;
-  &lt;li&gt;popen()/ pclose(): 用于 执行一个shell命令并读取其输出或发送一些输入， 其大概是示意图如下： images&lt;br /&gt;
-  &lt;img src="../../../../images/fifo-240871a7.png" alt="fifo" /&gt;&lt;/li&gt;
-  &lt;li&gt;stdio 缓冲问题： popen调用返回的文件流指针 没有引用一个终端。 stdio库会对这种文件流应用块缓冲。意味着mode 为w时候 popen的调用，只有当stdio缓冲器被充满或者使用 pclose 关闭管道 之后才会将输出发送到另一端。如果要求子进程能够 从管道中立即收到数据，那么需要手动fflush,或者setbuf(fp, NULL) 禁用stdio缓冲来做到，pipe的创建的管道 同样。popen进程使用r调用时候，那么就需要子进程的编码中调用fflush， setbuf 来保证父进程 及时收到消息。（如果无法修改源代码， 可以使用伪终端来替换管道， 对进程来说是一个终端，stdio库 会逐行输出缓冲器的数据）
-    &lt;h4 id="fifo"&gt;FIFO&lt;/h4&gt;
-  &lt;/li&gt;
-  &lt;li&gt;与管道类似， 最大的差别在于， FIFO在文件系统中存在一个名称（也被称为 命名管道 ）， 并且与打开一个普通文件的方式是一样的，这样就可以用于非相关进程之间的通信，&lt;/li&gt;
-  &lt;li&gt;FIFO也有一个写入端和读取端， 并且从管道中 读取数据的顺序与写入的顺序是一样的，先入先出，所以被称为FIFO&lt;/li&gt;
-  &lt;li&gt;mkfifo [-m mode] pathname (shell命令), int mkfifo(const char * pathnamne, mode_t mode); （系统调用） 其中mode为权限（同chmod） ls -\l FIFO文件的类型为p， ls -F 在路径名后面附加一个 | 符号&lt;/li&gt;
-  &lt;li&gt;FIFO 被创建之后， 任何进程都可以打开它，只要符合权限 限制即可&lt;/li&gt;
-  &lt;li&gt;推荐FIFO的使用方法： 一个写端，一个读端， 打开一个FIFO会同步读取进程和写入进程，即： 打开FIFO 以读取方式 会阻塞到 一个以写入方式 的打开 的产生， 以写入方式的打开 会阻塞到 一个 以读取方式的产生 （O_RDWR mode 打开会绕开 FIFO 的阻塞行为， 因为其不具有可移植性，开发人员应该避免使用， 而是应该是用O_NONBLOCK的方式进行）&lt;/li&gt;
-  &lt;li&gt;使用 FIFO, tee 创建双重管道: shell管道线是线性的，每个进程读取前一个进程的产生的输出数据，然后产生输出数据，成为下一个进程的输入数据。使用FIFO就能创建新的管道线，需要使用到tee， tee 将输入数据复制成两份 分别输出， 将tee的一分输出 输入到FIFO中就可以产生两条管道线。 下面为大概的演示的命令行：具体的 tee的 &lt;a href="https://linux.101hacks.com/unix/tee-command-examples/"&gt;参数参考&lt;/a&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;  mkfifo myfifo
-  wc &lt;span class="nt"&gt;-l&lt;/span&gt; &amp;lt; myfifo &amp;amp;
-  &lt;span class="nb"&gt;ls&lt;/span&gt; &lt;span class="nt"&gt;-l&lt;/span&gt; | tee myfifo | sort &lt;span class="nt"&gt;-n&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;&lt;img src="../../../../images/fifo_tee-12e712cd.png" alt="fifo_tee" /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-</content>
-  </entry>
-  <entry>
-    <title>linux-interface-socket</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2019/01/14/linux-interface-socket/"/>
-    <id>http://geniousbar.github.io/2019/01/14/linux-interface-socket/</id>
-    <published>2019-01-14T08:00:00+08:00</published>
-    <updated>2019-02-23T18:06:30+08:00</updated>
-    <summary type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
-&lt;!-- 1. 57 介绍UNIX domain socket， 允许同一主机上的系统上的应用程序之间通讯。 58 介绍TCP/IP之间联网协议的关键特性。， 59 描述internet domain socket, 允许位于不同主机上的应用程序通过一个TCP/IP王璐进行通讯， 60 讨论socket的服务设计， 61: 介绍一些高级主题， 包括socket IO的， TCP协议的细节信息，已经socket选项来获取修改socket的各种特性。 --&gt;
-
-&lt;h3 id="socket"&gt;Socket&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;socket是一种IPC方法， 它允许位于同意主机或者网络连接的不同主机 上的应用程序之间交换数据(第一个被广泛接收的socket API 实现于 1983年，现在这组API 已经被移植到了大部分的计算机系统上)&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;socket(domain, type, protocol): 系统调用
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;domain: 1）识别 socket 地址的格式  2） 确定范围: 在同一...&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;</summary>
-    <content type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
-&lt;!-- 1. 57 介绍UNIX domain socket， 允许同一主机上的系统上的应用程序之间通讯。 58 介绍TCP/IP之间联网协议的关键特性。， 59 描述internet domain socket, 允许位于不同主机上的应用程序通过一个TCP/IP王璐进行通讯， 60 讨论socket的服务设计， 61: 介绍一些高级主题， 包括socket IO的， TCP协议的细节信息，已经socket选项来获取修改socket的各种特性。 --&gt;
-
-&lt;h3 id="socket"&gt;Socket&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;socket是一种IPC方法， 它允许位于同意主机或者网络连接的不同主机 上的应用程序之间交换数据(第一个被广泛接收的socket API 实现于 1983年，现在这组API 已经被移植到了大部分的计算机系统上)&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;socket(domain, type, protocol): 系统调用
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;domain: 1）识别 socket 地址的格式  2） 确定范围: 在同一个主机上的不同应用程序还是 在一个网络上的不同主机&lt;/p&gt;
-
-        &lt;table&gt;
-          &lt;thead&gt;
-            &lt;tr&gt;
-              &lt;th style="text-align: left"&gt;DOMAIN&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;执行的通讯&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;应用程序间的通讯&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;地址格式&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;地址结构&lt;/th&gt;
-            &lt;/tr&gt;
-          &lt;/thead&gt;
-          &lt;tbody&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;AF_UNIX&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;内核中&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;同一主机&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;路径名&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;sockaddr_un&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;AF_INET&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;通过IPv4&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;IPv4 连接起来的网络&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;32为IPoe 地址+ 16位端口号&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;sockaddr_in&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;AF_INET6&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;通过IPv6&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;IPv6 连接起来的网络&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;128为IP地址+ 16位端口号&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;sockaddr_in6&lt;/td&gt;
-            &lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;type: sock_stream, sock_dgram&lt;/p&gt;
-
-        &lt;table&gt;
-          &lt;thead&gt;
-            &lt;tr&gt;
-              &lt;th style="text-align: left"&gt;属性&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;流(SOCK_STREAM)&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;数据包 (SOCK_DGRAM)&lt;/th&gt;
-            &lt;/tr&gt;
-          &lt;/thead&gt;
-          &lt;tbody&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;可靠的传输?&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;是&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;否&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;边界消息保留?&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;否&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;是&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;面向连接？&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;是&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;否&lt;/td&gt;
-            &lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
-      &lt;/li&gt;
-      &lt;li&gt;流: 提供了一个可靠的双向的字节流的通讯通道。 (因为需要一对 相互连接的socket，因为被称为面向连接的socket）其中:
-        &lt;ol&gt;
-          &lt;li&gt;可靠的: 表示可以保证发送者传输的数据会完整的传递到接收者应用程序 （假设接收者发送者应用程序不会崩溃）&lt;/li&gt;
-          &lt;li&gt;双向的: 数据可以在socket 之间的任意方向上传输&lt;/li&gt;
-          &lt;li&gt;字节流: 表示与管道一样不存在 消息边界的概念&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;数据报 socket: 允许数据以 数据报的消息形式进行交换， 在数据报socket中， 消息边界得到了保留，但是数据传输是不可靠的，消息的到达顺序 可能是无序的、重复的、或者根本无法到达的。数据包socket是一个更一般的无连接socket概念的一个示例， 与流socket连接，一个数据报 socket 在使用时候，无需与另一个socket 连接，现在internet domain 中， 数据包socket使用了UDP（用户数据报协议）, 而流socket 则使用了TCP（传输控制协议）（是否意味着更多的协议的存在？）&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;socket 相关的系统调用:
-    &lt;ul&gt;
-      &lt;li&gt;socket(int domain, int type, int protocol): 其中domain， type 在上面有所描述。protocol 总是为0， 在一些socket类型中会使用非0数值，socket成功后会返回一个socket的文件描述符&lt;/li&gt;
-      &lt;li&gt;bind(int sockfd, struct sockaddr * addr, socklen_t addrlen): sockfd 为 socket调用返回的文件描述符，addr 为socket绑定到的地址结构指针，结构详细取决于 socket domain, addrlen 为结构地址大小。一般来讲服务器会将socket 绑定到一个 约定的地址上。&lt;/li&gt;
-      &lt;li&gt;listen(int sockfd, int backlog): 系统调用将会sockfd设定为 『被动』， 接收主动连接的请求。 backlog 用于 设定 服务器端 保持等待连接的数量。（在backlog之内的连接会立即成功，等待accept， 更多的连接会阻塞一直到有等待中的连接被accept并冲等待连接中删除掉）（backlog的限制在sys/socket.h 中的 somaxconn 常量设定， linux中 这个常量设定为128,从内核 2.4.25起 linux允许在运行时通过 特有的/proc/sys/net/core/somaxconn 文件来调整这个限制）&lt;/li&gt;
-      &lt;li&gt;accept(int sockfd, struct sockaddr * addr, socklen_t * addrlen): 系统调用在 sockfd 的文件描述符 引用的监听流socket上接收一个接入连接。如果在调用accpet时不存在 未决 的连接，那么调用就会阻塞直到 有连接请求为止。参数 addr, addrlen, 会返回连接socket 的地址信息。理解accept 的关键点在于:
-        &lt;ul&gt;
-          &lt;li&gt;accept 会创建一个新的scoket， 这个socket与执行connect的客户端scoket进行连接。&lt;/li&gt;
-          &lt;li&gt;accpet调用返回的结果是 已连接的 socket文件描述符，监听 socketfd 会保持打开状态。并可以接收后续连接。&lt;/li&gt;
-          &lt;li&gt;典型的 服务器应用 会创建一个 监听socketfd， 将其绑定到一个约定的地址上。然后 accept 该socketfd 上 的连接 来处理所有的客户端请求。&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;connect(int sockfd, struct sockaddr * addr, scoklen_t addrlen): 系统调用将sockfd 主动连接到 地址addr 指定的监听socket上。如果连接失败，标准的可以移植的方法为: 关闭socket，创建一个新的socket，并重新连接&lt;br /&gt;
-&lt;img src="../../../../images/pending_socket-84aa5943.png" alt="udp" /&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;流 socket 提供了一个在两个端点之间 一个双向通信的通道，流socket IO 上的操作与 管道 IO的操作类似
-    &lt;ul&gt;
-      &lt;li&gt;可以使用 read， write，因为socket是双向的，所以两端都可以使用&lt;/li&gt;
-      &lt;li&gt;socket可以使用close来关闭，之后对应的另一端的socket 在读取数据时候会收到文件结束的标志，如果继续进行写入 会收到一个SIGPIPE的信号，并且系统调用会返回一个EPIPE的错误。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;数据报 socket(SOCK_DGRAM):
-    &lt;ol&gt;
-      &lt;li&gt;socket 系统调用创建一个邮箱，&lt;/li&gt;
-      &lt;li&gt;bind 到一个约定的地址上， 来允许 一个应用程序发送数据报 到这里，一般来讲， 一个服务器会将其socket 绑定到一个地址上，客户端会向该地址发送一个数据报 来发起通讯 （在一个domain 特别是UNIX domain 中，客服端想接收到服务器发送来的数据报的话，也需要bind到一个地址上）&lt;/li&gt;
-      &lt;li&gt;sendto(int sockfd, void * buffer, size_t length, int flags, sockaddr * dest_addr, socklen_t addrlen): 用来发送一个数据报, flags 用来控制一些socket的特性，dest_addr置顶了目标接收者的socket地址,&lt;/li&gt;
-      &lt;li&gt;recvfrom(int sockfd, void * buffer, size_t length, int flags, sockaddr * src_addr, socklen_t addrlen): 用来接收数据报，在没有数据报时候会阻塞应用。由于recvfrom允许获取发送者的地址，因为可以发送一个响应（这在 发送者的socket没有绑定到一个地址上是有用的，正如bind中的描述所说，unix domain中也需要 客服端 来bind一个地址，才能接收到服务器的响应）其中 src_addr 用来获取发送数据报的远程socket地址，如果并不关心发送者的地址，可以传递NULL，length 数值 用来限制recvfrom获取的数据大小，如果超过length，则会进行截断。（使用recvmsg 则可以找出被截断的数据报）&lt;/li&gt;
-      &lt;li&gt;数据报通讯无法保证 数据报 接收的顺序，甚至无法保证数据是到达的 或者是 多次到达&lt;/li&gt;
-      &lt;li&gt;connect: 尽管数据报socket是无连接的，但是依然可以使用connect调用
-        &lt;ul&gt;
-          &lt;li&gt;发送者 socket connect之后，数据报的发送可以使用write来完成，而无需使用sendto，并每次传递addr地址。&lt;/li&gt;
-          &lt;li&gt;接收者 socket connect之后，只能接收由对等的socket 发送的数据报&lt;/li&gt;
-          &lt;li&gt;数据报socket connect的明显优势在于 可以使用更简单的IO 系统调用，在一些TCP/IP实践中，将一个数据报的socket连接到一个对等socket（connect）能够带来性能上的提升&lt;br /&gt;
-   &lt;img src="../../../../images/udp_socket-cce037cc.png" alt="udp" /&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id="socket-unix-domain"&gt;Socket: Unix domain&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Unix domain socket address:&lt;br /&gt;
- unix domain socket的地址以路径名来表示，其中sun_path 的大小，早期为 108, 104，现在的一般为 92，可移植的需要小一些，应该使用strncpy 以避免缓冲区溢出问题，使用 路径名 初始化 sun_path 来初始化 socket address&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;   &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr_un&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-     &lt;span class="n"&gt;sa_family_t&lt;/span&gt; &lt;span class="n"&gt;sun_family&lt;/span&gt;
-     &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;sun_path&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;108&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-   &lt;span class="p"&gt;}&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;ul&gt;
-      &lt;li&gt;当绑定 UNIX domain socket 时， bind会在 文件系统中创建一个条目， 文件的所有权会根据文件的创建规则来确定，并标记为一个socket， ls -l 第一列 为s， stat()返回的结构中st_mode字段中的文件类型部分为 S_IFSOCK，&lt;/li&gt;
-      &lt;li&gt;无法将一个socket绑定到 现有的路径名上。&lt;/li&gt;
-      &lt;li&gt;通常将一个socket绑定到绝对路径上&lt;/li&gt;
-      &lt;li&gt;一个socket只能绑定到一个路径名上，相应的一个路径名只能被一个socket绑定&lt;/li&gt;
-      &lt;li&gt;无法使用open打开一个socket&lt;/li&gt;
-      &lt;li&gt;不在需要socket时，使用unlink 来删除其路径&lt;/li&gt;
-      &lt;li&gt;示例中通常将socket绑定到/tmp目录下，这并不是一个好的设计，在现实中不要这么做，因为/tmp 此类公共可写的目录中创建文件会导致安全问题，所以应该将socket绑定到一个有安全措施的绝对路径上&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;socketpair(int domain, int type, int protocol, int sockfd[2]): 该系统调用 用于创建一对 互相连接的socket，
-    &lt;ul&gt;
-      &lt;li&gt;只能用在UNIX domain中(也就是说 domain 必须指定为 AF_UNIX) type 可以为sock_dgram, sock_stream, protocol必须为0，&lt;/li&gt;
-      &lt;li&gt;sockfd 数组返回了 引用这两个相互连接的socket文件描述符。type 为sock_stream 相当于创建了一个双向管道，一般来讲 socket对的使用方式与管道的使用方式类似，在调用完socketpair()之后，可以fork出一个子进程，然后子父进程可以通过这一对socket来进行IPC了。&lt;/li&gt;
-      &lt;li&gt;与 手动创建一对相互连接的socket的做法的优势: socketpair 创建的socket不会绑定到任意的地址上（即其他方式的socket创建都需要bind 到一个地址上）这样就能避免安全问题，因为这一对socket对其他进程是不可见的&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;linux 抽象socket 命名空间&lt;br /&gt;
-  &lt;strong&gt;所谓的抽象命名空间 是linux特有的特性。他允许将一个UNIX domain socket绑定到一个名字上但不会在文件系统上创建该名字&lt;/strong&gt; 优势有:
-    &lt;ul&gt;
-      &lt;li&gt;无需担心与文件系统中的既有名字冲突&lt;/li&gt;
-      &lt;li&gt;没有必要在使用完一个socket之后，删除socket路径名，当socket被关闭之后会自动删除这个抽象名&lt;/li&gt;
-      &lt;li&gt;无需为socket创建一个文件系统路径名了&lt;/li&gt;
-      &lt;li&gt;创建一个抽象的绑定，只需要将sun_path字段的第一个字节指定为null，用于区分抽象socket 与传统的UNIX domain socket&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id="tcpip-网络基础"&gt;TCP/IP 网络基础&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;一个联网协议是定了如何在一个网络上传输信息的一组规则，网络协议通常会被组织成一系列的层，其中每一层都构建于下一层之上并提供特性以供上层使用。TCP/IP 协议套件 是一个封层联网协议。包括因特网协议（IP）和魏雨琦上层的各个协议层。 TCP 为传输层控制协议&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;封装协议的特点有:
-    &lt;ol&gt;
-      &lt;li&gt;透明: 每一个协议层都对上层 隐藏下层的操作和复杂性。 入一个使用TCP的应用程序只需要使用标准的socket API并清楚自己在使用 一项可靠的字节流传输服务，而无需理解TCP操作的细节。（严格来说 这个标准并不总是正确，应用程序偶尔也需要弄清楚 底层传输协议的操作细节）&lt;/li&gt;
-      &lt;li&gt;封装: 是分层连网协议中的一个重要的原则。关键概念: 底层会将从高层向底层传递的信息 当成不透明的数据进行处理。并不会尝试对高哦曾发送过来的信息进行解释。只会 将这些信息 添加自身这一层所使用的头信息，并传递到下一层。当数据从底层传递到高层时，会进行一个逆向的解包过程。&lt;br /&gt;
- &lt;img src="../../../../images/tcp_ip_protocol-1d996324.png" alt="tcp_ip_protocol" /&gt;&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;数据链路层: 传输数据， 数据链路层需要将上层传递过来的数据报封装进 被称为帧的一个一个单元，其中每帧都会包含一个头，包含了目标地址和帧的大小。数据链路层在物理连接上 传输帧并处理来自接收者的确认。这一层可能进行 错误检测、重传、以及流量控制。一些数据链层还会将大的网络报分割成多个帧并在接收者端对这些帧进行重传。应用程序编程的角度通常可以忽略 数据链路层，因为所有的通讯细节都是由 驱动和硬件来处理的。有关IP的讨论中， 数据链路层中比较重要的一个特点是最大传输单元(MTU)MTU是该层 所能传输的帧大小的上限， 不同的数据链路层MTU是不同的(netstat -i )&lt;/li&gt;
-  &lt;li&gt;网络层IP&lt;br /&gt;
-  网络层的、关注的为 如何将包 从愿主几发送到目标主机， 这一层执行的任务如下:
-    &lt;ul&gt;
-      &lt;li&gt;将数据分解成足够小的片段一变数据链路层进行传输&lt;/li&gt;
-      &lt;li&gt;在因特网上路由数据&lt;/li&gt;
-      &lt;li&gt;为传输层提供服务&lt;/li&gt;
-      &lt;li&gt;在TCP/IP 协议套件中， 网路层主要的协议是IP， 存在IPv4, IPv6版本。一个IP数据报包含了一个头，起大小范围为20字节到60字节，这个包中包含了的目标主机的地址，以及包的源地址。这样就可以在网络上讲这个数据报路由到目标地址了、以及接收方直到数据报的源头了。&lt;/li&gt;
-      &lt;li&gt;IP 是无连接协议、不可靠的协。 尽可能的将数据报从发送者传给接收者。当并不保证数据报到达的顺序以是否重传，甚至是否达到等。IP 也没有提供数据恢复。TCP/IP 的可靠性是通过使用一个可靠的TCP （传输层他协议）来保证的。&lt;/li&gt;
-      &lt;li&gt;IP 路径MTU: 原主机到目标主机之间的路径上的所有数据链路层的最小MTU （通常以太网的MTU 最小）当一个数据报的大小大鱼MTU时， IP会将数据报分段（分解成一个大小适合在网络上传输的单元， 这些分段在达到最终目标地址之后会被重组成原始的数据报）， IP分段的发生对高层协议层是透明的，一般来讲并不希望发生这种事情。这里的问题在于IP并不进行重传，所以只有在所有分段到达目标之后才能对数据报进行重组，导致如果其中一些分段丢失可能导致整个数据报的失败，一些情况下会导致极高的丢包率（比如UDP并不会进行重传）或者降低传输速率（进行重传的TCP） 现在TCP实现采用了一些算法（路径MTU发现，这个是不是很简单的获取 IP的路径MTU？）并根据该值对传递给IP 的数据进行分解，来防止IP层对数据报进程分解。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;传输层
-    &lt;ol&gt;
-      &lt;li&gt;端口号: 传输层协议的任务是向位于不同主机的上的应用程序提供端到端 通讯服务，所以传输层需要才用一种方法来区分一个主机上的应用程序，端口号的工作就是如此。（16位）&lt;/li&gt;
-      &lt;li&gt;UDP（用户数据报协议）: 仅仅在IP上增加了: 1） 端口号， 2）进行检测传数据错误的 数据校验和， 因为IP是无连接的，而UCP并没有进行 可靠性的保证，所以UCP 具有同IP一样的特性&lt;/li&gt;
-      &lt;li&gt;TCP（传输控制协议）: TCP 在两个端点之间提供了可靠的、面向连接的、双响字节流通信通道。通过如下几个方面来保证:
-        &lt;ul&gt;
-          &lt;li&gt;建立连接: 在连接期间，即 对交换数据 的通讯参数进行协商&lt;/li&gt;
-          &lt;li&gt;将数据打包成分段: 将数据分解成段(使单个IP数据报封装成为可能，从而避免 IP层面 进行拆解）每个段都包含一个校验和，并使用单个IP进行传输，从而能够检出数据报的错误。&lt;/li&gt;
-          &lt;li&gt;确认、重传、超时: 一个TCP段无错的到达接收方，接收方会向发送者发送确认请求，如果报发生错误，接收方丢弃即可。发送方 在发送每一个分段时会启用一个定时器，在定时器超时时没有收到确认。那么就重传这个分段 （由于所使用的网络以及当前的流量负载会影响 传输一个分段和接收其确认 所需要的时间，所以 TCP采用了� 一个算法来动态的调整 重传超时时间（RTO） 的大小。接收者可能不会立即发送确认，而是等待几毫秒 来观察是否可以将 确认塞进接收者返回给发送者的响应中（因为相应是接收者发送给接收者的，并不需要传递确认信息）来减少一个TCP段的发送，从而降低网络中的包的数量。这个称为 延迟ACK 技术）&lt;/li&gt;
-          &lt;li&gt;排序: TCP连接中的每个分段都会分配到一个逻辑号。这个数字指出了该分段在 该连接 的数据流中的位置（连接中的两个流都有各自的序号计数系统）序号的作用有: 1）这个序号可以保证TCP分段能够以正确的顺序在接收者进行组装， 然后以字节流的形式传送给应用层 2）接收者 发送给发送者 使用序号来标识出收到了那个TCP分段 3）接收者可以去除重复的分段信息。(一个流的初始序列ISN， 不是从0开始的，而是通过一个算法来生成的，该算法会递增分配给后续的TCP链接的ISN（防止前后的多个连接中 序号重复混淆的情况发生）)&lt;/li&gt;
-          &lt;li&gt;流量控制: 防止一个快速的发送者压垮一个慢速的接收者: 如何实现: 接收TCP 需要为进入的数据维护一个缓冲区（每个TCP在建立连接时候，都会告知其缓冲区大小）当从发送TCP端收到数据时会将数据放入到缓冲区中。当应用层读取数据时会从缓冲区中删除数据， 在每个确认中，接收者会通知发送者 其缓冲区的可用空间，TCP流量控制算法 采用了 滑动窗口算法，来允许包含N个字节的窗口大小的 未确认段 同时在 发送者与接收者之间传递，接收端的缓冲区被充满，那么窗口就会关闭，发送端就会停止传输数据。&lt;br /&gt;
-   &lt;img src="../../../../images/tcp_protocol-08a9fb04.png" alt="tcp_protocol" /&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;RFC（请求注解）: 是由 国际互联网学会赞助的RFC编辑组织发布的，描述互联网标准的RFC是由互联网工程任务组资助开发的， 互联网工程任务组 是一个由 网络设计师、操作员、厂商以及研究人员组成的社区，主要关注互联网的发展和平稳运行。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id="服务器设计"&gt;服务器设计&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;迭代型: 服务器每次只处理一个客户端，只有当完全处理完一个客户端的请求后，才会去处理下一个客户端&lt;/li&gt;
-  &lt;li&gt;并发型: 能够同时处理多个客户端的请求。 本章主要放在并发型服务器的传统设计方法:针对每个新的客户端连接, 创建一个新的子进程来处理，每个服务器子进程执行完所有服务于单个客户端的任务后就终止。因此可以同时处理多个客户端。
-    &lt;ul&gt;
-      &lt;li&gt;由于 服务器为每个客户端连接创建一个子进程，需要保证不会出现僵尸进程，所以需要为信号SIGCHLD 安装信号处理器。&lt;/li&gt;
-      &lt;li&gt;主进程 主要由for 循环组成。在循环中accept 链接，然后fork 创建子进程， 在子进程中 调用hanldeRequest来处理客户端。（现实世界中，需要限制 服务器创建子进程的数量，大量的子进程会使系统变的不可用。）&lt;/li&gt;
-      &lt;li&gt;每次fork后，监听套接字和连接套接字都在子进程中得到了复制。父进程 关闭 连接套接字， 子进程关闭 监听套接字。（如果父进程没有关闭 连接套接字的话 那么连接套接字永远不会被关闭，从而导致文件描述符被用完。监听套接字并不会这样，因为子进程 结束之后会释放所有的文件描述符）&lt;/li&gt;
-      &lt;li&gt;每个子进程处理完客户端之后，终止&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;并发型服务器的其他设计:
-    &lt;ul&gt;
-      &lt;li&gt;预先创建进程或线程:
-        &lt;ol&gt;
-          &lt;li&gt;服务器在启动阶段就立刻 预先创建好一定数量的 子进程， 而不是针对一个新的客户端来创建 一个子进程。这些子进程构成了一个 服务池&lt;/li&gt;
-          &lt;li&gt;每个子进程一次只处理一个客户端，在处理完之后，子进程并不终止，而是获取下一个待处理的客户端继续处理。&lt;/li&gt;
-          &lt;li&gt;主进程需要仔细的管理子进程，并可以相应的根据负载来调节子进程的数量大小，此外， 子进程需要遵循某些协议，是的他们是以 独占 的方式来处理一个客户端的 连接套接字的。在大多数的UNIX实现中，让子进程 在监听套接字上调用accept即可，（即是: 主进程先创建 监听套接字，子进程在每个fork之后 继续使用套接字 并 accept，因为accept调用是一个原子化的操作，所以当客户端连接 到来时，之后一个子进程能够完成 accept调用。负载则由系统进行调度）&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;单个进程中处理多个客户端: 必须能够允许单个进程同时监听多个文件描述符上 IO事件 （IO多路复用， 信号驱动IO， epoll），单进程服务器需要做一些通常由内核来处理的调度任务。在 进程服务池 的设计中，我们可以依靠内核来确保每个服务器进程 能够公平的访问服务器主机的资源。但是当使用 单个进程处理多个客户端的方案时，服务器进程必须自行确保一个或多个 客户端不会霸占服务器，而使 其他的客户端处于饥饿状态&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;服务器集群:
-    &lt;ul&gt;
-      &lt;li&gt;DNS 轮询负载共享:一个地区的域名权威服务器将同一个域名映射到多个IP地址上（即 多个服务器共享统一域名）后续对DNS服务器的域名解析请求将以 循环轮转的方式返回这些IP地址，优势是成本低，存在的问题有:客户端 DNS缓存、 没有任何机制来达到良好的负载均衡、高可用 的机制 以及 无法确保同一个客户端的请求都到达同一台服务器（所以存在状态的服务器 需要在多个机器之间共享状态 这个特性成为 服务器亲和力）&lt;/li&gt;
-      &lt;li&gt;负载均衡(server load balancing): 由一台负载均衡服务器将客户端的请求路由到服务器集群中的一个，这消除了 远端DNS 缓存所引起的问题。因为服务器集群只对外传递一个IP地址。负载均衡服务器会 结合一些算法来衡量或计算服务器负载 并智能化的 将负载分发到 集群中的各个成员上，可能还会提供对服务器亲和力的支持&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;inted 守护进程:
-    &lt;ol&gt;
-      &lt;li&gt;守护进程 inetd 被设计为用来消除运行大量非 常用服务器进程的需要，inetd 优势有:
-        &lt;ol&gt;
-          &lt;li&gt;预期为每个服务运行一个单独的守护进程，现在只用一个进程 inetd 守护进程，就可以监视一组指定的套接字端口，并按照需要启动其服务，因为可以降低系统进程的运行数量&lt;/li&gt;
-          &lt;li&gt;inetd 简化了 启动服务的编程工作。&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;inetd 进程:
-        &lt;ol&gt;
-          &lt;li&gt;读取 /etc/inetd.conf 文件，对于其中的每项服务，创建一个 恰当类型的套接字，然后绑定到指定的端口上，其中每个TCP套接字 都会通过listen 允许客户端请求连接&lt;/li&gt;
-          &lt;li&gt;通过select调用， inetd 对前一步中创建的所有的套接字进行监听，看是否有数据报或者连接请求 进来&lt;/li&gt;
-          &lt;li&gt;select 进入阻塞状态: 直到一个UDP 数据报到来或 TCP 监听套接字 收到连接请求。TCP 会进行accept&lt;/li&gt;
-          &lt;li&gt;启动套接字对应的服务，inetd 调用fork创建 一个新进程，然后调用exec 启动服务器程序，执行exec前，子进程执行如下步骤:这里面 子进程 代表的是 inetd 守护进程的标准执行过程, 所以需要执行步骤2，方便exec启动的服务器程序 使用标准文件描述符来 对客户端进行通讯
-            &lt;ol&gt;
-              &lt;li&gt;关闭从父进程继承的所有文件描述符，除了 用于监听的套接字&lt;/li&gt;
-              &lt;li&gt;在文件描述符0，1，2上复制套接字文件描述符，并关闭套接字文件描述符本身，完成这一步之后，启动服务器进程就能通过 这三个标准 文件描述符 同套接字 通讯了&lt;/li&gt;
-              &lt;li&gt;为启动的服务器进程设定用户、组ID （可选，通过/etc/inetd.conf 配置）&lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-          &lt;li&gt;如果是TCP套接字，则关闭连接套接字&lt;/li&gt;
-          &lt;li&gt;返回到 第 2步骤，继续执行&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;/etc/inetd.conf 配置文件:&lt;/p&gt;
-
-        &lt;table&gt;
-          &lt;thead&gt;
-            &lt;tr&gt;
-              &lt;th style="text-align: left"&gt;service name&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;socket type&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;protocol&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;flags&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;login name&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;server program&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;server program argument&lt;/th&gt;
-            &lt;/tr&gt;
-          &lt;/thead&gt;
-          &lt;tbody&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;ftp&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;stream&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;tcp&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;nowait&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;root&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;/usr/sbin/tcpd&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;in.ftpd&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;telnet&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;stream&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;tcp&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;nowait&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;root&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;/usr/sbin/tcpd&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;in.telnetd&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;login&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;stream&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;tcp&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;nowait&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;root&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;/usr/sbin/tcpd&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;in.rlogind&lt;/td&gt;
-            &lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;service name (服务名称): 该字段为服务名称，结合 protocol 就可以通过查找 /etc/services 文件以确定 inted 问该服务监听的 端口号&lt;/li&gt;
-      &lt;li&gt;socket type (套接字类型): stream, or dgram&lt;/li&gt;
-      &lt;li&gt;protocol(协议): 该字段指定了 这个套接字所使用的协议，这个字段 可以包含文件 /etc/protocols 中所列出的任何的 internet 协议&lt;/li&gt;
-      &lt;li&gt;flags:
-        &lt;ul&gt;
-          &lt;li&gt;wait or nowait 字段表明 由 inetd 启动的服务器 是否会接管 用于该服务的 监听套接字。 wait 表明 启动的服务器 需要管理 该监听套接字，inetd 将该套接字从它所监视的文件描述符列表中移除, 直到这个服务器程序退出为止。&lt;/li&gt;
-          &lt;li&gt;inetd 调用的 TCP 服务器通常被设计为 只处理一个单独的客户端连接，处理完后就终止， 把监听其他链接的任务留给inetd, 对于这样的服务器， flags字段应为 nowait, 相反 如果是被执行的服务器进程 来接受连接（accept）的话，那么该字段为wait, 此时inetd 不会去接受连接，而是将监听套接字 作为 文件描述符0 传递给 服务器进程。对于大部分的UDP 服务器， flags字段需要设定为wait， 由 inetd 调用的UDP 服务器设定为 读取并处理所有套接字上未完成的数据报，然后终止（通常需要一些超时机制）wait 可以组织 inetd在套接字上做select，会导致inetd 同 UDP 服务器程序之间，产生竞争条件，如果inetd 赢了，会启动一个新的 UDP 服务器实例&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;login name(登录名) :该字段为 /etc/passwd 中的用户名组成部分，还可以在其后 添加 “:” + /etc/group 中的组名称， 这些确定了运行的服务器程序的用户ID和组ID， 因为inetd为 root 方式运行，所以 子进程同样可以是 特权进程。 因此可以在需要时 通过调用setuid, setgid 来修改进程凭证&lt;/li&gt;
-      &lt;li&gt;serever program (服务器程序): 指定了 被执行程序的服务器程序路径&lt;/li&gt;
-      &lt;li&gt;server program argument(服务器 程序参数): 该字段指定了 一个或多个参数， 参数之间由 空格符分隔，当执行服务器程序时，这些参数就作为程序的参数列表&lt;/li&gt;
-      &lt;li&gt;inetd 作为一个提高效率的机制，本身就实现了一些简单的服务，而无需单独的 服务器程序编码来完成任务， UDP， TCP 的echo 服务就是由inetd 来实现的一个例子。编辑修改 /etc/inetd.conf 之后，需要 killall -HUP inetd 发送SIGHUP信号来重新读取配置文件&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id="socket-高级主题"&gt;socket 高级主题&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;流式套接字 上的部分读和部分写
-    &lt;ul&gt;
-      &lt;li&gt;read, write 系统调用 会产生部分读 和 部分写，在流式套接字上 更容易出现这样的问题。套接字傻姑娘可用的数据比read 读取的数量要少，那么read就会出现部分读 的现象，但是只是简单的返回读取的内容大小。write 调用在没有足够的缓冲区 来传输所有的字节时，并且 被信号处理函数中断 或 在 非阻塞模式下工作 或 TCP连接出现问题 write 会产生部分写的现象。 readn， writen 这两个函数 使用循环来 启用这些系统调用，总能确保 所有的数据都会被写入 或者读取。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;shutdown(int sockfd, int how) 系统调用&lt;br /&gt;
- &lt;strong&gt;套接字 上调用close 将双向通讯通道 的两端都关闭，shutdown 提供了 更精细的控制&lt;/strong&gt; 其中how的选项有；
-    &lt;ul&gt;
-      &lt;li&gt;SHUT_RD: 关闭连接的 读取端， 之后的读取操作将返回文件结尾，写入套接字操作依然可以进行。在UNIX domain 上进行 SHUT_RD, 对端的应用程序 将接受一个 SIGPIPE 信号，对端程序依然写入的话 将产生 EPIPE 错误， 对于TCP 套接字来说没有什么意义（需要在 61.6.6 中讨论）&lt;/li&gt;
-      &lt;li&gt;SHUT_WR: 关闭连接的 写端， 对端 会检测到 文件结尾。后续对套接字的读取操作会产生 SIGPIPE 信号以及 EPIPE 错误，而由对端的写入数据依然可以在套接字上正常读取。这个操作允许我们依然可以读取数据，并且告知对方写入已经完成。该操作在ssh 中rsh中 有用到，并称为 半关闭 套接字&lt;/li&gt;
-      &lt;li&gt;SHUT_RDWR: 将连接的读写端都关闭。等同于调用了 shutdown SHUT_RD, SHUT_WR&lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;区分于close: shutdown 关闭的是系统级 文件表， 而非 进程文件描述符。 这意味着， 父进程 shutdown之后， fork 的子进程中的文件描述符 同样受到影响。需要注意的是， shutdown 并不会关闭进程文件描述符， 依然需要进程close来关闭文件描述符&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;&lt;span class="n"&gt;fd2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sockfd&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sockfd&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// 之后依然可以在 fd2上进行IO操作
-//--------
-&lt;/span&gt;&lt;span class="n"&gt;fd2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sockfd&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="n"&gt;shutdown&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SHUT_RDWR&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// 之后无法在fd2 上sockfd 上 进行IO操作
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;recv, send, 专属于  套接字的IO系统调用:
-    &lt;ul&gt;
-      &lt;li&gt;recv(int sockfd, void * buffer, size_t length, inf flags) flags 的选项有:
-        &lt;ul&gt;
-          &lt;li&gt;MSG_DONTWAIT:  使recv 以非阻塞方式执行， 没有数据可用 立即返回， 错误码为EAGAIN, 同样可以通过 fcntl 来把套接字设定为非阻塞方式运行， 区别在于，这个可以设定每次的调用的阻塞行为&lt;/li&gt;
-          &lt;li&gt;MSG_OOB: 在 套接字上接受带外数据&lt;/li&gt;
-          &lt;li&gt;MSG_PEEK: 从套接字数据缓冲区 获取一份请求字节的副本，但不会将数据从缓冲区中移除，这份数据可以在之后的read中重新读取&lt;/li&gt;
-          &lt;li&gt;MSG_WAITALL: 指定标记后， 将导致系统调用阻塞到 接收到length字节，但是总会出现返回的字节数少于 length的情况: 1）捕获到一个信号， 2）对端终止了连接 3） 遇到了带外数据字节 d）接收到的数据总长度小于 length， 4）套接字错误&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;send(int sockfd, const void * buffer, size_t length, int flags)
-        &lt;ul&gt;
-          &lt;li&gt;MSG_DONTWAIT: send 以非阻塞方式运行，如果 数据不能立即传送（发送缓冲区满时）该调用失败，错误码 EAGAIN&lt;/li&gt;
-          &lt;li&gt;MSG_MORE: 在TCP 套接字上，这个标记实现的效果同 套接字选项 TCP_CORK 完成的功能相同，区别在于该标记可以在每次调用中 对数据进行 栓塞 处理。&lt;/li&gt;
-          &lt;li&gt;MSG_NOSIGNAL: 指定该标记时，在已连接的套接字上发送数据时，如果连接的另一端已经关闭时，send 不会产生SIGPIPE信号，而是返回错误 EPIPE&lt;/li&gt;
-          &lt;li&gt;MSG_OOB: 在流式套接字 上 发送带外数据&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;size_t sendfile(int outfd, int in_fd, off_t * offset, size_t count):&lt;br /&gt;
- 传输文件的简单写法:
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;   &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;diskfilefd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;BUZ_SIZE&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-     &lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;示例代码中 read 简单的将文件内容 从内核缓冲区cache中拷贝到用户空间，write将用户空间缓冲区拷贝到内核空间中的socket缓冲区。 sendfile 被用来减少这种操作的低效性。文件内容会直接传送到套接字上，而不会经过用户空间， 这种技术成为 zero-copy transfer 零拷贝传输&lt;br /&gt;
- sendfile 函数调用的限制: out_fd 必须为套接字， in_fd 必须指向文件，能够进行mmap，这通常只能是一个普通文件。&lt;br /&gt;
- &lt;img src="../../../../images/zero_copy-a3db77b5.png" alt="zero_copy" /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;TCP_CORK 套接字选项: 为了提高TCP使用效率（linux专有的选项），在web服务器传送页面时候，作为请求的响应，通常由两部分组成， HTTP 首部， 页面数据，单独的使用write操作 会传输2个TCP报文段，一个非常小的HTTP报文放在第一个分段中，这对网络是非常浪费的。这时候使用TCP_CORK 来避免其低效性。当在TCP 套接字上启用 TCP_CORK 选项时，之后所有的数据都会穿充到一个单独的TCP 报文段中，直到满足以下条件为止: 以达到报文段的大小上限、取消了 TCP_CORK 选项、套接字被关闭、或者启用 TCP_CORK后，从写入的第一个字节开始已经超过200ms（防止忘记取消 TCP_CORK 选项，超时时间可以保证传输）下面例子 介绍如何使用 TCP_CORK:
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt; &lt;span class="n"&gt;optval&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
- &lt;span class="n"&gt;setsockopt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;IPPROTO_TCP&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;TCP_CORK&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;optval&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt; &lt;span class="c1"&gt;// enable TCP_CORK
-&lt;/span&gt; &lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;...);&lt;/span&gt;
- &lt;span class="n"&gt;sendfile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;...);&lt;/span&gt;
- &lt;span class="n"&gt;optval&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
- &lt;span class="n"&gt;setsockopt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;IPPROTO_TCP&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;TCP_CORK&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;optval&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt; &lt;span class="c1"&gt;// disable TCP_CORK, TCP 开始传输
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-  &lt;li&gt;获取套接字地址:
-    &lt;ul&gt;
-      &lt;li&gt;getsockname(int sockfd, struct sockaddr * addr, socklen_t * addrlen): 获取本地套接字地址， sockfd表示套接字的描述符， addr 为返回的套接字地址存储结构， addrlen 为 addr 结构的大小。在套接字并不是由自己初始化时，如 inet调用的应用程序只能获取 已经存在套接字，则可以通过该函数 获取 对应的绑定地址。&lt;br /&gt;
-&lt;!-- 1. 当隐式得绑定到一个 --&gt;&lt;/li&gt;
-      &lt;li&gt;getpeername(int sockfd, struct sockaddr * addr, socklen_t * addrlen): 获取对端的套接字地址, sockfd, 为对端的套接字描述符， 其他的同 getsockname 一致。在TCP 连接中，可以在accept时获取对端地址，但是如果服务器进程是由另一个进城调用的，比如inetd，那么这个函数就非常有用&lt;/li&gt;
-      &lt;li&gt;内核隐式绑定的情况:
-        &lt;ol&gt;
-          &lt;li&gt;已经在TCP 套接字上执行了connect， listen调用，但之前并没有bind 调用到一个地址上&lt;/li&gt;
-          &lt;li&gt;在UDP套接字上 首次调用sendto，盖套接字之前并没有bind到地址上&lt;/li&gt;
-          &lt;li&gt;调用bind 时，将端口号 指定为0， 这种情况下 bind 会为套接字制定一个IP地址，并选择一个临时端口号&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;深入探讨TCP 协议
-    &lt;ol&gt;
-      &lt;li&gt;TCP 报文格式&lt;br /&gt;
- &lt;img src="../../../../images/tcp_segment-c7d14f9b.png" alt="zero_copy" /&gt;
-        &lt;ul&gt;
-          &lt;li&gt;Source port number（源端口号）: TCP 发送端的端口号&lt;/li&gt;
-          &lt;li&gt;Destination port number(目的端口号): TCP 接收端的端口号&lt;/li&gt;
-          &lt;li&gt;Sequence number(序列号): 报文的 序列号&lt;/li&gt;
-          &lt;li&gt;Acknowledgement number（确认序列号）: 如果设定了ACK 位，那么这个字段包含了接收方期望从发送方接收到的下一个 报文的序列号&lt;/li&gt;
-          &lt;li&gt;Header length: 表示TCP 报文首部的长度，首部长度单位是32位，因为这个字段只有4个byte位，所以首部总长度最大可以达到 60字节， 该字段 是的TCP接收端可以确定变长的选项字段的长度，以及数据域的起始点&lt;/li&gt;
-          &lt;li&gt;Reserved（保留位）: 该字段包含4个为啥喜欢i用的byte （必须设置为 0）&lt;/li&gt;
-          &lt;li&gt;Control bit（控制位）: 8个byte组成:&lt;br /&gt;
-    - CER: 拥塞窗口减小标记&lt;br /&gt;
-    - ECE: 现实的拥塞通知回显标记 cwr &amp;amp; ece 标记用在TCP 的显示拥塞通知(ECN)算法中。 linux中 可以通过编辑文件 /proc/sys/net/ipv4/tcp_enc 设定一个非零值 来开启这个功能&lt;br /&gt;
-    - URG: 设定了该位， 紧急指针字段包含的信息是有效的&lt;br /&gt;
-    - ACK: 如果设定了该位， 那么确认序号字段包含的信息就是有效的 （可以同时包含对对端数据报的确认）&lt;br /&gt;
-    - PSH: 将所有收到的数据发给接受的进程 (RFC993)&lt;br /&gt;
-    - RST: 重置连接&lt;br /&gt;
-    - SYN: 同步序列号，在建立连接时，双方需要交换设定了该位的报文，使得tcp 连接的两段可以指定初始序列好&lt;br /&gt;
-    - FIN: 发送端提示已经完成了传送任务，TCP 连接关闭&lt;/li&gt;
-          &lt;li&gt;Window size （窗口大小）: 滑动窗口机智有关， 用于 在ACK确认时 提示自己可以接受数据的空间大小&lt;/li&gt;
-          &lt;li&gt;Checksum(校验和)&lt;/li&gt;
-          &lt;li&gt;Urgent Pointer(紧急指针): 设定了该位置， 表示传送的数据位紧急数据&lt;/li&gt;
-          &lt;li&gt;Options(选项): 这是一个变长的字段， 包含了控制TCP连接操作的选项&lt;/li&gt;
-          &lt;li&gt;Data （数据）: 包含了该报文中 传输的用户数据&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;TCP 序列号 和 确认机制&lt;br /&gt;
-每个通过TCP 连接传送的字节都由TCP 协议分配了一个逻辑序列号，双向数据流都有各自的序列号，当传送一个报文时，该报文的序列号被设为该传送方向上的 报文段数据域的第一个字姐的逻辑偏移。这样接收端 就可以按照正确的顺序对接收到的报文进行重组了。TCP 采用了主动确认，当一个报文段被成功接收后， 接收端会发送一个确认信息 即发送ACK 确认报文 给发送端，该报文的 确认序号字段被设置为 期望接受的下一个数据字节的逻辑序列号 （上一个成功收到的序列号 + 1 ）TCP 发送端发送报文时会启动一个定时器，如果在定时器超时时，仍未收到确认报文，那么就重传该报文 (注意 序列号并非常简单的递增 1，而是 按照 传送报文数据 大小来递增的 如下图)&lt;br /&gt;
-&lt;img src="../../../../images/tcp_ack-5abca238.png" alt="tcp_ack" /&gt;&lt;/li&gt;
-      &lt;li&gt;TCP 连接的建立: API 层面: 服务器）调用listen 打开套接字，然后accept， 阻塞服务器进程 直到连接建立完成。客户端）调用connect 同服务器打开的套接字 建立连接
-        &lt;ol&gt;
-          &lt;li&gt;客户端 TCP节点 发送一个SYN 报文到服务器 TCP端，这个报文将告知 服务器有关客户端的TCP节点的初始序列号 （因为序列号不是从0 开始）&lt;/li&gt;
-          &lt;li&gt;服务器 TCP端 发送确认 客户端 SYN报文的 ACK报文，并同时携带 SYN 的序列号。 即发送ACK，SYN 报文&lt;/li&gt;
-          &lt;li&gt;客户端 TCP 节点发送一个ACK报文 来确认服务器端的TCP SYN 报文&lt;br /&gt;
- &lt;img src="../../../../images/tcp_three_hand_shake-74c83b94.png" alt="tcp_three_hand_shake" /&gt;&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;TCP 连接的终止: 一端的应用程序执行close 调用 （主动关闭）， 之后 连接另一端的应用程序 也执行close调用（被动关闭）下面的报文顺序为假设 客户端 发起主动关闭
-        &lt;ol&gt;
-          &lt;li&gt;客户端执行主动关闭， 导致客户端TCP节点 发送一个FIN报文到服务器端&lt;/li&gt;
-          &lt;li&gt;服务器端收到FIN 报文后，发送 ACK 报文进行响应。（之后服务器端任何对 套接字 read 操作 的尝试都会读取到 文件结尾）&lt;/li&gt;
-          &lt;li&gt;稍后， 当服务器关闭 自己端的 连接时，服务器端 TCP 节点发送 FIN报文到客户端&lt;/li&gt;
-          &lt;li&gt;客户端TCP 节点发送ACK报文作为响应&lt;br /&gt;
- &lt;img src="../../../../images/tcp_close-a6b10984.png" alt="tcp_close" /&gt;&lt;br /&gt;
- 上面讨论的是 close 全双工的关闭(连接虽然是双向的，但是TCP节点的状态是唯一共享的)， 然而系统调用允许 shutdown 调用来关闭其中的一个通道，使TCP 成为 一个半双工。我们使用 shut_rdwr, SHUT_WR 来调用 shutdown 时候，TCP 连接将开始上面的关闭步骤。本地的 TCP节点 迁移到FIN_WAIT1 状态， 然后进入 FIN_WAIT2 状态，对端的进入到 CLOSE_WAIT 状态， 如果参数为 SHUT_WR 那么 套接字依然合法（合法的定义是？ 某种符合条件的状态？ FIN_WAIT1， FIN_WAIT2 正好处于 接受对端的ACK 报文， 而没有收到对方FIN 的状态，即 自己主动关闭成功，对方并未关闭），读端依然是打开的，因为对端的写入操作依然可以进行。这里 SHUT_RD 在TCP套接字上没有实际意义的原因是因为， 大多数TCP协议的实现都没有为 SHUT_RD 提供所期望的行为。导致该参数调用的shutdown 并不具有可移植性&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;TIME_WAIT 状态: 执行主动关闭的TCP 端在该状态下， 等待 2MSL时间，然后迁移到closed 状态。 这样的设计目的有两点:（该状态应该只存在于 主动关闭的 TCP 节点上，主要原因在于， 主动关闭的节点 需要对上一条 别动关闭的节点 的FIN报文响应 ACK报文，并组织新的连接的创建 来 保证TCP 可靠性连接的建立）
-        &lt;ul&gt;
-          &lt;li&gt;实现可靠的链接终止:等待2被的MSL， 这里的MSL 是TCP报文最大生存时间&lt;/li&gt;
-          &lt;li&gt;让老的重复的数据报文段在网络中过期失效:TCP协议采用的重传算法，可能会产生重复的报文，根据路由器选择，这些重复的报文可能会在连接已经终止后到达， 而之后使用同样的IP端口重新建立的连接， 然后接收到的数据报 在这种情况下， 为了保证上一次连接中老的重复报文不会重复的出现在新的连接中被当成合法报文接收。当有TCP节点处于TIME_WAIT 状态时 是无法通过 该节点 创建新的连接的。这样就组织了新链接的建立。（在论坛上会看到相关的 如何关闭 TIME_WAIT 状态，因为重新启动的服务器进程会尝试将套接字绑定到处于 TIME_WAIT 状态的地址上时候，会出现 EADDRINUSE 的错误，尽管有办法关闭 TIME_WAIT状态 但是还是应该避免这样做， 因为会阻碍 TCP 提供可靠性保证）&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;netstat(监视套接字)&lt;br /&gt;
- netstat 程序可以显示系统中Internet 和 UNIX域套接字的状态， 是一个非常好的调试工具, 大多数的Unix 都会提供一个版本的 netstat， 但是各个实现中的命令行参数语法有很大的区别&lt;br /&gt;
- 其中展示的信息中的字段含义列表有:更多的细节需要查阅netstat用户手册，  /proc/net中有多个专属Linux 的文件，例如tcp, udp, 的呢个，获取更多细节，参考 proc&lt;/p&gt;
-
-        &lt;table&gt;
-          &lt;thead&gt;
-            &lt;tr&gt;
-              &lt;th style="text-align: left"&gt;字段名称&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;含义&lt;/th&gt;
-            &lt;/tr&gt;
-          &lt;/thead&gt;
-          &lt;tbody&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;Proto&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;套接字所使用的协议&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;Recv-Q&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;套接字接收缓冲区中还未被本地应用读取的字节数（UDP 中该字段不仅仅包含数据还包含头部信息等）&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;Send-Q&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;套接字发送缓冲区中排队等待发送的字节数（同Recv-Q 一样 UDP）&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;Local Address&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;套接字绑定到的地址， 主机IP:端口号 展现形式&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;Foreign Address&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;对端套接字锁绑定到的地址， *:* 表示没有对端地址&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;State&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;当前套接字所处的状态&lt;/td&gt;
-            &lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
-      &lt;/li&gt;
-      &lt;li&gt;tcpdump: 有用的调试工具，可以让超级用户监视网络中的 实时流量，实时生成文本信息， 可以显示所有类型的TCP/IP 数据报流量。显示方式如下(具体的使用细节需要google):&lt;br /&gt;
- src &amp;gt; dst: flags data-seqno ack window urg &lt;options&gt;
-&lt;/options&gt;        &lt;ul&gt;
-          &lt;li&gt;src, dst: 源 IP 地址和端口， 目的 IP 地址 和端口号&lt;/li&gt;
-          &lt;li&gt;flags: TCP 报文控制位 信息， 他们是 S(SYN) , F(FIN), P(PSH), R(RST), E(ECE), C(CWR) 中的标记位组合&lt;/li&gt;
-          &lt;li&gt;data-seqno: 数据报中的序列号范围&lt;/li&gt;
-          &lt;li&gt;ack: ack num，对端 期望的下一个方法字节的序列号&lt;/li&gt;
-          &lt;li&gt;window: 对端缓冲区大小（存在接收、写入缓冲区两种）&lt;/li&gt;
-          &lt;li&gt;urg: urg num 该报文 在指定的偏移量上包含紧急数据&lt;/li&gt;
-          &lt;li&gt;options: 任意的TCP选项&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;套接字选项:
-        &lt;ul&gt;
-          &lt;li&gt;int getsockopt(int sockfd, int level, int optname, void * optval, socklen_t optlen); int setsockopt(int sockfd, int level, int optname, const void * optval, socklen_t optlen) 两个系统调用获取 设定 套接字选项&lt;/li&gt;
-          &lt;li&gt;SO_REUSEADDR 套接字选项: 该选项主要应用在 服务器bind 地址时候，出现EADDRINUSE 错误（即存在TCP节点处于 TIME_WAIT 状态）出现该现象的情况有:
-            &lt;ol&gt;
-              &lt;li&gt;之前连接到 客户端的服务器 被close， 或者是 崩溃 而执行了一个主动关闭，这就使得 TCP节点处于 TIME_WAIT状态， 直到 2倍的MSL超时 过期为止&lt;/li&gt;
-              &lt;li&gt;服务器创建一个子进程来处理客户端的请求， 稍后，服务器终止， 而子进程继续服务客户端， 因为使得 TCP 节点占用了服务器的 端口号&lt;br /&gt;
-  针对以上情况，默认的TCP实现会阻止 新的监听套接字的绑定， （客户端不常出现这样的错误， 因为他们一般使用的是不会处在 TIME_WAIT 的临时端口号(新建的连接会选择新的端口号)，但是如果客户端指定的保定到一个端口上那么还是会遇到这个问题）&lt;/li&gt;
-              &lt;li&gt;（类比并不严谨）accept 需要识别出 一个新来的套接字，系统内 记录的大概内容是 [ {local-ip-Address, local-port, Foreign-ip-address, Foreign-port }] 每个 已连接的套接字对应的对端的一个套接字，当有链接对应的接入时，通过对端的 TCP 报文 中对应的 ip port 可以识别出对应的 本地的 已经接套接字，如果没有对应的连接套接字存在 则 accpet 创建新的 连接套接字。 TCP 规范要求这个4 元祖是唯一的，问题在于大多数的 实现 都强制限制了 一个更为严格的约束，如果本地存在 可以匹配到本地端口 TCP连接， 则本地端口不能被重用 （即 不能bind 该 端口号）也不能在接受新的链接（即不能accept） 启用该socket选项可以放开这个限制，即便是 情况 2 我们依然可以绑定到该地址，大多数的TCP 服务器应该启用这个选项。&lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;UDP 相对TCP 的优势有: 1）UDP 服务器可以从多个客户端接受数据报，而不必为每个 客户端 创建和终止连接 2） 对于简单的请求: UDP的速度更快， 因为UDP不需要建立 和终止连接. DNS 是一个 应用UDP的绝好例子。&lt;/li&gt;
-      &lt;li&gt;传递 文件描述符: 通过sendmsg, recvmsg 系统调用，我们可以在同一台主机 上通过UNIX 域套接字 将文件描述符 辅助数据 从一个进程传递到 另一个进程中。 这种方式可以传递任意类型的文件描述符（open 得到的文件描述符， 套接字）这个可以应用在服务器的并发模型中， 主进程可以在TCP监听套接字上接收客户端连接，然后将返回的文件描述符传递给进程池中的一个，之后子进程就可以响应客户端的请求了（虽然这种技术通常称为 传递文件描述符， 但实际上 进程间 传递的是对同一个打开文件描述符的引用。在接收端进程中使用的文件描述符一般和发送进程中文件描述符不同）&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id="其他-的io模型-io多路复用-信号驱动io-linux专有-epoll"&gt;其他 的IO模型: IO多路复用， 信号驱动IO， Linux专有 epoll&lt;/h3&gt;
-&lt;p&gt;&lt;em&gt; 大部分的程序使用的IO 模型都是单个进程 在多个文件上执行阻塞IO，例如 在管道上调用read，如果管道 中没有数据，那么read会阻塞到 直到管道中有数据，才会继续执行后续的工作。（磁盘文件是一个特例， 对磁盘的write 会立即返回，而不是等到将数据写入到磁盘文件上之后才返回。对应的read 如果数据不在缓冲区内，内核会休眠该进程 （内核 缓存页 调度）然后再 继续read）&lt;/em&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;问题:  然而 依然存在下面的需求:
-    &lt;ol&gt;
-      &lt;li&gt;以非阻塞的方式检查文件描述符上是否可以进行IO操作&lt;/li&gt;
-      &lt;li&gt;同时检查多个文件描述符，查看其中一个是否可以进行IO 操作&lt;br /&gt;
-  &lt;strong&gt;现有的系统调用 部分的可以满足这两种需求: 多线程和IO非阻塞（对打开的文件描述符设定 O_NONBLOCK) 非阻塞 IO 可以使我们周期性的检查 某个文件描述符是否可以进行IO操作， 那么同时操作多个IO文件描述就有下面的几种方式:&lt;/strong&gt;
-        &lt;ul&gt;
-          &lt;li&gt;周期性的对多个文件描述进行检查，即轮询，这种轮询通常是我们不希望看到的，轮询频率不高的话，应用程序对IO延迟可能会非常高， 频率高的话，则非常浪费CPU&lt;/li&gt;
-          &lt;li&gt;多线程、多进程 的方式进行多个文件描述符的操作: 即 分离开 一个单独的进程、线程来 操作 单个文件描述符，分离多个即可操纵多个文件描述符。这样的弊端在于，多进程 会占用太多的系统资源，多线程、多进程依然需要进行进程、线程间的沟通，导致编码复杂（多线程尤为复杂繁琐）&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;于是有下面几种备选的 IO方案（其共同解决的问题是: 同时检查多个文件描述符，以检查是否可以进行IO操作。文件描述符的就绪转换是通过一些IO事件来触发的。（比如 输入数据的到达、套接字建立的完成、tcp数据报被传送之后，缓冲区有了更多的剩余空间等）同时检查多个 文件描述符对服务器程序，以及同时检查 终端、管道、套接字等程序 是非常有帮助的）
-    &lt;ol&gt;
-      &lt;li&gt;IO 多路复用: 允许进程同时检查多个文件描述符 以找出他们中一个可以执行IO操作， 系统调用 select poll 可以用来执行IO多路复用&lt;/li&gt;
-      &lt;li&gt;信号驱动IO: 当输入或者数据可以写到指定的文件描述符时候，内核向进程发送一个信号，进程通过接收到信号之后来处理IO任务。当检查大量的文件描述符时 相对于 select， poll 等可以显著的提升性能&lt;/li&gt;
-      &lt;li&gt;epoll(Linux专有的特性): 具有多路复用、信号驱动IO 的优点， 允许同时检查多个文件描述符， 当检查大量的描述符时候，依然有很好的性能表现&lt;/li&gt;
-      &lt;li&gt;总结来说: epoll 相对于select具有性能优势，对比 信号驱动IO 具有避免了信号处理的复杂性。唯一的缺点在于 其为linux专有，没有很好的可移植性&lt;/li&gt;
-      &lt;li&gt;Libevent 提供了一个检查文件描述符IO 事件的抽象，Libevent的底层机制能够以透明的方式 应用select， poll, 信号驱动IO， epoll。&lt;a href="http:://monkey.org/~provos/libevent/"&gt;项目地址&lt;/a&gt; 当然是通过google更简单啦&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;IO 通知模式:
-    &lt;ol&gt;
-      &lt;li&gt;边缘触发:文件描述符自 上次状态检查以来有了新的IO活动 （比如新的输入）此时需要边缘触发通知。采用边缘触发通知意味着  只有当IO事件发生时 才会收到通知，而且我们并不知道需要处理多少IO字节，所以采用边缘触发通知的程序需要按照如下规则设计:
-        &lt;ul&gt;
-          &lt;li&gt;再接收到一个IO事件通知后: 程序应该在某个时刻 在相应的文件描述符上尽可能多的执行IO，如果程序没有这么做，则可能失去执行IO 的机会，因为在另一个IO事件到达之前，程序不会再接收到通知了，前面我们说 在某个时刻 的原因在于，接收到通知时候后，可能并不适合立刻执行IO操作，更深层次的原因在于，如果我们仅对一个文件描述符进行IO操作，可能会让其他的 文件描述符处于饥饿状态。&lt;/li&gt;
-          &lt;li&gt;文件描述符需要设定为 非阻塞模式， 因为 第一条，每次IO操作需要进行尽可能多的IO操作&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;水平触发: 如果文件描述符上可以非阻塞的执行IO系统调用，此时认为他已经就绪，采用水平通知时: 意味着我们可以随时检查文件描述符的就绪状态，水平触发模式允许我们在任意时刻重复检查文件描述符IO状态，没必要 每次的那个文件描述符就绪后就尽可能的执行IO操作&lt;/p&gt;
-
-        &lt;table&gt;
-          &lt;thead&gt;
-            &lt;tr&gt;
-              &lt;th style="text-align: left"&gt;IØ 模式&lt;/th&gt;
-              &lt;th style="text-align: left"&gt;水平触发&lt;/th&gt;
-              &lt;th&gt;边缘触发&lt;/th&gt;
-            &lt;/tr&gt;
-          &lt;/thead&gt;
-          &lt;tbody&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;select, poll&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;支持&lt;/td&gt;
-              &lt;td&gt;不支持&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;信号驱动 IO&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;不支持&lt;/td&gt;
-              &lt;td&gt;支持&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="text-align: left"&gt;epoll&lt;/td&gt;
-              &lt;td style="text-align: left"&gt;支持&lt;/td&gt;
-              &lt;td&gt;支持&lt;/td&gt;
-            &lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;IO 多路复用:允许我们同时检查多个文件描述符， 查看其中一个是否可以执行IO操作。两个系统调用select， poll
-    &lt;ul&gt;
-      &lt;li&gt;int select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exceptfds, struct timeval * timeout):
-        &lt;ul&gt;
-          &lt;li&gt;readfds: 检测输入是否就绪的文件描述符集合&lt;/li&gt;
-          &lt;li&gt;writefds: 检测输出是否就绪的文件描述集合&lt;/li&gt;
-          &lt;li&gt;exceptfds: 检测异常情况是否发生的文件描述符集合。 这里的异常情况指的是: 连接到信包模式下的伪终端主设备上的从设备状态发生了变化， 流式套接字上接受到了带外数据&lt;/li&gt;
-          &lt;li&gt;fd_set 的操作方式: 四个宏实现: fd_zero(将fdset 初始化为空)， fd_set(将文件描述符fd添加到 fdset中)， fd_clr（将文件描述符fd， 从fdset中移除）fd_isset（检查fd是否是fdset中的一员）fdset又一个最大容量限制， 常量 FD_SETSIZE 决定， 在linux通常为 1024， readfds, writefds, exceptfds 同时也是 保存结果的地方，在调用select之前， 参数需要初始化 为感兴趣的文件描述符集合。select之后 这些结构就是就绪状态的文件描述符集合了。因为参数被修改，所以再次调用select 需要保证每次重新初始化它们。fdset 对应的参数可以指定为NULL， 参数 nfds 需要设定为比所有fdset中文件描述符更大的 + 1， 来供select 过滤掉比这个值更大的文件描述符 （如果是这样的话， 岂不是 select 并没有 直接检查fdset中的 文件描述符）&lt;/li&gt;
-          &lt;li&gt;timeout: 参数控制着select 的阻塞行为
-            &lt;ul&gt;
-              &lt;li&gt;timeout指向的结构体都为 0: select不会阻塞，只是简单的轮询指定的文件描述符集合，是否存在就绪的文件描述就立刻返回&lt;/li&gt;
-              &lt;li&gt;NULL:select会一直阻塞 直到下面的事件发生: 1）readfds, writefds， exceptfds 种植定的文件描述符中至少有一个 成为就绪状态， 2） 该调用 被信号处理函数中断， 3） timeout 中指定的时间上线超时&lt;/li&gt;
-              &lt;li&gt;Linux 无论 select因为一个或多个文件描述符就绪而返回 或者 被信号中断 返回， timeout非NULL的话，timeout指向结构体都会被修改 表示剩余的超时时间。， SUSv3 规定timeout指向的结构体只有select成功之后才有可能被修改&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;返回值:
-            &lt;ul&gt;
-              &lt;li&gt;-1: 表示有错误发生，有 EBADF 表示readfds,writefds,exceptfds  中又一个文件描述非法， EINTR 表示被信号处理器中断&lt;/li&gt;
-              &lt;li&gt;0: 表示 任何文件描述符成为就绪状态前 select调用已经超时， 其中fdset的参数都会被清空&lt;/li&gt;
-              &lt;li&gt;&amp;gt; 0: 表示处于就绪态的文件描述符个数， 如果一个文件描述符 在readfds, writefds, exceptfds中存在多次，则会被多次统计， 即 数值表示的， 3个fdset中的就绪状态的文件描述符之和&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;int poll(struct  pollfd fds[], nfds_t nfds, int timeout): struct pollfd {int fd; short events; short revents; }
-        &lt;ul&gt;
-          &lt;li&gt;pollfd 结构体中 的events &amp;amp; revents 字段都是 位掩码， 调用者厨师胡嘉爱events来之定需要为描述符fd做检查的事件， poll 返回时， revents 被设定为 该文件描述符实际上发生的事件&lt;/li&gt;
-          &lt;li&gt;events 0: 表示对该文件描述符上的事件 不感兴趣，同时 revents字段总是返回0， fd 设定一个负值 会产生同样的效果， 两种方法都可以用来关闭对单个文件描述符的检查&lt;/li&gt;
-          &lt;li&gt;timeout 设定了 poll的阻塞行为，如下:
-            &lt;ul&gt;
-              &lt;li&gt;-1 : poll会一直阻塞知道fds数组中列出的文件描述符有一个达到就绪态 或者 捕获到一信号&lt;/li&gt;
-              &lt;li&gt;0: poll 不会一直阻塞，只是检查是否有处于就绪态的 文件描述符&lt;/li&gt;
-              &lt;li&gt;&amp;gt; 0: poll 至多阻塞timeout毫秒，直到fds 列表中 的文件描述符有一个达到就绪态， 或者 捕获到一个信号&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;返回值:
-            &lt;ul&gt;
-              &lt;li&gt;-1 表示有有错发生， 一种可能的错误为 EINTR, 表示该调用被一个信号处理器中断， 并且poll 不会自动恢复&lt;/li&gt;
-              &lt;li&gt;0 表示 在文件描述符就绪之前超时了&lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;&amp;gt; 0: 表示就绪态的 pollfd 结构体数量 （比较于 select， 这里并不会出现重复统计的问题）&lt;/p&gt;
-
-                &lt;table&gt;
-                  &lt;thead&gt;
-                    &lt;tr&gt;
-                      &lt;th style="text-align: left"&gt;位掩码&lt;/th&gt;
-                      &lt;th style="text-align: left"&gt;events 中的输入&lt;/th&gt;
-                      &lt;th style="text-align: left"&gt;返回 revents&lt;/th&gt;
-                      &lt;th style="text-align: left"&gt;描述&lt;/th&gt;
-                    &lt;/tr&gt;
-                  &lt;/thead&gt;
-                  &lt;tbody&gt;
-                    &lt;tr&gt;
-                      &lt;td style="text-align: left"&gt;POLLIN&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;可读取非高优先级的数据&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                      &lt;td style="text-align: left"&gt;POLLRDNORM&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;等同于POLLIN&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                      &lt;td style="text-align: left"&gt;POLLRDBAND&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;可读取优先级数据 （linux中不使用）&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                      &lt;td style="text-align: left"&gt;POLLPRI&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;可读取高优先级数据&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                      &lt;td style="text-align: left"&gt;POLLRDHUP&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;对端套接字关闭&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                      &lt;td style="text-align: left"&gt;POLLOUT&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;普通数据可写&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                      &lt;td style="text-align: left"&gt;POLLWARNORM&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;等同于 pollout&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                      &lt;td style="text-align: left"&gt;POLLWRBAND&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;优先级数据可写入&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                      &lt;td style="text-align: left"&gt;POLLERR&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;有错误发生&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                      &lt;td style="text-align: left"&gt;POLLHUP&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;出现挂断&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                      &lt;td style="text-align: left"&gt;POLLNVAL&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;文件描述符未打开&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                      &lt;td style="text-align: left"&gt;POLLMSG&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;*&lt;/td&gt;
-                      &lt;td style="text-align: left"&gt;Linux中不使用&lt;/td&gt;
-                    &lt;/tr&gt;
-                  &lt;/tbody&gt;
-                &lt;/table&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;文件描述符何时就绪？: select 使用简单的 w（可写）， r（可读）， x （异常）poll， 使用revents 的位掩码
-        &lt;ul&gt;
-          &lt;li&gt;普通文件 select总是标记为可读可写， 对于poll来说 则在revents中返回 POLLIN | POLLOUT （因为read总是立即返回数据， write 总是立刻传送数据）&lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;管道和FIFO:&lt;/p&gt;
-
-            &lt;table&gt;
-              &lt;thead&gt;
-                &lt;tr&gt;
-                  &lt;th style="text-align: left"&gt;管道中有数据？&lt;/th&gt;
-                  &lt;th style="text-align: left"&gt;写端打开了吗？&lt;/th&gt;
-                  &lt;th style="text-align: left"&gt;select&lt;/th&gt;
-                  &lt;th style="text-align: left"&gt;Poll&lt;/th&gt;
-                  &lt;th&gt; &lt;/th&gt;
-                &lt;/tr&gt;
-              &lt;/thead&gt;
-              &lt;tbody&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;否&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;否&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;r&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;pollhup&lt;/td&gt;
-                  &lt;td&gt; &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;是&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;是&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;r&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;pollin&lt;/td&gt;
-                  &lt;td&gt; &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;是&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;否&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;r&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;pollin&lt;/td&gt;
-                  &lt;td&gt;pollhup&lt;/td&gt;
-                &lt;/tr&gt;
-              &lt;/tbody&gt;
-            &lt;/table&gt;
-
-            &lt;p&gt;一些UNIX 实现中，如果管道写端是关闭状态，那么poll 返回POLLIN （因为read遇到的结尾） 可移植性的程序应该同时检查 两个标志 来知道read 是否阻塞了&lt;/p&gt;
-
-            &lt;table&gt;
-              &lt;thead&gt;
-                &lt;tr&gt;
-                  &lt;th style="text-align: left"&gt;有 PIPE_BUF 个字节空间吗？&lt;/th&gt;
-                  &lt;th style="text-align: left"&gt;读端打开了吗？&lt;/th&gt;
-                  &lt;th style="text-align: left"&gt;select&lt;/th&gt;
-                  &lt;th style="text-align: left"&gt;Poll&lt;/th&gt;
-                  &lt;th&gt; &lt;/th&gt;
-                &lt;/tr&gt;
-              &lt;/thead&gt;
-              &lt;tbody&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;否&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;否&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;W&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;pollerr&lt;/td&gt;
-                  &lt;td&gt; &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;是&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;是&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;W&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;pollout&lt;/td&gt;
-                  &lt;td&gt; &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;是&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;否&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;W&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;pollout&lt;/td&gt;
-                  &lt;td&gt;pollerr&lt;/td&gt;
-                &lt;/tr&gt;
-              &lt;/tbody&gt;
-            &lt;/table&gt;
-
-            &lt;p&gt;一些UNIX 实现中，如果管道读端是关闭状态，那么poll 返回POLLOUT、POLLHUP 可移植性的程序应该同时检查 三个标志 来知道read 是否阻塞了&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;套接字上面的表现&lt;/p&gt;
-
-            &lt;table&gt;
-              &lt;thead&gt;
-                &lt;tr&gt;
-                  &lt;th style="text-align: left"&gt;有 PIPE_BUF 个字节空间吗？&lt;/th&gt;
-                  &lt;th style="text-align: left"&gt;select&lt;/th&gt;
-                  &lt;th style="text-align: left"&gt;Poll&lt;/th&gt;
-                &lt;/tr&gt;
-              &lt;/thead&gt;
-              &lt;tbody&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;有输入&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;r&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;pollin&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;有输出&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;w&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;pollout&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;监听套接字上建立连接&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;r&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;pollin&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;接收到带外数据&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;x&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;pollpri&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                  &lt;td style="text-align: left"&gt;流套接字的对端关闭连接 或执行了shutdown(SHUT_WR)&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;rw&lt;/td&gt;
-                  &lt;td style="text-align: left"&gt;pollin | pollout | pollrdhup&lt;/td&gt;
-                &lt;/tr&gt;
-              &lt;/tbody&gt;
-            &lt;/table&gt;
-
-            &lt;p&gt;Linux专有的pollrdhup标志， 实际上是epollrdhup，主要设计用于epoll api 的边缘触发模式下， 当流式套接字连接远端关闭了写连接时候会返回该标志，能够让采用了epoll 边缘触发模式的应用程序 更简单的判断远端是否已经关闭&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;select vs poll
-        &lt;ul&gt;
-          &lt;li&gt;实现: 都使用了相同的内核poll例程集合， 这些poll例程有别于系统调用poll本身，每个例程 都返回 有关单个文件描述符就绪的信息， 这个就绪信息以位掩码的形式返回，其数值类似于 poll 系统调用中的 revents字段。系统调用的实现包括为每个文件描述符 调用内核poll 例程， 并将结果处理成 系统调用 的返回结果&lt;/li&gt;
-          &lt;li&gt;区别:
-            &lt;ol&gt;
-              &lt;li&gt;被检查文件描述符的数量限制: select 对于被检查的文件描述符有一个上限 限制， 在Linux上，这个上限默认为1024， 修改上限需要重新编译程序，poll 在数量上没有限制&lt;/li&gt;
-              &lt;li&gt;select 参数宏 fdset 同时也是 返回调用结果的地方， 如果需要在循环中 重复调用select， 那么我们每次都需要 重新初始化 fdset， 而poll 则不需要，因为 其通过两个独立的字段，events， revents&lt;/li&gt;
-              &lt;li&gt;select 提供的超时精度 （微秒） 比 poll 提供的超时精度（毫秒）要高 （当然都受到  软件时钟粒度的限制）&lt;/li&gt;
-              &lt;li&gt;被检查的一个文件描述符关闭了， poll会准确的告知 哪一个文件描述符， select只会返回 -1， 设定错误码为EBADF （只能通过轮询调用错误码来识别是哪个文件关闭了）&lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-          &lt;li&gt;问题: 两个系统调用 是可移植的、长期存在 并被广泛使用的。但是在检查大量的文件描述符时，都会存在性能问题, 问题的原因如下:
-            &lt;ul&gt;
-              &lt;li&gt;每次调用 select， poll，内核都必须检查所有被指定的文件描述符&lt;/li&gt;
-              &lt;li&gt;系统调用中参数的传递； select poll 每次都必须 传递所有需要被检查的文件描述符 信息到内核中，内核检查之后，修改这些结构返回给调用者，当需要检查大量的文件描述时，从用户空间到内核空间的数据拷贝 寄哪个占用大量的CPU时间。对于select 来说，还必须在每次调用前，对数据结构进行初始化。&lt;/li&gt;
-              &lt;li&gt;系统调用返回后，需要 遍历结构中的每个元素，来确定就绪的文件描述符&lt;/li&gt;
-              &lt;li&gt;根本原因在于 API的局限性: 通常程序会重复调用这些系统调用，并且其检查的文件描述符都是相同的，可是内核并不会记录这些&lt;/li&gt;
-              &lt;li&gt;每次请求跟主动通知，的对象、消息 构造的依赖关系、编程模式，造就了 性能上的根本表现&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;信号驱动IO: 在信号驱动中，进程请求内核 在 文件描述符可执行IO 操作时为进程发送一个信号，之后 进程 就可以通过信号处理器 来 得知 文件描述符的变化
-        &lt;ul&gt;
-          &lt;li&gt;使用信号驱动的程序 应该按照如下方式 来编程:
-            &lt;ol&gt;
-              &lt;li&gt;为内核发送的通知信号安装一个信号处理器， 默认情况下， 该信号为 SIGIO&lt;/li&gt;
-              &lt;li&gt;设定进程成为文件描述符的属主(通过fcntl 来完成). 文件描述符的属主: 当文件描述符上可执行IO 时 会接收到信号通知的进程 或进程组&lt;/li&gt;
-              &lt;li&gt;设定 O_NONBLOCK 是文件描述符成为非阻塞IO&lt;/li&gt;
-              &lt;li&gt;设定 O_ASYNC 标志 使能 信号驱动 (同上 使用fcntl 来进行操作)&lt;/li&gt;
-              &lt;li&gt;进程可以执行其他任务， 当IO操作就绪，内核为进程发送一个信号后执行安装好的信号处理器&lt;/li&gt;
-              &lt;li&gt;信号驱动IO为边缘触发通知， 意味着 当进程接收到IO就绪通知，需要尽可能多的执行IO操作（读写更多的字节）直到 IO 返回的错误码 为EAGAIN, EWOULDBLOCK为止&lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-          &lt;li&gt;何时发送 IO就绪 信号:
-            &lt;ol&gt;
-              &lt;li&gt;管道， FIFO 读端， 在以下情况会产生信号:
-                &lt;ul&gt;
-                  &lt;li&gt;数据写入到管道中&lt;/li&gt;
-                  &lt;li&gt;管道的写端关闭&lt;/li&gt;
-                &lt;/ul&gt;
-              &lt;/li&gt;
-              &lt;li&gt;管道， FIFO 写端， 在以下情况会产生信号:
-                &lt;ul&gt;
-                  &lt;li&gt;对管道的、读操作增加了管道中的空余空间大小， 因此可以写入PIPE_BUF 个字节，而不会被阻塞&lt;/li&gt;
-                  &lt;li&gt;管道的读端关闭&lt;/li&gt;
-                &lt;/ul&gt;
-              &lt;/li&gt;
-              &lt;li&gt;套接字:
-                &lt;ul&gt;
-                  &lt;li&gt;数据报
-                    &lt;ul&gt;
-                      &lt;li&gt;一个数据数报文 到达 套接字 （即使已经存在未读取的数据报文）&lt;/li&gt;
-                      &lt;li&gt;套接字上发生了异步错误&lt;/li&gt;
-                    &lt;/ul&gt;
-                  &lt;/li&gt;
-                  &lt;li&gt;流式套接字
-                    &lt;ul&gt;
-                      &lt;li&gt;监听套接字上 接收到了新的连接&lt;/li&gt;
-                      &lt;li&gt;TCP connect 请求完成，对于UNIX domain 不会产生信号&lt;/li&gt;
-                      &lt;li&gt;套接字上接收到了新的输入 （即便已经有未读取的数据存在）&lt;/li&gt;
-                      &lt;li&gt;套接字对端使用了shutdown关闭了写连接（半关闭），或者close 完全关闭&lt;/li&gt;
-                      &lt;li&gt;套接字上输出就绪&lt;/li&gt;
-                      &lt;li&gt;套接字上发生了异步错误
-                        &lt;ul&gt;
-                          &lt;li&gt;优化信号驱动IO: 对比 select， 检查大量的 文件描述符时，具有显著的性能优势， 之所以能够达到这么高的性能是因为内核  记录 了需要检查的文件描述符， 且当IO事件实际发生时 才会向程序 发送信号， 结果就是 采用 信号驱动IO的程序性能呢个可以根据饿发生IO事件的数量来扩展， 而与被检查文件描述的数量无关. 优化使用IO的 操作:&lt;br /&gt;
-     1. 专属LInux的fcntl(F_SETFIG) 来之定一个实时信号， 当文件描述符上的IO就绪时， 这个信号 被取代 SIGIO 发送&lt;br /&gt;
-     2. 使用sigaction 为上一步指定的 SA_SIGINFO 信号 安装信号处理器 使用siginfo 来代替 sigio 是必须的， 原因有 : 1）signio是标准的非排队信号之一， 如果有多个IO事件通知，sigio被阻塞了（比如 第一个信号处理器执行中）导致后续的通知会丢失，如果指定一个 SIGINFO 实时信号，那么多个通知就能够排队处理， 2）使用sigaction 来安装信号处理器， 且在sa.sa_flags = SA_SIGINFO 时候，内马尔结构体siginfo_t 会作为第二个参数传递给信号处理器，这个结构体包含了 哪个文件描述符发生的事件 以及事件类型 (对于IO就绪事件，传递给信号处理器的结构相关字段如下: si_signno: 引发信号处理器得到调用的信号值， si_fd: 发生IIO事件的文件描述符， si_code: 发生事件类型 的 代码，si_band: 一个位掩码同系统调用poll中revents相同， 与si_code 一一对应)&lt;br /&gt;
-     3. 在一个纯粹的 输入驱动的应用程序中， 我们可以阻塞 IO就绪 信号，通过sigwaitinfo,sigtimedwait 来接收 排队中的信号，返回的 signinfo_t 结构体一样。以这种方式接受喜好，实际上是在同步处理IO事件， 对比与 select poll, 这种方式依然可以有效的获取IO事件&lt;br /&gt;
-     4. 信号驱动IO中 有排队信号溢出的风险，导致我们会失去一些IO的信号消息，一个好的设计应该是， 同时对 SIGIO 设定信号处理器，在处理器中 通过sigwaitinfo 将队列中的实时信号全部获取，然后临时切换到 select, poll，来处理剩余的IO事件的文件描述符 （？这里为什么这么做？ 需要了解信号相关的处理机制以及 系统调用 sigwaitinfo）&lt;br /&gt;
-     5. 多线程中使用信号驱动IO: fcntl 可以指定一个线程 来作为IO就绪信号的接受者&lt;/li&gt;
-                        &lt;/ul&gt;
-                      &lt;/li&gt;
-                    &lt;/ul&gt;
-                  &lt;/li&gt;
-                &lt;/ul&gt;
-              &lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-          &lt;li&gt;epoll 编程接口
-            &lt;ul&gt;
-              &lt;li&gt;优点有: 1） 当检查大量的文件描述符时，epoll的性能延展性比select和poll高很多， 2） epoll API 同时支持 水平触发、边缘触发， 3）比较于信号驱动IO: 可以避免复杂的信号处理流程、更高的灵活性，可以指定我们希望检查的事件类型&lt;/li&gt;
-              &lt;li&gt;epoll 的核心数据结构为 epoll实例， 他和一个打开的文件描述符相关联，但是该文件描述并不是用来做IO使用的。踏实内核数据结构的句柄，该内核数据结构 记录了: 1）在进程中声明过 感兴趣的 文件描述符列表(interest list) 2) 维护了处于IO就绪态的 文件描述符列表 (ready list)&lt;/li&gt;
-              &lt;li&gt;使用方法:
-                &lt;ol&gt;
-                  &lt;li&gt;int epoll_create(int size): 系统调用 创建了一个epoll 实例，其中感兴趣的列表初始化为空。调用返回 新创建 的epoll 实例的文件描述符（后续的几个函数调用都操作该文件描述符，无用时，应该close该文件描述符， 当所有与epoll实例相关的文件描述符都被关闭时，实例销毁 （当使用fork， dup等导致epoll的文件描述符存在多个时））。其中size有些鸡肋，指定了我们想要使用epoll 感兴趣文件描述的个数，但是该参数并不是上线，而是可以动态增加的，size的作用在于告知内核为内部数据结构初始化内存大小。&lt;/li&gt;
-                  &lt;li&gt;int epoll_ctl(int epfd, int op, int fd, struct epoll_event * ev): 修改epoll的兴趣列表，epfd 为上个调用产生的 文件描述符， fd 为感兴趣的文件描述符，该文件描述符甚至可以是另一个epoll的实例的文件描述符（因为可以构建一个层级的 关系）�但是不能是普通文件的描述符。 op的可选项如下:
-                    &lt;ul&gt;
-                      &lt;li&gt;EPOLL_CTL_ADD: 添加 fd到， epoll实例的感兴趣列表中，其感兴趣的事件，都指定在了ev的结构体中 （添加一个已经存在的感兴趣文件描述符 出现eexist 错误）&lt;/li&gt;
-                      &lt;li&gt;EPOLL_CTL_MOD: 修改 文件描述符 fd上的事件结构，（不存在于感兴趣文件描述符中 出现enoent错误）&lt;/li&gt;
-                      &lt;li&gt;EPOLL_CTL_DEL: 将fd从epoll实例的感兴趣列表中移除， 操作忽略ev参数&lt;/li&gt;
-                      &lt;li&gt;ev的结构如下:
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;  &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;epoll_event&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kt"&gt;uint32_t&lt;/span&gt; &lt;span class="n"&gt;events&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// epoll的位掩码，指定了我们感兴趣的事件集合，
-&lt;/span&gt;    &lt;span class="n"&gt;epoll_data_t&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// data 是一个联合体(union) ， 当fd成为就绪态，该联合体被传递给调用进程
-&lt;/span&gt;  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-                      &lt;li&gt;max_user_watches: 每个epoll实例感兴趣的文件描述符 都需要占用内核空间（一小段不能被交换的内核内存空间？）内核提供了一个接口用来定义可以注册到 epoll实例上的文件描述符总数（每个用户or每个进程？）可以通过 max_user_watches 来修改和查看。Linux系统的 /proc/sys/fd/epoll 目录下的一个文件（是否可以修改？）&lt;/li&gt;
-                    &lt;/ul&gt;
-                  &lt;/li&gt;
-                  &lt;li&gt;int epoll_wait(int epdf, struct epoll_evnet * evlist, int maxevents, int timout): 返回epoll实例中处于就绪态的文件描述符。evlist 是一个包含 有关就绪态文件描述符的数组([epoll_event]) 其内存空间由 调用者 负责申请，maxevents 为 evlist中包含的元素大小。返回的ep_events中的 events 为已经发生的事件掩码，data字段为 添加到epoll 实例感兴趣列表中时候 的ev 结构中的data，data 结构体用来获取 就绪文件描述，所以在 添加到感兴趣列表中 应该 指定ev.data.fd 为文件描述符或者 ev.data.ptr 来获取到文件描述符。参数 timetout， -1 调用一直阻塞到直到有就绪态文件描述符时，返回， 0: 执行一次非阻塞检查，查看感兴趣列表中是否有有就绪态的文件描述符， &amp;gt; 0: 阻塞调用最多等待 timeout 毫秒，否则超时。 因为epoll实例为文件描述符，所以可以实时更新 感兴趣列表， 无论是在多线程、多进程中&lt;/li&gt;
-                  &lt;li&gt;
-                    &lt;p&gt;epoll事件:&lt;/p&gt;
-
-                    &lt;table&gt;
-                      &lt;thead&gt;
-                        &lt;tr&gt;
-                          &lt;th style="text-align: left"&gt;bit mask&lt;/th&gt;
-                          &lt;th style="text-align: left"&gt;epoll_ctl 输入？&lt;/th&gt;
-                          &lt;th style="text-align: left"&gt;epoll_wait返回?&lt;/th&gt;
-                          &lt;th style="text-align: left"&gt;desc&lt;/th&gt;
-                        &lt;/tr&gt;
-                      &lt;/thead&gt;
-                      &lt;tbody&gt;
-                        &lt;tr&gt;
-                          &lt;td style="text-align: left"&gt;epollin&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;-&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;-&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;可读取非高优先级的数据&lt;/td&gt;
-                        &lt;/tr&gt;
-                        &lt;tr&gt;
-                          &lt;td style="text-align: left"&gt;epollPRI&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;-&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;-&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;可读取高优先级数据&lt;/td&gt;
-                        &lt;/tr&gt;
-                        &lt;tr&gt;
-                          &lt;td style="text-align: left"&gt;epollRDHUP&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;-&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;-&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;套接字对端关闭&lt;/td&gt;
-                        &lt;/tr&gt;
-                        &lt;tr&gt;
-                          &lt;td style="text-align: left"&gt;epollOUT&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;-&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;-&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;普通数据可写&lt;/td&gt;
-                        &lt;/tr&gt;
-                        &lt;tr&gt;
-                          &lt;td style="text-align: left"&gt;epolllet&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;-&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt; &lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;边缘触发事件通知&lt;/td&gt;
-                        &lt;/tr&gt;
-                        &lt;tr&gt;
-                          &lt;td style="text-align: left"&gt;epolloneshot&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;-&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt; &lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;在完成事件通知之后禁用检查&lt;/td&gt;
-                        &lt;/tr&gt;
-                        &lt;tr&gt;
-                          &lt;td style="text-align: left"&gt;epollerr&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt; &lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;-&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;有错误发生&lt;/td&gt;
-                        &lt;/tr&gt;
-                        &lt;tr&gt;
-                          &lt;td style="text-align: left"&gt;epollhup&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt; &lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;-&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;出现挂断&lt;/td&gt;
-                        &lt;/tr&gt;
-                      &lt;/tbody&gt;
-                    &lt;/table&gt;
-                  &lt;/li&gt;
-                &lt;/ol&gt;
-
-                &lt;p&gt;epolloneshot 比较奇怪: 指定之后 只会收到一次 该文件描述符的通知， 之后该文件描述符被标记为非激活状态，意味着之后的epoll_wait 再也不会收到该文件描述符的通知，需要 EPOLL_CTL_MOD 在此激活才可以恢复 (不能使用 EPOLL_CTL_ADD 因为 该文件描述符依然在epoll 中的感兴趣列表中)&lt;/p&gt;
-                &lt;ol&gt;
-                  &lt;li&gt;epoll 文件描述符: 通过 epoll_create 创建一个epoll实例， 内核会创建相应的i-node 以及对应的 系统级别的 文件描述符，随后在 调用进程中 创建新的文件描述符， 同epoll实例的兴趣列表相关联的 是系统级的文件描述，而不是 epoll文件描述符， 这将产生如下的现象:
-                    &lt;ul&gt;
-                      &lt;li&gt;dup 或 fork 复制一个epoll文件描述，那么复制后的文件描述符所指代的epoll兴趣列表 同 epoll的文件描述符一样，一端的epoll操作同步到另一端&lt;/li&gt;
-                      &lt;li&gt;epoll 兴趣列表中的成员 同样在只有完全关闭（所有的进程级别的文件描述符都关闭）之后才会从 epoll的兴趣列表中自动移除&lt;/li&gt;
-                    &lt;/ul&gt;
-                  &lt;/li&gt;
-                  &lt;li&gt;
-                    &lt;p&gt;与select， poll 的性能对比 (随着 被监控（感兴趣）的文件描述符数量的上升， select poll的性能 表现越来越差，而epoll的性能表现表现几乎没有降低)&lt;/p&gt;
-
-                    &lt;table&gt;
-                      &lt;thead&gt;
-                        &lt;tr&gt;
-                          &lt;th style="text-align: left"&gt;感兴趣的文件描述符数量&lt;/th&gt;
-                          &lt;th style="text-align: left"&gt;poll CPU 时间(s)&lt;/th&gt;
-                          &lt;th style="text-align: left"&gt;select CPU 时间(s)&lt;/th&gt;
-                          &lt;th style="text-align: left"&gt;epoll CPU 时间(s)&lt;/th&gt;
-                        &lt;/tr&gt;
-                      &lt;/thead&gt;
-                      &lt;tbody&gt;
-                        &lt;tr&gt;
-                          &lt;td style="text-align: left"&gt;10&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;0.61&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;0.73&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;0.41&lt;/td&gt;
-                        &lt;/tr&gt;
-                        &lt;tr&gt;
-                          &lt;td style="text-align: left"&gt;100&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;2.9&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;3.0&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;0.42&lt;/td&gt;
-                        &lt;/tr&gt;
-                        &lt;tr&gt;
-                          &lt;td style="text-align: left"&gt;1000&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;35&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;35&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;35&lt;/td&gt;
-                        &lt;/tr&gt;
-                        &lt;tr&gt;
-                          &lt;td style="text-align: left"&gt;10000&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;990&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;930&lt;/td&gt;
-                          &lt;td style="text-align: left"&gt;0.66&lt;/td&gt;
-                        &lt;/tr&gt;
-                      &lt;/tbody&gt;
-                    &lt;/table&gt;
-                  &lt;/li&gt;
-                  &lt;li&gt;epoll 性能为什么会更好？:
-                    &lt;ul&gt;
-                      &lt;li&gt;与select， poll相比 每次需要检查所有 在调用中指定的文件描述符， 通过epoll_ctl 添加文件描述符 到epoll感兴趣的文件描述符列表之后，每当执行IO操作使得 文件描述符成为就绪态时，内核就在epoll描述符的就绪列表中 添加一个元素， 之后epoll_wait 调用从 就绪列表中简单的读取这些数据&lt;/li&gt;
-                      &lt;li&gt;每次调用select poll时，我们传递所有需要监视的文件描述符列表 到内核中，内核将所有 标记为就绪态的文件描述符 数据传递过来。epoll 使用epoll_ctl 在内核空间中构建一个数据结构， 该数据结构记录 感兴趣的文件描述符，之后调用epoll_wait 并不需要传递 文件描述符相关的数据&lt;/li&gt;
-                      &lt;li&gt;select poll 随着被监视文件描述符的数量 而扩展，epoll则随着 发生IO事件 文件描述符 的数量而扩展。常见的高效的服务器 会同步处理许多的客户端，需要监视大量的文件描述符，但是大部分处于空闲状态，只有少数文件描述符处于就绪态&lt;/li&gt;
-                    &lt;/ul&gt;
-                  &lt;/li&gt;
-                  &lt;li&gt;边缘触发通知: 默认情况下， epoll提供的为水平出发通知，意味着 何时 在文件描述 上非阻塞的执行IO操作。epoll还能够采用同信号驱动IO一样的模式即是: 边缘触发通知。只是如果 有多个IO事件发生的话，epoll会合并成一次单独的通知，并通过epoll_wait返回。而信号驱动IO则会产生多个信号, 下面我们来区分一下 epoll使用 边缘触发通知 与 水平触发通知 在同样场景下的 区别:
-                    &lt;ol&gt;
-                      &lt;li&gt;套接字上有输入到来&lt;/li&gt;
-                      &lt;li&gt;我们调用一次epoll_wait, 无论采用水平触发通知，还是边缘触发通知，该调用 都会告诉我们套接字上已经处于就绪态态&lt;/li&gt;
-                      &lt;li&gt;再次调用epoll_wait, 水平触发情况下: 套接字处于就绪态， 边缘触发情况下: 调用将阻塞，因为自从上一次之后并没有新的请求输入到来&lt;/li&gt;
-                    &lt;/ol&gt;
-                  &lt;/li&gt;
-                  &lt;li&gt;边缘触发通知 如何避免出现文件描述符饥饿现象: 监视多个文件描述符，其中一个处于就绪态的文件描述符有这大流量的输入存在，然后我们通过非阻塞方式读取所有输入，那么此时就有是其他的文件描述符存在饥饿状态的风险。即:我们再次检查这些文件描述符是否处于就绪态并执行IO操作前，会有很长一段时间， 该问题的解法是:
-                    &lt;ol&gt;
-                      &lt;li&gt;应用程序维护一个处于就绪态的文件描述符列表，通过一个循环不断处理如下&lt;/li&gt;
-                      &lt;li&gt;epoll_wait 监控文件描述符，将 就绪态的 文件描述符 添加到应用程序维护的列表中。如果&lt;br /&gt;
- 有文件描述符 已经存在于 应用程序维护的列表中，那么这次监视的超时时间设定的较小或者是0， 这样应用程序就可以快速的进行到下一步，去处理哪些已经处于就绪态的文件描述&lt;/li&gt;
-                      &lt;li&gt;在应用程序维护的列表中，轮转调度 进行一定限度的 IO操作。（不是从 上一步 epoll_wait调用中返回的 文件描述列表 遍历处理）当相关的非阻塞IO调用出现EAGAIN 或者 EWOULDBLOCK错误，从应用程序维护的列表中移除&lt;/li&gt;
-                    &lt;/ol&gt;
-                  &lt;/li&gt;
-                  &lt;li&gt;在信号和文件描述符上等待  ？ （不知道为什么会出现有关竞争的问题？）以及出现pselect 调用， self-pipe技巧&lt;/li&gt;
-                &lt;/ol&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id="问题列表"&gt;问题列表&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;DNS 负载 如何实现？&lt;/li&gt;
-  &lt;li&gt;信号 相关的设定 是如何的？ 为什么会出现 如此复杂的设计，race conditoin，&lt;/li&gt;
-  &lt;li&gt;epoll 中 一小段不能交换的内存是？新概念吗？&lt;/li&gt;
-  &lt;li&gt;epoll 的内部实现&lt;/li&gt;
-  &lt;li&gt;消息边界的概念，以及实际意义&lt;/li&gt;
-&lt;/ol&gt;
-</content>
-  </entry>
-  <entry>
-    <title>linux-interface-04</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2018/12/30/linx-interface-04/"/>
-    <id>http://geniousbar.github.io/2018/12/30/linx-interface-04/</id>
-    <published>2018-12-30T08:00:00+08:00</published>
-    <updated>2019-03-11T13:18:13+08:00</updated>
-    <summary type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
-
-&lt;h3 id="文件io-通用的io模型"&gt;文件IO 通用的IO模型&lt;/h3&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;strong&gt;文件描述符： 一个非负整数，来指代打开的文件，其中包括： 管道FIFO socket，终端 设备 普通文件&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;标准文件描述符:&lt;/p&gt;
-
-    &lt;table&gt;
-      &lt;thead&gt;
-        &lt;tr&gt;
-          &lt;th style="text-align: left"&gt;文件描述符&lt;/th&gt;
-          &lt;th style="text-align: left"&gt;用途&lt;/th&gt;
-          &lt;th style="text-align: left"&gt;名称&lt;/th&gt;
-          &lt;th style="text-align: left"&gt;stdio&lt;/th&gt;
-        &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td style="text-align: left"&gt;0&lt;/td&gt;
-     ...&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/li&gt;
-&lt;/ol&gt;</summary>
-    <content type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
-
-&lt;h3 id="文件io-通用的io模型"&gt;文件IO 通用的IO模型&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;strong&gt;文件描述符： 一个非负整数，来指代打开的文件，其中包括： 管道FIFO socket，终端 设备 普通文件&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;标准文件描述符:&lt;/p&gt;
-
-    &lt;table&gt;
-      &lt;thead&gt;
-        &lt;tr&gt;
-          &lt;th style="text-align: left"&gt;文件描述符&lt;/th&gt;
-          &lt;th style="text-align: left"&gt;用途&lt;/th&gt;
-          &lt;th style="text-align: left"&gt;名称&lt;/th&gt;
-          &lt;th style="text-align: left"&gt;stdio&lt;/th&gt;
-        &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td style="text-align: left"&gt;0&lt;/td&gt;
-          &lt;td style="text-align: left"&gt;标准输入&lt;/td&gt;
-          &lt;td style="text-align: left"&gt;STDIN_FILENO&lt;/td&gt;
-          &lt;td style="text-align: left"&gt;stdin&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td style="text-align: left"&gt;1&lt;/td&gt;
-          &lt;td style="text-align: left"&gt;标准输出&lt;/td&gt;
-          &lt;td style="text-align: left"&gt;STDOUt_FILENO&lt;/td&gt;
-          &lt;td style="text-align: left"&gt;stdout&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td style="text-align: left"&gt;2&lt;/td&gt;
-          &lt;td style="text-align: left"&gt;标准错误&lt;/td&gt;
-          &lt;td style="text-align: left"&gt;StDERR_FILENO&lt;/td&gt;
-          &lt;td style="text-align: left"&gt;stderr&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;主要的系统调用&lt;/p&gt;
-    &lt;ul&gt;
-      &lt;li&gt;open(pathname, flags, mode) open创建新文件时候， 即 flags 中包含 O_creat 标志，mode制定了文件的访问权限。flags还有许多的可选参数， 包括O_APPEND, O_ASYNC等等。&lt;/li&gt;
-      &lt;li&gt;read(fd, buffere, count), read 调用成功返回 实际读取的字节数， 如果遇到文件结束EOF 则返回0， 出席那错误 -1， 一次read 可能返回的 字节数可能小于count， fd为文件时候， 可能是文件靠近结尾，（所以文件尾部时候是不是小于count还是一个0？），fd为其他类型时候， socket， 终端，例如在终端遇到\n read调用就会结束。在有需要注意， C语言， 如果输入缓冲区， buffere 需要一个表示终止的空字符串，需要自己显示添加&lt;/li&gt;
-      &lt;li&gt;write(fd, buffer, count), write 为将buffer中的数据写入fd中，error 返回-1， 其他返回写入的字节数， 写入字节数可能小于count （进程资源对文件大小的限制，磁盘满等， 造成部分写），write成功并不能保证已经写入到文件中，而是高速缓冲区，系统会缓存磁盘IO。&lt;/li&gt;
-      &lt;li&gt;close(fd) close error -1，success 0， 文件属于有限资源，文件描述符关闭失败可能导致一个进程将资源消耗殆尽。编写长期运行的程序，比如网络服务器显得尤为重要。所以，总是显式的关闭文件描述符。&lt;/li&gt;
-      &lt;li&gt;lseek(fd, offset, whence) 改变文件偏移量。文件偏移量是下一个read， write 等的起始点。文件打开指向文件头，read, write 自动调整偏移量. whence 可选参数为 SEEK_SET, SEEK_CUR, SEEK_END, 分表表示offset的基准坐标 为 文件开始头部， 当前偏移量， 文件末尾。 offset 可以为负数 表示，向前偏移多少。调用成功返回移动之后的偏移量。可以使offset为0 来获取当前偏移量。lseek并不适合所有类型的文件，应用与管道， FIFO, socket或者终端，调用将会失败， errno 被设定为ESPIPE.&lt;/li&gt;
-      &lt;li&gt;ioctl(fd, request, ….args) 对为纳入标准IO模型的所有设备和文件操作而言，ioctl系统调用是个万金油&lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;/proc/PID/fdinfo 目录下，可以获取系统任一进程中文件描述符的相关信息。针对进程中的每一个已打开的文件描述符，该目录下都有对应的文件， 以对应的文件描述符的数值命名，其中文件中的pos为文件偏移量， flags字段 则为一个八进制数, 其格式形如&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;   pos:  0
-   flags: 02
-   mnt_id: 9
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;p&gt;&lt;em&gt;文件空洞，在 文件结尾+ offset的位置写入数据，会发生什么情况，文件结尾开始到offset 中会产生空洞。文件空洞的特点在于它并不占用磁盘空间，只有当空洞中有数据写入时候，才会分配磁盘空间。 编程角度看读取空洞返回0。空间的存在，造成 文件名义上的大小可能要比其占用的磁盘存储总量要大，当空洞被写入文件时候，内和为其分配存储空间，磁盘可用空间减少。&lt;/em&gt;&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id="深入探究文件io"&gt;深入探究文件IO&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;strong&gt;原子操作： 将某一系统调用所要完成的各个动作作为不可中断的操作，一次性加以完成, 是许多系统调用的以正确完成的必要条件&lt;/strong&gt;&lt;br /&gt;
-&lt;strong&gt;竞争状态是这样一种情形：操作共享资源的两个进程或线程，结果取决于 一个无法预期的顺序，即这些进程获取CPU使用权的先后相对顺序&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;open, 保证进程是打开文件的创建者，对文件是否存在的检查和创建文件属于同一原子操作。 flags: O_CREAT&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;fcntl: fcntl(fd, cmd,…) 该调用对一个打开的文件描述符执行一系列控制操作。用途之一: 对一个打开的文件， 获取或修改其访问模式和状态标志。通过open也可以设定，所以fcntl针对已经打开的文件描述符，1）文件不是由调用程序打开的， 2）通过open之外的系统调用获取的， 比如pipe，socket， 等。 示例代码&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;flags&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;accessMode&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
- &lt;span class="n"&gt;flags&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fcntl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;F_GETFL&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// 获取flags
-&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;flags&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-     &lt;span class="n"&gt;errExit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"fcntl"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
- &lt;span class="n"&gt;flags&lt;/span&gt; &lt;span class="o"&gt;|=&lt;/span&gt; &lt;span class="n"&gt;O_APPEND&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// operate flags
-&lt;/span&gt; &lt;span class="n"&gt;fcntl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;F_SETFL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;flags&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;// set flags   
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;p&gt;因为 O_RDONLY, OWRONLY, O_RDWR, 因为历史原因，数值为0,1,2所以不能简单的使用 &amp;amp; 来判断是否存在对应的标记位， 如下为正确的做法&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;  &lt;span class="n"&gt;accessmode&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;flags&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;O_ACCMODE&lt;/span&gt;
-  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;accessmode&lt;/span&gt; &lt;span class="o"&gt;===&lt;/span&gt; &lt;span class="n"&gt;O_WRONLY&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;accessMode&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;O_RDWR&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;accessmode&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;O_RDONLY&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-   &lt;span class="n"&gt;prinf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"xx"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/li&gt;
-  &lt;li&gt;文件描述符与文件的关系&lt;/li&gt;
-  &lt;li&gt;结构
-    &lt;ul&gt;
-      &lt;li&gt;进程级别的文件描述符，记录的标志有 close-on-exec, 并指向到系统级 文件表&lt;/li&gt;
-      &lt;li&gt;系统级 文件表： 记录了: 文件偏移量， 打开文件的状态标记（open flags）, 文件访问模式，与信号驱动IO相关的g设地年， 对该文件I-node对象的引用&lt;/li&gt;
-      &lt;li&gt;文件系统的i-node表: 文件类型，一个指针，指向该文件所持有的锁列表， 文件的各种属性（包括文件大小， 已经时间戳）。 区分与磁盘中的i-node，这里是内存的i-node， 访问文件时候，会在内存中为i-node创建一个副本，其中记录了引用i-node的打开文句柄的数量，以及所在设备的主从设备等。
-        &lt;ul&gt;
-          &lt;li&gt;[ ] 添加指向 csapp的图片&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;文件设计的这些特点，可以产生如下的总结：
-    &lt;ol&gt;
-      &lt;li&gt;两个不同文件描述符， 若指向同一个文件句柄(系统及的文件表)将共享同一个文集偏移量。通过其中一个更改偏移量，另外一个可以观察到该变化，无论两个描述符在不同进程还是统一进程，亦或线程。&lt;/li&gt;
-      &lt;li&gt;fcntl 操作的作用域 同 1相同&lt;/li&gt;
-      &lt;li&gt;对应的 文件描述符的 close-on-exec 因为存储在进程级别， 所以并不会影响到其他进程。&lt;/li&gt;
-      &lt;li&gt;cat log.log &amp;gt; result.log 2&amp;gt;&amp;amp;1 shell通过复制 文件描述符2实现了标准错误的重定向操作。因为描述符2同1指向同一个文件句柄，所以输出不会产生覆盖彼此的问题。&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;复制文件描述符
-    &lt;ul&gt;
-      &lt;li&gt;dup(int oldfd), 复制一个打开的文件描述符oldfd， 并返回一个新的描述符， 两者指向同一个文件句柄，系统保证新描述符一定是编号值最低的未用的文件描述符。意味着dup(1)会产生3&lt;/li&gt;
-      &lt;li&gt;dup2(oldfd, newfd)： 系统调用会创建oldfd的副本，编号由newfd决定， 如果newfd已经打开，会先将其关闭，然后返回newfd指定的编号的文件描述符。（所以dup2(调用了那个接口，来产生特定编号的文件描述符。)） 但是dup2关闭newfd时候会忽略错误， 所以 最好手动关闭newfd,&lt;/li&gt;
-      &lt;li&gt;pread, pwrite(fd, buf, count, offset)： 区别于 read, write的地方在于， pread, pwrite 会在指定的offset进行操作，并且不会改变文件的偏移量。这些特性是的 使得在多线程应用非常便利，多个进程可以同时操作同一个描述符。而不会互相影响。如果使用lseek， read调用引起竞争状态。使得编写正确的IO代码变得困难。&lt;/li&gt;
-      &lt;li&gt;分散输入和集中输出, (scatter-gather IO), readv, writev&lt;/li&gt;
-      &lt;li&gt;截断: truncate(char * pathname, length), ftruncate(fd, length): 若文件长度&amp;gt; length 丢弃超出部分， &amp;lt; length, 将在文件尾部添加一系列空字节或者文件空洞(版本实现比一样吗？)其中 truncat 通过字符串指定名字但是依然需要文件的写权限。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;非阻塞IO： 1) open 指定 O_NONBLOCK, 2） socket因为无法通过open来获取文件描述符， 所以需要使用fcntl来启动非阻塞标志。&lt;/li&gt;
-  &lt;li&gt;-【】大文件&lt;/li&gt;
-  &lt;li&gt;/dev/fd: 是一个连接到 /proc/PID/fd 目录的一个符号连接， 该目录中的每一个目录都连接到 /proc/PID/fd中的目录，一一对应&lt;/li&gt;
-  &lt;li&gt;临时文件：mkstemp(char * template), tmpfile(): 打开文件使用了O_EXCL 以保证独占使用文件。两者区别在于 mkstemp()之后需要unlink(char* template), 在close(fd) 之后自动删除， tmpfile 则无需调用unlink, close之后 自动删除（内部自动调用unlink）&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="进程"&gt;进程&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;进程 是可执行程序的实例&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;进程号 和 父进程号： 每个进程都有一个PID， 唯一标识 某个进程，除了少数(init PID 为1) 之外，多数程序与运行该程序的进程PID没有固定关系。 linux内核限制 进程号小于 32767,当进程号达到这个限制时候，内核将重置进程号计数器，重新从最小的整数开始分配。（进程号计数器会重置为 300， 因为 低于此数值的进程号 为系统进程和守护进程 长期占用， 关于最大进程号 默认上限是 32767,, 但是可以通过更改 /proc/sys/kernel/pid_max 来进行更改=最大值+1， 64位最大进程号为2 22次方 为什么？）getppid可以获取进程的父PID， 可以通过pstree， 来查看家族树。&lt;/li&gt;
-  &lt;li&gt;命令行参数 argc, argv：argc 表示命令行参数的个数，argv 是一个指向 命令行参数的指针数组，每一个参数指向一个以null结尾的字符串。其中argv[0] 包含了 调用程序的名称。可以为一个程序创建多个连接，然后argv[0]的名字是不同的。&lt;/li&gt;
-  &lt;li&gt;环境列表： 每个进程都有与之相关的字符串数组成为环境列表(envoriment list), 每个字符串都以 name=value 的形式定义。常常将name称为环境变量。新创建进程会继承父进程的环境副本，因为获得是副本，随意之后父子环境信息个不相关。
-    &lt;ul&gt;
-      &lt;li&gt;export NAME=value: 将NAME变量添加到shell环境中, 此后这个shell所创建的进程中都存在变量NAME&lt;/li&gt;
-      &lt;li&gt;NAME=value programe: 在应用程序 programe的环境变量中添加一个变量值，但是不影响shell&lt;/li&gt;
-      &lt;li&gt;printenv： 显示当前的环境列表&lt;/li&gt;
-      &lt;li&gt;/proc/PID/environ: 文件显示编号为PID的进程的环境列表&lt;/li&gt;
-      &lt;li&gt;getenv(char *name): 获取环境变量的数值(value), 不存在返回NULL&lt;/li&gt;
-      &lt;li&gt;putenv(char *string): 添加一个 name=value 形式字符串的环境变量，失败返回非0值。一位内putenv 添加到environ变量的是一个指针，而不是string 的副本，所以不应该在栈上分配&lt;/li&gt;
-      &lt;li&gt;setenv(char * name, char *value, overwrite): 该函数会复制 name, value。函数会自动拼接=号，overwrite ！= 0 总会写入， overwrite = 0时，存在则不写入，不存在写入&lt;/li&gt;
-      &lt;li&gt;unsetenv&lt;/li&gt;
-      &lt;li&gt;clearenv&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;ABI, 应用程序二进制接口，一套规则。 规定了二进制可执行文件在运行时应该如何与某些服务（诸如内核或函数库所提供的服务）交换信息， ABI特别规定了使用那些寄存器和栈地址交换信息以及所交换数值的含义，一旦针对某个特定ABI进行了编译，其二进制可执行文件应该能在ABI相同的任何系统上运行。与之想法，标准化的API仅能通过编译源代码来保证应用程序的可移植性。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="内存分配"&gt;内存分配&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;在堆上分配内存， 进程呢个可以通过增加堆的大小来分配内存， 堆就是一段长度可变的连续的虚拟内存，初始于 进程未初始化的数据段末尾，随着内存的分配和释放而增减。通常将堆当前内存边界成为 program break
-    &lt;ul&gt;
-      &lt;li&gt;brk(vodi * end_data_segment), sbrk(int increment), 两个系统调用可以改变 program break 的位置， 位置调升以后，程序可以访问新分配区域内的任何内存地址。内核会在进程首次访问新分配的地址时，会自动分配实际的物理内存页。brk 直接改变 program break 的地址， sbrk 增量的改变 break 地址， 在原有的 break 地址上 增加increment 的空间，函数返回之前的break地址，也就是新分配的地址空间的起始处，sbrk(0) 返回现有的 program break 地址。&lt;/li&gt;
-      &lt;li&gt;malloc(size_t size), free(void * ptr)： 库函数(建立在系统调用， brk, sbrk的基础上封装而成)，比较与系统调用， 库函数拥有不少的优点， 明显的有 &lt;strong&gt;允许随意的释放内存块，他们被维护于一张空闲的内存列表中，在后续的内存分配调用时候循环使用&lt;/strong&gt;,
-        &lt;ol&gt;
-          &lt;li&gt;malloc: 分配成功返回void* 类型指针， 因为void类型所以可以随意使用， 调用失败可能是因为program break 已经触顶，（已经没有堆空间可以分配） 则返回NULL， 虽然出错的概率很小，但是依然需要进行错误检查。&lt;/li&gt;
-          &lt;li&gt;free： 函数释放ptr所指向的内存块，一般情况下， free并不会降低 program break 的位置， 而是将该内存块放入到空闲的内存列表中，以便供后续的malloc使用。有如下的好处， 1）尽量的减少了 sbrk的系统调用此处&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;调用free还是不呢？: 当进程终止时， 所有的内存都会返回给操作系统，基于内存的这一自动释放机制，对于那些分配内存并持续使用的程序而言，可以忽略free，因为在多次调用free时候不但消耗大量的cpu时间，还是使代码趋向于复杂。&lt;/li&gt;
-      &lt;li&gt;
-        &lt;table&gt;
-          &lt;tbody&gt;
-            &lt;tr&gt;
-              &lt;td&gt;malloc, free 的实现: 数据结构为 双向链表， len&lt;/td&gt;
-              &lt;td&gt;pre&lt;/td&gt;
-              &lt;td&gt;next&lt;/td&gt;
-              &lt;td&gt;space&lt;/td&gt;
-              &lt;td&gt;其中len 表示该空闲内存块 的大小， pre,next 为双向链表指针，指向上一个下一个空闲内存块， space为空闲内存&lt;/td&gt;
-            &lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
-        &lt;ol&gt;
-          &lt;li&gt;malloc(size_t size) 会扫描空闲链表，以找到适合大小的内存块
-            &lt;ul&gt;
-              &lt;li&gt;空闲链表中的len == size 时，则直接返回给z调用者&lt;/li&gt;
-              &lt;li&gt;len &amp;gt; size: 对其切割（将会出现一个合适大小的内存块+一个空闲的内存块）&lt;/li&gt;
-              &lt;li&gt;len &amp;lt; size: 没有找到符合要求的内存块时，调用sbrk 重新分配适合的内存块（为了更少的系统调用sbrk, 通常mallock 会以更大的increment 调用sbrk ）&lt;/li&gt;
-              &lt;li&gt;更新 空闲块链表&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;free(void * ptr) : free函数通过 ptr 内存块中 len来知道内存块大小，然后加入到 空闲块链表中。&lt;/li&gt;
-          &lt;li&gt;因为free， malloc的实现导致， 1）ptr指针需要完全正确，以避免对空闲链表的错误操作。（非malloc返回的指针，绝不能调用free）， 2）不能重复释放同一个指针&lt;/li&gt;
-          &lt;li&gt;除了mallock, C函数库还提供了其他的 内存分配算法版本的 内存分配函数实现。 calloc, realloc, memalign, posix_memalign, alloca（该函数从栈上分配内存，因为栈的特殊性使其有两个特点 1）只有当调用函数的位于顶部时候可用 2）不需要free， 因为函数返回时代码会重置栈指针。）&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="用户和组"&gt;用户和组&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;每个用户都存在唯一的UID， 并可以归属于多个GID&lt;/li&gt;
-  &lt;li&gt;UID， GID 的主要用途有 1）确定各种系统资源的所有权， 2）对进程的操作资源的权限加以控制&lt;/li&gt;
-  &lt;li&gt;/et/passwd, 用于记录用户相关的UID， home, shell etc等。 /etc/shadow 维护对应UID的加密密码。组文件 /etc/group, 维护GID， 以及对应的用户列表，&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="进程凭证"&gt;进程凭证&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;每个进程都有一套数字表示UID和GID 具体如下：
-    &lt;ol&gt;
-      &lt;li&gt;real user id, real group id, 实际用户id，实际组id， 确定了进程所属的用户和组，作为登陆过程之一，登陆shell 从/etc/passwd中读取相应用户密码记录的3，4字段，设定为其实际用户id &amp;amp; 组id，当创建进程时，将从父进程中继承这些&lt;/li&gt;
-      &lt;li&gt;effective user id, effective group id, 有效用户id， 有效组id。 系统通常通过结合有效用户id，组id 连同辅助组id 来授予进程权限。&lt;/li&gt;
-      &lt;li&gt;saved user id, saved group id, 保存的用户id， 保存的组id&lt;/li&gt;
-      &lt;li&gt;file-system user id, file-system group id, 文件系统用户id， 文件系统组id&lt;/li&gt;
-      &lt;li&gt;辅助组id&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;set-user-id, set-group-id 程序， set-user-id 程序会将进程的有效用户id设为可执行文件的用户id， 从而获得不具备的权限。set-group-id 程序有类似的效果。可执行文件拥有两个特别的权限位 set-user-id和set-group-id位，（实际上所有文件都有，只有可执行文件比较有用）ls -l program, x 变成 代表 拥有set-user-id or set-group-id. 当运行set-user-id程序时候，内核会将进程的有效用户id变为可执行文件的用户id， set-group-id 执行类似的操作。 linux系统中常用的passwd, mount, unmount, wall(用户向tty组下所有终端写入消息)等都为set-user-id程序(set-user-id-root 来特指 root用户所拥有的 set-user-id 程序)&lt;/li&gt;
-  &lt;li&gt;保存用户id(saved-user-id) 当执行程序时，会发生如下事情：
-    &lt;ol&gt;
-      &lt;li&gt;可执行文件的set-user-id权限位开启，将进程等的有效用户id 设定为 可执行文件的属主，未设定则进程有效用户id不变&lt;/li&gt;
-      &lt;li&gt;复制 有效id 到 set-user-id&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;有不少的系统调用，允许将set-user-id 程序的有效用户id在实际用户id和保存set-user-id之间切换。对于与执行文件用户id相关的任何权限，程序能够随时在两种状态间切换。&lt;/li&gt;
-  &lt;li&gt;文件系统用户id： 在进行linux中 打开文件、改变文件属主 、修改文件权限之类的文件操作时，决定其操作权限的是 文件系统用户id， 而非 有效用户id。通常 文件系统用户id和组id都等于相应的有效用户和组id， 并且只要有效用户id发生变化，相应的文件系统用户id也会发生变化，只有linux特有的两个系统调用setfsuid(), setfsgid()才能刻意的制造出 文件系统用户id 不等于 有效用户id。因此   大部分情况下，可以忽视文件系统用户id，等同于检查 有效用户id&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;[ ] 完成对应的系统调用&lt;/li&gt;
-  &lt;li&gt;[ ] 如何在进程中调用 特权程序?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id="时间"&gt;时间&lt;/h2&gt;
-&lt;p&gt;大多数计算机体系结构都内置有硬件始终，是的内核得以计算真实时间和进程时间。&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;日历时间: Unix 系统内部对时间的表示，以 Epoch以来的秒数来度量（UTC 时间）。存储于time_t类型的变量中。（time_t是一个有符号整数 理论上当前许多的32位unix系统都面临着一个2038 的理论问题，如果执行的计算工作涉及到未来时间，那么在2038年问题都会出现，事实上在此之前所有的unix系统可能都已经升级到了64位系统，然而32位嵌入式系统的寿命要长的多，依然面临着这个问题）
-    &lt;ul&gt;
-      &lt;li&gt;gettimeofday(timeval *tv, timezone *tz): struct timeval { time_t tv_sec; suseconds_t tv_usec;} 其中 tv_usec提供了微秒级别的精度，参数tz是一个历史产物，应该总为NULL，&lt;/li&gt;
-      &lt;li&gt;time_t time(time_t *timep): 函数有两种方式返回同样的结果， UTC秒数， timep 不为NULL，将秒数放在timep 的指针中， timep NULL返回一个数值&lt;/li&gt;
-      &lt;li&gt;时间转换函数： 类型包含如下 time_t， 打印格式， 分解时间(即是： struct tm {int tm_sec; int tm_min; int tm_hour; int tm_mday; int tm_year; int tm_mon; etc})， 转换函数即是 用来在上面的类型中 进行转换的函数，方便使用。其中包括， strftime, mktime, gmtime, localtime 等。&lt;/li&gt;
-      &lt;li&gt;时区： 时区信息被系统使用标准格式保存于文件中。 /usr/share/zoneinfo, 该目录中的每个文件都包含了一个特定国家或地区的时区制度，系统的本地时间在 /etc/localtime 中定义，通常链接到 /usr/share/zoneinfo中的一个文件。使用TZ环境变量来为一个程序指定时区，其值为 “:“ + 时区名称组成的字符串。设定时区会自动影响到 ctime, locatime, mktime, strftime 等，&lt;/li&gt;
-      &lt;li&gt;setlocale(int category, char * locale) : 设定和查询程序的当前地区, category 可选项为 表中的数值 + LC_ALL, LANG, LANGUAGE, 其中，LC_ALL 为设定所有值而准备， LANG为设定所有为明确指定的变量而准备. setlocale 参数中的locale可以为 “”空字符串，表示可以从环境变量中却的地区的设定， 大部分的程序代码 setlocale(LC_ALL, “”) 来使用程序中的环境变量设定地区，如果调用被省略，这些环境变量将不会对程序的地区设定生效。&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;文件名&lt;/td&gt;
-          &lt;td&gt;目的&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;LC_TYPE&lt;/td&gt;
-          &lt;td&gt;包含字符分类以及大小写转换规则&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;LC_COLLATE&lt;/td&gt;
-          &lt;td&gt;包含针对一字符集的排序规则&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;LC_MONETARY&lt;/td&gt;
-          &lt;td&gt;对货币格式化规则&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;LC_NUMERIC&lt;/td&gt;
-          &lt;td&gt;对货币意外的数字格式化规则&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;LC_TIME&lt;/td&gt;
-          &lt;td&gt;对日期和时间的格式化规则&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;LC_MESSAGES&lt;/td&gt;
-          &lt;td&gt;针对肯定和否定响应，就格式以及数值做了规定&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;进程时间:&lt;br /&gt;
-&lt;strong&gt;软件时钟： 进程时间受限于 系统软件时钟的分辨率，度量单位 为jiffies（定义在内核代码中的常量HZ, jiffies 为1s内 cpu增加的记数，100HZ(jiffies) 时候， 1 jiffies(hz) 的时间为10毫秒）这是内核按照round-robin的分时调度算法分配cpu进程的单位。因为CPU 的速度大大提高，2.6.0的内核时钟速度已经提高了1000hz， 更高的分辨率意味着更高的时间精度，然而并非可以任意的提高时钟频率，因为每个时钟中断都对耗费少量的CPU时间&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;用户CPU时间： 在用户模式下执行所花费的时间数量&lt;/li&gt;
-      &lt;li&gt;系统CCPU时间： 在内核模式中执行所花费的时间数量&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="系统和进程信息"&gt;系统和进程信息&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;为了提供简单的方法来访问内核信息， 现在的UNIX实现提供了一个/proc 虚拟文件系统（并非存储于磁盘上，恶热是内核在进程访问信息时候动态生成的），其中包含了各种用于展示内核信息的文件。并允许进程通过常规的IO系统调用来访问，有些还可以对信息进行修改。&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;/proc/PID： 内核提供了对应PID进程的目录结构，&lt;/p&gt;
-
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;文件&lt;/td&gt;
-          &lt;td&gt;描述&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;cmdline&lt;/td&gt;
-          &lt;td&gt;以 \0分割的命令行参数&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;cwd&lt;/td&gt;
-          &lt;td&gt;指向当前工作目录的符号连接&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;Environ&lt;/td&gt;
-          &lt;td&gt;NAME=value 键值对的环境列表&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;exe&lt;/td&gt;
-          &lt;td&gt;指向正在执行文件的符号连接&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;fd&lt;/td&gt;
-          &lt;td&gt;文件目录包含了指向由进程打开文件的符号连接&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;maps&lt;/td&gt;
-          &lt;td&gt;内存映射&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;mem&lt;/td&gt;
-          &lt;td&gt;进程虚拟内存&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;mounts&lt;/td&gt;
-          &lt;td&gt;进程的安装点&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;root&lt;/td&gt;
-          &lt;td&gt;指向根目录的符号链接&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;status&lt;/td&gt;
-          &lt;td&gt;各类信息&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;/proc/PID/fd： 目录 为进程打开的每个文件描述符都包含了一个符号连接，每个符号连接的名称都与描述符的数值向匹配（/proc/pid/1 为 标准输出）， 任何进程都可以使用符号连接 /proc/self 来访问自己的/proc/PID 目录&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;/proc 目录下的系统信息:&lt;/p&gt;
-
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;目录&lt;/td&gt;
-          &lt;td&gt;描述&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;/proc/net&lt;/td&gt;
-          &lt;td&gt;网路和套接字的状态信息&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;/proc/sys/fs/&lt;/td&gt;
-          &lt;td&gt;文件系统相关的设定&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;/proc/sys/kernel/&lt;/td&gt;
-          &lt;td&gt;各种常规的内核设定&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;/proc/sys/net&lt;/td&gt;
-          &lt;td&gt;网络和套接字设定&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;/proc/sys/vm/&lt;/td&gt;
-          &lt;td&gt;内存管理设定&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;uname(utsname * utsbuf): 系统调用返回主机系统的标识信息&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id="文件io缓冲"&gt;文件IO缓冲&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;出于效率的考虑， 系统IO调用，以及 函数库IO函数，都在文件IO操作中对数据进行了缓冲&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;###: 内核缓冲区： 缓冲区 高速缓存： read, write 系统调用： 系统调用并不会直接发起磁盘调用，而仅仅是在 用户空间缓冲区 与 内核缓冲区高速缓存(kernel buffer cache) 中间复制数据。 write(fd, “abc”, 3) 的详细步骤： 1. 将数据从 用户空间内存传递到 内核 缓冲区中， 2. write 返回， 3）后续的某个时刻， 内核会将其 缓冲区的数据写入到 磁盘上。 read系统调用 则会产生 缺页中断， 进程挂起，知道 内核从磁盘中读取数据 并 存储到 内核缓冲区中，进程执行 从内核缓冲区中读取数据。&lt;/p&gt;
-
-&lt;h3 id="stdio库的缓冲-缓冲大块数据以减少系统调用-c语言函数库的io函数-fprintf-fgetsfputs-fputc-等能够使"&gt;stdio库的缓冲： 缓冲大块数据以减少系统调用， C语言函数库的IO函数， fprintf, fgets,fputs, fputc 等能够使&lt;/h3&gt;
-</content>
-  </entry>
-  <entry>
-    <title>linux-interface-02</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2018/12/06/linux-interface-02/"/>
-    <id>http://geniousbar.github.io/2018/12/06/linux-interface-02/</id>
-    <published>2018-12-06T08:00:00+08:00</published>
-    <updated>2018-12-31T15:41:43+08:00</updated>
-    <summary type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
-
-&lt;h2 id="系统编程概念"&gt;系统编程概念&lt;/h2&gt;
-
-&lt;p&gt;无论何时，执行了系统调用或者库函数，检查调用的返回状态以确定调用是否成功,是一条编程铁律。(消灭nil就好了)&lt;/p&gt;
-
-&lt;h3 id="系统调用"&gt;系统调用&lt;/h3&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;借助这一机制，进程可以请求内核以自己的名义去执行动作，以API 的形式，内核提供一系列服务供程序访问。（创建进程， IIO操作等）可以参考 csapp中的 异常控制流章节。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;系统调用有以下特征：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;系统调用将CPU 从用户态切换到 内核态，以便CPU访问受保护的内存等（越过...&lt;/li&gt;
-&lt;/ol&gt;</summary>
-    <content type="html">&lt;h2 id="the-linux-programming-interface"&gt;The linux programming interface&lt;/h2&gt;
-
-&lt;h2 id="系统编程概念"&gt;系统编程概念&lt;/h2&gt;
-
-&lt;p&gt;无论何时，执行了系统调用或者库函数，检查调用的返回状态以确定调用是否成功,是一条编程铁律。(消灭nil就好了)&lt;/p&gt;
-
-&lt;h3 id="系统调用"&gt;系统调用&lt;/h3&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;借助这一机制，进程可以请求内核以自己的名义去执行动作，以API 的形式，内核提供一系列服务供程序访问。（创建进程， IIO操作等）可以参考 csapp中的 异常控制流章节。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;系统调用有以下特征：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;系统调用将CPU 从用户态切换到 内核态，以便CPU访问受保护的内存等（越过保护机制）&lt;/li&gt;
-  &lt;li&gt;系统调用的组成是固定的。每个系统调用都由一个唯一的数字来标识。（程序通过名称标识系统调用，对编号方案无需关心）&lt;/li&gt;
-  &lt;li&gt;每个系统调用都有一套对应的参数，对用户态内核态的参数传递有一定规范&lt;br /&gt;
-  下面是一个系统调用的示例：&lt;/li&gt;
-  &lt;li&gt;应用程序调用C语言的函数库中的外壳（wrapper） 函数，来发起系统调用&lt;/li&gt;
-  &lt;li&gt;外壳函数保证所有的系统调用参数可用，并将参数复制到寄存器&lt;/li&gt;
-  &lt;li&gt;外壳函数会将系统调用编号复制到%eax中，用于区分不同的系统调用&lt;/li&gt;
-  &lt;li&gt;外壳函数执行一条中断机器指令，引发CPU从用户态切换到内核态，并执行 todo&lt;/li&gt;
-  &lt;li&gt;内核调用 system_call 来处理中断，&lt;br /&gt;
-    1) 在内核栈中保存寄存器数值&lt;br /&gt;
-    2）验证 系统调用的 编号有效性&lt;br /&gt;
-    3) 通过系统调用编号 发现对应的系统调用服务例程，检查参数的有效性，执行对应的代码逻辑。最后将结果状态返回给system_call&lt;br /&gt;
-    4) 从内核栈中回复各个寄存器值，并将系统调用返回值置于栈中&lt;br /&gt;
-    5) 返回值外壳函数，通知讲CPU切换到用户态&lt;/li&gt;
-  &lt;li&gt;系统调用的服务例程返回值代表调用有误， 外壳函数会使用该值设定全局变量errno。外壳函数会返回到调用程序，并返回一个整数，标志系统调用是否成功。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id="库函数"&gt;库函数&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;库函数 的设计 是为了提供比底层系统 调用更为方便的调用接口,例如 printf函数 可提供格式化输出和数据缓存， 而write 系统调用只能输出 字节块， malloc, free 函数包装了 内存的释放和分配工作&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id="处理错误"&gt;处理错误&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;几乎所有的 系统调用都会返回某种类型的错误,用以表明 调用成功与否，要了解是否调用成功则必须坚持对状态进行检查。若调用失败则必须采取相应的行动，至少应该输出错误。 不检查状态，少写几行代码，听起来很诱人。实际上却会浪费掉大把的程序调试时间&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;这段陈述适用于 任何领域的编程工作， 简单的就是 人们常讲的 nil是一个百万的设计错误 一样。nil让他们忽略对他的检查，因为假定 变量不是nil的代码很清爽，可以减少很多的if判断，造成了nil是一个非常常见，频率高的错误。 那么正确的设计应该是什么样子呢？ 答案或许是Option + 强制类型（弱类型语言不必要了，因为没有人可以阻止你不检查错误）&lt;/em&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;系统错误处理&lt;/p&gt;
-
-    &lt;blockquote&gt;
-      &lt;p&gt;通常返回值为-1 表示出错，系统调用失败后， 会将全局变量设定 errno 设定为一个正值来标记具体错误。但是如果系统调用和库函数成功，errno并不会被重置为0，所以单独的检查errno的设定来判断错误是错误的，因为可能是上个调用错误设定的数值。少数系统调用 在调用成功后(getpriority)依然返回-1， 要判断此类错误需要调用前将errno 设定为0， 然后根据errno判断是否错误。&lt;br /&gt;
- 打印错误， perror(“string”), char *strerror(int errorcode), strerror返回的字符串 指针是静态分配的，后续的调用会覆盖之前的调用。两个函数都是 locale-sensitive 语言环境敏感型，所以现实的是本地语言。&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;库函数的错误处理&lt;br /&gt;
-&lt;strong&gt;不同的库函数在调用发生错误时候，返沪的数据类型和数值也各不相同，可以划分为几个类型:&lt;/strong&gt;&lt;/p&gt;
-    &lt;ul&gt;
-      &lt;li&gt;同系统调用完全相同, (remove 会调用unlink 或者rmdir)&lt;/li&gt;
-      &lt;li&gt;出错时会返回-1之外的其他值，然后设定errno表明出错的具体情况 (fopen 出错返回 NULL 指针，同时设定errno)&lt;/li&gt;
-      &lt;li&gt;根本不使用errno&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
 </content>
   </entry>
 </feed>
