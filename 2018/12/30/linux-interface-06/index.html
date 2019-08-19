@@ -1,0 +1,56 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>linux-interface-05 | 日常学习</title><meta description="The linux programming interface 进程 进程 是可执行程序的实例    进程号 和 父进程号： 每个进程都有一个PID， 唯一标识 某个进程，除了少数(init PID 为1) 之外，多数程序与运行该程序的进程PID没有固定关系。 linux内核限制 进程号小于 32767,当进程号达到这个限制时候，内核将重置进程号计数器，重新从最小的整数开始分配。（进程号计数器会重置为 300， 因为 低于此数值的进程号 为系统进程和守护进程 长期占用， 关于最大进程号 默... " /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-32b4222b.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-b3988275.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li><li id="wechat"><a href="#" onclick="toggleShowWechat()">Wechat</a></li></ul></div></div></div><div id="header-wechat-img"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">linux-interface-05</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">December 30, 2018</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/books/"><small class="tag-label">books</small></a></div><hr class="article-header-separator" /><h2 id="the-linux-programming-interface">The linux programming interface</h2>
+<h2 id="进程">进程</h2>
+<p><strong>进程 是可执行程序的实例</strong></p>
+<ol>
+  <li>进程号 和 父进程号： 每个进程都有一个PID， 唯一标识 某个进程，除了少数(init PID 为1) 之外，多数程序与运行该程序的进程PID没有固定关系。 linux内核限制 进程号小于 32767,当进程号达到这个限制时候，内核将重置进程号计数器，重新从最小的整数开始分配。（进程号计数器会重置为 300， 因为 低于此数值的进程号 为系统进程和守护进程 长期占用， 关于最大进程号 默认上限是 32767,, 但是可以通过更改 /proc/sys/kernel/pid_max 来进行更改=最大值+1， 64位最大进程号为2 22次方 为什么？）getppid可以获取进程的父PID， 可以通过pstree， 来查看家族树。</li>
+  <li>命令行参数 argc, argv：argc 表示命令行参数的个数，argv 是一个指向 命令行参数的指针数组，每一个参数指向一个以null结尾的字符串。其中argv[0] 包含了 调用程序的名称。可以为一个程序创建多个连接，然后argv[0]的名字是不同的。</li>
+  <li>环境列表： 每个进程都有与之相关的字符串数组成为环境列表(envoriment list), 每个字符串都以 name=value 的形式定义。常常将name称为环境变量。新创建进程会继承父进程的环境副本，因为获得是副本，随意之后父子环境信息个不相关。
+    <ul>
+      <li>export NAME=value: 将NAME变量添加到shell环境中, 此后这个shell所创建的进程中都存在变量NAME</li>
+      <li>NAME=value programe: 在应用程序 programe的环境变量中添加一个变量值，但是不影响shell</li>
+      <li>printenv： 显示当前的环境列表</li>
+      <li>/proc/PID/environ: 文件显示编号为PID的进程的环境列表</li>
+      <li>getenv(char *name): 获取环境变量的数值(value), 不存在返回NULL</li>
+      <li>putenv(char *string): 添加一个 name=value 形式字符串的环境变量，失败返回非0值。一位内putenv 添加到environ变量的是一个指针，而不是string 的副本，所以不应该在栈上分配</li>
+      <li>setenv(char * name, char *value, overwrite): 该函数会复制 name, value。函数会自动拼接=号，overwrite ！= 0 总会写入， overwrite = 0时，存在则不写入，不存在写入</li>
+      <li>unsetenv</li>
+      <li>clearenv</li>
+    </ul>
+  </li>
+  <li>ABI, 应用程序二进制接口，一套规则。 规定了二进制可执行文件在运行时应该如何与某些服务（诸如内核或函数库所提供的服务）交换信息， ABI特别规定了使用那些寄存器和栈地址交换信息以及所交换数值的含义，一旦针对某个特定ABI进行了编译，其二进制可执行文件应该能在ABI相同的任何系统上运行。与之想法，标准化的API仅能通过编译源代码来保证应用程序的可移植性。
+    <h2 id="程序是包含了一系列信息的文件描述如何在运行时创建一个进程-其可执行文件格式有">程序是包含了一系列信息的文件，描述如何在运行时创建一个进程。 其可执行文件格式有：</h2>
+    <ul>
+      <li>汇编程序输出 a.out 和更加复杂的通用对象文件格式 coff</li>
+      <li>现代大多数UNIX实现 ELF</li>
+      <li>其文件包含信息如下：</li>
+    </ul>
+    <ul>
+      <li>机器语言指令</li>
+      <li>程序入口地址： 表示程序开始执行的起始指令位置</li>
+      <li>数据： 程序文件包含的变量初始值、常量</li>
+      <li>符号表、重定位表： 描述程序中函数和变量的位置，重定位表为运行时动态链接提供支持</li>
+      <li>共享库和动态链接信息： 列出程序中运行时使用的共享库，以及加载共享库的路径</li>
+      <li>Others
+        <h2 id="进程的内核角度-用户控件--内核数据结构-用户内存空间包含了程序代码及代码所使用的变量内核数据结构-用于维护进程状态检查记录在内核数据结构中的信息包括-进程标识号虚拟内存表打开文件的描述附表信号传递及处理相关信息进程资源使用及限制等等">进程的内核角度： 用户控件 + 内核数据结构： 用户内存空间包含了程序代码及代码所使用的变量。内核数据结构： 用于维护进程状态检查，记录在内核数据结构中的信息包括： 进程标识号，虚拟内存表，打开文件的描述附表、信号传递及处理相关信息，进程资源使用及限制等等。</h2>
+        <h2 id="虚拟内存-进程的内存布局存在于虚拟内存之上虚拟内存利用了-大多数程序的-访问局部性-特征">虚拟内存： 进程的内存布局存在于虚拟内存之上，虚拟内存利用了 大多数程序的 访问局部性 特征。</h2>
+<div class="highlight"><pre class="highlight plaintext"><code>  * 空间局部性： 程序倾向于访问最近访问过的地址附近的内存
+  * 时间局部性： 程序倾向于在不久的将来访问最近刚刚访问过的内存地址 ## 虚拟内存的设计： 规划之一就是讲程序使用的内存分隔成大小固定的 页（page）单元，相应的RAM 也划分同样的尺寸。任一时刻，都有部分页驻留在RAM中，称为 驻留集，未使用的泽保存在磁盘空间中 称为 交换区 swap area， 当欲访问的页面并未驻留在RAM中，将会发生页面错误（中断）导致内核挂起当前进程，并从磁盘将该页交换到内存中。 这样的设计带来的优点有： 
+  * 进程与进程与内核相互隔离，一个进程不能读取另一个进程的内存， 是因为每个进程的页表条目指向的物理内存截然不同，完全没有交集
+  * 某些情况下，两个进程或者更多进程能够共享内存，内核只需要简单的将 进程页表指向相同的内存即可。 发生共享内存的情形有如下： 1） 执行同一程序的多个进程，可以共享一份 程序代码，当多个程序执行相同的程序文件或加载相同的共享库，会隐式的实现共享。2）使用shmerge， mmap 系统调用显式的请求共享
+  * 因为驻留在内存中的仅仅是程序的一部分，所以程序的加载要快，系统能够同时容纳的进程数量可以更多。 ### setjump &amp; longjump
+  * C语言的goto语言不能从一个函数跳转到另一个函数。longjump 可以实现 从深度嵌套函数中的跳转。
+  * setjump 为longjump 跳转设定了目标位置，longjump 调用后，像是重新调用setjump一样， 区分两者的区别为， setjump第一次调用为0， 其他时候为longjump 的函数参数。
+  * 调用setjump时，evn保存了当前进程的其他信息外，还保存了程序计数器和栈指针寄存器。以便在longjump时完成下面两个步骤：
+</code></pre></div></li>
+      <li>将发起longjump调用位置到setjump调用时位置，之间的 栈桢 剥离，解开栈。unwinding the stack. 这是通过将栈指针寄存器的数值重置为env中的信息来实现的。</li>
+      <li>重置程序计数器，使程序从setjump位置开始执行。依然是通过env的信息取得赋值实现</li>
+    </ul>
+  </li>
+</ol>
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2019 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b43ef53b285c49e1af0bd7080994c825";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script></footer></body></html>

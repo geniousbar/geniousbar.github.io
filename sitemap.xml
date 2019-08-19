@@ -21,6 +21,10 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2019/06/25/linux-interface-zombie-process/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/2017/01/13/postgres/</loc>
     <priority>0.5</priority>
   </url>
@@ -109,6 +113,10 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2018/12/30/linux-interface-07/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/2018/11/11/linux-interface/</loc>
     <priority>0.5</priority>
   </url>
@@ -130,6 +138,10 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/2016/01/10/dark-time-three/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2018/12/30/linux-interface-06/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -182,6 +194,10 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/2018/03/20/sicp/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2018/12/30/linux-interface-05/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -357,7 +373,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/crontab/</loc>
+    <loc>http://geniousbar.github.io/tags/service/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -365,7 +381,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/service/</loc>
+    <loc>http://geniousbar.github.io/tags/crontab/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -385,11 +401,11 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/docker/</loc>
+    <loc>http://geniousbar.github.io/tags/activemodel/</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/activemodel/</loc>
+    <loc>http://geniousbar.github.io/tags/docker/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -421,11 +437,11 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/test/</loc>
+    <loc>http://geniousbar.github.io/tags/command/</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/command/</loc>
+    <loc>http://geniousbar.github.io/tags/test/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -458,6 +474,10 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/2019/06/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2019/06/25/</loc>
     <priority>0.5</priority>
   </url>
   <url>
