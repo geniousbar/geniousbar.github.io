@@ -1,0 +1,397 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>rust synatx | 日常学习</title><meta description="Ownership Rules     Each value in Rust has a variable that’s called its owner.   There can only be one owner at a time.   When the owner goes out of scope, the value will be dropped.   Scope : { //scope }   内存申请 let s = String::from(“xx”);   内存释放：..." /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-32b4222b.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-b3988275.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li><li id="wechat"><a href="#" onclick="toggleShowWechat()">Wechat</a></li></ul></div></div></div><div id="header-wechat-img"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">rust synatx</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">August 25, 2019</span></div><div class="tag-labels"><a href="/tags/rust/"><small class="tag-label">rust</small></a></div><hr class="article-header-separator" /><p>Ownership Rules</p>
+
+<ul>
+  <li>Each value in Rust has a variable that’s called its owner.</li>
+  <li>There can only be one owner at a time.</li>
+  <li>When the owner goes out of scope, the value will be dropped.</li>
+</ul>
+
+<p>Scope : { //scope }<br />
+  内存申请 let s = String::from(“xx”);<br />
+  内存释放： s 超出scop，变为不可用。rust自动添加drop调动代码， 归还内存<br />
+  所有权规则：</p>
+
+<p>堆、栈 中变量的其他 赋值方式：</p>
+<ul>
+  <li>stack-only: copy
+<div class="highlight"><pre class="highlight rust"><code><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="k">let</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> <span class="c">// x, y  都可用， 因为x 为栈上分配， 对于内存方式为 copy， 不影响所有权</span>
+</code></pre></div></li>
+  <li>Heap: clone、所有权转移
+<div class="highlight"><pre class="highlight rust"><code>  <span class="k">let</span> <span class="n">s1</span> <span class="o">=</span> <span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="s">"hello"</span><span class="p">);</span>
+  <span class="k">let</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">s1</span><span class="nf">.clone</span><span class="p">();</span><span class="c">// s2 copy s1的内存，s1 依然可用</span>
+</code></pre></div><div class="highlight"><pre class="highlight rust"><code>  <span class="k">let</span> <span class="n">s1</span> <span class="o">=</span> <span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="s">"xx"</span><span class="p">);</span>
+  <span class="k">let</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">s1</span><span class="p">;</span> <span class="c">// s1 不在可用， s2为 字符串的 owner, 这里只是转移 指向 string的指针，而非 copy string</span>
+</code></pre></div></li>
+  <li>Function 调用参数： 跟 赋值 一样。</li>
+  <li>Function 返回参数： 堆上的内存，作为返回值的时候， 两种情况： 1. 转移到 函数调用者中 2. drop掉 （因为超过 函数中的作用域 scope）</li>
+  <li>Function 调用： 每次都需要转移所有权，在将所有权转回到调用者。非常麻烦， 所以设计了 引用 。</li>
+  <li>引用： 指向变量的指针， 并不具有 ownership， 所以drop并不会，释放内存，使得引用的变量不可用。在Function 中使用 非常合适，因为不需要ownership传递回去， 因为根本没有ownership<br />
+  可变 mut 引用： 可以 改变 引用指向的内容。<br />
+  引用 规则：
+    <ol>
+      <li>任何时候，只有一个 可更改引用，或者 一个 不可更改引用。 或者 同时多个不可变应用</li>
+      <li>引用需要总是有效的。即： 引用的scope应该小于变量的scope
+<div class="highlight"><pre class="highlight rust"><code>  <span class="k">fn</span> <span class="nf">no_dangle</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="o">&amp;</span><span class="nb">String</span> <span class="p">{</span>
+<span class="k">let</span> <span class="n">s</span> <span class="o">=</span> <span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="s">"hello"</span><span class="p">);</span>
+<span class="o">&amp;</span><span class="n">s</span>
+  <span class="p">}</span><span class="c">// 函数返回， s 会drop掉， 所以会造成空指针 null reference</span>
+</code></pre></div>        <p>错误的函数，s在 函数中分配内存，但是只返回引用，引用变量作用于大于 指向的变量作用域</p>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<p>slice: 同refrence， 引用一个连续的collection，但是没有ownership。 这里用来防止，在同样的作用域使用 mut refrence， 或者 mut 调用 (因为不能同时存在  mut 引用，和 非mut引用。添加一份检查)</p>
+
+<p>Generic define &amp; syntax,<br />
+  定义 函数参数签名（告诉编译器 参数类型）, 形式如下:</p>
+<div class="highlight"><pre class="highlight rust"><code>  <span class="k">fn</span> <span class="n">largest</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">list</span><span class="p">:</span><span class="o">&amp;</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="k">-&gt;</span> <span class="n">T</span> <span class="p">{</span>
+  <span class="p">}</span>
+
+  <span class="k">struct</span> <span class="n">Point</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span>
+      <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+      <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+  <span class="p">}</span>
+  <span class="c">// x, y 是同一类型， 也可以写成不一样的类型</span>
+  <span class="k">struct</span> <span class="n">Point</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span><span class="o">&gt;</span> <span class="p">{</span>
+      <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+      <span class="n">y</span><span class="p">:</span> <span class="n">U</span><span class="p">,</span>
+  <span class="p">}</span>
+
+  <span class="k">impl</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">Point</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">x</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="o">&amp;</span><span class="n">T</span> <span class="p">{</span>
+        <span class="o">&amp;</span><span class="k">self</span><span class="py">.x</span>
+    <span class="p">}</span>
+  <span class="p">}</span> <span class="c">// 这里为什么显得如此怪异的原因， 在于 我们可以写出 impl Point&lt;String&gt; 来定定制 T=String 时候特有的方法定义。所以我们需要写成如此 impl&lt;T&gt; 来区分于 impl Point&lt;String&gt; , 声明 T 代表是一个place holder</span>
+</code></pre></div><p>并不会牺牲性能，没有runtime的耗时， 在编译阶段， rust 会填充 placeholder, 来完成， 不同类型的定义。</p>
+
+<p>Trait: Defining Shared Behavior<br />
+  impl  实现</p>
+<div class="highlight"><pre class="highlight rust"><code>    <span class="k">pub</span> <span class="k">trait</span> <span class="n">Summary</span> <span class="p">{</span>
+        <span class="k">fn</span> <span class="nf">summarize</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span><span class="k">-&gt;</span> <span class="nb">String</span><span class="p">;</span>
+        <span class="k">fn</span> <span class="nf">speak</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="p">{</span>
+            <span class="k">self</span><span class="nf">.summarize</span><span class="p">();</span>
+            <span class="nd">println!</span><span class="p">(</span><span class="s">"speak"</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">pub</span> <span class="k">struct</span> <span class="n">NewsArticle</span> <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">impl</span> <span class="n">Summary</span> <span class="k">for</span> <span class="n">NewsArticle</span> <span class="p">{</span>
+        <span class="k">fn</span> <span class="nf">summarize</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">String</span> <span class="p">{</span>
+            <span class="nd">println!</span><span class="p">(</span><span class="s">"---------"</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div><ul>
+  <li>Trait 类似于Interface， 共享 行为（函数） 定义，还可以 实现 类似 模板调用的方法。</li>
+  <li>Trait 当 Function 参数z
+<div class="highlight"><pre class="highlight rust"><code>  <span class="k">pub</span> <span class="k">fn</span> <span class="nf">notify</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="k">impl</span> <span class="n">Summary</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nd">println!</span><span class="p">(</span><span class="s">"---------"</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="c">// Trait Bound syntax</span>
+  <span class="k">pub</span> <span class="k">fn</span> <span class="n">notify</span><span class="o">&lt;</span><span class="n">T</span><span class="p">:</span> <span class="n">Summary</span><span class="o">&gt;</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"---------"</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="c">// multiple Trait Bound</span>
+  <span class="k">pub</span> <span class="k">fn</span> <span class="n">notify</span><span class="o">&lt;</span><span class="n">T</span><span class="p">:</span> <span class="n">Summary</span> <span class="o">+</span> <span class="n">Display</span><span class="o">&gt;</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"---------"</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="c">// use where</span>
+  <span class="k">pub</span> <span class="k">fn</span> <span class="n">some_function</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span><span class="o">&gt;</span><span class="p">(</span><span class="n">one</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">two</span><span class="p">:</span> <span class="n">U</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">where</span> <span class="n">T</span><span class="p">:</span> <span class="n">Display</span> <span class="o">+</span> <span class="n">Clone</span><span class="p">,</span>
+        <span class="n">U</span><span class="p">:</span> <span class="n">Clone</span> <span class="o">+</span> <span class="n">Debug</span>
+  <span class="nd">println!</span><span class="p">(</span><span class="s">"---------"</span><span class="p">);</span>
+  <span class="p">}</span>
+</code></pre></div></li>
+  <li>Trait 当做Function 的return type, 但是 存在一些限制： 主要有， 返回值不能是不同类型， 而只能是一个确定的类型 impl trait</li>
+  <li>Trait with Generic 可以 约束 impl Generic 的 类型为实现了 Trait 的类型。
+<div class="highlight"><pre class="highlight rust"><code>  <span class="k">impl</span><span class="o">&lt;</span><span class="n">T</span><span class="p">:</span> <span class="n">Display</span> <span class="o">+</span> <span class="n">PartialOrd</span><span class="o">&gt;</span> <span class="n">Point</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span>
+  <span class="k">fn</span> <span class="nf">only_some</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span><span class="c">// 只有实现了 Display &amp; PartialOrd trait的 Point&lt;_&gt; 类型，才会有 only_some 方法</span>
+  <span class="p">}</span>
+</code></pre></div>    <p>Advanced Traits: Traits with placeholder</p>
+<div class="highlight"><pre class="highlight rust"><code>  <span class="k">pub</span> <span class="k">trait</span> <span class="n">Iterator</span> <span class="p">{</span>
+<span class="k">type</span> <span class="n">Item</span><span class="p">;</span>
+
+<span class="k">fn</span> <span class="nf">next</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="nn">Self</span><span class="p">::</span><span class="n">Item</span><span class="o">&gt;</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">impl</span> <span class="n">Iterator</span> <span class="k">for</span> <span class="n">Counter</span> <span class="p">{</span>
+ <span class="k">type</span> <span class="n">Item</span> <span class="o">=</span> <span class="nb">u32</span><span class="p">;</span>
+
+ <span class="k">fn</span> <span class="nf">next</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="nn">Self</span><span class="p">::</span><span class="n">Item</span><span class="o">&gt;</span> <span class="p">{</span>
+ <span class="p">}</span>
+ <span class="p">}</span>
+</code></pre></div>    <p>为什么不适用这样的实现呢？</p>
+<div class="highlight"><pre class="highlight rust"><code><span class="k">pub</span> <span class="k">trait</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span>
+<span class="k">fn</span> <span class="nf">next</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>    <p>原因在于 如果采用第二种实现， 我们需要 写成这样</p>
+  </li>
+</ul>
+
+<div class="highlight"><pre class="highlight rust"><code>  <span class="k">impl</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="nb">String</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">Counter</span> <span class="p">{</span>
+
+  <span class="p">}</span>
+  <span class="k">impl</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="nb">i32</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">Counter</span> <span class="p">{</span>
+
+  <span class="p">}</span>
+
+</code></pre></div><p>这里面存在多种实现方式。 更重要的是，我们在调用next时候，需要显式的指定 .next::&lt;Iterator<String>&gt; 来 指导 rust使用哪个Iterator<T> for Counter 的代码实现。所以第一种更可取
+但是确实存在 Generic 与 Trait 结合的例子：</T></String></p>
+<div class="highlight"><pre class="highlight rust"><code>
+<span class="k">trait</span> <span class="nb">Add</span><span class="o">&lt;</span><span class="n">RHS</span><span class="o">=</span><span class="n">Self</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">type</span> <span class="n">Output</span><span class="p">;</span>
+
+    <span class="k">fn</span> <span class="nf">add</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">RHS</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">Self</span><span class="p">::</span><span class="n">Output</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">// 常用的声明可以如下: </span>
+<span class="k">struct</span> <span class="n">Point</span> <span class="p">{</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">i32</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">i32</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="nb">Add</span> <span class="k">for</span> <span class="n">Point</span> <span class="p">{</span>
+    <span class="k">type</span> <span class="n">Output</span> <span class="o">=</span> <span class="n">Point</span><span class="p">;</span>
+
+    <span class="k">fn</span> <span class="nf">add</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Point</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Point</span> <span class="p">{</span>
+        <span class="n">Point</span> <span class="p">{</span>
+            <span class="n">x</span><span class="p">:</span> <span class="k">self</span><span class="py">.x</span> <span class="o">+</span> <span class="n">other</span><span class="py">.x</span><span class="p">,</span>
+            <span class="n">y</span><span class="p">:</span> <span class="k">self</span><span class="py">.y</span> <span class="o">+</span> <span class="n">other</span><span class="py">.y</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c">// 然而我们依然可以这样，指定 RHS Generic参数， 来实现， Millimeters + Meters 的函数调用实现, 只不过，placeholder 并没有作为返回值，所有，可以直接+ 而不需要显示的，指定 + 之后的返回数值类型</span>
+<span class="k">struct</span> <span class="nf">Millimeters</span><span class="p">(</span><span class="nb">u32</span><span class="p">);</span>
+<span class="k">struct</span> <span class="nf">Meters</span><span class="p">(</span><span class="nb">u32</span><span class="p">);</span>
+
+<span class="k">impl</span> <span class="nb">Add</span><span class="o">&lt;</span><span class="n">Meters</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">Millimeters</span> <span class="p">{</span>
+    <span class="k">type</span> <span class="n">Output</span> <span class="o">=</span> <span class="n">Millimeters</span><span class="p">;</span>
+
+    <span class="k">fn</span> <span class="nf">add</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Meters</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Millimeters</span> <span class="p">{</span>
+        <span class="nf">Millimeters</span><span class="p">(</span><span class="k">self</span><span class="err">.</span><span class="mi">0</span> <span class="o">+</span> <span class="p">(</span><span class="n">other</span><span class="err">.</span><span class="mi">0</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>多个Trait 出现同样函数名字的情况：</p>
+
+<div class="highlight"><pre class="highlight rust"><code>
+<span class="k">trait</span> <span class="n">Pilot</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">fly</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">trait</span> <span class="n">Wizard</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">fly</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c">//两个 Trait 拥有同样的函数名称，不同的函数实现。那如何在调用时候，决策函数调用实体呢？</span>
+<span class="k">struct</span> <span class="n">Human</span><span class="p">;</span>
+
+<span class="k">impl</span> <span class="n">Pilot</span> <span class="k">for</span> <span class="n">Human</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">fly</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nd">println!</span><span class="p">(</span><span class="s">"This is your captain speaking."</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Wizard</span> <span class="k">for</span> <span class="n">Human</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">fly</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nd">println!</span><span class="p">(</span><span class="s">"Up!"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Human</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">fly</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nd">println!</span><span class="p">(</span><span class="s">"*waving arms furiously*"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c">// 下面，person.fly 默认调用 Human 自己的实现， 如果需要 显式的调用 Pilot::fly 则需要， 如下格式</span>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">person</span> <span class="o">=</span> <span class="n">Human</span><span class="p">;</span>
+    <span class="n">person</span><span class="nf">.fly</span><span class="p">();</span>
+    <span class="nn">Pilot</span><span class="p">::</span><span class="nf">fly</span><span class="p">(</span><span class="o">&amp;</span><span class="n">person</span><span class="p">);</span>
+    <span class="nn">Wizard</span><span class="p">::</span><span class="nf">fly</span><span class="p">(</span><span class="o">&amp;</span><span class="n">person</span><span class="p">);</span>
+    <span class="n">person</span><span class="nf">.fly</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="c">// 因为其为实例方法， 存在&amp;self， 如果不存在呢？ 下面示例:</span>
+
+<span class="k">trait</span> <span class="n">Animal</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">baby_name</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="nb">String</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">struct</span> <span class="n">Dog</span><span class="p">;</span>
+
+<span class="k">impl</span> <span class="n">Dog</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">baby_name</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="nb">String</span> <span class="p">{</span>
+        <span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="s">"Spot"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Animal</span> <span class="k">for</span> <span class="n">Dog</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">baby_name</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="nb">String</span> <span class="p">{</span>
+        <span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="s">"puppy"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"A baby dog is called a {}"</span><span class="p">,</span> <span class="nn">Dog</span><span class="p">::</span><span class="nf">baby_name</span><span class="p">());</span><span class="c">// Ok</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"A baby dog is called a {}"</span><span class="p">,</span> <span class="nn">Animal</span><span class="p">::</span><span class="nf">baby_name</span><span class="p">());</span> <span class="c">// Error, 下面是正解</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"A baby dog is called a {}"</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">Dog</span> <span class="k">as</span> <span class="n">Animal</span><span class="o">&gt;</span><span class="p">::</span><span class="nf">baby_name</span><span class="p">());</span>
+<span class="p">}</span>
+
+
+</code></pre></div><p>SuperTriat： 超级 Trait， 依赖于一个Trait的实现， 示例如下：</p>
+<div class="highlight"><pre class="highlight rust"><code>
+<span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fmt</span><span class="p">;</span>
+<span class="c">// 声明语法如下： trait SuperTrait: Trait {}</span>
+<span class="k">trait</span> <span class="n">OutlinePrint</span><span class="p">:</span> <span class="nn">fmt</span><span class="p">::</span><span class="n">Display</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">outline_print</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">output</span> <span class="o">=</span> <span class="k">self</span><span class="nf">.to_string</span><span class="p">();</span>
+        <span class="nd">println!</span><span class="p">(</span><span class="s">"output is --- {}"</span><span class="p">,</span> <span class="n">output</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c">// 我们只需要为point 实现 Display， 即可 拥有 outline_print 方法</span>
+<span class="k">impl</span> <span class="nn">fmt</span><span class="p">::</span><span class="n">Display</span> <span class="k">for</span> <span class="n">Point</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">fmt</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">fmt</span><span class="p">::</span><span class="n">Formatter</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">fmt</span><span class="p">::</span><span class="n">Result</span> <span class="p">{</span>
+        <span class="nd">write!</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">"({}, {})"</span><span class="p">,</span> <span class="k">self</span><span class="py">.x</span><span class="p">,</span> <span class="k">self</span><span class="py">.y</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">OutlinePrint</span> <span class="k">for</span> <span class="n">Point</span> <span class="p">{}</span>
+</code></pre></div><p>NewType: 因为 impl Trait for Type, 中的type需要在本地的crate，而不是 引用库 中的Type。 所以 可以通过Newtype类来包装 Type，实现一些 Trait. <br />
+这里面包含另外一些需要东西： 如何让 NewType， 伪装成Type？<br />
+实现 Deref Trait。</p>
+<div class="highlight"><pre class="highlight rust"><code><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fmt</span><span class="p">;</span>
+
+<span class="k">struct</span> <span class="nf">Wrapper</span><span class="p">(</span><span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">String</span><span class="o">&gt;</span><span class="p">);</span> <span class="c">// 新的type 类似于下边的</span>
+<span class="k">struct</span> <span class="nf">Color</span><span class="p">(</span><span class="nb">i32</span><span class="p">,</span> <span class="nb">i32</span><span class="p">,</span> <span class="nb">i32</span><span class="p">);</span>
+<span class="k">struct</span> <span class="nf">Point</span><span class="p">(</span><span class="nb">i32</span><span class="p">,</span> <span class="nb">i32</span><span class="p">,</span> <span class="nb">i32</span><span class="p">);</span>
+
+<span class="k">impl</span> <span class="nn">fmt</span><span class="p">::</span><span class="n">Display</span> <span class="k">for</span> <span class="n">Wrapper</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">fmt</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">fmt</span><span class="p">::</span><span class="n">Formatter</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">fmt</span><span class="p">::</span><span class="n">Result</span> <span class="p">{</span>
+        <span class="nd">write!</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">"[{}]"</span><span class="p">,</span> <span class="k">self</span>.<span class="mi">0</span><span class="nf">.join</span><span class="p">(</span><span class="s">", "</span><span class="p">))</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">w</span> <span class="o">=</span> <span class="nf">Wrapper</span><span class="p">(</span><span class="nd">vec!</span><span class="p">[</span><span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="s">"hello"</span><span class="p">),</span> <span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="s">"world"</span><span class="p">)]);</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"w = {}"</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Generic 生命周期 syntax： 用于区分函数中 参数生命周期， 对比 参数、返回值 等 生命周期之间的关系。 确保 参数传递生命周期符合 函数声明. 生命周期 需要关联 参数与返回值，才会有效果，只有参数的生命周期没有用处</p>
+
+<div class="highlight"><pre class="highlight rust"><code>
+  <span class="k">fn</span> <span class="nf">longest</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">str</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">str</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="o">&amp;</span><span class="nb">str</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="n">x</span><span class="nf">.len</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">y</span><span class="nf">.len</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">x</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">y</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="c">// error, rust并不能知道 函数返回值， 是x还是y， 无法检查生命周期</span>
+
+<span class="k">fn</span> <span class="n">longest</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="o">&amp;</span><span class="nv">'a</span> <span class="nb">str</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="o">&amp;</span><span class="nv">'a</span> <span class="nb">str</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="o">&amp;</span><span class="nv">'a</span> <span class="nb">str</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="n">x</span><span class="nf">.len</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">y</span><span class="nf">.len</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">x</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">y</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c">// 要求 函数返回值，应该小于等于 参数， x y的生命周期, 所以下面的函数调用是可以pass的</span>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">string1</span> <span class="o">=</span> <span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="s">"long string is long"</span><span class="p">);</span>
+
+    <span class="p">{</span>
+        <span class="k">let</span> <span class="n">string2</span> <span class="o">=</span> <span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="s">"xyz"</span><span class="p">);</span>
+        <span class="k">let</span> <span class="n">result</span> <span class="o">=</span> <span class="nf">longest</span><span class="p">(</span><span class="n">string1</span><span class="nf">.as_str</span><span class="p">(),</span> <span class="n">string2</span><span class="nf">.as_str</span><span class="p">());</span>
+        <span class="nd">println!</span><span class="p">(</span><span class="s">"The longest string is {}"</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c">// 而这个， 则是编译失败的，因为 返回值的生命周期 大于其中参数 y 的生命周期， 会导致 dangling refrence, 比如， result指向 y, 而y 在 内部的scope中已经销毁了</span>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">string1</span> <span class="o">=</span> <span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="s">"long string is long"</span><span class="p">);</span>
+    <span class="k">let</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">{</span>
+        <span class="k">let</span> <span class="n">string2</span> <span class="o">=</span> <span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="s">"xyz"</span><span class="p">);</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nf">longest</span><span class="p">(</span><span class="n">string1</span><span class="nf">.as_str</span><span class="p">(),</span> <span class="n">string2</span><span class="nf">.as_str</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"The longest string is {}"</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c">// 还可以这样， 总是 返回其中的一个值</span>
+<span class="k">fn</span> <span class="n">longest</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="o">&amp;</span><span class="nv">'a</span> <span class="nb">str</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">str</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="o">&amp;</span><span class="nv">'a</span> <span class="nb">str</span> <span class="p">{</span>
+    <span class="n">x</span>
+<span class="p">}</span>
+</code></pre></div><ul>
+  <li>Struct 的生命周期： struct 保持的refrence 的生命周期 与struct 生命周期关联。struct 不应该 长于 内部变量的refrence。
+<div class="highlight"><pre class="highlight rust"><code>  <span class="k">struct</span> <span class="n">ImportantExcerpt</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span> <span class="p">{</span>
+<span class="n">part</span><span class="p">:</span> <span class="o">&amp;</span><span class="nv">'a</span> <span class="nb">str</span><span class="p">,</span>
+  <span class="p">}</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">novel</span> <span class="o">=</span> <span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="s">"Call me Ishmael. Some years ago..."</span><span class="p">);</span>
+    <span class="k">let</span> <span class="n">first_sentence</span> <span class="o">=</span> <span class="n">novel</span><span class="nf">.split</span><span class="p">(</span><span class="sc">'.'</span><span class="p">)</span>
+        <span class="nf">.next</span><span class="p">()</span>
+        <span class="nf">.expect</span><span class="p">(</span><span class="s">"Could not find a '.'"</span><span class="p">);</span>
+    <span class="k">let</span> <span class="n">i</span> <span class="o">=</span> <span class="n">ImportantExcerpt</span> <span class="p">{</span> <span class="n">part</span><span class="p">:</span> <span class="n">first_sentence</span> <span class="p">};</span>
+  <span class="p">}</span><span class="c">// 其中 i 的生命从周期不应该长于 novel</span>
+  <span class="c">// impl Struct Generic 方法时候的 声明语法， 同 impl Generic。 其中声明方法时候，需要不要 生命周期 声明，需要看，是否与struct field 、 返回值 相关</span>
+ <span class="k">impl</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span> <span class="n">ImportantExcerpt</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span> <span class="p">{</span>
+ <span class="k">fn</span> <span class="nf">announce_and_return_part</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">,</span> <span class="n">announcement</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">str</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="o">&amp;</span><span class="nb">str</span> <span class="p">{</span>
+     <span class="nd">println!</span><span class="p">(</span><span class="s">"Attention please: {}"</span><span class="p">,</span> <span class="n">announcement</span><span class="p">);</span>
+     <span class="k">self</span><span class="py">.part</span>
+ <span class="p">}</span>
+ <span class="p">}</span>
+</code></pre></div>    <p>Static lifetime， 静态生命周期，表明变量， 将贯穿于整个program, 将直接保存于， 代码的二进制中。</p>
+  </li>
+</ul>
+
+<p>Closures:</p>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>x</td>
+          <td>{}</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>FnOnce: 获取参数的ownership</li>
+  <li>FnMut： 获取参数的 mut 引用</li>
+  <li>Fn： 获取参数的 非mut引用</li>
+  <li>以上三种 为 Trait， 可以声明类型为 FN(i32) -&gt; i32</li>
+  <li>function as paramas： Function Pointer(fn a Type diff with Fn) ， fn 类型，实现了， Fn, FnMut, FnOnce 的实现， 即 impl Fn, FnMut, FnOnce for fn {….} 所以，可以传递 fn 到 接受 closures的 函数中。 还可以声明接受fn类型的 函数<br />
+ ```rust<br />
+fn add_one(x: i32) -&gt; i32 {<br />
+x + 1<br />
+}</li>
+</ul>
+
+<p>fn do_twice(f: fn(i32) -&gt; i32, arg: i32) -&gt; i32 {<br />
+    f(arg) + f(arg)<br />
+}</p>
+
+<p>fn main() {<br />
+    let answer = do_twice(add_one, 5);</p>
+
+<div class="highlight"><pre class="highlight plaintext"><code>println!("The answer is: {}", answer); }
+</code></pre></div>
+<p>// 可以 传递参数fn 类型<br />
+let list_of_numbers = vec![1, 2, 3];<br />
+let list_of_strings: Vec<String> = list_of_numbers
+    .iter()
+    .map(ToString::to_string)
+    .collect();
+ ```</String></p>
+
+<p>macros:</p>
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2019 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b43ef53b285c49e1af0bd7080994c825";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script></footer></body></html>

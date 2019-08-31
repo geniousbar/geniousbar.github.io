@@ -45,6 +45,10 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2019/08/25/rust-synatx/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/2017/07/21/ruby-gem-thor/</loc>
     <priority>0.5</priority>
   </url>
@@ -269,6 +273,10 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/tags/rust/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/tags/linux/</loc>
     <priority>0.5</priority>
   </url>
@@ -373,11 +381,11 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/service/</loc>
+    <loc>http://geniousbar.github.io/tags/process/</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/process/</loc>
+    <loc>http://geniousbar.github.io/tags/service/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -437,11 +445,11 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/command/</loc>
+    <loc>http://geniousbar.github.io/tags/test/</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/test/</loc>
+    <loc>http://geniousbar.github.io/tags/command/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -470,6 +478,14 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/2019/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2019/08/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2019/08/25/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -689,11 +705,11 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/archives/page/2/</loc>
+    <loc>http://geniousbar.github.io/2017/02/</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/2017/02/25/</loc>
+    <loc>http://geniousbar.github.io/archives/page/2/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -813,7 +829,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/2017/02/</loc>
+    <loc>http://geniousbar.github.io/2017/02/25/</loc>
     <priority>0.5</priority>
   </url>
 </urlset>
