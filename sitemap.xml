@@ -9,7 +9,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/archives/page/3/</loc>
+    <loc>http://geniousbar.github.io/archives/page/4/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -126,6 +126,10 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/2016/01/10/dark-time-books/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2019/09/01/week-book/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -273,6 +277,10 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/tags/week/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/tags/rust/</loc>
     <priority>0.5</priority>
   </url>
@@ -385,15 +393,15 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/service/</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>http://geniousbar.github.io/tags/crontab/</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/bash/</loc>
+    <loc>http://geniousbar.github.io/tags/service/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/acl/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -401,7 +409,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/acl/</loc>
+    <loc>http://geniousbar.github.io/tags/bash/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -445,11 +453,11 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/test/</loc>
+    <loc>http://geniousbar.github.io/tags/command/</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/tags/command/</loc>
+    <loc>http://geniousbar.github.io/tags/test/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -478,6 +486,14 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/2019/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2019/09/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2019/09/01/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -709,7 +725,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/archives/page/2/</loc>
+    <loc>http://geniousbar.github.io/2017/02/25/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -717,7 +733,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/2017/01/13/</loc>
+    <loc>http://geniousbar.github.io/archives/page/3/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -809,6 +825,10 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/tags/page/4/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/page/2/</loc>
     <priority>0.5</priority>
   </url>
@@ -829,7 +849,15 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://geniousbar.github.io/2017/02/25/</loc>
+    <loc>http://geniousbar.github.io/page/7/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/archives/page/2/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2017/01/13/</loc>
     <priority>0.5</priority>
   </url>
 </urlset>

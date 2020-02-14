@@ -1,4 +1,20 @@
-<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>日常学习</title><meta description="geniousbar 日常知识总结" /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../stylesheets/style-32b4222b.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../javascripts/all-b3988275.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li><li id="wechat"><a href="#" onclick="toggleShowWechat()">Wechat</a></li></ul></div></div></div><div id="header-wechat-img"><img src="../../images/wechat_nasa-0d87c0dd.png" /></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title"><a href="/2019/01/14/linux-interface-socket/">linux-interface-socket</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">January 14, 2019</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/books/"><small class="tag-label">books</small></a></div><hr class="article-header-separator" /><h2 id="the-linux-programming-interface">The linux programming interface</h2>
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>日常学习</title><meta description="geniousbar 日常知识总结" /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../stylesheets/style-32b4222b.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../javascripts/all-b3988275.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li><li id="wechat"><a href="#" onclick="toggleShowWechat()">Wechat</a></li></ul></div></div></div><div id="header-wechat-img"><img src="../../images/wechat_nasa-0d87c0dd.png" /></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title"><a href="/2019/02/05/fifo-pipe/">fifo-pipe</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">February 05, 2019</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/books/"><small class="tag-label">books</small></a></div><hr class="article-header-separator" /><h2 id="the-linux-programming-interface">The linux programming interface</h2>
+
+<h3 id="管道-fifo">管道, FIFO</h3>
+<p>管道是UNIX系统上最古老的一种IPC方法，可以用来在相关进程间传递数据。FIFO 则是 管道 概念的一个变体, 区别在于 FIFO可以用于 任意进程间的通信</p>
+
+<h4 id="管道">管道</h4>
+
+<ol>
+  <li>
+    <p>shell命令中使用管道最为常见。比如 ls | wc -l, 示意图如下： 为执行该命令， shell创建了两个进程来分别执行ls、wc</p>
+  </li>
+  <li>管道的几个特征：
+    <ol>
+      <li>一个管道是一个字节流 （不存在消息...</li>
+</ol>
+</li>
+</ol><div class="read-more"><a href="/2019/02/05/fifo-pipe/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2019/01/14/linux-interface-socket/">linux-interface-socket</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">January 14, 2019</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/books/"><small class="tag-label">books</small></a></div><hr class="article-header-separator" /><h2 id="the-linux-programming-interface">The linux programming interface</h2>
 <!-- 1. 57 介绍UNIX domain socket， 允许同一主机上的系统上的应用程序之间通讯。 58 介绍TCP/IP之间联网协议的关键特性。， 59 描述internet domain socket, 允许位于不同主机上的应用程序通过一个TCP/IP王璐进行通讯， 60 讨论socket的服务设计， 61: 介绍一些高级主题， 包括socket IO的， TCP协议的细节信息，已经socket选项来获取修改socket的各种特性。 -->
 
 <h3 id="socket">Socket</h3>
@@ -11,7 +27,28 @@
 </li>
 </ul>
 </li>
-</ol><div class="read-more"><a href="/2019/01/14/linux-interface-socket/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2018/12/30/linx-interface-04/">linux-interface-04</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">December 30, 2018</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/books/"><small class="tag-label">books</small></a></div><hr class="article-header-separator" /><h2 id="the-linux-programming-interface">The linux programming interface</h2>
+</ol><div class="read-more"><a href="/2019/01/14/linux-interface-socket/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2018/12/30/linux-interface-05/">linux-interface-05</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">December 30, 2018</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/books/"><small class="tag-label">books</small></a></div><hr class="article-header-separator" /><h2 id="the-linux-programming-interface">The linux programming interface</h2>
+
+<h3 id="深入探究文件io">深入探究文件IO</h3>
+<hr>
+<p><strong>原子操作： 将某一系统调用所要完成的各个动作作为不可中断的操作，一次性加以完成, 是许多系统调用的以正确完成的必要条件</strong><br>
+<strong>竞争状态是这样一种情形：操作共享资源的两个进程或线程，结果取决于 一个无法预期的顺序，即这些进程获取CPU使用权的先后相对顺序</strong></p>
+
+<ol>
+  <li>open, 保证进程是打开文件的创建者，对文件是否存在的检查和创建文件属于同一原子操作。 flags: O_CREAT</li>
+  <li>
+    <p>fcntl: fcntl...</p>
+</li>
+</ol><div class="read-more"><a href="/2018/12/30/linux-interface-05/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2018/12/30/linux-interface-07/">linux-interface-07</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">December 30, 2018</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/books/"><small class="tag-label">books</small></a></div><hr class="article-header-separator" /><h2 id="the-linux-programming-interface">The linux programming interface</h2>
+
+<h2 id="内存分配">内存分配</h2>
+<ol>
+  <li>在堆上分配内存， 进程可以通过增加堆的大小来分配内存， 堆就是一段长度可变的连续的虚拟内存，初始于 进程未初始化的数据段末尾，随着内存的分配和释放而增减。通常将堆当前内存边界成为 program break
+    <ul>
+      <li>brk(vodi * end_data_segment), sbrk(int increment), 两个系统调用可以改变 program break 的位置， 位置调升以后，程序可...</li>
+</ul>
+</li>
+</ol><div class="read-more"><a href="/2018/12/30/linux-interface-07/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2018/12/30/linx-interface-04/">linux-interface-04</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">December 30, 2018</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/books/"><small class="tag-label">books</small></a></div><hr class="article-header-separator" /><h2 id="the-linux-programming-interface">The linux programming interface</h2>
 
 <h3 id="文件io-通用的io模型">文件IO 通用的IO模型</h3>
 <hr>
@@ -41,28 +78,7 @@
 <p><strong>进程 是可执行程序的实例</strong></p>
 <ol>
   <li>进程号 和 父进程号： 每个进程都有一个PID， 唯一标识 某个进程，除了少数(init PID 为1) 之外，多数程序与运行该程序的进程PID没有固定关系。 linux内核限制 进程号小于 32767,当进程号达到这个限制时候，内核将重置进程号计数器，重新从最小的整数开始分配。（进程号计数器会重置为 300， 因为 低于此数值的进程号 为系统进程和守护进程 长期占用， 关于最大进程号 默...</li>
-</ol><div class="read-more"><a href="/2018/12/30/linux-interface-06/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2018/12/30/linux-interface-05/">linux-interface-05</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">December 30, 2018</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/books/"><small class="tag-label">books</small></a></div><hr class="article-header-separator" /><h2 id="the-linux-programming-interface">The linux programming interface</h2>
-
-<h3 id="深入探究文件io">深入探究文件IO</h3>
-<hr>
-<p><strong>原子操作： 将某一系统调用所要完成的各个动作作为不可中断的操作，一次性加以完成, 是许多系统调用的以正确完成的必要条件</strong><br>
-<strong>竞争状态是这样一种情形：操作共享资源的两个进程或线程，结果取决于 一个无法预期的顺序，即这些进程获取CPU使用权的先后相对顺序</strong></p>
-
-<ol>
-  <li>open, 保证进程是打开文件的创建者，对文件是否存在的检查和创建文件属于同一原子操作。 flags: O_CREAT</li>
-  <li>
-    <p>fcntl: fcntl...</p>
-</li>
-</ol><div class="read-more"><a href="/2018/12/30/linux-interface-05/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2018/12/30/linux-interface-07/">linux-interface-07</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">December 30, 2018</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/books/"><small class="tag-label">books</small></a></div><hr class="article-header-separator" /><h2 id="the-linux-programming-interface">The linux programming interface</h2>
-
-<h2 id="内存分配">内存分配</h2>
-<ol>
-  <li>在堆上分配内存， 进程可以通过增加堆的大小来分配内存， 堆就是一段长度可变的连续的虚拟内存，初始于 进程未初始化的数据段末尾，随着内存的分配和释放而增减。通常将堆当前内存边界成为 program break
-    <ul>
-      <li>brk(vodi * end_data_segment), sbrk(int increment), 两个系统调用可以改变 program break 的位置， 位置调升以后，程序可...</li>
-</ul>
-</li>
-</ol><div class="read-more"><a href="/2018/12/30/linux-interface-07/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2018/12/06/linux-interface-02/">linux-interface-02</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">December 06, 2018</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/books/"><small class="tag-label">books</small></a></div><hr class="article-header-separator" /><h2 id="the-linux-programming-interface">The linux programming interface</h2>
+</ol><div class="read-more"><a href="/2018/12/30/linux-interface-06/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2018/12/06/linux-interface-02/">linux-interface-02</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">December 06, 2018</span></div><div class="tag-labels"><a href="/tags/linux/"><small class="tag-label">linux</small></a><a href="/tags/books/"><small class="tag-label">books</small></a></div><hr class="article-header-separator" /><h2 id="the-linux-programming-interface">The linux programming interface</h2>
 
 <h2 id="系统编程概念">系统编程概念</h2>
 
@@ -107,25 +123,7 @@
 <blockquote>
   <p>关注程序的创建、执行和研究。使用Lisp方言书写<br>
 本书中讨论的各种问题主要涉及到： 人的大脑，计算机程序的集合，以及计算机本身。每一个计算机程序都是现实中的或者精神中的某个过程的一个模型。通过人的头脑孵化出来，这种过程出现在人们的经验或者思维中。很少能够通过程序将这种过程模拟到永远令人满意的程度。 因为这个原因，程序也在不断的演化。当我们对模型的认识更深入、更扩大，更广泛时，我们就会修改程序。直到达到一中亚稳定状态。...</p>
-</blockquote><div class="read-more"><a href="/2018/03/20/sicp/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2018/01/04/benjamin-graham/">格雷厄姆之道</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">January 04, 2018</span></div><div class="tag-labels"><a href="/tags/.html"><small class="tag-label">投资</small></a></div><hr class="article-header-separator" /><h2 id="格雷厄姆之道如何在中国实践价值投资">格雷厄姆之道（如何在中国实践价值投资）</h2>
-<blockquote>
-  <p>现在已然衰朽者， 将来可能重放异彩；现在备受青睐者，，将来却可能日渐衰朽。</p>
-</blockquote>
-
-<h2 id="原理">原理</h2>
-
-<ol>
-  <li>价值投资：
-    <blockquote>
-      <p>价值投资不会让你一夜暴富，但它可以在保证本金安全的前提下让你的财产增值</p>
-    </blockquote>
-
-    <ul>
-      <li>价值投资：用远低于公司内在价值的价格购买该公司的股票</li>
-      <li>金融思维和商业思维： 商业思维 这个公司值多少钱，股票价格 = 公司价格 / 股票数量。 金融思维： 股票价格 = 每股收益 * 市盈率（PE）金融...</li>
-</ul>
-</li>
-</ol><div class="read-more"><a href="/2018/01/04/benjamin-graham/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><div class="paginate-wrapper"><div class="previous-page"><a href="/"><i class="fa fa-arrow-left"></i> Previous Page</a></div><div class="next-page"><a href="/page/3/"><i class="fa fa-arrow-right"></i> Next Page</a></div></div><div class="page-number">Page 2 of 6</div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2019 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
+</blockquote><div class="read-more"><a href="/2018/03/20/sicp/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><div class="paginate-wrapper"><div class="previous-page"><a href="/"><i class="fa fa-arrow-left"></i> Previous Page</a></div><div class="next-page"><a href="/page/3/"><i class="fa fa-arrow-right"></i> Next Page</a></div></div><div class="page-number">Page 2 of 7</div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2019 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
   hm.src = "https://hm.baidu.com/hm.js?b43ef53b285c49e1af0bd7080994c825";
