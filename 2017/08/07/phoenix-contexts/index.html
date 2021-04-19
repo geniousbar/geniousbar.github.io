@@ -13,14 +13,14 @@
 </ul>
 
 <div class="highlight"><pre class="highlight elixir"><code>    <span class="n">mix</span> <span class="n">phx</span><span class="o">.</span><span class="n">gen</span><span class="o">.</span><span class="n">html</span> <span class="no">Accounts</span> <span class="no">User</span> <span class="n">user</span> <span class="n">users</span> <span class="ss">name:</span><span class="n">string</span> <span class="ss">username:string:</span><span class="n">unique</span>
-    <span class="n">resources</span> <span class="sd">"</span><span class="s2">/users"</span><span class="p">,</span> <span class="no">UserController</span>
+    <span class="n">resources</span> <span class="s2">"/users"</span><span class="p">,</span> <span class="no">UserController</span>
     <span class="n">mix</span> <span class="n">ecto</span><span class="o">.</span><span class="n">migrate</span>
 
-    <span class="n">scopes</span> <span class="sd">"</span><span class="s2">/"</span> <span class="no">HelloWeb</span> <span class="k">do</span>
+    <span class="n">scopes</span> <span class="s2">"/"</span> <span class="no">HelloWeb</span> <span class="k">do</span>
       <span class="n">pipe_through</span> <span class="ss">:browser</span>
 
-      <span class="n">get</span> <span class="sd">"</span><span class="s2">/"</span><span class="p">,</span> <span class="no">PageController</span><span class="p">,</span> <span class="ss">:index</span>
-      <span class="n">resources</span> <span class="sd">"</span><span class="s2">/users"</span><span class="p">,</span> <span class="no">UserController</span>
+      <span class="n">get</span> <span class="s2">"/"</span><span class="p">,</span> <span class="no">PageController</span><span class="p">,</span> <span class="ss">:index</span>
+      <span class="n">resources</span> <span class="s2">"/users"</span><span class="p">,</span> <span class="no">UserController</span>
     <span class="k">end</span>
 </code></pre></div><ul>
   <li>Phoenix 生成的web相关的文件， 在 lib/hello_web/中， context文件在 lib/hello/accounts 中， 注意 这个区别， 我们使用Accounts module来管理account相关的功能， Accounts.User struct 是Ecto 来转换、验证的user的模型，</li>
@@ -37,22 +37,22 @@
 
     <span class="k">def</span> <span class="n">index</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">_params</span><span class="p">)</span> <span class="k">do</span>
       <span class="n">users</span> <span class="o">=</span> <span class="no">Accounts</span><span class="o">.</span><span class="n">list_users</span><span class="p">()</span>
-      <span class="n">render</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="sd">"</span><span class="s2">index.html"</span><span class="p">,</span> <span class="ss">users:</span> <span class="n">users</span><span class="p">)</span>
+      <span class="n">render</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">"index.html"</span><span class="p">,</span> <span class="ss">users:</span> <span class="n">users</span><span class="p">)</span>
     <span class="k">end</span>
 
     <span class="k">def</span> <span class="n">new</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">_params</span><span class="p">)</span> <span class="k">do</span>
       <span class="n">changeset</span> <span class="o">=</span> <span class="no">Accounts</span><span class="o">.</span><span class="n">change_user</span><span class="p">(%</span><span class="no">Hello</span><span class="o">.</span><span class="no">Accounts</span><span class="o">.</span><span class="no">User</span><span class="p">{})</span>
-      <span class="n">render</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="sd">"</span><span class="s2">new.html"</span><span class="p">,</span> <span class="ss">changeset:</span> <span class="n">changeset</span><span class="p">)</span>
+      <span class="n">render</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">"new.html"</span><span class="p">,</span> <span class="ss">changeset:</span> <span class="n">changeset</span><span class="p">)</span>
     <span class="k">end</span>
 
-    <span class="k">def</span> <span class="n">create</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="p">%{</span><span class="sd">"</span><span class="s2">user"</span> <span class="o">=&gt;</span> <span class="n">user_params</span><span class="p">})</span> <span class="k">do</span>
+    <span class="k">def</span> <span class="n">create</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="p">%{</span><span class="s2">"user"</span> <span class="o">=&gt;</span> <span class="n">user_params</span><span class="p">})</span> <span class="k">do</span>
       <span class="k">case</span> <span class="no">Accounts</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">user_params</span><span class="p">)</span> <span class="k">do</span>
         <span class="p">{</span><span class="ss">:ok</span><span class="p">,</span> <span class="n">user</span><span class="p">}</span> <span class="o">-&gt;</span>
           <span class="n">conn</span>
-          <span class="o">|&gt;</span> <span class="n">put_flash</span><span class="p">(</span><span class="ss">:info</span><span class="p">,</span> <span class="sd">"</span><span class="s2">user create success"</span><span class="p">)</span>
+          <span class="o">|&gt;</span> <span class="n">put_flash</span><span class="p">(</span><span class="ss">:info</span><span class="p">,</span> <span class="s2">"user create success"</span><span class="p">)</span>
           <span class="o">|&gt;</span> <span class="n">redirect</span><span class="p">(</span><span class="ss">to:</span> <span class="n">user_path</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="ss">:show</span><span class="p">,</span> <span class="n">user</span><span class="p">))</span>
         <span class="p">{</span><span class="ss">:error</span><span class="p">,</span> <span class="p">%</span><span class="no">Ecto</span><span class="o">.</span><span class="no">Changeset</span><span class="p">{}</span> <span class="o">=</span> <span class="n">changeset</span><span class="p">}</span> <span class="o">-&gt;</span>
-          <span class="n">render</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="sd">"</span><span class="s2">new.html"</span><span class="p">,</span> <span class="ss">changeset:</span> <span class="n">changeset</span><span class="p">)</span>
+          <span class="n">render</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">"new.html"</span><span class="p">,</span> <span class="ss">changeset:</span> <span class="n">changeset</span><span class="p">)</span>
       <span class="k">end</span>
     <span class="k">end</span>
   <span class="k">end</span>
@@ -96,7 +96,7 @@
 <div class="highlight"><pre class="highlight elixir"><code>
   <span class="n">alias</span> <span class="no">Hello</span><span class="o">.</span><span class="no">Accounts</span><span class="o">.</span><span class="p">{</span><span class="no">User</span><span class="p">,</span> <span class="no">Credential</span><span class="p">}</span>
 
-  <span class="n">schema</span> <span class="sd">"</span><span class="s2">users"</span> <span class="k">do</span>
+  <span class="n">schema</span> <span class="s2">"users"</span> <span class="k">do</span>
     <span class="n">field</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:string</span>
     <span class="n">field</span> <span class="ss">:username</span><span class="p">,</span> <span class="ss">:string</span>
     <span class="n">has_one</span> <span class="ss">:credential</span><span class="p">,</span> <span class="no">Credential</span>
@@ -105,7 +105,7 @@
 </code></pre></div>
 <p>我们使用Ecto.Schema’s has_one macro来让Ecto知道如何关联User and Credential， 同样的编辑accounts/credential.ex</p>
 <div class="highlight"><pre class="highlight elixir"><code>  <span class="n">alias</span> <span class="no">Hello</span><span class="o">.</span><span class="no">Accounts</span><span class="o">.</span><span class="p">{</span><span class="no">Credential</span><span class="p">,</span> <span class="no">User</span><span class="p">}</span>
-  <span class="n">schema</span> <span class="sd">"</span><span class="s2">credential"</span> <span class="k">do</span>
+  <span class="n">schema</span> <span class="s2">"credential"</span> <span class="k">do</span>
     <span class="n">field</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:string</span>
     <span class="n">field</span> <span class="ss">:user_id</span><span class="p">,</span> <span class="ss">:id</span>
     <span class="n">belongs_to</span> <span class="ss">:user</span><span class="p">,</span> <span class="no">User</span>
@@ -142,7 +142,7 @@
 
 <div class="highlight"><pre class="highlight html"><code>  + <span class="nt">&lt;li&gt;</span>
   +   <span class="nt">&lt;strong&gt;</span>Email:<span class="nt">&lt;/strong&gt;</span>
-  +   <span class="nt">&lt;</span><span class="err">%=</span> <span class="err">@</span><span class="na">user</span><span class="err">.</span><span class="na">credential</span><span class="err">.</span><span class="na">email</span> <span class="err">%</span><span class="nt">&gt;</span>
+  +   <span class="nt">&lt;</span><span class="err">%=</span> <span class="err">@</span><span class="na">user.credential.email</span> <span class="err">%</span><span class="nt">&gt;</span>
   + <span class="nt">&lt;/li&gt;</span>
   <span class="nt">&lt;/ul&gt;</span>
 </code></pre></div>
@@ -152,14 +152,14 @@
 <div class="highlight"><pre class="highlight elixir"><code>  <span class="k">def</span> <span class="n">update_user</span><span class="p">(%</span><span class="no">User</span><span class="p">{}</span> <span class="o">=</span> <span class="n">user</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span> <span class="k">do</span>
     <span class="n">user</span>
     <span class="o">|&gt;</span> <span class="no">User</span><span class="o">.</span><span class="n">changeset</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>
-    <span class="o">|&gt;</span> <span class="no">Ecto</span><span class="o">.</span><span class="no">Changeset</span><span class="o">.</span><span class="n">cast_assoc</span><span class="p">(</span><span class="ss">:credential</span><span class="p">,</span> <span class="ss">with:</span> <span class="o">&amp;</span><span class="no">Credential</span><span class="o">.</span><span class="n">changset</span><span class="o">/</span><span class="m">2</span><span class="p">)</span>
+    <span class="o">|&gt;</span> <span class="no">Ecto</span><span class="o">.</span><span class="no">Changeset</span><span class="o">.</span><span class="n">cast_assoc</span><span class="p">(</span><span class="ss">:credential</span><span class="p">,</span> <span class="ss">with:</span> <span class="o">&amp;</span><span class="no">Credential</span><span class="o">.</span><span class="n">changset</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
     <span class="o">|&gt;</span> <span class="no">Repo</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="n">create_user</span><span class="p">(</span><span class="n">attrs</span> <span class="p">\\</span> <span class="p">%{})</span> <span class="k">do</span>
     <span class="p">%</span><span class="no">User</span><span class="p">{}</span>
     <span class="o">|&gt;</span> <span class="no">User</span><span class="o">.</span><span class="n">changset</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>
-    <span class="o">|&gt;</span> <span class="no">Ecto</span><span class="o">.</span><span class="no">Changeset</span><span class="o">.</span><span class="n">cast_assoc</span><span class="p">(</span><span class="ss">:credential</span><span class="p">,</span> <span class="n">with</span><span class="err">：</span> <span class="o">&amp;</span><span class="no">Credential</span><span class="o">.</span><span class="n">changset</span><span class="o">/</span><span class="m">2</span><span class="p">)</span>
+    <span class="o">|&gt;</span> <span class="no">Ecto</span><span class="o">.</span><span class="no">Changeset</span><span class="o">.</span><span class="n">cast_assoc</span><span class="p">(</span><span class="ss">:credential</span><span class="p">,</span> <span class="n">with</span><span class="err">：</span> <span class="o">&amp;</span><span class="no">Credential</span><span class="o">.</span><span class="n">changset</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
     <span class="o">|&gt;</span> <span class="no">Repo</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span>
   <span class="k">end</span>
 </code></pre></div><p>Ecto’s cast_assoc 告诉changset如何转换用户的输入到schema 关系中。我们使用with告诉changset使用Credential.changeset函数来转换用户输入，这样，Credential.changset 中所有的验证会应用到 User中。<br />
@@ -192,20 +192,20 @@
       <span class="n">alias</span> <span class="no">Hello</span><span class="o">.</span><span class="no">Accounts</span>
 
       <span class="k">def</span> <span class="n">new</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="k">do</span>
-          <span class="n">render</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="sd">"</span><span class="s2">new.html"</span><span class="p">)</span>
+          <span class="n">render</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">"new.html"</span><span class="p">)</span>
       <span class="k">end</span>
 
-      <span class="k">def</span> <span class="n">create</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span><span class="n">k</span> <span class="p">%{</span><span class="sd">"</span><span class="s2">user"</span> <span class="o">=&gt;</span> <span class="p">%{</span><span class="sd">"</span><span class="s2">email"</span> <span class="o">=&gt;</span> <span class="n">email</span><span class="p">,</span> <span class="sd">"</span><span class="s2">password"</span> <span class="o">=&gt;</span> <span class="n">password</span><span class="p">}})</span> <span class="k">do</span>
+      <span class="k">def</span> <span class="n">create</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span><span class="n">k</span> <span class="p">%{</span><span class="s2">"user"</span> <span class="o">=&gt;</span> <span class="p">%{</span><span class="s2">"email"</span> <span class="o">=&gt;</span> <span class="n">email</span><span class="p">,</span> <span class="s2">"password"</span> <span class="o">=&gt;</span> <span class="n">password</span><span class="p">}})</span> <span class="k">do</span>
           <span class="k">case</span> <span class="no">Accounts</span><span class="o">.</span><span class="n">authenticate_by_email_password</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span> <span class="k">do</span>
               <span class="p">{</span><span class="ss">:ok</span><span class="p">,</span> <span class="n">user</span><span class="p">}</span> <span class="o">-&gt;</span>
                   <span class="n">conn</span>
-                  <span class="o">|&gt;</span> <span class="n">put_flash</span><span class="p">(</span><span class="ss">:info</span><span class="p">,</span> <span class="sd">"</span><span class="s2">welcome back"</span><span class="p">)</span>
+                  <span class="o">|&gt;</span> <span class="n">put_flash</span><span class="p">(</span><span class="ss">:info</span><span class="p">,</span> <span class="s2">"welcome back"</span><span class="p">)</span>
                   <span class="o">|&gt;</span> <span class="n">put_session</span><span class="p">(</span><span class="ss">:user_id</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
                   <span class="o">|&gt;</span> <span class="n">configure_session</span><span class="p">(</span><span class="ss">renew:</span> <span class="no">true</span><span class="p">)</span>
-                  <span class="o">|&gt;</span> <span class="n">redirect</span><span class="p">(</span><span class="ss">to:</span> <span class="sd">"</span><span class="s2">/"</span><span class="p">)</span>
+                  <span class="o">|&gt;</span> <span class="n">redirect</span><span class="p">(</span><span class="ss">to:</span> <span class="s2">"/"</span><span class="p">)</span>
               <span class="p">{</span><span class="ss">:error</span><span class="p">,</span> <span class="ss">:unauthorized</span><span class="p">}</span> <span class="o">-&gt;</span>
                   <span class="n">conn</span>
-                  <span class="o">|&gt;</span> <span class="n">put_flalsh</span><span class="p">(</span><span class="ss">:error</span><span class="p">,</span> <span class="sd">"</span><span class="s2">bad email/password combination"</span><span class="p">)</span>
+                  <span class="o">|&gt;</span> <span class="n">put_flalsh</span><span class="p">(</span><span class="ss">:error</span><span class="p">,</span> <span class="s2">"bad email/password combination"</span><span class="p">)</span>
                   <span class="o">|&gt;</span> <span class="n">redirect</span><span class="p">(</span><span class="ss">to:</span> <span class="n">session_path</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="ss">:new</span><span class="p">))</span>
           <span class="k">end</span>
       <span class="k">end</span>
@@ -213,12 +213,12 @@
 </code></pre></div><p>我们定义了一个SessionController来处理用户signing and out，new action 只是简单的渲染 “new session”表单， 表单简单的post 到create action， 我们使用模式匹配然后调用 Accounts.authenticate_by_email_password， 如果成功的话，我们使用Plug.Conn.put_session 来将验证过的用户ID放到 session中， 然后跳转到home page， 我们需要调用 configure_session(conn, renew: true) 在重定向之前，来避免session fixation 个哦高年级， 如果验证错误， 我们添加一个falsh error， 并重定向 四个in-in， 我们添加一个delete action 简单的调用Plug.Conn.configure_session 来删除掉session并重定向到home page<br />
   lib/hello_web/router.ex</p>
 
-<div class="highlight"><pre class="highlight elixir"><code>  <span class="n">scope</span> <span class="sd">"</span><span class="s2">/"</span> <span class="no">HelloWeb</span> <span class="k">do</span>
+<div class="highlight"><pre class="highlight elixir"><code>  <span class="n">scope</span> <span class="s2">"/"</span> <span class="no">HelloWeb</span> <span class="k">do</span>
       <span class="n">pipe_through</span> <span class="ss">:brower</span>
 
-      <span class="n">get</span> <span class="sd">"</span><span class="s2">/"</span> <span class="no">PageController</span><span class="p">,</span> <span class="ss">:index</span>
-      <span class="n">resources</span> <span class="sd">"</span><span class="s2">/users"</span><span class="p">,</span> <span class="no">UserController</span>
-      <span class="n">resources</span> <span class="sd">"</span><span class="s2">/sessions"</span><span class="p">,</span> <span class="no">SessionController</span><span class="p">,</span> <span class="ss">only:</span> <span class="p">[</span><span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span><span class="p">,</span> <span class="ss">:delete</span><span class="p">],</span> <span class="ss">singleton:</span> <span class="no">true</span>
+      <span class="n">get</span> <span class="s2">"/"</span> <span class="no">PageController</span><span class="p">,</span> <span class="ss">:index</span>
+      <span class="n">resources</span> <span class="s2">"/users"</span><span class="p">,</span> <span class="no">UserController</span>
+      <span class="n">resources</span> <span class="s2">"/sessions"</span><span class="p">,</span> <span class="no">SessionController</span><span class="p">,</span> <span class="ss">only:</span> <span class="p">[</span><span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span><span class="p">,</span> <span class="ss">:delete</span><span class="p">],</span> <span class="ss">singleton:</span> <span class="no">true</span>
   <span class="k">end</span>
 </code></pre></div><p>我们使用resources 来生成 一系列的routes 在”/sessions”下，使用:only 来限制我们的route 生成。因为我么只需要支持 :new, :create, :delete action， 我们添加singleton: true 选项，来定义restful routes， 但是不需要一个resource ID 在URL中。 我们不需要一个ID在URL中，因为我们的action 总是知道current_user， 这个ID总是在session中，在我们完成controller之前， 我们添加一个验证的plug 在route中来限制用户访问， lib/hello_web/router.ex</p>
 
@@ -227,7 +227,7 @@
           <span class="no">nil</span> <span class="o">-&gt;</span>
               <span class="n">conn</span>
               <span class="o">|&gt;</span> <span class="no">Phoenix</span><span class="o">.</span><span class="no">Controller</span><span class="o">.</span><span class="n">put_flash</span><span class="p">(</span><span class="ss">:error</span><span class="p">,</span> <span class="err">”</span><span class="n">login</span> <span class="n">please</span><span class="p">)</span>
-              <span class="o">|&gt;</span> <span class="no">Phoenix</span><span class="o">.</span><span class="no">Controller</span><span class="o">.</span><span class="n">redirect</span><span class="p">(</span><span class="ss">to:</span> <span class="sd">"</span><span class="s2">/"</span><span class="p">)</span>
+              <span class="o">|&gt;</span> <span class="no">Phoenix</span><span class="o">.</span><span class="no">Controller</span><span class="o">.</span><span class="n">redirect</span><span class="p">(</span><span class="ss">to:</span> <span class="s2">"/"</span><span class="p">)</span>
               <span class="o">|&gt;</span> <span class="n">halt</span><span class="p">()</span>
           <span class="n">user_id</span> <span class="o">-&gt;</span>
               <span class="n">assign</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="ss">:current_user</span><span class="p">,</span> <span class="no">Hello</span><span class="o">.</span><span class="no">Accounts</span><span class="o">.</span><span class="n">get_user!</span><span class="p">(</span><span class="n">user_id</span><span class="p">))</span>
@@ -253,9 +253,9 @@
 
 <div class="highlight"><pre class="highlight elixir"><code>  <span class="n">mix</span> <span class="n">phx</span><span class="o">.</span><span class="n">gen</span><span class="o">.</span><span class="n">html</span> <span class="no">CMS</span> <span class="no">Page</span> <span class="n">pages</span> <span class="ss">title:</span><span class="n">string</span> <span class="ss">body:</span><span class="n">text</span> <span class="ss">views:</span><span class="n">integer</span> <span class="o">--</span><span class="n">web</span> <span class="no">CMS</span>
   <span class="n">mix</span> <span class="n">ecto</span><span class="o">.</span><span class="n">migrate</span>
-</code></pre></div><div class="highlight"><pre class="highlight elixir"><code>  <span class="n">scope</span> <span class="sd">"</span><span class="s2">/cms"</span><span class="p">,</span> <span class="no">HelloWeb</span><span class="o">.</span><span class="no">CMS</span> <span class="ss">as:</span> <span class="ss">:cms</span> <span class="k">do</span>
+</code></pre></div><div class="highlight"><pre class="highlight elixir"><code>  <span class="n">scope</span> <span class="s2">"/cms"</span><span class="p">,</span> <span class="no">HelloWeb</span><span class="o">.</span><span class="no">CMS</span> <span class="ss">as:</span> <span class="ss">:cms</span> <span class="k">do</span>
       <span class="n">pipe_through</span> <span class="p">[</span><span class="ss">:bowser</span><span class="p">,</span> <span class="ss">:authenticate_user</span><span class="p">]</span>
-      <span class="n">resources</span> <span class="sd">"</span><span class="s2">/pages"</span><span class="p">,</span> <span class="no">PageController</span>
+      <span class="n">resources</span> <span class="s2">"/pages"</span><span class="p">,</span> <span class="no">PageController</span>
   <span class="k">end</span>
 </code></pre></div><p>我们添加了 authenticate_user 来要求在CMS scope中的路由都需要用户登录。<br />
   创建Author</p>
@@ -296,7 +296,7 @@
 <div class="highlight"><pre class="highlight elixir"><code>  <span class="o">-</span> <span class="n">alias</span> <span class="no">Hello</span><span class="o">.</span><span class="no">CMS</span><span class="o">.</span><span class="no">Page</span>
   <span class="o">+</span> <span class="n">alis</span> <span class="no">Hello</span><span class="o">.</span><span class="no">CMS</span><span class="o">.</span><span class="p">{</span><span class="no">Page</span><span class="p">,</span> <span class="no">Author</span><span class="p">}</span>
 
-  <span class="n">schema</span> <span class="sd">"</span><span class="s2">pages"</span> <span class="k">do</span>
+  <span class="n">schema</span> <span class="s2">"pages"</span> <span class="k">do</span>
       <span class="n">field</span> <span class="ss">:body</span><span class="p">,</span> <span class="ss">:string</span>
       <span class="n">field</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">:string</span>
       <span class="n">field</span> <span class="ss">:views</span><span class="p">,</span> <span class="ss">:integer</span>
@@ -307,7 +307,7 @@
 <div class="highlight"><pre class="highlight elixir"><code>  <span class="o">-</span> <span class="n">alias</span> <span class="no">Hello</span><span class="o">.</span><span class="no">CMS</span><span class="o">.</span><span class="no">Author</span>
   <span class="o">+</span> <span class="n">alias</span> <span class="no">Hello</span><span class="o">.</span><span class="no">CMS</span><span class="o">.</span><span class="p">{</span><span class="no">Author</span><span class="p">,</span> <span class="no">Page</span><span class="p">}</span>
 
-  <span class="n">schema</span> <span class="sd">"</span><span class="s2">authors"</span> <span class="k">do</span>
+  <span class="n">schema</span> <span class="s2">"authors"</span> <span class="k">do</span>
       <span class="n">field</span> <span class="ss">:bio</span><span class="p">,</span> <span class="ss">:string</span>
       <span class="n">field</span> <span class="ss">:genre</span><span class="p">,</span> <span class="ss">:string</span>
       <span class="n">field</span> <span class="ss">:role</span><span class="p">,</span> <span class="ss">:string</span>
@@ -374,38 +374,38 @@
       <span class="k">end</span>
 
       <span class="k">defp</span> <span class="n">authorize_page</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="k">do</span>
-          <span class="n">page</span> <span class="o">=</span> <span class="no">CMS</span><span class="o">.</span><span class="n">get_page!</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="sd">"</span><span class="s2">id"</span><span class="p">])</span>
+          <span class="n">page</span> <span class="o">=</span> <span class="no">CMS</span><span class="o">.</span><span class="n">get_page!</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">"id"</span><span class="p">])</span>
 
           <span class="k">if</span> <span class="n">conn</span><span class="o">.</span><span class="n">assigns</span><span class="o">.</span><span class="n">current_author</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">page</span><span class="o">.</span><span class="n">author_id</span> <span class="k">do</span>
               <span class="n">assign</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="ss">:page</span><span class="p">,</span> <span class="n">page</span><span class="p">)</span>
           <span class="k">else</span>
               <span class="n">conn</span>
-              <span class="o">|&gt;</span> <span class="n">put_flash</span><span class="p">(</span><span class="ss">:error</span><span class="p">,</span> <span class="sd">"</span><span class="s2">you can't modify this page"</span><span class="p">)</span>
+              <span class="o">|&gt;</span> <span class="n">put_flash</span><span class="p">(</span><span class="ss">:error</span><span class="p">,</span> <span class="s2">"you can't modify this page"</span><span class="p">)</span>
               <span class="o">|&gt;</span> <span class="n">redirect</span><span class="p">(</span><span class="ss">to:</span> <span class="n">cms_page_path</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="ss">:index</span><span class="p">))</span>
               <span class="o">|&gt;</span> <span class="n">halt</span><span class="p">()</span>
           <span class="k">end</span>
       <span class="k">end</span>
 </code></pre></div><p>我们在 CMS.PageController中添加了 两个Plug, 地一个plug， :require_existing_author, 在每个action都需要执行， 函数 调用CMS.ensure_author_exists 并传递current_user过去，当找到 或者创建author，我们使用Plug.Conn.assign 来将 current_author 传递到下去。<br />
   第二步，我们使用:authorized_page来过滤特定的action， 函数 地一个从connection params获取page，，然后跟current_author 进行验证， 如果current_author 的ID 跟Page的author_id一样，可以通过验证， 如果不一样，我们Plug.Conn.halt 来阻止， action的进一步执行。</p>
-<div class="highlight"><pre class="highlight elixir"><code>   <span class="k">def</span> <span class="n">create</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="p">%{</span><span class="sd">"</span><span class="s2">page"</span> <span class="o">=&gt;</span> <span class="n">page_params</span><span class="p">})</span> <span class="k">do</span>
+<div class="highlight"><pre class="highlight elixir"><code>   <span class="k">def</span> <span class="n">create</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="p">%{</span><span class="s2">"page"</span> <span class="o">=&gt;</span> <span class="n">page_params</span><span class="p">})</span> <span class="k">do</span>
   <span class="o">+</span>   <span class="k">case</span> <span class="no">CMS</span><span class="o">.</span><span class="n">create_page</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">assigns</span><span class="o">.</span><span class="n">current_author</span><span class="p">,</span> <span class="n">page_params</span><span class="p">)</span> <span class="k">do</span>
       <span class="p">{</span><span class="ss">:ok</span><span class="p">,</span> <span class="n">page</span><span class="p">}</span> <span class="o">-&gt;</span>
         <span class="n">conn</span>
-        <span class="o">|&gt;</span> <span class="n">put_flash</span><span class="p">(</span><span class="ss">:info</span><span class="p">,</span> <span class="sd">"</span><span class="s2">Page created successfully."</span><span class="p">)</span>
+        <span class="o">|&gt;</span> <span class="n">put_flash</span><span class="p">(</span><span class="ss">:info</span><span class="p">,</span> <span class="s2">"Page created successfully."</span><span class="p">)</span>
         <span class="o">|&gt;</span> <span class="n">redirect</span><span class="p">(</span><span class="ss">to:</span> <span class="n">cms_page_path</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="ss">:show</span><span class="p">,</span> <span class="n">page</span><span class="p">))</span>
       <span class="p">{</span><span class="ss">:error</span><span class="p">,</span> <span class="p">%</span><span class="no">Ecto</span><span class="o">.</span><span class="no">Changeset</span><span class="p">{}</span> <span class="o">=</span> <span class="n">changeset</span><span class="p">}</span> <span class="o">-&gt;</span>
-        <span class="n">render</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="sd">"</span><span class="s2">new.html"</span><span class="p">,</span> <span class="ss">changeset:</span> <span class="n">changeset</span><span class="p">)</span>
+        <span class="n">render</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">"new.html"</span><span class="p">,</span> <span class="ss">changeset:</span> <span class="n">changeset</span><span class="p">)</span>
     <span class="k">end</span>
   <span class="k">end</span>
 
-  <span class="k">def</span> <span class="n">update</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="p">%{</span><span class="sd">"</span><span class="s2">page"</span> <span class="o">=&gt;</span> <span class="n">page_params</span><span class="p">})</span> <span class="k">do</span>
+  <span class="k">def</span> <span class="n">update</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="p">%{</span><span class="s2">"page"</span> <span class="o">=&gt;</span> <span class="n">page_params</span><span class="p">})</span> <span class="k">do</span>
   <span class="o">+</span>   <span class="k">case</span> <span class="no">CMS</span><span class="o">.</span><span class="n">update_page</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">assigns</span><span class="o">.</span><span class="n">page</span><span class="p">,</span> <span class="n">page_params</span><span class="p">)</span> <span class="k">do</span>
       <span class="p">{</span><span class="ss">:ok</span><span class="p">,</span> <span class="n">page</span><span class="p">}</span> <span class="o">-&gt;</span>
         <span class="n">conn</span>
-        <span class="o">|&gt;</span> <span class="n">put_flash</span><span class="p">(</span><span class="ss">:info</span><span class="p">,</span> <span class="sd">"</span><span class="s2">Page updated successfully."</span><span class="p">)</span>
+        <span class="o">|&gt;</span> <span class="n">put_flash</span><span class="p">(</span><span class="ss">:info</span><span class="p">,</span> <span class="s2">"Page updated successfully."</span><span class="p">)</span>
         <span class="o">|&gt;</span> <span class="n">redirect</span><span class="p">(</span><span class="ss">to:</span> <span class="n">cms_page_path</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="ss">:show</span><span class="p">,</span> <span class="n">page</span><span class="p">))</span>
       <span class="p">{</span><span class="ss">:error</span><span class="p">,</span> <span class="p">%</span><span class="no">Ecto</span><span class="o">.</span><span class="no">Changeset</span><span class="p">{}</span> <span class="o">=</span> <span class="n">changeset</span><span class="p">}</span> <span class="o">-&gt;</span>
-        <span class="n">render</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="sd">"</span><span class="s2">edit.html"</span><span class="p">,</span> <span class="ss">changeset:</span> <span class="n">changeset</span><span class="p">)</span>
+        <span class="n">render</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">"edit.html"</span><span class="p">,</span> <span class="ss">changeset:</span> <span class="n">changeset</span><span class="p">)</span>
     <span class="k">end</span>
   <span class="k">end</span>
 
@@ -413,7 +413,7 @@
   <span class="o">+</span>   <span class="p">{</span><span class="ss">:ok</span><span class="p">,</span> <span class="n">_page</span><span class="p">}</span> <span class="o">=</span> <span class="no">CMS</span><span class="o">.</span><span class="n">delete_page</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">assigns</span><span class="o">.</span><span class="n">page</span><span class="p">)</span>
 
     <span class="n">conn</span>
-    <span class="o">|&gt;</span> <span class="n">put_flash</span><span class="p">(</span><span class="ss">:info</span><span class="p">,</span> <span class="sd">"</span><span class="s2">Page deleted successfully."</span><span class="p">)</span>
+    <span class="o">|&gt;</span> <span class="n">put_flash</span><span class="p">(</span><span class="ss">:info</span><span class="p">,</span> <span class="s2">"Page deleted successfully."</span><span class="p">)</span>
     <span class="o">|&gt;</span> <span class="n">redirect</span><span class="p">(</span><span class="ss">to:</span> <span class="n">cms_page_path</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="ss">:index</span><span class="p">))</span>
   <span class="k">end</span>     
 
@@ -429,7 +429,7 @@
        <span class="k">end</span>
    <span class="k">end</span>
 </code></pre></div><p>完成！我现在有两个独立的分别负担 user context 和内容管理</p>
-<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2019 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2021 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
   hm.src = "https://hm.baidu.com/hm.js?b43ef53b285c49e1af0bd7080994c825";

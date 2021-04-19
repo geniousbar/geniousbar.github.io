@@ -72,9 +72,9 @@
   <li>文件系统用户id： 在进行linux中 打开文件、改变文件属主 、修改文件权限之类的文件操作时，决定其操作权限的是 文件系统用户id， 而非 有效用户id。通常 文件系统用户id和组id都等于相应的有效用户和组id， 并且只要有效用户id发生变化，相应的文件系统用户id也会发生变化，只有linux特有的两个系统调用setfsuid(), setfsgid()才能刻意的制造出 文件系统用户id 不等于 有效用户id。因此   大部分情况下，可以忽视文件系统用户id，等同于检查 有效用户id</li>
 </ol>
 
-<ul>
-  <li>[ ] 完成对应的系统调用</li>
-  <li>[ ] 如何在进程中调用 特权程序?</li>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />完成对应的系统调用</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />如何在进程中调用 特权程序?</li>
 </ul>
 
 <h2 id="时间">时间</h2>
@@ -228,7 +228,7 @@
 <p>###: 内核缓冲区： 缓冲区 高速缓存： read, write 系统调用： 系统调用并不会直接发起磁盘调用，而仅仅是在 用户空间缓冲区 与 内核缓冲区高速缓存(kernel buffer cache) 中间复制数据。 write(fd, “abc”, 3) 的详细步骤： 1. 将数据从 用户空间内存传递到 内核 缓冲区中， 2. write 返回， 3）后续的某个时刻， 内核会将其 缓冲区的数据写入到 磁盘上。 read系统调用 则会产生 缺页中断， 进程挂起，知道 内核从磁盘中读取数据 并 存储到 内核缓冲区中，进程执行 从内核缓冲区中读取数据。</p>
 
 <h3 id="stdio库的缓冲-缓冲大块数据以减少系统调用-c语言函数库的io函数-fprintf-fgetsfputs-fputc-等能够使">stdio库的缓冲： 缓冲大块数据以减少系统调用， C语言函数库的IO函数， fprintf, fgets,fputs, fputc 等能够使</h3>
-<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2019 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2021 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
   hm.src = "https://hm.baidu.com/hm.js?b43ef53b285c49e1af0bd7080994c825";

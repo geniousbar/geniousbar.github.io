@@ -11,12 +11,12 @@
     <p>fcntl: fcntl(fd, cmd,…) 该调用对一个打开的文件描述符执行一系列控制操作。用途之一: 对一个打开的文件， 获取或修改其访问模式和状态标志。通过open也可以设定，所以fcntl针对已经打开的文件描述符，1）文件不是由调用程序打开的， 2）通过open之外的系统调用获取的， 比如pipe，socket， 等。 示例代码</p>
 
 <div class="highlight"><pre class="highlight c"><code> <span class="kt">int</span> <span class="n">flags</span><span class="p">,</span> <span class="n">accessMode</span><span class="p">;</span>
- <span class="n">flags</span> <span class="o">=</span> <span class="n">fcntl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_GETFL</span><span class="p">);</span> <span class="c1">// 获取flags
-</span> <span class="k">if</span> <span class="p">(</span><span class="n">flags</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+ <span class="n">flags</span> <span class="o">=</span> <span class="n">fcntl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_GETFL</span><span class="p">);</span> <span class="c1">// 获取flags</span>
+ <span class="k">if</span> <span class="p">(</span><span class="n">flags</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
      <span class="n">errExit</span><span class="p">(</span><span class="s">"fcntl"</span><span class="p">);</span>
- <span class="n">flags</span> <span class="o">|=</span> <span class="n">O_APPEND</span><span class="p">;</span> <span class="c1">// operate flags
-</span> <span class="n">fcntl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_SETFL</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span>  <span class="c1">// set flags   
-</span></code></pre></div>    <p>因为 O_RDONLY, OWRONLY, O_RDWR, 因为历史原因，数值为0,1,2所以不能简单的使用 &amp; 来判断是否存在对应的标记位， 如下为正确的做法</p>
+ <span class="n">flags</span> <span class="o">|=</span> <span class="n">O_APPEND</span><span class="p">;</span> <span class="c1">// operate flags</span>
+ <span class="n">fcntl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_SETFL</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span>  <span class="c1">// set flags   </span>
+</code></pre></div>    <p>因为 O_RDONLY, OWRONLY, O_RDWR, 因为历史原因，数值为0,1,2所以不能简单的使用 &amp; 来判断是否存在对应的标记位， 如下为正确的做法</p>
 
 <div class="highlight"><pre class="highlight c"><code>  <span class="n">accessmode</span> <span class="o">=</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">O_ACCMODE</span>
   <span class="k">if</span> <span class="p">(</span><span class="n">accessmode</span> <span class="o">===</span> <span class="n">O_WRONLY</span> <span class="o">||</span> <span class="n">accessMode</span> <span class="o">==</span> <span class="n">O_RDWR</span> <span class="o">||</span> <span class="n">accessmode</span> <span class="o">==</span> <span class="n">O_RDONLY</span><span class="p">)</span>
@@ -28,8 +28,8 @@
       <li>进程级别的文件描述符，记录的标志有 close-on-exec, 并指向到系统级 文件表</li>
       <li>系统级 文件表： 记录了: 文件偏移量， 打开文件的状态标记（open flags）, 文件访问模式，与信号驱动IO相关的g设地年， 对该文件I-node对象的引用</li>
       <li>文件系统的i-node表: 文件类型，一个指针，指向该文件所持有的锁列表， 文件的各种属性（包括文件大小， 已经时间戳）。 区分与磁盘中的i-node，这里是内存的i-node， 访问文件时候，会在内存中为i-node创建一个副本，其中记录了引用i-node的打开文句柄的数量，以及所在设备的主从设备等。
-        <ul>
-          <li>[ ] 添加指向 csapp的图片</li>
+        <ul class="task-list">
+          <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />添加指向 csapp的图片</li>
         </ul>
       </li>
     </ul>
@@ -150,9 +150,9 @@
   <li>文件系统用户id： 在进行linux中 打开文件、改变文件属主 、修改文件权限之类的文件操作时，决定其操作权限的是 文件系统用户id， 而非 有效用户id。通常 文件系统用户id和组id都等于相应的有效用户和组id， 并且只要有效用户id发生变化，相应的文件系统用户id也会发生变化，只有linux特有的两个系统调用setfsuid(), setfsgid()才能刻意的制造出 文件系统用户id 不等于 有效用户id。因此   大部分情况下，可以忽视文件系统用户id，等同于检查 有效用户id</li>
 </ol>
 
-<ul>
-  <li>[ ] 完成对应的系统调用</li>
-  <li>[ ] 如何在进程中调用 特权程序?</li>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />完成对应的系统调用</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />如何在进程中调用 特权程序?</li>
 </ul>
 
 <h2 id="时间">时间</h2>
@@ -306,7 +306,7 @@
 <p>###: 内核缓冲区： 缓冲区 高速缓存： read, write 系统调用： 系统调用并不会直接发起磁盘调用，而仅仅是在 用户空间缓冲区 与 内核缓冲区高速缓存(kernel buffer cache) 中间复制数据。 write(fd, “abc”, 3) 的详细步骤： 1. 将数据从 用户空间内存传递到 内核 缓冲区中， 2. write 返回， 3）后续的某个时刻， 内核会将其 缓冲区的数据写入到 磁盘上。 read系统调用 则会产生 缺页中断， 进程挂起，知道 内核从磁盘中读取数据 并 存储到 内核缓冲区中，进程执行 从内核缓冲区中读取数据。</p>
 
 <h3 id="stdio库的缓冲-缓冲大块数据以减少系统调用-c语言函数库的io函数-fprintf-fgetsfputs-fputc-等能够使">stdio库的缓冲： 缓冲大块数据以减少系统调用， C语言函数库的IO函数， fprintf, fgets,fputs, fputc 等能够使</h3>
-<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2019 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2021 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
   hm.src = "https://hm.baidu.com/hm.js?b43ef53b285c49e1af0bd7080994c825";

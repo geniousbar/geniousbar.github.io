@@ -34,13 +34,13 @@
   <li>FIFO 被创建之后， 任何进程都可以打开它，只要符合权限 限制即可</li>
   <li>推荐FIFO的使用方法： 一个写端，一个读端， 打开一个FIFO会同步读取进程和写入进程，即： 打开FIFO 以读取方式 会阻塞到 一个以写入方式 的打开 的产生， 以写入方式的打开 会阻塞到 一个 以读取方式的产生 （O_RDWR mode 打开会绕开 FIFO 的阻塞行为， 因为其不具有可移植性，开发人员应该避免使用， 而是应该是用O_NONBLOCK的方式进行）</li>
   <li>使用 FIFO, tee 创建双重管道: shell管道线是线性的，每个进程读取前一个进程的产生的输出数据，然后产生输出数据，成为下一个进程的输入数据。使用FIFO就能创建新的管道线，需要使用到tee， tee 将输入数据复制成两份 分别输出， 将tee的一分输出 输入到FIFO中就可以产生两条管道线。 下面为大概的演示的命令行：具体的 tee的 <a href="https://linux.101hacks.com/unix/tee-command-examples/">参数参考</a>
-<div class="highlight"><pre class="highlight shell"><code>  mkfifo myfifo
-  wc <span class="nt">-l</span> &lt; myfifo &amp;
-  <span class="nb">ls</span> <span class="nt">-l</span> | tee myfifo | sort <span class="nt">-n</span>
+<div class="highlight"><pre class="highlight shell"><code>  <span class="nb">mkfifo </span>myfifo
+  <span class="nb">wc</span> <span class="nt">-l</span> &lt; myfifo &amp;
+  <span class="nb">ls</span> <span class="nt">-l</span> | <span class="nb">tee </span>myfifo | <span class="nb">sort</span> <span class="nt">-n</span>
 </code></pre></div>    <p><img src="../../../../images/fifo_tee-12e712cd.png" alt="fifo_tee" /></p>
   </li>
 </ol>
-<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2019 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2021 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
   hm.src = "https://hm.baidu.com/hm.js?b43ef53b285c49e1af0bd7080994c825";
