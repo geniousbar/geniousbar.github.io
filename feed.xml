@@ -4,10 +4,779 @@
   <id>http://geniousbar.github.io</id>
   <link href="http://geniousbar.github.io"/>
   <link href="http://geniousbar.github.io/feed.xml" rel="self"/>
-  <updated>2021-02-19T00:00:00+00:00</updated>
+  <updated>2021-02-20T00:00:00+00:00</updated>
   <author>
     <name>geniousbar</name>
   </author>
+  <entry>
+    <title>Rust little book</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2021/02/20/rust-little-book/"/>
+    <id>http://geniousbar.github.io/2021/02/20/rust-little-book/</id>
+    <published>2021-02-20T00:00:00+00:00</published>
+    <updated>2021-04-20T04:02:05+00:00</updated>
+    <summary type="html">&lt;h2 id="rust-little-book"&gt;Rust little book&lt;/h2&gt;
+
+&lt;h3 id="rustup--rust-complier-的管理工具-可以方便的切换-stable-beta-and-nightly"&gt;rustup:  rust complier 的管理工具， 可以方便的切换 stable, beta, and nightly&lt;/h3&gt;
+&lt;h3 id="cargo-是rust的包管理工具-用来-下载-rust的依赖-编译-以及-分发-到-cratesio"&gt;cargo 是rust的包管理工具， 用来 下载 rust的依赖， 编译， 以及 分发 到 crates.io&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;在安装 rust 之后， cargo 也会被自动安装上&lt;/li&gt;
+  &lt;li&gt;cargo 提供了一些有用的工具有:
+    &lt;ol&gt;
+      &lt;li&gt;cargo new package # default –bin 生成 可执行 program...&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    <content type="html">&lt;h2 id="rust-little-book"&gt;Rust little book&lt;/h2&gt;
+
+&lt;h3 id="rustup--rust-complier-的管理工具-可以方便的切换-stable-beta-and-nightly"&gt;rustup:  rust complier 的管理工具， 可以方便的切换 stable, beta, and nightly&lt;/h3&gt;
+&lt;h3 id="cargo-是rust的包管理工具-用来-下载-rust的依赖-编译-以及-分发-到-cratesio"&gt;cargo 是rust的包管理工具， 用来 下载 rust的依赖， 编译， 以及 分发 到 crates.io&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;在安装 rust 之后， cargo 也会被自动安装上&lt;/li&gt;
+  &lt;li&gt;cargo 提供了一些有用的工具有:
+    &lt;ol&gt;
+      &lt;li&gt;cargo new package # default –bin 生成 可执行 program, 可以传递 –lib 来产生库程序&lt;/li&gt;
+      &lt;li&gt;cargo build&lt;/li&gt;
+      &lt;li&gt;cargo 存在的意义：
+        &lt;ul&gt;
+          &lt;li&gt;剥离 rustc 的复杂度， 类似 make 与 c 一样&lt;/li&gt;
+          &lt;li&gt;cargo 最终调用rustc 来编译 项目， 当然可以 直接使用 rustc 来编译项目，但是 需要出入 复杂的参数 来 添加项目 依赖关系， 编译文件， 依赖关系 等，并精心安排顺序 来进行调用。&lt;/li&gt;
+          &lt;li&gt;所以使用cargo： make工具， cargo 的功能
+            &lt;ol&gt;
+              &lt;li&gt;使用两个文件 来 包含 package的信息&lt;/li&gt;
+              &lt;li&gt;拉取，构建  package 依赖&lt;/li&gt;
+              &lt;li&gt;使用正确的参数 来调用rustc 或者其他 tool， 来构建项目&lt;/li&gt;
+              &lt;li&gt;引用约定，方便package 构建&lt;/li&gt;
+            &lt;/ol&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id="cargo-使用笔记"&gt;cargo 使用笔记：&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;cargo new hello_world –bin&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;hello_world
+&lt;span class="nv"&gt;$ &lt;/span&gt;tree &lt;span class="nb"&gt;.&lt;/span&gt;
+&lt;span class="nb"&gt;.&lt;/span&gt;
+├── Cargo.toml
+└── src
+    └── main.rs
+
+1 directory, 2 files
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;其中 Cargo.toml 被称为 manifest,包含package的元数据&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;fn main&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    println!&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Hello, world!"&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+
+&lt;span class="nv"&gt;$ &lt;/span&gt;cargo build
+   Compiling hello_world v0.1.0 &lt;span class="o"&gt;(&lt;/span&gt;file:///path/to/package/hello_world&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="nv"&gt;$ &lt;/span&gt;./target/debug/hello_world
+Hello, world!
+
+
+&lt;span class="nv"&gt;$ &lt;/span&gt;cargo run
+   Compiling hello_world v0.1.0 &lt;span class="o"&gt;(&lt;/span&gt;file:///path/to/package/hello_world&lt;span class="o"&gt;)&lt;/span&gt;
+     Running &lt;span class="sb"&gt;`&lt;/span&gt;target/debug/hello_world&lt;span class="sb"&gt;`&lt;/span&gt;
+Hello, world!
+
+
+
+&lt;span class="nv"&gt;$ &lt;/span&gt;cargo build &lt;span class="nt"&gt;--release&lt;/span&gt;
+   Compiling hello_world v0.1.0 &lt;span class="o"&gt;(&lt;/span&gt;file:///path/to/package/hello_world&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;cargo build  将会 构建 package&lt;/li&gt;
+  &lt;li&gt;cargo run 则 构建并运行它&lt;/li&gt;
+  &lt;li&gt;cargo build –release 将 构建 优化的代码&lt;/li&gt;
+  &lt;li&gt;cargo 默认的构建 代码优化级别 为 debug, 存在的目录为 target/debug, 构建 优化后的代码需要 显式传递 参数 –release 生成的文件目录为 target/release&lt;/li&gt;
+  &lt;li&gt;Dependencies：
+    &lt;ul&gt;
+      &lt;li&gt;crate.io 为 rust 中间的 package 机构， 用于发现 下载 更新package&lt;/li&gt;
+      &lt;li&gt;添加依赖关系： 在 Cargo.toml 中 的dependencies 下，添加项目&lt;/li&gt;
+    &lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="o"&gt;[&lt;/span&gt;package]
+name &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"hello_world"&lt;/span&gt;
+version &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"0.1.0"&lt;/span&gt;
+authors &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"Your Name &amp;lt;you@example.com&amp;gt;"&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+edition &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"2018"&lt;/span&gt;
+
+&lt;span class="o"&gt;[&lt;/span&gt;dependencies]
+&lt;span class="nb"&gt;time&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"0.1.12"&lt;/span&gt;
+regex &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"0.1.41"&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;之后的 cargo build 过程&lt;/li&gt;
+    &lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;cargo build
+      Updating crates.io index
+   Downloading memchr v0.1.5
+   Downloading libc v0.1.10
+   Downloading regex-syntax v0.2.1
+   Downloading memchr v0.1.5
+   Downloading aho-corasick v0.3.0
+   Downloading regex v0.1.41
+     Compiling memchr v0.1.5
+     Compiling libc v0.1.10
+     Compiling regex-syntax v0.2.1
+     Compiling memchr v0.1.5
+     Compiling aho-corasick v0.3.0
+     Compiling regex v0.1.41
+     Compiling hello_world v0.1.0 &lt;span class="o"&gt;(&lt;/span&gt;file:///path/to/package/hello_world&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id="package-构成"&gt;package 构成：&lt;/h4&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;  &lt;span class="nb"&gt;.&lt;/span&gt;
+  ├── Cargo.lock
+  ├── Cargo.toml
+  ├── src/
+  │   ├── lib.rs
+  │   ├── main.rs
+  │   └── bin/
+  │       ├── named-executable.rs
+  │       ├── another-executable.rs
+  │       └── multi-file-executable/
+  │           ├── main.rs
+  │           └── some_module.rs
+  ├── benches/
+  │   ├── large-input.rs
+  │   └── multi-file-bench/
+  │       ├── main.rs
+  │       └── bench_module.rs
+  ├── examples/
+  │   ├── simple.rs
+  │   └── multi-file-example/
+  │       ├── main.rs
+  │       └── ex_module.rs
+  └── tests/
+      ├── some-integration-tests.rs
+      └── multi-file-test/
+          ├── main.rs
+          └── test_module.rs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+  &lt;li&gt;Cargo.toml and Cargo.lock 在项目的根目录&lt;/li&gt;
+  &lt;li&gt;src 下 为源代码&lt;/li&gt;
+  &lt;li&gt;默认的 library file 为 src/lib.rs&lt;/li&gt;
+  &lt;li&gt;默认的 executable file 是 src/main.rc, 其他的 放在 src/bin/&lt;/li&gt;
+  &lt;li&gt;基准测试 放在benches 目录下&lt;/li&gt;
+  &lt;li&gt;示例代码放在examples 目录下&lt;/li&gt;
+  &lt;li&gt;集成测试 放在 tests 目录下&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;其他详细的需要参看 [[https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html]]&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Cargo.toml 与 Cargo.lock: 两种目的，
+    &lt;ul&gt;
+      &lt;li&gt;cargo.toml 描述 大概的依赖关系 并不准确，是由 人来确定的&lt;/li&gt;
+      &lt;li&gt;Cargo.lock 包含准确的依赖关系， 由cargo 来维护&lt;/li&gt;
+      &lt;li&gt;[[https://doc.rust-lang.org/cargo/faq.html#why-do-binaries-have-cargolock-in-version-control-but-not-libraries]]&lt;/li&gt;
+      &lt;li&gt;示例:&lt;/li&gt;
+    &lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;Cargo.toml
+
+&lt;span class="o"&gt;[&lt;/span&gt;package]
+name &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"hello_world"&lt;/span&gt;
+version &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"0.1.0"&lt;/span&gt;
+authors &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"Your Name &amp;lt;you@example.com&amp;gt;"&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+
+&lt;span class="o"&gt;[&lt;/span&gt;dependencies]
+rand &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt; git &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"https://github.com/rust-lang-nursery/rand.git"&lt;/span&gt;, rev &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"9f35b8e"&lt;/span&gt; &lt;span class="o"&gt;}&lt;/span&gt;
+
+
+Cargo.lock
+
+
+&lt;span class="o"&gt;[[&lt;/span&gt;package]]
+name &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"hello_world"&lt;/span&gt;
+version &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"0.1.0"&lt;/span&gt;
+dependencies &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;
+ &lt;span class="s2"&gt;"rand 0.1.0 (git+https://github.com/rust-lang-nursery/rand.git#9f35b8e439eeedd60b9414c58f389bdc6a3284f9)"&lt;/span&gt;,
+&lt;span class="o"&gt;]&lt;/span&gt;
+
+&lt;span class="o"&gt;[[&lt;/span&gt;package]]
+name &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"rand"&lt;/span&gt;
+version &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"0.1.0"&lt;/span&gt;
+&lt;span class="nb"&gt;source&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"git+https://github.com/rust-lang-nursery/rand.git#9f35b8e439eeedd60b9414c58f389bdc6a3284f9"&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+  &lt;li&gt;Cargo.lock 中包含 依赖的确定的 version， 当其他人使用的时候， 他们将使用相同的 sha，即便我们并没有在Cargo.toml 中使用&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;cargo update 更新全部的依赖， cargo update -p rand 只更新依赖 rand&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Test:
+    &lt;ul&gt;
+      &lt;li&gt;cargo test 执行 package中的所有test， test主要有两种： 1) 在每个 src 目录中的文件， 2） tests/ 目录下的所有文件。 1）中的为单元测试， 2）则为 集成测试，&lt;/li&gt;
+    &lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;cargo &lt;span class="nb"&gt;test
+   &lt;/span&gt;Compiling rand v0.1.0 &lt;span class="o"&gt;(&lt;/span&gt;https://github.com/rust-lang-nursery/rand.git#9f35b8e&lt;span class="o"&gt;)&lt;/span&gt;
+   Compiling hello_world v0.1.0 &lt;span class="o"&gt;(&lt;/span&gt;file:///path/to/package/hello_world&lt;span class="o"&gt;)&lt;/span&gt;
+     Running target/test/hello_world-9c2b65bbb79eabce
+
+running 0 tests
+
+&lt;span class="nb"&gt;test &lt;/span&gt;result: ok. 0 passed&lt;span class="p"&gt;;&lt;/span&gt; 0 failed&lt;span class="p"&gt;;&lt;/span&gt; 0 ignored&lt;span class="p"&gt;;&lt;/span&gt; 0 measured&lt;span class="p"&gt;;&lt;/span&gt; 0 filtered out
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;ul&gt;
+      &lt;li&gt;cargo test foo  可以单独执行 名字为foo的测试，&lt;/li&gt;
+      &lt;li&gt;cargo test 其实还会执行 额外的测试，包含在 src中的部分 文档中的测试（并不重要，为补充部分）&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Cargo Home： 当build package的时候， cargo 将下载的依赖package 存储到 Cargo home 下。当做cache 使用。
+    &lt;ul&gt;
+      &lt;li&gt;可以通过 改变 环境变量 CARGO_HOME 来改变 cargo home的值， 默认 为 $HOME/.cargo/&lt;/li&gt;
+      &lt;li&gt;Cargo Home 目录下的 数据：
+        &lt;ul&gt;
+          &lt;li&gt;bin 目录： 可执行crate， 包括cargo install 或者 rustup 安装的&lt;/li&gt;
+          &lt;li&gt;git/db: crate 依赖git 项目时， cargo clone 项目到 该目录下&lt;/li&gt;
+          &lt;li&gt;git/checkouts： git/db 项目中的检出到该文件， 比如 依赖于特定的commit&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;registry： 项目依赖于 crate.io 中的crate 存放在该目录下
+    &lt;ul&gt;
+      &lt;li&gt;registry/index： crate 的原数据， 包括： version， dependencies 等&lt;/li&gt;
+      &lt;li&gt;registry/cache： 下载的crate 储存到该目录下， 存储形式为 .crate 的gzip压缩文件&lt;/li&gt;
+      &lt;li&gt;registry/src： cache 的解压形式 存放在 该文件中&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id="指定-dependencies"&gt;指定 Dependencies：&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;依赖版本： 版本号各个位置数字的含义： [[https://semver.org/][SemVer compatible]] 与 link 中讲的同样， major.minor.patch&lt;/li&gt;
+  &lt;li&gt;Caret requirements： 指定 可以使用 一个 major 版本号 不变的更新， 但是 0 是 一个特殊的数字，标识不与 任何 数字兼容。即是： 0.0.1， 与 0.1.x 不兼容&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;下面为兼容样例：&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;^1.2.3  :&lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;1.2.3, &amp;lt;2.0.0
+^1.2    :&lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;1.2.0, &amp;lt;2.0.0
+^1      :&lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;1.0.0, &amp;lt;2.0.0
+^0.2.3  :&lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;0.2.3, &amp;lt;0.3.0
+^0.2    :&lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;0.2.0, &amp;lt;0.3.0
+^0.0.3  :&lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;0.0.3, &amp;lt;0.0.4
+^0.0    :&lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;0.0.0, &amp;lt;0.1.0
+^0      :&lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;0.0.0, &amp;lt;1.0.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/li&gt;
+  &lt;li&gt;Tilde requirements:  分为以下情况:
+    &lt;ul&gt;
+      &lt;li&gt;有 major.minor.patch 或者  major.minor 只有patch version 的升级是允许的&lt;/li&gt;
+      &lt;li&gt;有major情况下, minor patch verison的升级 是允许的&lt;/li&gt;
+      &lt;li&gt;for example&lt;/li&gt;
+    &lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;~1.2.3  :&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;1.2.3, &amp;lt;1.3.0
+~1.2    :&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;1.2.0, &amp;lt;1.3.0
+~1      :&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;1.0.0, &amp;lt;2.0.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+  &lt;li&gt;Wildcard requirements:
+    &lt;ul&gt;
+      &lt;li&gt;允许所在位置上的 任何版本&lt;/li&gt;
+      &lt;li&gt;for example&lt;/li&gt;
+    &lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="se"&gt;\*&lt;/span&gt;     :&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;0.0.0
+1.&lt;span class="k"&gt;*&lt;/span&gt;   :&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;1.0.0, &amp;lt;2.0.0
+1.2.&lt;span class="k"&gt;*&lt;/span&gt; :&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;1.2.0, &amp;lt;1.3.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id="workspaces-workspace-下的一系列package-共享同样的cargolock-output-dir-等配置比如profile-workspace下的packages-被称为-workspace-members"&gt;Workspaces: workspace 下的一系列package 共享同样的Cargo.lock， output dir 等配置（比如profile）， workspace下的packages 被称为 workspace members&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;存在两种形式： 1） [package] 与 [workspace] 共存在 Cargo.toml 中 2） 只有 [workspace] 存在Cargo.toml 中， 被称作 Virtual manifest&lt;/li&gt;
+  &lt;li&gt;主要作用：
+    &lt;ol&gt;
+      &lt;li&gt;共享Cargo.lock&lt;/li&gt;
+      &lt;li&gt;共享output dir， Cargo.toml 中 [target]&lt;/li&gt;
+      &lt;li&gt;[patch], [replace] and [profile.*] 等 在Cargo.toml 中的 段  只能识别在 workspace 中的 manifest，member package 中的被忽略&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;workspace section 中的配置&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="o"&gt;[&lt;/span&gt;workspace]
+members &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"member1"&lt;/span&gt;, &lt;span class="s2"&gt;"path/to/member2"&lt;/span&gt;, &lt;span class="s2"&gt;"crates/*"&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+exclude &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"crates/foo"&lt;/span&gt;, &lt;span class="s2"&gt;"path/to/other"&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/li&gt;
+  &lt;li&gt;members 为 成员package 列表， exclude 排除 member
+    &lt;ul&gt;
+      &lt;li&gt;workspace 寻找： Cargo 自动的 向上目录 寻找 含有 [workspace] 的Cargo.toml， 在 member中可以指定 package.workspace 来 直接指定 workspace 的位置， 来防止自动查找， 这个对于 没有在 workspace 目录下的member package 非常有用&lt;/li&gt;
+      &lt;li&gt;member package： cargo command -p package 可以指定 package 来 执行命令， 如果没有指定 package， 则 选择当前所在目录的package， default-members = [“path/to/member2”, “path/to/member3/”] 可以指定默认的 操作的member package&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id="rustup-从官方下载rustc-使能够随意的在-stable-beta-nightly-中切换-让-cross-compiling-编译变的简单"&gt;rustup： 从官方下载rustc， 使能够随意的在 stable, beta, nightly 中切换。 让 cross-compiling 编译变的简单&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;工作原理：  rustup 通过 ~/.cargo/bin 下的工具 来实现其功能， 比如 安装在~/.cargo/bin   下的  rustc cargo 等 只是一个 到真正执行工具的 代理，&lt;/li&gt;
+  &lt;li&gt;rustup 提供了一个方便的机制来 控制 这些代理的行为， 比如 通过执行rustup default nightly 来切换 nightly 下的工具&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id="概念"&gt;概念:&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;channel: rustc 按照 beta, night, stable 三个 channel 进行发布， channel 并没有什么用， 只是个概念而已。&lt;/li&gt;
+  &lt;li&gt;toolchain： rustc and cargo 等相关工具。 因为能够控制rustc (即是channel概念下的实际应用)&lt;/li&gt;
+  &lt;li&gt;target： rustc 可以为多个平台生成代码。 默认的 rustc 使用host(即本机) 作为target， 为了生成不同target的代码，我们需要 使用rustup target 来安装目标target&lt;/li&gt;
+  &lt;li&gt;component: 每个rust版本的发布，都会包含一些 组件， 包括rustc， clippy 等&lt;/li&gt;
+  &lt;li&gt;profile： 为了更好的与component 工作， profile 定义了 一组component，&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;toolchain：  rustup 不仅可以 安装stable, beta, nightly 三个channel， 还可以安装 其他的 官方 历史版本&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;channel 的命令规则:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&amp;lt;channel&amp;gt;[-&amp;lt;&lt;span class="nb"&gt;date&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;][&lt;/span&gt;-&amp;lt;host&amp;gt;]
+
+&amp;lt;channel&amp;gt;       &lt;span class="o"&gt;=&lt;/span&gt; stable|beta|nightly|&amp;lt;major.minor&amp;gt;|&amp;lt;major.minor.patch&amp;gt;
+&amp;lt;&lt;span class="nb"&gt;date&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;          &lt;span class="o"&gt;=&lt;/span&gt; YYYY-MM-DD
+&amp;lt;host&amp;gt;          &lt;span class="o"&gt;=&lt;/span&gt; &amp;lt;target-triple&amp;gt;
+
+&lt;span class="c"&gt;#+end_src&lt;/span&gt;
+&lt;span class="k"&gt;**&lt;/span&gt; 其他命令： 保持 rust 更新： 
+&lt;span class="c"&gt;#+begin_src &lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;rustup update
+info: syncing channel updates &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="s1"&gt;'stable'&lt;/span&gt;
+info: downloading component &lt;span class="s1"&gt;'rustc'&lt;/span&gt;
+info: downloading component &lt;span class="s1"&gt;'rust-std'&lt;/span&gt;
+info: downloading component &lt;span class="s1"&gt;'rust-docs'&lt;/span&gt;
+info: downloading component &lt;span class="s1"&gt;'cargo'&lt;/span&gt;
+info: installing component &lt;span class="s1"&gt;'rustc'&lt;/span&gt;
+info: installing component &lt;span class="s1"&gt;'rust-std'&lt;/span&gt;
+info: installing component &lt;span class="s1"&gt;'rust-docs'&lt;/span&gt;
+info: installing component &lt;span class="s1"&gt;'cargo'&lt;/span&gt;
+info: checking &lt;span class="k"&gt;for &lt;/span&gt;self-updates
+info: downloading self-updates
+
+  stable updated: rustc 1.7.0 &lt;span class="o"&gt;(&lt;/span&gt;a5d1e7a59 2016-02-29&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+  &lt;p&gt;如上， rustup update 会更新 stable， component， 以及 rustup self， 可以使用 rustup self update 来手动更新rustup&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id="rust-知识"&gt;Rust 知识：&lt;/h3&gt;
+&lt;h4 id="stdfmt"&gt;std::fmt:&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;format! 的使用 方法：  positional params：， named params： ， formating params：&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;示例&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight rust"&gt;&lt;code&gt;&lt;span class="nd"&gt;format!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Hello, {}!"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"world"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;   &lt;span class="c"&gt;// =&amp;gt; "Hello, world!"&lt;/span&gt;
+&lt;span class="nd"&gt;format!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"{1} {} {0} {}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c"&gt;// =&amp;gt; "2 1 1 2"&lt;/span&gt;
+&lt;span class="nd"&gt;format!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"{argument}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;argument&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"test"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Hello {:1$}!"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"x"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/li&gt;
+  &lt;li&gt;formating trait: 实践显式 对于外部的Type  {}确实需要impl Display， 而{:?} 需要 impl Debug
+    &lt;ol&gt;
+      &lt;li&gt;{} =&amp;gt; Display&lt;/li&gt;
+      &lt;li&gt;{:?} =&amp;gt; Debug&lt;/li&gt;
+      &lt;li&gt;{:o} =&amp;gt; Octal&lt;/li&gt;
+      &lt;li&gt;{:p} =&amp;gt; Pointer&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;fmt::Display vs fmt::Debug
+    &lt;ol&gt;
+      &lt;li&gt;Display: 断言 实现者 总是返回 UTF-8 的字符串， 并非所有的 都实现了 Display&lt;/li&gt;
+      &lt;li&gt;Debug：  应该为所有pub type 实现， 输出为 内部状态， 该Trait 的目的是为了方便Rust Debug， 可以 使用#[derive(Debug)] 来使用默认的内部实现&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id="array--slice"&gt;array &amp;amp; Slice&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;array的类型为： [T: len], let mut array: [i32; 3] = [0; 3];&lt;/li&gt;
+  &lt;li&gt;Slice: [T]&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id="structures-有三种类型-1-tuple-struct-2-classic-struct-3-unit-structs"&gt;structures： 有三种类型： 1） Tuple struct, 2) classic struct 3) Unit structs&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;struct Pair(i32, f32);&lt;/li&gt;
+  &lt;li&gt;struct Person {  name: String,    age: u8}&lt;/li&gt;
+  &lt;li&gt;struct Unit; unit Struct 没有任何的 field&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id="enums-包含多个-变体-的-组合项-任何一个变体-都是一个-正确的-enum-类型"&gt;Enums： 包含多个 变体 的 组合项， 任何一个变体 都是一个 正确的 enum 类型&lt;/h4&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight rust"&gt;&lt;code&gt;  &lt;span class="k"&gt;enum&lt;/span&gt; &lt;span class="n"&gt;WebEvent&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="c"&gt;// An `enum` may either be `unit-like`,&lt;/span&gt;
+      &lt;span class="n"&gt;PageLoad&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;PageUnload&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="c"&gt;// like tuple structs,&lt;/span&gt;
+      &lt;span class="nf"&gt;KeyPress&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;char&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+      &lt;span class="nf"&gt;Paste&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;String&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+      &lt;span class="c"&gt;// or c-like structures.&lt;/span&gt;
+      &lt;span class="n"&gt;Click&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;i64&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;i64&lt;/span&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+
+  &lt;span class="c"&gt;// A function which takes a `WebEvent` enum as an argument and&lt;/span&gt;
+  &lt;span class="c"&gt;// returns nothing.&lt;/span&gt;
+  &lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;inspect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;event&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;WebEvent&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="k"&gt;match&lt;/span&gt; &lt;span class="n"&gt;event&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+          &lt;span class="nn"&gt;WebEvent&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;PageLoad&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"page loaded"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+          &lt;span class="nn"&gt;WebEvent&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;PageUnload&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"page unloaded"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+          &lt;span class="c"&gt;// Destructure `c` from inside the `enum`.&lt;/span&gt;
+          &lt;span class="nn"&gt;WebEvent&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="nf"&gt;KeyPress&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"pressed '{}'."&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+          &lt;span class="nn"&gt;WebEvent&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="nf"&gt;Paste&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"pasted &lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s"&gt;{}&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s"&gt;."&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+          &lt;span class="c"&gt;// Destructure `Click` into `x` and `y`.&lt;/span&gt;
+          &lt;span class="nn"&gt;WebEvent&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Click&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+              &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"clicked at x={}, y={}."&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+          &lt;span class="p"&gt;},&lt;/span&gt;
+      &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id="type-aliastype-关键字能够-使用-type-name--existingtype-语法来-使用-name-代替-existingtype-使用-self-是一种type-alias"&gt;Type Alias：type 关键字能够 使用 type Name = ExistingType； 语法来 使用 Name 代替 ExistingType 使用。 Self 是一种Type Alias&lt;/h4&gt;
+
+&lt;h4 id="const-static"&gt;const， static&lt;/h4&gt;
+
+&lt;h4 id="variable-bindings-1变量默认-是不可修改的-使用mut-改变-2-可以在内部的scope中-其同样的名字来shadow即使不可见-外部的变量-3可以使用-先声明-后设定数值的形式-使用变量但是rust-会检查-使用-未定义变量的错误-来预防因此产生的问题"&gt;Variable Bindings： 1）变量默认 是不可修改的， 使用mut 改变 2） 可以在内部的scope中 其同样的名字来shadow(即使不可见) 外部的变量 3）可以使用 先声明 后设定数值的形式 使用变量，但是rust 会检查 使用 未定义变量的错误， 来预防因此产生的问题&lt;/h4&gt;
+
+&lt;h4 id="types-1转换-as关键字--2-type-alias-type-nanosecond--u64-3-数值的类型可以添加到--后面最为后缀使用-例如-42i32"&gt;Types: 1）转换 as关键字  2） type alias： type NanoSecond = u64; 3） 数值的类型，可以添加到  后面最为后缀使用， 例如： 42i32&lt;/h4&gt;
+
+&lt;h4 id="conversion-rust-的struct-以及-enum-等自定义类型的-type转换"&gt;Conversion： rust 的struct 以及 enum 等自定义类型的 type转换&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;From &amp;amp; Into:
+    &lt;ul&gt;
+      &lt;li&gt;From 为一个类型定义， 如何create self 从 另一个type中转变&lt;/li&gt;
+      &lt;li&gt;Into 则是From 的 调用者， From&lt;T&gt; for U 自动实现了 Into&lt;u&gt; for T ( blank implement)&lt;/u&gt;&lt;/T&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;TryFrom &amp;amp; TryInto: 类似于 From &amp;amp; Into 不同的是， 转换可能失败，返回Result
+    &lt;ul&gt;
+      &lt;li&gt;ToString &amp;amp; FromStr:&lt;/li&gt;
+      &lt;li&gt;ToString： 单独为 String 类型 定义了一个 ToString Trait，但是并不需要直接实现 ToString，而是实现了 fmt::Display 之后 就自动了提供了 ToString 中的to_string 方法&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight rust"&gt;&lt;code&gt;    &lt;span class="nd"&gt;#[stable(feature&lt;/span&gt; &lt;span class="nd"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"rust1"&lt;/span&gt;&lt;span class="nd"&gt;,&lt;/span&gt; &lt;span class="nd"&gt;since&lt;/span&gt; &lt;span class="nd"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"1.0.0"&lt;/span&gt;&lt;span class="nd"&gt;)]&lt;/span&gt;
+&lt;span class="k"&gt;impl&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nn"&gt;fmt&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Display&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="o"&gt;?&lt;/span&gt;&lt;span class="n"&gt;Sized&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;ToString&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="c"&gt;// A common guideline is to not inline generic functions. However,&lt;/span&gt;
+    &lt;span class="c"&gt;// removing `#[inline]` from this method causes non-negligible regressions.&lt;/span&gt;
+    &lt;span class="c"&gt;// See &amp;lt;https://github.com/rust-lang/rust/pull/74852&amp;gt;, the last attempt&lt;/span&gt;
+    &lt;span class="c"&gt;// to try to remove it.&lt;/span&gt;
+    &lt;span class="nd"&gt;#[inline]&lt;/span&gt;
+    &lt;span class="n"&gt;default&lt;/span&gt; &lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;to_string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="k"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;String&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="nn"&gt;fmt&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Write&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;mut&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;String&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+        &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="nf"&gt;.write_fmt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nd"&gt;format_args!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"{}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;self&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+            &lt;span class="nf"&gt;.expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"a Display implementation returned an error unexpectedly"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;buf&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id="fromstr--parse-将string-转换为其他类型-只需要实现了-fromstr-for-struct-而string-中的parse-方法-只是-对fromstrfrom_strstring-的调用"&gt;FromStr &amp;amp; parse: 将String 转换为其他类型， 只需要实现了 FromStr for struct, 而String 中的parse 方法 只是 对FromStr::from_str(&amp;amp;string) 的调用&lt;/h4&gt;
+
+&lt;h4 id="expression-程序是由一系列表达式组成的-1-赋值表达式-用-结尾-2--也是表达式-如果最后一个表达式-以-结尾则返回---否则为最后一个表达式的-结果"&gt;Expression： 程序是由一系列表达式组成的， 1） 赋值表达式 用; 结尾， 2） {} 也是表达式， 如果最后一个表达式 以; 结尾，则返回  (), 否则为最后一个表达式的 结果&lt;/h4&gt;
+
+&lt;h4 id="flow-of-control"&gt;Flow of control：&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;if-else  也是表达式， 所有的分支必须返回同样的类型&lt;/li&gt;
+  &lt;li&gt;loop： loop break continue。 break 用来随时中断退出loop， continue 则用于 用于 跳过剩下的 代码，重新开始一个 循环&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;loop 是可以嵌套的，并起名字, break ，以及continue 可以使用名字来进行 break， 或者continue&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight rust"&gt;&lt;code&gt;&lt;span class="nd"&gt;#![allow(unreachable_code)]&lt;/span&gt;
+
+&lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nv"&gt;'outer&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;loop&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Entered the outer loop"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+        &lt;span class="nv"&gt;'inner&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;loop&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Entered the inner loop"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+            &lt;span class="c"&gt;// This would break only the inner loop&lt;/span&gt;
+            &lt;span class="c"&gt;//break;&lt;/span&gt;
+
+            &lt;span class="c"&gt;// This breaks the outer loop&lt;/span&gt;
+            &lt;span class="k"&gt;break&lt;/span&gt; &lt;span class="nv"&gt;'outer&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+
+        &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"This point will never be reached"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Exited the outer loop"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;mut&lt;/span&gt; &lt;span class="n"&gt;counter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;loop&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;counter&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;counter&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;break&lt;/span&gt; &lt;span class="n"&gt;counter&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;};&lt;/span&gt;
+
+    &lt;span class="nd"&gt;assert_eq!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/li&gt;
+  &lt;li&gt;loop 也是可以 返回数值的， 放到break 后面&lt;/li&gt;
+  &lt;li&gt;while&lt;/li&gt;
+  &lt;li&gt;for: for in 结构用来 遍历 所有实现了 IntoIterator 的对象， 比如简单 range形式： a..b, a..=b
+    &lt;ul&gt;
+      &lt;li&gt;for loop 会自动调用 into_iter 在参数上，我们可以主动产生下面几类实现IntoIterator 的 Iterator：&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;iter: 产生 引用的 Iterator, 对 ownership不产生影响
+    &lt;ul&gt;
+      &lt;li&gt;into_iter: 将ownership 交给 Iterator， 调用过之后的对象，将不再可用。产生&lt;/li&gt;
+      &lt;li&gt;iter_mut: 产生mut 引用的Iterator， 可以进行修改&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;match:
+    &lt;ul&gt;
+      &lt;li&gt;c like 方式： 即 match  number&lt;/li&gt;
+      &lt;li&gt;解构对象：
+        &lt;ul&gt;
+          &lt;li&gt;Tuples：  使用.. 来 忽略剩余所有的 tuple&lt;/li&gt;
+          &lt;li&gt;Enums:&lt;/li&gt;
+          &lt;li&gt;Pointers: *  &amp;amp; ref ref mut 见下面示例&lt;/li&gt;
+          &lt;li&gt;Structs: struct 同样可以被match&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Guards: 在match 对象的arm中，同样可以 使用 if 条件判断 即是 guards&lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Bindings： match 在 arm中，除了解构对象的同时 可以将变量整体绑定 到一个变量上&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight rust"&gt;&lt;code&gt;&lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;triple&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="c"&gt;// TODO ^ Try different values for `triple`&lt;/span&gt;
+
+    &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Tell me about {:?}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;triple&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="c"&gt;// Match can be used to destructure a tuple&lt;/span&gt;
+    &lt;span class="k"&gt;match&lt;/span&gt; &lt;span class="n"&gt;triple&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="c"&gt;// Destructure the second and third elements&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"First is `0`, `y` is {:?}, and `z` is {:?}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"First is `1` and the rest doesn't matter"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+        &lt;span class="c"&gt;// `..` can be the used ignore the rest of the tuple&lt;/span&gt;
+        &lt;span class="mi"&gt;_&lt;/span&gt;      &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"It doesn't matter what they are"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+        &lt;span class="c"&gt;// `_` means don't bind the value to a variable&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="c"&gt;//point s &lt;/span&gt;
+
+&lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="c"&gt;// Assign a reference of type `i32`. The `&amp;amp;` signifies there&lt;/span&gt;
+    &lt;span class="c"&gt;// is a reference being assigned.&lt;/span&gt;
+    &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;reference&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="k"&gt;match&lt;/span&gt; &lt;span class="n"&gt;reference&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="c"&gt;// If `reference` is pattern matched against `&amp;amp;val`, it results&lt;/span&gt;
+        &lt;span class="c"&gt;// in a comparison like:&lt;/span&gt;
+        &lt;span class="c"&gt;// `&amp;amp;i32`&lt;/span&gt;
+        &lt;span class="c"&gt;// `&amp;amp;val`&lt;/span&gt;
+        &lt;span class="c"&gt;// ^ We see that if the matching `&amp;amp;`s are dropped, then the `i32`&lt;/span&gt;
+        &lt;span class="c"&gt;// should be assigned to `val`.&lt;/span&gt;
+        &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;val&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Got a value via destructuring: {:?}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;val&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="c"&gt;// To avoid the `&amp;amp;`, you dereference before matching.&lt;/span&gt;
+    &lt;span class="k"&gt;match&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;reference&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;val&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Got a value via dereferencing: {:?}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;val&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="c"&gt;// What if you don't start with a reference? `reference` was a `&amp;amp;`&lt;/span&gt;
+    &lt;span class="c"&gt;// because the right side was already a reference. This is not&lt;/span&gt;
+    &lt;span class="c"&gt;// a reference because the right side is not one.&lt;/span&gt;
+    &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;not_a_reference&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="c"&gt;// Rust provides `ref` for exactly this purpose. It modifies the&lt;/span&gt;
+    &lt;span class="c"&gt;// assignment so that a reference is created for the element; this&lt;/span&gt;
+    &lt;span class="c"&gt;// reference is assigned.&lt;/span&gt;
+    &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;ref&lt;/span&gt; &lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;is_a_reference&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="c"&gt;// Accordingly, by defining 2 values without references, references&lt;/span&gt;
+    &lt;span class="c"&gt;// can be retrieved via `ref` and `ref mut`.&lt;/span&gt;
+    &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;mut&lt;/span&gt; &lt;span class="n"&gt;mut_value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="c"&gt;// Use `ref` keyword to create a reference.&lt;/span&gt;
+    &lt;span class="k"&gt;match&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;ref&lt;/span&gt; &lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Got a reference to a value: {:?}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="c"&gt;// Use `ref mut` similarly.&lt;/span&gt;
+    &lt;span class="k"&gt;match&lt;/span&gt; &lt;span class="n"&gt;mut_value&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;ref&lt;/span&gt; &lt;span class="k"&gt;mut&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="c"&gt;// Got a reference. Gotta dereference it before we can&lt;/span&gt;
+            &lt;span class="c"&gt;// add anything to it.&lt;/span&gt;
+            &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"We added 10. `mut_value`: {:?}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="p"&gt;},&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Foo&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;u32&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;u32&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+        &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;u32&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="c"&gt;// Try changing the values in the struct to see what happens&lt;/span&gt;
+    &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;foo&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Foo&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+
+    &lt;span class="k"&gt;match&lt;/span&gt; &lt;span class="n"&gt;foo&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;Foo&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"First of x is 1, b = {},  y = {} "&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+
+        &lt;span class="c"&gt;// you can destructure structs and rename the variables,&lt;/span&gt;
+        &lt;span class="c"&gt;// the order is not important&lt;/span&gt;
+        &lt;span class="n"&gt;Foo&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"y is 2, i = {:?}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+
+        &lt;span class="c"&gt;// and you can also ignore some variables:&lt;/span&gt;
+        &lt;span class="n"&gt;Foo&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;..&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"y = {}, we don't care about x"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+        &lt;span class="c"&gt;// this will give an error: pattern does not mention field `x`&lt;/span&gt;
+        &lt;span class="c"&gt;//Foo { y } =&amp;gt; println!("y = {}", y),&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+
+&lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;pair&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="c"&gt;// TODO ^ Try different values for `pair`&lt;/span&gt;
+
+    &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Tell me about {:?}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pair&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;match&lt;/span&gt; &lt;span class="n"&gt;pair&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"These are twins"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+        &lt;span class="c"&gt;// The ^ `if condition` part is a guard&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Antimatter, kaboom!"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"The first one is odd"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+        &lt;span class="mi"&gt;_&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"No correlation..."&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+
+&lt;span class="c"&gt;// A function `age` which returns a `u32`.&lt;/span&gt;
+&lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;age&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;u32&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="mi"&gt;15&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Tell me what type of person you are"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="k"&gt;match&lt;/span&gt; &lt;span class="nf"&gt;age&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="mi"&gt;0&lt;/span&gt;             &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"I haven't celebrated my first birthday yet"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+        &lt;span class="c"&gt;// Could `match` 1 ..= 12 directly but then what age&lt;/span&gt;
+        &lt;span class="c"&gt;// would the child be? Instead, bind to `n` for the&lt;/span&gt;
+        &lt;span class="c"&gt;// sequence of 1 ..= 12. Now the age can be reported.&lt;/span&gt;
+        &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;@&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;  &lt;span class="o"&gt;..=&lt;/span&gt; &lt;span class="mi"&gt;12&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"I'm a child of age {:?}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+        &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;@&lt;/span&gt; &lt;span class="mi"&gt;13&lt;/span&gt; &lt;span class="o"&gt;..=&lt;/span&gt; &lt;span class="mi"&gt;19&lt;/span&gt; &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"I'm a teen of age {:?}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+        &lt;span class="c"&gt;// Nothing bound. Return the result.&lt;/span&gt;
+        &lt;span class="n"&gt;n&lt;/span&gt;             &lt;span class="k"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"I'm an old person of age {:?}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;if let: 在判断的同时 进行match&lt;/li&gt;
+  &lt;li&gt;while let&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id="functions"&gt;Functions:&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;methods: 依附于 对象的函数， 在methods 的block中，能够 通过self使用 对象的 数据&lt;/li&gt;
+  &lt;li&gt;closures:  |val| {val + x}
+    &lt;ul&gt;
+      &lt;li&gt;Capturing： 捕获， 其可以 捕获环境中的 变量， 可以是： &amp;amp;T, &amp;amp;mut T , T（by value）&lt;/li&gt;
+      &lt;li&gt;作为参数： 分为三类： Fn, FnMut, FnOnce， 对应ownership  的 &amp;amp;T, &amp;amp;mut T, T. Fn 可以无限次执行， FnMut 则要求 capture 变量的 mut 引用， FnOnce 则 只能执行一次&lt;/li&gt;
+      &lt;li&gt;疑问：
+        &lt;ol&gt;
+          &lt;li&gt;如何 区分  Fn(i64, i64) -&amp;gt; i64 与Fn(&amp;amp;String) -&amp;gt; i64&lt;/li&gt;
+          &lt;li&gt;FnOnce 是如何确定的， 有些函数，即便将变量 move 到了block中， 然而依然可以调用多次， 这些优势如何判断的？ 根据内部函数调用的 Fn 属性吗？ 比如mem::drop(p) 则 包含其调用的函数 则为 FnOnce?&lt;/li&gt;
+          &lt;li&gt;如何断定 Cloosure 为 Fn or FnMut ?&lt;/li&gt;
+        &lt;/ol&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight rust"&gt;&lt;code&gt;  &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Point&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;f64&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;f64&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+
+  &lt;span class="c"&gt;// Implementation block, all `Point` methods go in here&lt;/span&gt;
+  &lt;span class="k"&gt;impl&lt;/span&gt; &lt;span class="n"&gt;Point&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="c"&gt;// This is a static method&lt;/span&gt;
+      &lt;span class="c"&gt;// Static methods don't need to be called by an instance&lt;/span&gt;
+      &lt;span class="c"&gt;// These methods are generally used as constructors&lt;/span&gt;
+      &lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;origin&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Point&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+          &lt;span class="n"&gt;Point&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;0.0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;0.0&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+      &lt;span class="p"&gt;}&lt;/span&gt;
+
+      &lt;span class="c"&gt;// Another static method, taking two arguments:&lt;/span&gt;
+      &lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;f64&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;f64&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Point&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+          &lt;span class="n"&gt;Point&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+      &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id="modules"&gt;Modules:&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;mod visibility: mod 的可见性， mod 默认只能在本mod 可见， 需要使用 pub 来对外可见， 定义其中的fn， struct 使用同样的规则， 因为mod 可以nest， 所以 存在pub(self) (等同于private) pub(super) 即让super mod 可见,  而pub(crate)则让crate 可见&lt;/li&gt;
+  &lt;li&gt;struct visibility: struct 中包含fn 以及 field，默认都为 对 所在 定义的mod可见， pub 则开放为对外部的 mod可见&lt;/li&gt;
+  &lt;li&gt;mod vs struct: struct 的控制比较弱， mod的控制则相对复杂， struct 可能并不需要如此复杂的规则吧&lt;/li&gt;
+  &lt;li&gt;关键字 use： 我们可以使用 use mod::struct as another_struct 来 减少路径的拼写， 使用as 更可以 启用别名&lt;/li&gt;
+  &lt;li&gt;mod 的 使用类似于 Unix下的 目录 安排， super 代表 .. self 则代表 本mod&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id="attributes-可以用来作什么-1-条件编译-2设定crate-属性-3关闭-warning-4启用编译器特性maros-etc-5-link-to-a-foreign-library-6-设定unit-test"&gt;Attributes: 可以用来作什么？ 1） 条件编译， 2）设定crate 属性， 3）关闭 warning 4)启用编译器特性(maros etc) 5） link to a foreign library 6) 设定unit test&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;形式： 当应用到 整个crate： #![crate_attribute], 应用到module 或者 item ： #[item_attribute]&lt;/li&gt;
+  &lt;li&gt;还可以接受参数： 1) #[attribute = “value”] 2) #[attribute(key = “value”)] 3) #[attribute(value)]&lt;/li&gt;
+  &lt;li&gt;示例：
+    &lt;ul&gt;
+      &lt;li&gt;#[allow(dead_code)]： 关闭rust 关于没有调用函数的提示&lt;/li&gt;
+      &lt;li&gt;#![crate_name = “rary”]&lt;/li&gt;
+      &lt;li&gt;cfg(Configuration):  1） #[cfg(…)] 条件编译  2） cfg!(…) 在运行阶段的条件判断， 返回bool值&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight rust"&gt;&lt;code&gt;   &lt;span class="c"&gt;// This function only gets compiled if the target OS is linux&lt;/span&gt;
+   &lt;span class="nd"&gt;#[cfg(target_os&lt;/span&gt; &lt;span class="nd"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"linux"&lt;/span&gt;&lt;span class="nd"&gt;)]&lt;/span&gt;
+   &lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;are_you_on_linux&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+       &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"You are running linux!"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+   &lt;span class="p"&gt;}&lt;/span&gt;
+
+   &lt;span class="c"&gt;// And this function only gets compiled if the target OS is *not* linux&lt;/span&gt;
+   &lt;span class="nd"&gt;#[cfg(not(target_os&lt;/span&gt; &lt;span class="nd"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"linux"&lt;/span&gt;&lt;span class="nd"&gt;))]&lt;/span&gt;
+   &lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;are_you_on_linux&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+       &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"You are *not* running linux!"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+   &lt;span class="p"&gt;}&lt;/span&gt;
+
+   &lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+       &lt;span class="nf"&gt;are_you_on_linux&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+       &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Are you sure?"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+       &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nd"&gt;cfg!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target_os&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"linux"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+           &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Yes. It's definitely linux!"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+       &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+           &lt;span class="nd"&gt;println!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Yes. It's definitely *not* linux!"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+       &lt;span class="p"&gt;}&lt;/span&gt;
+   &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+</content>
+  </entry>
   <entry>
     <title>link compile</title>
     <link rel="alternate" href="http://geniousbar.github.io/2021/02/19/link-compile/"/>
@@ -4160,77 +4929,6 @@ docker run -d -P –volumns-from jekyll_con –name apache_conn apache&lt;br /&g
       &lt;span class="nf"&gt;.collect&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;macros:&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>linux-interface-zombie-process</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2019/06/25/linux-interface-zombie-process/"/>
-    <id>http://geniousbar.github.io/2019/06/25/linux-interface-zombie-process/</id>
-    <published>2019-06-25T00:00:00+00:00</published>
-    <updated>2020-10-13T11:35:54+00:00</updated>
-    <summary type="html">&lt;h3 id="僵尸进程"&gt;僵尸进程&lt;/h3&gt;
-
-&lt;p&gt;在父进程执行wait之前， 其子进程就已经终止，这将会发生什么？此处的重点在于： 即使子进程已经结束，系统仍然需要允许父进程在其之后的某一时间去执行wait，来获取子进程的结束状态。&lt;/p&gt;
-
-&lt;p&gt;所以内核将子进程转为僵尸进程来完成情况的处理，无法通过信号来杀死僵尸进程，这保证了父进程总是能够使用wait方法。这时候会释放子进程把持的发部分资源。以便供其他进程重新使用，其所保留的仅有内核进程表中的一条记录（其中包含了进程ID、终止状态、资源使用状况等信息）。&lt;/p&gt;
-
-&lt;p&gt;两种情况：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;当父进程执...&lt;/li&gt;
-&lt;/ol&gt;</summary>
-    <content type="html">&lt;h3 id="僵尸进程"&gt;僵尸进程&lt;/h3&gt;
-
-&lt;p&gt;在父进程执行wait之前， 其子进程就已经终止，这将会发生什么？此处的重点在于： 即使子进程已经结束，系统仍然需要允许父进程在其之后的某一时间去执行wait，来获取子进程的结束状态。&lt;/p&gt;
-
-&lt;p&gt;所以内核将子进程转为僵尸进程来完成情况的处理，无法通过信号来杀死僵尸进程，这保证了父进程总是能够使用wait方法。这时候会释放子进程把持的发部分资源。以便供其他进程重新使用，其所保留的仅有内核进程表中的一条记录（其中包含了进程ID、终止状态、资源使用状况等信息）。&lt;/p&gt;
-
-&lt;p&gt;两种情况：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;当父进程执行完wait后，不再需要子进程剩余的最后信息，内核会将删除僵尸进程，&lt;/li&gt;
-  &lt;li&gt;父进程没有执行wait，退出之后，init进程将接管子进程，并自动调用wait，从而删除僵尸进程。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;所以，一个长周期的父进程，应该总是执行wait方法，以防止僵尸进程的大量产生，导致无用的信息填满内核进程表。&lt;br /&gt;
-杀死僵尸进程的唯一方法是：杀死其父进程，从而使init进程接管僵尸进程，并移除僵尸进程。&lt;/p&gt;
-
-&lt;p&gt;具体避免长寿僵尸进程的几种方法：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;父进程调用wait方法来接受子进程。一种为阻塞式，一种为非阻塞，轮询方式&lt;/li&gt;
-  &lt;li&gt;使用SIGCHLD信号处理程序： 可以对SIGCHLD信号安装处理程序，来对子进程的终止做出反应，在其中wait子进程，因为信号的中断处理方式，导致处理函数需要避免几个问题： 1）防止信号丢弃，导致少调用wait方法 2）需要提前安装信号处理器 3）信号传递特征导致的信号通病。&lt;/li&gt;
-  &lt;li&gt;显式的忽略终止的子进程： 显式的将SIGCHLD 处置为SIG_IGN, 系统在子进程终止后立即删除，没有转换为僵尸进程的状态过程，也不需要wait调用。不过较老的UNIX实现并不能够正确处理这样的情况，导致不具有可移植性。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;class A&lt;br /&gt;
-  @@name = “A”&lt;br /&gt;
-  @name = “a”&lt;br /&gt;
-  def self.a&lt;br /&gt;
-    p @@name&lt;br /&gt;
-    p @name&lt;br /&gt;
-  end&lt;br /&gt;
-  def a&lt;br /&gt;
-    p @@name&lt;br /&gt;
-    self.class.a&lt;br /&gt;
-  end&lt;br /&gt;
-end&lt;/p&gt;
-
-&lt;p&gt;class B &amp;lt; A&lt;/p&gt;
-
-&lt;p&gt;def self.b&lt;br /&gt;
-    p @@name&lt;br /&gt;
-    self.a&lt;br /&gt;
-  end&lt;/p&gt;
-
-&lt;p&gt;def b&lt;br /&gt;
-    p @@name&lt;br /&gt;
-    self.class.b&lt;br /&gt;
-    p “-“ * 20&lt;br /&gt;
-    self.class.b&lt;br /&gt;
-  end&lt;/p&gt;
-
-&lt;p&gt;end&lt;/p&gt;
-
-&lt;p&gt;@name 类变量， 为 ruby 的类的实例变量， 不为继承体系所继承，&lt;br /&gt;
-@@name 类变量， 为继承体系所继承&lt;/p&gt;
 </content>
   </entry>
 </feed>

@@ -273,7 +273,23 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2021/02/20/rust-little-book/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/tags/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/rust/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/cargo/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/rustup/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -282,10 +298,6 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/tags/week/</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://geniousbar.github.io/tags/rust/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -494,6 +506,10 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/2021/02/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2021/02/20/</loc>
     <priority>0.5</priority>
   </url>
   <url>
