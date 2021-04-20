@@ -1,0 +1,756 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>Rust little book | 日常学习</title><meta description="Rust little book  rustup:  rust complier 的管理工具， 可以方便的切换 stable, beta, and nightly cargo 是rust的包管理工具， 用来 下载 rust的依赖， 编译， 以及 分发 到 crates.io    在安装 rust 之后， cargo 也会被自动安装上   cargo 提供了一些有用的工具有:            cargo new package # default –bin 生成 可执行 program...   " /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-198d4031.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-b3988275.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li><li id="wechat"><a href="#" onclick="toggleShowWechat()">Wechat</a></li></ul></div></div></div><div id="header-wechat-img"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">Rust little book</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">February 20, 2021</span></div><div class="tag-labels"><a href="/tags/rust/"><small class="tag-label">rust</small></a><a href="/tags/cargo/"><small class="tag-label">cargo</small></a><a href="/tags/rustup/"><small class="tag-label">rustup</small></a></div><hr class="article-header-separator" /><h2 id="rust-little-book">Rust little book</h2>
+
+<h3 id="rustup--rust-complier-的管理工具-可以方便的切换-stable-beta-and-nightly">rustup:  rust complier 的管理工具， 可以方便的切换 stable, beta, and nightly</h3>
+<h3 id="cargo-是rust的包管理工具-用来-下载-rust的依赖-编译-以及-分发-到-cratesio">cargo 是rust的包管理工具， 用来 下载 rust的依赖， 编译， 以及 分发 到 crates.io</h3>
+<ul>
+  <li>在安装 rust 之后， cargo 也会被自动安装上</li>
+  <li>cargo 提供了一些有用的工具有:
+    <ol>
+      <li>cargo new package # default –bin 生成 可执行 program, 可以传递 –lib 来产生库程序</li>
+      <li>cargo build</li>
+      <li>cargo 存在的意义：
+        <ul>
+          <li>剥离 rustc 的复杂度， 类似 make 与 c 一样</li>
+          <li>cargo 最终调用rustc 来编译 项目， 当然可以 直接使用 rustc 来编译项目，但是 需要出入 复杂的参数 来 添加项目 依赖关系， 编译文件， 依赖关系 等，并精心安排顺序 来进行调用。</li>
+          <li>所以使用cargo： make工具， cargo 的功能
+            <ol>
+              <li>使用两个文件 来 包含 package的信息</li>
+              <li>拉取，构建  package 依赖</li>
+              <li>使用正确的参数 来调用rustc 或者其他 tool， 来构建项目</li>
+              <li>引用约定，方便package 构建</li>
+            </ol>
+          </li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<h3 id="cargo-使用笔记">cargo 使用笔记：</h3>
+<ul>
+  <li>cargo new hello_world –bin</li>
+</ul>
+
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">cd </span>hello_world
+<span class="nv">$ </span>tree <span class="nb">.</span>
+<span class="nb">.</span>
+├── Cargo.toml
+└── src
+    └── main.rs
+
+1 directory, 2 files
+</code></pre></div>
+<ul>
+  <li>其中 Cargo.toml 被称为 manifest,包含package的元数据</li>
+</ul>
+
+<div class="highlight"><pre class="highlight shell"><code>fn main<span class="o">()</span> <span class="o">{</span>
+    println!<span class="o">(</span><span class="s2">"Hello, world!"</span><span class="o">)</span><span class="p">;</span>
+<span class="o">}</span>
+
+
+<span class="nv">$ </span>cargo build
+   Compiling hello_world v0.1.0 <span class="o">(</span>file:///path/to/package/hello_world<span class="o">)</span>
+
+<span class="nv">$ </span>./target/debug/hello_world
+Hello, world!
+
+
+<span class="nv">$ </span>cargo run
+   Compiling hello_world v0.1.0 <span class="o">(</span>file:///path/to/package/hello_world<span class="o">)</span>
+     Running <span class="sb">`</span>target/debug/hello_world<span class="sb">`</span>
+Hello, world!
+
+
+
+<span class="nv">$ </span>cargo build <span class="nt">--release</span>
+   Compiling hello_world v0.1.0 <span class="o">(</span>file:///path/to/package/hello_world<span class="o">)</span>
+
+</code></pre></div>
+<ul>
+  <li>cargo build  将会 构建 package</li>
+  <li>cargo run 则 构建并运行它</li>
+  <li>cargo build –release 将 构建 优化的代码</li>
+  <li>cargo 默认的构建 代码优化级别 为 debug, 存在的目录为 target/debug, 构建 优化后的代码需要 显式传递 参数 –release 生成的文件目录为 target/release</li>
+  <li>Dependencies：
+    <ul>
+      <li>crate.io 为 rust 中间的 package 机构， 用于发现 下载 更新package</li>
+      <li>添加依赖关系： 在 Cargo.toml 中 的dependencies 下，添加项目</li>
+    </ul>
+
+<div class="highlight"><pre class="highlight shell"><code><span class="o">[</span>package]
+name <span class="o">=</span> <span class="s2">"hello_world"</span>
+version <span class="o">=</span> <span class="s2">"0.1.0"</span>
+authors <span class="o">=</span> <span class="o">[</span><span class="s2">"Your Name &lt;you@example.com&gt;"</span><span class="o">]</span>
+edition <span class="o">=</span> <span class="s2">"2018"</span>
+
+<span class="o">[</span>dependencies]
+<span class="nb">time</span> <span class="o">=</span> <span class="s2">"0.1.12"</span>
+regex <span class="o">=</span> <span class="s2">"0.1.41"</span>
+</code></pre></div>
+    <ul>
+      <li>之后的 cargo build 过程</li>
+    </ul>
+
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>cargo build
+      Updating crates.io index
+   Downloading memchr v0.1.5
+   Downloading libc v0.1.10
+   Downloading regex-syntax v0.2.1
+   Downloading memchr v0.1.5
+   Downloading aho-corasick v0.3.0
+   Downloading regex v0.1.41
+     Compiling memchr v0.1.5
+     Compiling libc v0.1.10
+     Compiling regex-syntax v0.2.1
+     Compiling memchr v0.1.5
+     Compiling aho-corasick v0.3.0
+     Compiling regex v0.1.41
+     Compiling hello_world v0.1.0 <span class="o">(</span>file:///path/to/package/hello_world<span class="o">)</span>
+</code></pre></div></li>
+</ul>
+
+<h4 id="package-构成">package 构成：</h4>
+
+<div class="highlight"><pre class="highlight shell"><code>  <span class="nb">.</span>
+  ├── Cargo.lock
+  ├── Cargo.toml
+  ├── src/
+  │   ├── lib.rs
+  │   ├── main.rs
+  │   └── bin/
+  │       ├── named-executable.rs
+  │       ├── another-executable.rs
+  │       └── multi-file-executable/
+  │           ├── main.rs
+  │           └── some_module.rs
+  ├── benches/
+  │   ├── large-input.rs
+  │   └── multi-file-bench/
+  │       ├── main.rs
+  │       └── bench_module.rs
+  ├── examples/
+  │   ├── simple.rs
+  │   └── multi-file-example/
+  │       ├── main.rs
+  │       └── ex_module.rs
+  └── tests/
+      ├── some-integration-tests.rs
+      └── multi-file-test/
+          ├── main.rs
+          └── test_module.rs
+</code></pre></div><ul>
+  <li>Cargo.toml and Cargo.lock 在项目的根目录</li>
+  <li>src 下 为源代码</li>
+  <li>默认的 library file 为 src/lib.rs</li>
+  <li>默认的 executable file 是 src/main.rc, 其他的 放在 src/bin/</li>
+  <li>基准测试 放在benches 目录下</li>
+  <li>示例代码放在examples 目录下</li>
+  <li>集成测试 放在 tests 目录下</li>
+  <li>
+    <p>其他详细的需要参看 [[https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html]]</p>
+  </li>
+  <li>Cargo.toml 与 Cargo.lock: 两种目的，
+    <ul>
+      <li>cargo.toml 描述 大概的依赖关系 并不准确，是由 人来确定的</li>
+      <li>Cargo.lock 包含准确的依赖关系， 由cargo 来维护</li>
+      <li>[[https://doc.rust-lang.org/cargo/faq.html#why-do-binaries-have-cargolock-in-version-control-but-not-libraries]]</li>
+      <li>示例:</li>
+    </ul>
+
+<div class="highlight"><pre class="highlight shell"><code>Cargo.toml
+
+<span class="o">[</span>package]
+name <span class="o">=</span> <span class="s2">"hello_world"</span>
+version <span class="o">=</span> <span class="s2">"0.1.0"</span>
+authors <span class="o">=</span> <span class="o">[</span><span class="s2">"Your Name &lt;you@example.com&gt;"</span><span class="o">]</span>
+
+<span class="o">[</span>dependencies]
+rand <span class="o">=</span> <span class="o">{</span> git <span class="o">=</span> <span class="s2">"https://github.com/rust-lang-nursery/rand.git"</span>, rev <span class="o">=</span> <span class="s2">"9f35b8e"</span> <span class="o">}</span>
+
+
+Cargo.lock
+
+
+<span class="o">[[</span>package]]
+name <span class="o">=</span> <span class="s2">"hello_world"</span>
+version <span class="o">=</span> <span class="s2">"0.1.0"</span>
+dependencies <span class="o">=</span> <span class="o">[</span>
+ <span class="s2">"rand 0.1.0 (git+https://github.com/rust-lang-nursery/rand.git#9f35b8e439eeedd60b9414c58f389bdc6a3284f9)"</span>,
+<span class="o">]</span>
+
+<span class="o">[[</span>package]]
+name <span class="o">=</span> <span class="s2">"rand"</span>
+version <span class="o">=</span> <span class="s2">"0.1.0"</span>
+<span class="nb">source</span> <span class="o">=</span> <span class="s2">"git+https://github.com/rust-lang-nursery/rand.git#9f35b8e439eeedd60b9414c58f389bdc6a3284f9"</span>
+</code></pre></div></li>
+  <li>Cargo.lock 中包含 依赖的确定的 version， 当其他人使用的时候， 他们将使用相同的 sha，即便我们并没有在Cargo.toml 中使用</li>
+  <li>
+    <p>cargo update 更新全部的依赖， cargo update -p rand 只更新依赖 rand</p>
+  </li>
+  <li>Test:
+    <ul>
+      <li>cargo test 执行 package中的所有test， test主要有两种： 1) 在每个 src 目录中的文件， 2） tests/ 目录下的所有文件。 1）中的为单元测试， 2）则为 集成测试，</li>
+    </ul>
+
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>cargo <span class="nb">test
+   </span>Compiling rand v0.1.0 <span class="o">(</span>https://github.com/rust-lang-nursery/rand.git#9f35b8e<span class="o">)</span>
+   Compiling hello_world v0.1.0 <span class="o">(</span>file:///path/to/package/hello_world<span class="o">)</span>
+     Running target/test/hello_world-9c2b65bbb79eabce
+
+running 0 tests
+
+<span class="nb">test </span>result: ok. 0 passed<span class="p">;</span> 0 failed<span class="p">;</span> 0 ignored<span class="p">;</span> 0 measured<span class="p">;</span> 0 filtered out
+</code></pre></div>    <ul>
+      <li>cargo test foo  可以单独执行 名字为foo的测试，</li>
+      <li>cargo test 其实还会执行 额外的测试，包含在 src中的部分 文档中的测试（并不重要，为补充部分）</li>
+    </ul>
+  </li>
+  <li>Cargo Home： 当build package的时候， cargo 将下载的依赖package 存储到 Cargo home 下。当做cache 使用。
+    <ul>
+      <li>可以通过 改变 环境变量 CARGO_HOME 来改变 cargo home的值， 默认 为 $HOME/.cargo/</li>
+      <li>Cargo Home 目录下的 数据：
+        <ul>
+          <li>bin 目录： 可执行crate， 包括cargo install 或者 rustup 安装的</li>
+          <li>git/db: crate 依赖git 项目时， cargo clone 项目到 该目录下</li>
+          <li>git/checkouts： git/db 项目中的检出到该文件， 比如 依赖于特定的commit</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>registry： 项目依赖于 crate.io 中的crate 存放在该目录下
+    <ul>
+      <li>registry/index： crate 的原数据， 包括： version， dependencies 等</li>
+      <li>registry/cache： 下载的crate 储存到该目录下， 存储形式为 .crate 的gzip压缩文件</li>
+      <li>registry/src： cache 的解压形式 存放在 该文件中</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="指定-dependencies">指定 Dependencies：</h4>
+<ul>
+  <li>依赖版本： 版本号各个位置数字的含义： [[https://semver.org/][SemVer compatible]] 与 link 中讲的同样， major.minor.patch</li>
+  <li>Caret requirements： 指定 可以使用 一个 major 版本号 不变的更新， 但是 0 是 一个特殊的数字，标识不与 任何 数字兼容。即是： 0.0.1， 与 0.1.x 不兼容</li>
+  <li>
+    <p>下面为兼容样例：</p>
+
+<div class="highlight"><pre class="highlight shell"><code>^1.2.3  :<span class="o">=</span>  <span class="o">&gt;=</span>1.2.3, &lt;2.0.0
+^1.2    :<span class="o">=</span>  <span class="o">&gt;=</span>1.2.0, &lt;2.0.0
+^1      :<span class="o">=</span>  <span class="o">&gt;=</span>1.0.0, &lt;2.0.0
+^0.2.3  :<span class="o">=</span>  <span class="o">&gt;=</span>0.2.3, &lt;0.3.0
+^0.2    :<span class="o">=</span>  <span class="o">&gt;=</span>0.2.0, &lt;0.3.0
+^0.0.3  :<span class="o">=</span>  <span class="o">&gt;=</span>0.0.3, &lt;0.0.4
+^0.0    :<span class="o">=</span>  <span class="o">&gt;=</span>0.0.0, &lt;0.1.0
+^0      :<span class="o">=</span>  <span class="o">&gt;=</span>0.0.0, &lt;1.0.0
+</code></pre></div>  </li>
+  <li>Tilde requirements:  分为以下情况:
+    <ul>
+      <li>有 major.minor.patch 或者  major.minor 只有patch version 的升级是允许的</li>
+      <li>有major情况下, minor patch verison的升级 是允许的</li>
+      <li>for example</li>
+    </ul>
+
+<div class="highlight"><pre class="highlight shell"><code>~1.2.3  :<span class="o">=</span> <span class="o">&gt;=</span>1.2.3, &lt;1.3.0
+~1.2    :<span class="o">=</span> <span class="o">&gt;=</span>1.2.0, &lt;1.3.0
+~1      :<span class="o">=</span> <span class="o">&gt;=</span>1.0.0, &lt;2.0.0
+</code></pre></div></li>
+  <li>Wildcard requirements:
+    <ul>
+      <li>允许所在位置上的 任何版本</li>
+      <li>for example</li>
+    </ul>
+
+<div class="highlight"><pre class="highlight shell"><code><span class="se">\*</span>     :<span class="o">=</span> <span class="o">&gt;=</span>0.0.0
+1.<span class="k">*</span>   :<span class="o">=</span> <span class="o">&gt;=</span>1.0.0, &lt;2.0.0
+1.2.<span class="k">*</span> :<span class="o">=</span> <span class="o">&gt;=</span>1.2.0, &lt;1.3.0
+</code></pre></div></li>
+</ul>
+
+<h4 id="workspaces-workspace-下的一系列package-共享同样的cargolock-output-dir-等配置比如profile-workspace下的packages-被称为-workspace-members">Workspaces: workspace 下的一系列package 共享同样的Cargo.lock， output dir 等配置（比如profile）， workspace下的packages 被称为 workspace members</h4>
+<ul>
+  <li>存在两种形式： 1） [package] 与 [workspace] 共存在 Cargo.toml 中 2） 只有 [workspace] 存在Cargo.toml 中， 被称作 Virtual manifest</li>
+  <li>主要作用：
+    <ol>
+      <li>共享Cargo.lock</li>
+      <li>共享output dir， Cargo.toml 中 [target]</li>
+      <li>[patch], [replace] and [profile.*] 等 在Cargo.toml 中的 段  只能识别在 workspace 中的 manifest，member package 中的被忽略</li>
+    </ol>
+  </li>
+  <li>
+    <p>workspace section 中的配置</p>
+
+<div class="highlight"><pre class="highlight shell"><code><span class="o">[</span>workspace]
+members <span class="o">=</span> <span class="o">[</span><span class="s2">"member1"</span>, <span class="s2">"path/to/member2"</span>, <span class="s2">"crates/*"</span><span class="o">]</span>
+exclude <span class="o">=</span> <span class="o">[</span><span class="s2">"crates/foo"</span>, <span class="s2">"path/to/other"</span><span class="o">]</span>
+</code></pre></div>  </li>
+  <li>members 为 成员package 列表， exclude 排除 member
+    <ul>
+      <li>workspace 寻找： Cargo 自动的 向上目录 寻找 含有 [workspace] 的Cargo.toml， 在 member中可以指定 package.workspace 来 直接指定 workspace 的位置， 来防止自动查找， 这个对于 没有在 workspace 目录下的member package 非常有用</li>
+      <li>member package： cargo command -p package 可以指定 package 来 执行命令， 如果没有指定 package， 则 选择当前所在目录的package， default-members = [“path/to/member2”, “path/to/member3/”] 可以指定默认的 操作的member package</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="rustup-从官方下载rustc-使能够随意的在-stable-beta-nightly-中切换-让-cross-compiling-编译变的简单">rustup： 从官方下载rustc， 使能够随意的在 stable, beta, nightly 中切换。 让 cross-compiling 编译变的简单</h3>
+<ul>
+  <li>工作原理：  rustup 通过 ~/.cargo/bin 下的工具 来实现其功能， 比如 安装在~/.cargo/bin   下的  rustc cargo 等 只是一个 到真正执行工具的 代理，</li>
+  <li>rustup 提供了一个方便的机制来 控制 这些代理的行为， 比如 通过执行rustup default nightly 来切换 nightly 下的工具</li>
+</ul>
+
+<h4 id="概念">概念:</h4>
+<ul>
+  <li>channel: rustc 按照 beta, night, stable 三个 channel 进行发布， channel 并没有什么用， 只是个概念而已。</li>
+  <li>toolchain： rustc and cargo 等相关工具。 因为能够控制rustc (即是channel概念下的实际应用)</li>
+  <li>target： rustc 可以为多个平台生成代码。 默认的 rustc 使用host(即本机) 作为target， 为了生成不同target的代码，我们需要 使用rustup target 来安装目标target</li>
+  <li>component: 每个rust版本的发布，都会包含一些 组件， 包括rustc， clippy 等</li>
+  <li>profile： 为了更好的与component 工作， profile 定义了 一组component，</li>
+</ul>
+
+<blockquote>
+  <p>toolchain：  rustup 不仅可以 安装stable, beta, nightly 三个channel， 还可以安装 其他的 官方 历史版本</p>
+</blockquote>
+
+<ul>
+  <li>channel 的命令规则:</li>
+</ul>
+
+<div class="highlight"><pre class="highlight shell"><code>&lt;channel&gt;[-&lt;<span class="nb">date</span><span class="o">&gt;][</span>-&lt;host&gt;]
+
+&lt;channel&gt;       <span class="o">=</span> stable|beta|nightly|&lt;major.minor&gt;|&lt;major.minor.patch&gt;
+&lt;<span class="nb">date</span><span class="o">&gt;</span>          <span class="o">=</span> YYYY-MM-DD
+&lt;host&gt;          <span class="o">=</span> &lt;target-triple&gt;
+
+<span class="c">#+end_src</span>
+<span class="k">**</span> 其他命令： 保持 rust 更新： 
+<span class="c">#+begin_src </span>
+<span class="nv">$ </span>rustup update
+info: syncing channel updates <span class="k">for</span> <span class="s1">'stable'</span>
+info: downloading component <span class="s1">'rustc'</span>
+info: downloading component <span class="s1">'rust-std'</span>
+info: downloading component <span class="s1">'rust-docs'</span>
+info: downloading component <span class="s1">'cargo'</span>
+info: installing component <span class="s1">'rustc'</span>
+info: installing component <span class="s1">'rust-std'</span>
+info: installing component <span class="s1">'rust-docs'</span>
+info: installing component <span class="s1">'cargo'</span>
+info: checking <span class="k">for </span>self-updates
+info: downloading self-updates
+
+  stable updated: rustc 1.7.0 <span class="o">(</span>a5d1e7a59 2016-02-29<span class="o">)</span>
+</code></pre></div><blockquote>
+  <p>如上， rustup update 会更新 stable， component， 以及 rustup self， 可以使用 rustup self update 来手动更新rustup</p>
+</blockquote>
+
+<h3 id="rust-知识">Rust 知识：</h3>
+<h4 id="stdfmt">std::fmt:</h4>
+<ul>
+  <li>format! 的使用 方法：  positional params：， named params： ， formating params：</li>
+  <li>
+    <p>示例</p>
+
+<div class="highlight"><pre class="highlight rust"><code><span class="nd">format!</span><span class="p">(</span><span class="s">"Hello, {}!"</span><span class="p">,</span> <span class="s">"world"</span><span class="p">);</span>   <span class="c">// =&gt; "Hello, world!"</span>
+<span class="nd">format!</span><span class="p">(</span><span class="s">"{1} {} {0} {}"</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c">// =&gt; "2 1 1 2"</span>
+<span class="nd">format!</span><span class="p">(</span><span class="s">"{argument}"</span><span class="p">,</span> <span class="n">argument</span> <span class="o">=</span> <span class="s">"test"</span><span class="p">);</span>
+<span class="nd">println!</span><span class="p">(</span><span class="s">"Hello {:1$}!"</span><span class="p">,</span> <span class="s">"x"</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+</code></pre></div>  </li>
+  <li>formating trait: 实践显式 对于外部的Type  {}确实需要impl Display， 而{:?} 需要 impl Debug
+    <ol>
+      <li>{} =&gt; Display</li>
+      <li>{:?} =&gt; Debug</li>
+      <li>{:o} =&gt; Octal</li>
+      <li>{:p} =&gt; Pointer</li>
+    </ol>
+  </li>
+  <li>fmt::Display vs fmt::Debug
+    <ol>
+      <li>Display: 断言 实现者 总是返回 UTF-8 的字符串， 并非所有的 都实现了 Display</li>
+      <li>Debug：  应该为所有pub type 实现， 输出为 内部状态， 该Trait 的目的是为了方便Rust Debug， 可以 使用#[derive(Debug)] 来使用默认的内部实现</li>
+    </ol>
+  </li>
+</ul>
+
+<h4 id="array--slice">array &amp; Slice</h4>
+<ul>
+  <li>array的类型为： [T: len], let mut array: [i32; 3] = [0; 3];</li>
+  <li>Slice: [T]</li>
+</ul>
+
+<h4 id="structures-有三种类型-1-tuple-struct-2-classic-struct-3-unit-structs">structures： 有三种类型： 1） Tuple struct, 2) classic struct 3) Unit structs</h4>
+<ul>
+  <li>struct Pair(i32, f32);</li>
+  <li>struct Person {  name: String,    age: u8}</li>
+  <li>struct Unit; unit Struct 没有任何的 field</li>
+</ul>
+
+<h4 id="enums-包含多个-变体-的-组合项-任何一个变体-都是一个-正确的-enum-类型">Enums： 包含多个 变体 的 组合项， 任何一个变体 都是一个 正确的 enum 类型</h4>
+
+<div class="highlight"><pre class="highlight rust"><code>  <span class="k">enum</span> <span class="n">WebEvent</span> <span class="p">{</span>
+      <span class="c">// An `enum` may either be `unit-like`,</span>
+      <span class="n">PageLoad</span><span class="p">,</span>
+      <span class="n">PageUnload</span><span class="p">,</span>
+      <span class="c">// like tuple structs,</span>
+      <span class="nf">KeyPress</span><span class="p">(</span><span class="nb">char</span><span class="p">),</span>
+      <span class="nf">Paste</span><span class="p">(</span><span class="nb">String</span><span class="p">),</span>
+      <span class="c">// or c-like structures.</span>
+      <span class="n">Click</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="nb">i64</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">i64</span> <span class="p">},</span>
+  <span class="p">}</span>
+
+  <span class="c">// A function which takes a `WebEvent` enum as an argument and</span>
+  <span class="c">// returns nothing.</span>
+  <span class="k">fn</span> <span class="nf">inspect</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">WebEvent</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">match</span> <span class="n">event</span> <span class="p">{</span>
+          <span class="nn">WebEvent</span><span class="p">::</span><span class="n">PageLoad</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"page loaded"</span><span class="p">),</span>
+          <span class="nn">WebEvent</span><span class="p">::</span><span class="n">PageUnload</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"page unloaded"</span><span class="p">),</span>
+          <span class="c">// Destructure `c` from inside the `enum`.</span>
+          <span class="nn">WebEvent</span><span class="p">::</span><span class="nf">KeyPress</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"pressed '{}'."</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span>
+          <span class="nn">WebEvent</span><span class="p">::</span><span class="nf">Paste</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"pasted </span><span class="se">\"</span><span class="s">{}</span><span class="se">\"</span><span class="s">."</span><span class="p">,</span> <span class="n">s</span><span class="p">),</span>
+          <span class="c">// Destructure `Click` into `x` and `y`.</span>
+          <span class="nn">WebEvent</span><span class="p">::</span><span class="n">Click</span> <span class="p">{</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="p">}</span> <span class="k">=&gt;</span> <span class="p">{</span>
+              <span class="nd">println!</span><span class="p">(</span><span class="s">"clicked at x={}, y={}."</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+          <span class="p">},</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+</code></pre></div>
+<h4 id="type-aliastype-关键字能够-使用-type-name--existingtype-语法来-使用-name-代替-existingtype-使用-self-是一种type-alias">Type Alias：type 关键字能够 使用 type Name = ExistingType； 语法来 使用 Name 代替 ExistingType 使用。 Self 是一种Type Alias</h4>
+
+<h4 id="const-static">const， static</h4>
+
+<h4 id="variable-bindings-1变量默认-是不可修改的-使用mut-改变-2-可以在内部的scope中-其同样的名字来shadow即使不可见-外部的变量-3可以使用-先声明-后设定数值的形式-使用变量但是rust-会检查-使用-未定义变量的错误-来预防因此产生的问题">Variable Bindings： 1）变量默认 是不可修改的， 使用mut 改变 2） 可以在内部的scope中 其同样的名字来shadow(即使不可见) 外部的变量 3）可以使用 先声明 后设定数值的形式 使用变量，但是rust 会检查 使用 未定义变量的错误， 来预防因此产生的问题</h4>
+
+<h4 id="types-1转换-as关键字--2-type-alias-type-nanosecond--u64-3-数值的类型可以添加到--后面最为后缀使用-例如-42i32">Types: 1）转换 as关键字  2） type alias： type NanoSecond = u64; 3） 数值的类型，可以添加到  后面最为后缀使用， 例如： 42i32</h4>
+
+<h4 id="conversion-rust-的struct-以及-enum-等自定义类型的-type转换">Conversion： rust 的struct 以及 enum 等自定义类型的 type转换</h4>
+
+<ol>
+  <li>From &amp; Into:
+    <ul>
+      <li>From 为一个类型定义， 如何create self 从 另一个type中转变</li>
+      <li>Into 则是From 的 调用者， From<T> for U 自动实现了 Into<u> for T ( blank implement)</u></T></li>
+    </ul>
+  </li>
+  <li>TryFrom &amp; TryInto: 类似于 From &amp; Into 不同的是， 转换可能失败，返回Result
+    <ul>
+      <li>ToString &amp; FromStr:</li>
+      <li>ToString： 单独为 String 类型 定义了一个 ToString Trait，但是并不需要直接实现 ToString，而是实现了 fmt::Display 之后 就自动了提供了 ToString 中的to_string 方法</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="highlight"><pre class="highlight rust"><code>    <span class="nd">#[stable(feature</span> <span class="nd">=</span> <span class="s">"rust1"</span><span class="nd">,</span> <span class="nd">since</span> <span class="nd">=</span> <span class="s">"1.0.0"</span><span class="nd">)]</span>
+<span class="k">impl</span><span class="o">&lt;</span><span class="n">T</span><span class="p">:</span> <span class="nn">fmt</span><span class="p">::</span><span class="n">Display</span> <span class="o">+</span> <span class="o">?</span><span class="n">Sized</span><span class="o">&gt;</span> <span class="n">ToString</span> <span class="k">for</span> <span class="n">T</span> <span class="p">{</span>
+    <span class="c">// A common guideline is to not inline generic functions. However,</span>
+    <span class="c">// removing `#[inline]` from this method causes non-negligible regressions.</span>
+    <span class="c">// See &lt;https://github.com/rust-lang/rust/pull/74852&gt;, the last attempt</span>
+    <span class="c">// to try to remove it.</span>
+    <span class="nd">#[inline]</span>
+    <span class="n">default</span> <span class="k">fn</span> <span class="nf">to_string</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">String</span> <span class="p">{</span>
+        <span class="k">use</span> <span class="nn">fmt</span><span class="p">::</span><span class="n">Write</span><span class="p">;</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">buf</span> <span class="o">=</span> <span class="nn">String</span><span class="p">::</span><span class="nf">new</span><span class="p">();</span>
+        <span class="n">buf</span><span class="nf">.write_fmt</span><span class="p">(</span><span class="nd">format_args!</span><span class="p">(</span><span class="s">"{}"</span><span class="p">,</span> <span class="k">self</span><span class="p">))</span>
+            <span class="nf">.expect</span><span class="p">(</span><span class="s">"a Display implementation returned an error unexpectedly"</span><span class="p">);</span>
+        <span class="n">buf</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="fromstr--parse-将string-转换为其他类型-只需要实现了-fromstr-for-struct-而string-中的parse-方法-只是-对fromstrfrom_strstring-的调用">FromStr &amp; parse: 将String 转换为其他类型， 只需要实现了 FromStr for struct, 而String 中的parse 方法 只是 对FromStr::from_str(&amp;string) 的调用</h4>
+
+<h4 id="expression-程序是由一系列表达式组成的-1-赋值表达式-用-结尾-2--也是表达式-如果最后一个表达式-以-结尾则返回---否则为最后一个表达式的-结果">Expression： 程序是由一系列表达式组成的， 1） 赋值表达式 用; 结尾， 2） {} 也是表达式， 如果最后一个表达式 以; 结尾，则返回  (), 否则为最后一个表达式的 结果</h4>
+
+<h4 id="flow-of-control">Flow of control：</h4>
+<ul>
+  <li>if-else  也是表达式， 所有的分支必须返回同样的类型</li>
+  <li>loop： loop break continue。 break 用来随时中断退出loop， continue 则用于 用于 跳过剩下的 代码，重新开始一个 循环</li>
+  <li>
+    <p>loop 是可以嵌套的，并起名字, break ，以及continue 可以使用名字来进行 break， 或者continue</p>
+
+<div class="highlight"><pre class="highlight rust"><code><span class="nd">#![allow(unreachable_code)]</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nv">'outer</span><span class="p">:</span> <span class="k">loop</span> <span class="p">{</span>
+        <span class="nd">println!</span><span class="p">(</span><span class="s">"Entered the outer loop"</span><span class="p">);</span>
+
+        <span class="nv">'inner</span><span class="p">:</span> <span class="k">loop</span> <span class="p">{</span>
+            <span class="nd">println!</span><span class="p">(</span><span class="s">"Entered the inner loop"</span><span class="p">);</span>
+
+            <span class="c">// This would break only the inner loop</span>
+            <span class="c">//break;</span>
+
+            <span class="c">// This breaks the outer loop</span>
+            <span class="k">break</span> <span class="nv">'outer</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nd">println!</span><span class="p">(</span><span class="s">"This point will never be reached"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Exited the outer loop"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="k">mut</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">let</span> <span class="n">result</span> <span class="o">=</span> <span class="k">loop</span> <span class="p">{</span>
+        <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="n">counter</span> <span class="o">==</span> <span class="mi">10</span> <span class="p">{</span>
+            <span class="k">break</span> <span class="n">counter</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="nd">assert_eq!</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre></div>  </li>
+  <li>loop 也是可以 返回数值的， 放到break 后面</li>
+  <li>while</li>
+  <li>for: for in 结构用来 遍历 所有实现了 IntoIterator 的对象， 比如简单 range形式： a..b, a..=b
+    <ul>
+      <li>for loop 会自动调用 into_iter 在参数上，我们可以主动产生下面几类实现IntoIterator 的 Iterator：</li>
+    </ul>
+  </li>
+  <li>iter: 产生 引用的 Iterator, 对 ownership不产生影响
+    <ul>
+      <li>into_iter: 将ownership 交给 Iterator， 调用过之后的对象，将不再可用。产生</li>
+      <li>iter_mut: 产生mut 引用的Iterator， 可以进行修改</li>
+    </ul>
+  </li>
+  <li>match:
+    <ul>
+      <li>c like 方式： 即 match  number</li>
+      <li>解构对象：
+        <ul>
+          <li>Tuples：  使用.. 来 忽略剩余所有的 tuple</li>
+          <li>Enums:</li>
+          <li>Pointers: *  &amp; ref ref mut 见下面示例</li>
+          <li>Structs: struct 同样可以被match</li>
+        </ul>
+      </li>
+      <li>Guards: 在match 对象的arm中，同样可以 使用 if 条件判断 即是 guards</li>
+      <li>
+        <p>Bindings： match 在 arm中，除了解构对象的同时 可以将变量整体绑定 到一个变量上</p>
+
+<div class="highlight"><pre class="highlight rust"><code><span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">triple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+    <span class="c">// TODO ^ Try different values for `triple`</span>
+
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Tell me about {:?}"</span><span class="p">,</span> <span class="n">triple</span><span class="p">);</span>
+    <span class="c">// Match can be used to destructure a tuple</span>
+    <span class="k">match</span> <span class="n">triple</span> <span class="p">{</span>
+        <span class="c">// Destructure the second and third elements</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"First is `0`, `y` is {:?}, and `z` is {:?}"</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">..</span><span class="p">)</span>  <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"First is `1` and the rest doesn't matter"</span><span class="p">),</span>
+        <span class="c">// `..` can be the used ignore the rest of the tuple</span>
+        <span class="mi">_</span>      <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"It doesn't matter what they are"</span><span class="p">),</span>
+        <span class="c">// `_` means don't bind the value to a variable</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c">//point s </span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c">// Assign a reference of type `i32`. The `&amp;` signifies there</span>
+    <span class="c">// is a reference being assigned.</span>
+    <span class="k">let</span> <span class="n">reference</span> <span class="o">=</span> <span class="o">&amp;</span><span class="mi">4</span><span class="p">;</span>
+
+    <span class="k">match</span> <span class="n">reference</span> <span class="p">{</span>
+        <span class="c">// If `reference` is pattern matched against `&amp;val`, it results</span>
+        <span class="c">// in a comparison like:</span>
+        <span class="c">// `&amp;i32`</span>
+        <span class="c">// `&amp;val`</span>
+        <span class="c">// ^ We see that if the matching `&amp;`s are dropped, then the `i32`</span>
+        <span class="c">// should be assigned to `val`.</span>
+        <span class="o">&amp;</span><span class="n">val</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"Got a value via destructuring: {:?}"</span><span class="p">,</span> <span class="n">val</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="c">// To avoid the `&amp;`, you dereference before matching.</span>
+    <span class="k">match</span> <span class="o">*</span><span class="n">reference</span> <span class="p">{</span>
+        <span class="n">val</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"Got a value via dereferencing: {:?}"</span><span class="p">,</span> <span class="n">val</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="c">// What if you don't start with a reference? `reference` was a `&amp;`</span>
+    <span class="c">// because the right side was already a reference. This is not</span>
+    <span class="c">// a reference because the right side is not one.</span>
+    <span class="k">let</span> <span class="mi">_</span><span class="n">not_a_reference</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+    <span class="c">// Rust provides `ref` for exactly this purpose. It modifies the</span>
+    <span class="c">// assignment so that a reference is created for the element; this</span>
+    <span class="c">// reference is assigned.</span>
+    <span class="k">let</span> <span class="k">ref</span> <span class="mi">_</span><span class="n">is_a_reference</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+    <span class="c">// Accordingly, by defining 2 values without references, references</span>
+    <span class="c">// can be retrieved via `ref` and `ref mut`.</span>
+    <span class="k">let</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+    <span class="k">let</span> <span class="k">mut</span> <span class="n">mut_value</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+
+    <span class="c">// Use `ref` keyword to create a reference.</span>
+    <span class="k">match</span> <span class="n">value</span> <span class="p">{</span>
+        <span class="k">ref</span> <span class="n">r</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"Got a reference to a value: {:?}"</span><span class="p">,</span> <span class="n">r</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="c">// Use `ref mut` similarly.</span>
+    <span class="k">match</span> <span class="n">mut_value</span> <span class="p">{</span>
+        <span class="k">ref</span> <span class="k">mut</span> <span class="n">m</span> <span class="k">=&gt;</span> <span class="p">{</span>
+            <span class="c">// Got a reference. Gotta dereference it before we can</span>
+            <span class="c">// add anything to it.</span>
+            <span class="o">*</span><span class="n">m</span> <span class="o">+=</span> <span class="mi">10</span><span class="p">;</span>
+            <span class="nd">println!</span><span class="p">(</span><span class="s">"We added 10. `mut_value`: {:?}"</span><span class="p">,</span> <span class="n">m</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="n">Foo</span> <span class="p">{</span>
+        <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="nb">u32</span><span class="p">,</span> <span class="nb">u32</span><span class="p">),</span>
+        <span class="n">y</span><span class="p">:</span> <span class="nb">u32</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c">// Try changing the values in the struct to see what happens</span>
+    <span class="k">let</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">y</span><span class="p">:</span> <span class="mi">3</span> <span class="p">};</span>
+
+    <span class="k">match</span> <span class="n">foo</span> <span class="p">{</span>
+        <span class="n">Foo</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">y</span> <span class="p">}</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"First of x is 1, b = {},  y = {} "</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+
+        <span class="c">// you can destructure structs and rename the variables,</span>
+        <span class="c">// the order is not important</span>
+        <span class="n">Foo</span> <span class="p">{</span> <span class="n">y</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">i</span> <span class="p">}</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"y is 2, i = {:?}"</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span>
+
+        <span class="c">// and you can also ignore some variables:</span>
+        <span class="n">Foo</span> <span class="p">{</span> <span class="n">y</span><span class="p">,</span> <span class="o">..</span> <span class="p">}</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"y = {}, we don't care about x"</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+        <span class="c">// this will give an error: pattern does not mention field `x`</span>
+        <span class="c">//Foo { y } =&gt; println!("y = {}", y),</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">pair</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">);</span>
+    <span class="c">// TODO ^ Try different values for `pair`</span>
+
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Tell me about {:?}"</span><span class="p">,</span> <span class="n">pair</span><span class="p">);</span>
+    <span class="k">match</span> <span class="n">pair</span> <span class="p">{</span>
+        <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="n">y</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"These are twins"</span><span class="p">),</span>
+        <span class="c">// The ^ `if condition` part is a guard</span>
+        <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"Antimatter, kaboom!"</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">_</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"The first one is odd"</span><span class="p">),</span>
+        <span class="mi">_</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"No correlation..."</span><span class="p">),</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="c">// A function `age` which returns a `u32`.</span>
+<span class="k">fn</span> <span class="nf">age</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="nb">u32</span> <span class="p">{</span>
+    <span class="mi">15</span>
+<span class="p">}</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Tell me what type of person you are"</span><span class="p">);</span>
+
+    <span class="k">match</span> <span class="nf">age</span><span class="p">()</span> <span class="p">{</span>
+        <span class="mi">0</span>             <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"I haven't celebrated my first birthday yet"</span><span class="p">),</span>
+        <span class="c">// Could `match` 1 ..= 12 directly but then what age</span>
+        <span class="c">// would the child be? Instead, bind to `n` for the</span>
+        <span class="c">// sequence of 1 ..= 12. Now the age can be reported.</span>
+        <span class="n">n</span> <span class="o">@</span> <span class="mi">1</span>  <span class="o">..=</span> <span class="mi">12</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"I'm a child of age {:?}"</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span>
+        <span class="n">n</span> <span class="o">@</span> <span class="mi">13</span> <span class="o">..=</span> <span class="mi">19</span> <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"I'm a teen of age {:?}"</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span>
+        <span class="c">// Nothing bound. Return the result.</span>
+        <span class="n">n</span>             <span class="k">=&gt;</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"I'm an old person of age {:?}"</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div>      </li>
+    </ul>
+  </li>
+  <li>if let: 在判断的同时 进行match</li>
+  <li>while let</li>
+</ul>
+
+<h4 id="functions">Functions:</h4>
+
+<ul>
+  <li>methods: 依附于 对象的函数， 在methods 的block中，能够 通过self使用 对象的 数据</li>
+  <li>closures:  |val| {val + x}
+    <ul>
+      <li>Capturing： 捕获， 其可以 捕获环境中的 变量， 可以是： &amp;T, &amp;mut T , T（by value）</li>
+      <li>作为参数： 分为三类： Fn, FnMut, FnOnce， 对应ownership  的 &amp;T, &amp;mut T, T. Fn 可以无限次执行， FnMut 则要求 capture 变量的 mut 引用， FnOnce 则 只能执行一次</li>
+      <li>疑问：
+        <ol>
+          <li>如何 区分  Fn(i64, i64) -&gt; i64 与Fn(&amp;String) -&gt; i64</li>
+          <li>FnOnce 是如何确定的， 有些函数，即便将变量 move 到了block中， 然而依然可以调用多次， 这些优势如何判断的？ 根据内部函数调用的 Fn 属性吗？ 比如mem::drop(p) 则 包含其调用的函数 则为 FnOnce?</li>
+          <li>如何断定 Cloosure 为 Fn or FnMut ?</li>
+        </ol>
+
+<div class="highlight"><pre class="highlight rust"><code>  <span class="k">struct</span> <span class="n">Point</span> <span class="p">{</span>
+      <span class="n">x</span><span class="p">:</span> <span class="nb">f64</span><span class="p">,</span>
+      <span class="n">y</span><span class="p">:</span> <span class="nb">f64</span><span class="p">,</span>
+  <span class="p">}</span>
+
+  <span class="c">// Implementation block, all `Point` methods go in here</span>
+  <span class="k">impl</span> <span class="n">Point</span> <span class="p">{</span>
+      <span class="c">// This is a static method</span>
+      <span class="c">// Static methods don't need to be called by an instance</span>
+      <span class="c">// These methods are generally used as constructors</span>
+      <span class="k">fn</span> <span class="nf">origin</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="n">Point</span> <span class="p">{</span>
+          <span class="n">Point</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.0</span> <span class="p">}</span>
+      <span class="p">}</span>
+
+      <span class="c">// Another static method, taking two arguments:</span>
+      <span class="k">fn</span> <span class="nf">new</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">f64</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">f64</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Point</span> <span class="p">{</span>
+          <span class="n">Point</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y</span> <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+</code></pre></div></li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="modules">Modules:</h4>
+<ul>
+  <li>mod visibility: mod 的可见性， mod 默认只能在本mod 可见， 需要使用 pub 来对外可见， 定义其中的fn， struct 使用同样的规则， 因为mod 可以nest， 所以 存在pub(self) (等同于private) pub(super) 即让super mod 可见,  而pub(crate)则让crate 可见</li>
+  <li>struct visibility: struct 中包含fn 以及 field，默认都为 对 所在 定义的mod可见， pub 则开放为对外部的 mod可见</li>
+  <li>mod vs struct: struct 的控制比较弱， mod的控制则相对复杂， struct 可能并不需要如此复杂的规则吧</li>
+  <li>关键字 use： 我们可以使用 use mod::struct as another_struct 来 减少路径的拼写， 使用as 更可以 启用别名</li>
+  <li>mod 的 使用类似于 Unix下的 目录 安排， super 代表 .. self 则代表 本mod</li>
+</ul>
+
+<h4 id="attributes-可以用来作什么-1-条件编译-2设定crate-属性-3关闭-warning-4启用编译器特性maros-etc-5-link-to-a-foreign-library-6-设定unit-test">Attributes: 可以用来作什么？ 1） 条件编译， 2）设定crate 属性， 3）关闭 warning 4)启用编译器特性(maros etc) 5） link to a foreign library 6) 设定unit test</h4>
+<ul>
+  <li>形式： 当应用到 整个crate： #![crate_attribute], 应用到module 或者 item ： #[item_attribute]</li>
+  <li>还可以接受参数： 1) #[attribute = “value”] 2) #[attribute(key = “value”)] 3) #[attribute(value)]</li>
+  <li>示例：
+    <ul>
+      <li>#[allow(dead_code)]： 关闭rust 关于没有调用函数的提示</li>
+      <li>#![crate_name = “rary”]</li>
+      <li>cfg(Configuration):  1） #[cfg(…)] 条件编译  2） cfg!(…) 在运行阶段的条件判断， 返回bool值</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="highlight"><pre class="highlight rust"><code>   <span class="c">// This function only gets compiled if the target OS is linux</span>
+   <span class="nd">#[cfg(target_os</span> <span class="nd">=</span> <span class="s">"linux"</span><span class="nd">)]</span>
+   <span class="k">fn</span> <span class="nf">are_you_on_linux</span><span class="p">()</span> <span class="p">{</span>
+       <span class="nd">println!</span><span class="p">(</span><span class="s">"You are running linux!"</span><span class="p">);</span>
+   <span class="p">}</span>
+
+   <span class="c">// And this function only gets compiled if the target OS is *not* linux</span>
+   <span class="nd">#[cfg(not(target_os</span> <span class="nd">=</span> <span class="s">"linux"</span><span class="nd">))]</span>
+   <span class="k">fn</span> <span class="nf">are_you_on_linux</span><span class="p">()</span> <span class="p">{</span>
+       <span class="nd">println!</span><span class="p">(</span><span class="s">"You are *not* running linux!"</span><span class="p">);</span>
+   <span class="p">}</span>
+
+   <span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+       <span class="nf">are_you_on_linux</span><span class="p">();</span>
+
+       <span class="nd">println!</span><span class="p">(</span><span class="s">"Are you sure?"</span><span class="p">);</span>
+       <span class="k">if</span> <span class="nd">cfg!</span><span class="p">(</span><span class="n">target_os</span> <span class="o">=</span> <span class="s">"linux"</span><span class="p">)</span> <span class="p">{</span>
+           <span class="nd">println!</span><span class="p">(</span><span class="s">"Yes. It's definitely linux!"</span><span class="p">);</span>
+       <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+           <span class="nd">println!</span><span class="p">(</span><span class="s">"Yes. It's definitely *not* linux!"</span><span class="p">);</span>
+       <span class="p">}</span>
+   <span class="p">}</span>
+</code></pre></div>
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2021 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b43ef53b285c49e1af0bd7080994c825";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script></footer></body></html>
