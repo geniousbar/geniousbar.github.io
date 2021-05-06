@@ -1,4 +1,17 @@
-<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>日常学习</title><meta description="geniousbar 日常知识总结" /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../stylesheets/style-198d4031.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../javascripts/all-b3988275.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li><li id="wechat"><a href="#" onclick="toggleShowWechat()">Wechat</a></li></ul></div></div></div><div id="header-wechat-img"><img src="../../images/wechat_nasa-0d87c0dd.png" /></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title"><a href="/2016/11/11/firefox/">Firefox</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">November 11, 2016</span></div><div class="tag-labels"><a href="/tags/firefox/"><small class="tag-label">Firefox</small></a></div><hr class="article-header-separator" /><h3 id="如何才能使用非签名的附加组件高级用户">如何才能使用非签名的附加组件？（高级用户）</h3>
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>日常学习</title><meta description="geniousbar 日常知识总结" /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../stylesheets/style-198d4031.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../javascripts/all-b3988275.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li><li id="wechat"><a href="#" onclick="toggleShowWechat()">Wechat</a></li></ul></div></div></div><div id="header-wechat-img"><img src="../../images/wechat_nasa-0d87c0dd.png" /></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title"><a href="/2017/02/25/docker/">Docker</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">February 25, 2017</span></div><div class="tag-labels"><a href="/tags/docker/"><small class="tag-label">Docker</small></a></div><hr class="article-header-separator" /><h3 id="安装docker">安装docker</h3>
+<div class="highlight"><pre class="highlight plaintext"><code>阿里云的安装脚本
+curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh -
+使用脚本自动安装
+Docker 官方为了简化安装流程，提供了一套安装脚本，CentOS 系统上可以使用这套脚本安装：
+curl -sSL https://get.docker.com/ | sh
+
+DaoCloud 的安装脚本
+curl -sSL https://get...</code></pre></div><div class="read-more"><a href="/2017/02/25/docker/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2017/01/13/postgres/">Postgres</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">January 13, 2017</span></div><div class="tag-labels"><a href="/tags/database/"><small class="tag-label">database</small></a><a href="/tags/postgres/"><small class="tag-label">postgres</small></a></div><hr class="article-header-separator" /><h3 id="pg创建只读用户">pg创建只读用户</h3>
+<div class="highlight"><pre class="highlight plaintext"><code>SELECT date_trunc('minute', dd) :: TIMESTAMP
+FROM generate_series('2016-10-01' :: TIMESTAMP, '2016-12-31' :: TIMESTAMP, '10 minute' :: INTERVAL) dd;
+
+CREATE USER read_from_pg WITH ENCRYPTED PASSWORD '...';
+GRANT CONNECT ON DATABASE test to...</code></pre></div><div class="read-more"><a href="/2017/01/13/postgres/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/11/11/firefox/">Firefox</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">November 11, 2016</span></div><div class="tag-labels"><a href="/tags/firefox/"><small class="tag-label">Firefox</small></a></div><hr class="article-header-separator" /><h3 id="如何才能使用非签名的附加组件高级用户">如何才能使用非签名的附加组件？（高级用户）</h3>
 
 <p>Firefox ESR 45版，以及 开发者版 和 Nightly 版，将允许通过改变偏好来屏蔽增强的附加组件签名要求，请在 Firefox 配置编辑器（about:config 页）将 xpinstall.signatures.required 的值改为 false。还有其它一些山寨版的 Firefox 也允许此项屏蔽。更多内容，参阅 MozillaWiki 文章 附加组件/扩展签名。</p>
 <div class="read-more"><a href="/2016/11/11/firefox/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/10/21/ruby-magic/">Ruby</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">October 21, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">Ruby</small></a></div><hr class="article-header-separator" /><h3 id="排列组合">排列组合</h3>
@@ -79,41 +92,7 @@ unzip archive_name.zip</p>
       <span class="o">--</span> <span class="nb">self</span><span class="p">.</span><span class="nf">new</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">run</span>
         <span class="o">--</span> <span class="n">whenever_cron</span>
           <span class="o">--</span> <span class="no">Whenever</span><span class="p">.</span><span class="nf">corn</span>
-            <span class="o">--</span> <span class="o">**</span> <span class="no">Whenever</span><span class="o">::</span><span class="no">JobList</span></code></pre></div><div class="read-more"><a href="/2016/07/01/ruby-dsl/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/03/12/ruby-red-book/">Ruby 面向对象语言描述</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">March 12, 2016</span></div><div class="tag-labels"><a href="/tags/ruby/"><small class="tag-label">ruby</small></a></div><hr class="article-header-separator" /><h2 id="面向对象设计实践指南ruby语言描述">面向对象设计实践指南Ruby语言描述</h2>
-<blockquote>
-  <p>问题比答案更重要， 下面的章节中会关注与问题的提问，然后才是问题的解决方案</p>
-</blockquote>
-
-<h3 id="面向对象设计">面向对象设计</h3>
-<ol>
-  <li>设计的目的（要解决的问题）
-    <ol>
-      <li>应对变化</li>
-      <li>变化困难的原因（建立了太多的依赖关系，对周围的环境期望太多）</li>
-      <li>设计良好的大型程序必须由设计良好的小程序演变而来， 不存在设计错误小程序演变为设计良好的大型程序（当然大量的重构和重新设计也不无可能，然而存在的可能性太小）</li>
-      <li>实用的设计不回去预测未来将要发生什...</li>
-</ol>
-</li>
-</ol><div class="read-more"><a href="/2016/03/12/ruby-red-book/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><h1 class="article-title"><a href="/2016/01/10/how-to-became-a-mind-person/">如何变得有思想</a></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">January 10, 2016</span></div><div class="tag-labels"><a href="/tags/book/"><small class="tag-label">book</small></a><a href="/tags/mind/"><small class="tag-label">mind</small></a><a href="/tags/poem/"><small class="tag-label">poem</small></a></div><hr class="article-header-separator" /><h2 id="如何变得有思想">如何变得有思想</h2>
-
-<h4 id="观点">观点</h4>
-
-<ol>
-  <li>
-    <p>如何变得有思想</p>
-
-    <blockquote>
-      <p>事实 + 前提 + 逻辑 = 观点（这其中经常包含一些隐藏的我们不宜察觉的前提、假设， 以及因为个人观点出发而带有个人色彩的事实）</p>
-    </blockquote>
-  </li>
-  <li>
-    <p>人生有900 个月</p>
-
-    <blockquote>
-      <p>作者提倡自己做一个30X30 的表格，并要求每个月划掉一个方格， 以此来证明时间的短暂。我曾经亲自尝试过，结果感觉效果不太理想，原因有2, 1： 900 实在是太多 2. 每个月划掉一个，时间太长，不太可能...</p>
-</blockquote>
-</li>
-</ol><div class="read-more"><a href="/2016/01/10/how-to-became-a-mind-person/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><div class="paginate-wrapper"><div class="previous-page"><a href="/page/5/"><i class="fa fa-arrow-left"></i> Previous Page</a></div><div class="next-page"><a href="/page/7/"><i class="fa fa-arrow-right"></i> Next Page</a></div></div><div class="page-number">Page 6 of 7</div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2021 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
+            <span class="o">--</span> <span class="o">**</span> <span class="no">Whenever</span><span class="o">::</span><span class="no">JobList</span></code></pre></div><div class="read-more"><a href="/2016/07/01/ruby-dsl/">Read More <i class="fa fa-angle-double-right"></i></a></div><hr class="article-separator" /><div class="paginate-wrapper"><div class="previous-page"><a href="/page/5/"><i class="fa fa-arrow-left"></i> Previous Page</a></div><div class="next-page"><a href="/page/7/"><i class="fa fa-arrow-right"></i> Next Page</a></div></div><div class="page-number">Page 6 of 7</div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2021 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
   hm.src = "https://hm.baidu.com/hm.js?b43ef53b285c49e1af0bd7080994c825";

@@ -239,9 +239,9 @@
           <span class="n">myInt</span> <span class="n">b</span> <span class="o">=</span> <span class="n">z</span><span class="o">;</span>
           <span class="n">myInt</span> <span class="n">d</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">b</span><span class="o">);</span> <span class="c1">//this does type System.out.print("the value of d is:</span>
 
-          <span class="c1">// error is this</span>
-          <span class="c1">// w = z.add(b);// will not type check</span>
-          <span class="c1">// w = b.add(z); will not type check</span>
+          <span class="c1">// 这里面并没有错误， add 方法为 重载，而非重写，因为 方法签名不同。 同样会通过type check</span>
+          <span class="c1">// w = z.add(b);</span>
+          <span class="c1">// w = b.add(z);</span>
           <span class="n">w</span> <span class="o">=</span> <span class="o">(</span> <span class="o">(</span><span class="n">gaussInt</span><span class="o">)</span> <span class="n">b</span><span class="o">).</span><span class="na">add</span><span class="o">(</span><span class="n">z</span><span class="o">);</span><span class="c1">//this does type check System.out.print("the value of w is: ");</span>
           <span class="n">w</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
           <span class="n">myInt</span> <span class="n">c</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">a</span><span class="o">);</span> <span class="c1">//will this typecheck? System.out.print("the value of c is: ");</span>
@@ -255,7 +255,7 @@
       <li>分为两类： unchecked exceptions and checked exceptions.</li>
       <li>所有的exception 都发生在 runtime， 因为不是的话，要啥编译检查？</li>
       <li>Unchecked exceptions 与  checked exception 的区别主要在于： Unchecked exceptions happen because of the programmer’s carelessness，也就是说  unchecked exception 是可以预防的，可以避免的。两个主要的 unchecked exception 主要有： rrayIndexOutofBoundsException and NullPointerException</li>
-      <li>所有其他的非 unchecked exception 再是：checked exceptions， 连个主要的exception 有 FileNotFoundException and IOException.</li>
+      <li>所有其他的非 unchecked exception 则是：checked exceptions， 两个主要的exception 有 FileNotFoundException and IOException.</li>
     </ul>
   </li>
   <li>创建 新的 exception

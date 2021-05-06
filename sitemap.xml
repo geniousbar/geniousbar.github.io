@@ -277,7 +277,23 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2021/02/21/redis/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2021/04/11/mysql-relearn/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/tags/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/mysql/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/redis/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -314,10 +330,6 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/tags/books/</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://geniousbar.github.io/tags/redis/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -378,10 +390,6 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/tags/gem/</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://geniousbar.github.io/tags/mysql/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -505,7 +513,19 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2021/04/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2021/04/11/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/2021/02/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2021/02/21/</loc>
     <priority>0.5</priority>
   </url>
   <url>
