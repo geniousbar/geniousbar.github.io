@@ -285,7 +285,23 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2021/05/09/rust-async/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/tags/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/rust/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/async/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/cocurrent/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -294,10 +310,6 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/tags/redis/</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://geniousbar.github.io/tags/rust/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -510,6 +522,14 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/2021/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2021/05/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2021/05/09/</loc>
     <priority>0.5</priority>
   </url>
   <url>
