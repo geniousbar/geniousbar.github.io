@@ -13,7 +13,7 @@
     <link rel="alternate" href="http://geniousbar.github.io/2021/05/09/rust-async/"/>
     <id>http://geniousbar.github.io/2021/05/09/rust-async/</id>
     <published>2021-05-09T00:00:00+00:00</published>
-    <updated>2021-05-11T04:05:32+00:00</updated>
+    <updated>2021-05-11T04:12:24+00:00</updated>
     <summary type="html">&lt;h3 id="并发模型"&gt;并发模型&lt;/h3&gt;
 &lt;ul&gt;
   &lt;li&gt;
@@ -44,8 +44,8 @@
   &lt;/li&gt;
   &lt;li&gt;Rust Async vs threads 的比较
     &lt;ul&gt;
-      &lt;li&gt;threads： 适合少量的工作， 不用改变代码结构， 生成 线程 与线程之间的切换 是非常昂贵的， 线程池可以一定程度上减轻次该类开销&lt;/li&gt;
-      &lt;li&gt;Async： 可以显著的减少 CPU 与 内存的开销， 尤其是在 对于 大量IO任务时。 比 thread 模式 能够处理更多的任务，因为 该模型，使用 较少的 threads  处理大量的 task。 但是其 二进制的 文件 会 比 传统的 非异步编码的 代码要大。&lt;/li&gt;
+      &lt;li&gt;threads： 适合少量的工作， 不用改变代码结构， 生成 线程 与线程之间的切换 是非常昂贵的， 线程池可以一定程度上减轻此类开销&lt;/li&gt;
+      &lt;li&gt;Async： 可以显著的减少CPU 与 内存的开销， 尤其是在对于 大量IO任务时。 比thread 模式能够处理更多的任务，因为 该模型，使用 较少的 threads 处理大量的 task。 但是其二进制的文件会比传统的非异步编码的代码要大。&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;异步编程的支持：
