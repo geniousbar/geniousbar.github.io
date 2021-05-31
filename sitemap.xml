@@ -289,7 +289,19 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://geniousbar.github.io/2021/05/24/current-os/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://geniousbar.github.io/tags/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/os/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/tags/linux/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -326,10 +338,6 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/tags/week/</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://geniousbar.github.io/tags/linux/</loc>
     <priority>0.5</priority>
   </url>
   <url>
@@ -526,6 +534,10 @@
   </url>
   <url>
     <loc>http://geniousbar.github.io/2021/05/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://geniousbar.github.io/2021/05/24/</loc>
     <priority>0.5</priority>
   </url>
   <url>
