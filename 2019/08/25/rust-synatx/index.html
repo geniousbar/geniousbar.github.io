@@ -411,7 +411,647 @@
       <span class="nf">.map</span><span class="p">(</span><span class="nn">ToString</span><span class="p">::</span><span class="n">to_string</span><span class="p">)</span>
       <span class="nf">.collect</span><span class="p">();</span>
 </code></pre></div>
-<p>macros:</p>
+<h3 id="macros">macros:</h3>
+<h4 id="rust-tokens-分类">rust tokens 分类：</h4>
+<div class="highlight"><pre class="highlight plaintext"><code>  Identifiers: foo, Bambous, self, we_can_dance, LaCaravane, …
+  Integers: 42, 72u32, 0_______0, …
+  Keywords: _, fn, self, match, yield, macro, …
+  Lifetimes: 'a, 'b, 'a_rare_long_lifetime_name, …
+  Strings: "", "Leicester", r##"venezuelan beaver"##, …
+  Symbols: [, :, ::, -&gt;, @, &lt;-, …
+</code></pre></div><ul>
+  <li>c语言 需要特殊的 “macro层面” 即 预处理，而rust  macro处理时机 在 编译器 将 token 转换为  AST 之后进行（Abstract Syntax Tree）</li>
+  <li>编译过程 文本 -&gt; token tree  -&gt; AST  基本所有的 token都是叶子节点 ，只有 （…） […] {…} 包含一组节点，是 树节点。</li>
+</ul>
+
+<div class="highlight"><pre class="highlight plaintext"><code>表达式： a + b + (c + d[0]) + e
+token tree
+«a» «+» «b» «+» «(   )» «+» «e»
+          ╭────────┴──────────╮
+           «c» «+» «d» «[   ]»
+                        ╭─┴─╮
+                        «0»
+
+AST
+              ┌─────────┐
+              │ BinOp   │
+              │ op: Add │
+            ┌╴│ lhs: ◌  │
+┌─────────┐ │ │ rhs: ◌  │╶┐ ┌─────────┐
+│ Var     │╶┘ └─────────┘ └╴│ BinOp   │
+│ name: a │                 │ op: Add │
+└─────────┘               ┌╴│ lhs: ◌  │
+              ┌─────────┐ │ │ rhs: ◌  │╶┐ ┌─────────┐
+              │ Var     │╶┘ └─────────┘ └╴│ BinOp   │
+              │ name: b │                 │ op: Add │
+              └─────────┘               ┌╴│ lhs: ◌  │
+                            ┌─────────┐ │ │ rhs: ◌  │╶┐ ┌─────────┐
+                            │ BinOp   │╶┘ └─────────┘ └╴│ Var     │
+                            │ op: Add │                 │ name: e │
+                          ┌╴│ lhs: ◌  │                 └─────────┘
+              ┌─────────┐ │ │ rhs: ◌  │╶┐ ┌─────────┐
+              │ Var     │╶┘ └─────────┘ └╴│ Index   │
+              │ name: c │               ┌╴│ arr: ◌  │
+              └─────────┘   ┌─────────┐ │ │ ind: ◌  │╶┐ ┌─────────┐
+                            │ Var     │╶┘ └─────────┘ └╴│ LitInt  │
+                            │ name: d │                 │ val: 0  │
+                            └─────────┘                 └─────────┘
+
+
+</code></pre></div>
+<h4 id="macro-rule-的语法规则-httpsdanielkeepgithubiotlbormbookmbe-macro-ruleshtml">macro rule 的语法规则: https://danielkeep.github.io/tlborm/book/mbe-macro-rules.html</h4>
+
+<div class="highlight"><pre class="highlight plaintext"><code>匹配 语法如下：
+
+macro_rules! four {
+  (pattern) =&gt; {
+
+  };
+  (pattern1) =&gt; {
+
+  };
+}
+
+
+
+捕获： $name:kind
+
+kind类型如下：
+
+  item: an item, like a function, struct, module, etc. 
+  block: a block (i.e. a block of statements and/or an expression, surrounded by braces)
+  stmt: a statement
+  pat: a pattern
+  expr: an expression
+  ty: a type
+  ident: an identifier
+  path: a path (e.g. foo, ::std::mem::replace, transmute::&lt;_, int&gt;, …)
+  meta: a meta item; the things that go inside #[...] and #![...] attributes
+  tt: a single token tree
+
+示例如下：
+
+macro_rules! times_five {
+    ($e:expr) =&gt; {5 * $e};
+}
+
+
+重复：语法 $(...) sep rep.
+
+$: $ 符号
+(...)： 被重复内容： 可以包含 token tree， captures（捕获） 或者 其他重复（递归）
+seq 为 可选的split token，一般可选 , . ;
+rep 为 重复控制，可选有 + *
+
+示例如下：
+macro_rules! vec_strs {
+    (
+        // Start a repetition:
+        $(
+            // Each repeat must contain an expression...
+            $element:expr
+        )
+        // ...separated by commas...
+        ,
+        // ...zero or more times.
+        *
+    ) =&gt; {
+        // Enclose the expansion in a block so that we can use
+        // multiple statements.
+        {
+            let mut v = Vec::new();
+
+            // Start a repetition:
+            $(
+                // Each repeat will contain the following statement, with
+                // $element replaced with the corresponding expression.
+                v.push(format!("{}", $element));
+            )*
+
+            v
+        }
+    };
+}
+</code></pre></div>
+<h4 id="捕获与扩展-细节">捕获与扩展 细节：</h4>
+
+<ol>
+  <li>匹配项 应该从 最具体 到最广泛的匹配规则， 因为 一旦 捕获表达式 开始消费 tokens，将不能后退 或者在匹配其他的 选项</li>
+  <li>
+    <p>macro 之间的内容传递: 即 第一个macro接受的 为token，如果 第一个macro将捕获传递给其他的macro 则为 AST形式。示例如下：</p>
+
+<div class="highlight"><pre class="highlight plaintext"><code>
+ macro_rules! capture_expr_then_stringify {
+     ($e:expr) =&gt; {
+         stringify!($e)
+     };
+ }
+
+ fn main() {
+     println!("{:?}", stringify!(dummy(2 * (1 + (3)))));
+     println!("{:?}", capture_expr_then_stringify!(dummy(2 * (1 + (3)))));
+ }
+
+ output like this:
+
+ "dummy ( 2 * ( 1 + ( 3 ) ) )"
+ "dummy(2 * (1 + (3)))"
+
+ 第一个 macro stringify 接受的形式 如下： tokens
+
+ «dummy» «(   )»
+    ╭───────┴───────╮
+     «2» «*» «(   )»
+        ╭───────┴───────╮
+         «1» «+» «(   )»
+                  ╭─┴─╮
+                   «3»
+
+ 第二个 macro stringify 接受的形式如下： AST
+
+ « »
+  │ ┌─────────────┐
+  └╴│ Call        │
+    │ fn: dummy   │   ┌─────────┐
+    │ args: ◌     │╶─╴│ BinOp   │
+    └─────────────┘   │ op: Mul │
+                    ┌╴│ lhs: ◌  │
+         ┌────────┐ │ │ rhs: ◌  │╶┐ ┌─────────┐
+         │ LitInt │╶┘ └─────────┘ └╴│ BinOp   │
+         │ val: 2 │                 │ op: Add │
+         └────────┘               ┌╴│ lhs: ◌  │
+                       ┌────────┐ │ │ rhs: ◌  │╶┐ ┌────────┐
+                       │ LitInt │╶┘ └─────────┘ └╴│ LitInt │
+                       │ val: 1 │                 │ val: 3 │
+                       └────────┘                 └────────┘
+
+</code></pre></div>  </li>
+  <li>
+    <p>macro 将  input 从tokens转到 AST，将导致 input再也不能被 macro 表达式匹配，如下：</p>
+
+<div class="highlight"><pre class="highlight rust"><code>  <span class="nd">macro_rules!</span> <span class="n">capture_then_what_is</span> <span class="p">{</span>
+      <span class="p">(</span><span class="nd">#[</span><span class="err">$</span><span class="nd">m:meta]</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nd">what_is!</span><span class="p">(</span><span class="nd">#[</span><span class="err">$</span><span class="nd">m]</span><span class="p">)};</span>
+  <span class="p">}</span>
+
+  <span class="nd">macro_rules!</span> <span class="n">what_is</span> <span class="p">{</span>
+      <span class="p">(</span><span class="nd">#[no_mangle]</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="s">"no_mangle attribute"</span><span class="p">};</span>
+      <span class="p">(</span><span class="nd">#[inline]</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="s">"inline attribute"</span><span class="p">};</span>
+      <span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$tts:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nd">concat!</span><span class="p">(</span><span class="s">"something else ("</span><span class="p">,</span> <span class="nd">stringify!</span><span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$tts</span><span class="p">)</span><span class="o">*</span><span class="p">),</span> <span class="s">")"</span><span class="p">)};</span>
+  <span class="p">}</span>
+
+  <span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nd">println!</span><span class="p">(</span>
+          <span class="s">"{}</span><span class="se">\n</span><span class="s">{}</span><span class="se">\n</span><span class="s">{}</span><span class="se">\n</span><span class="s">{}"</span><span class="p">,</span>
+          <span class="nd">what_is!</span><span class="p">(</span><span class="nd">#[no_mangle]</span><span class="p">),</span>
+          <span class="nd">what_is!</span><span class="p">(</span><span class="nd">#[inline]</span><span class="p">),</span>
+          <span class="nd">capture_then_what_is!</span><span class="p">(</span><span class="nd">#[no_mangle]</span><span class="p">),</span>
+          <span class="nd">capture_then_what_is!</span><span class="p">(</span><span class="nd">#[inline]</span><span class="p">),</span>
+      <span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c">// The output is:  即  macro capture_then_what_is 将input转化 传递给 macro what_is 之后 ，再也 不能被 what_is 中的 pattern 匹配</span>
+
+  <span class="n">no_mangle</span> <span class="n">attribute</span>
+  <span class="n">inline</span> <span class="n">attribute</span>
+  <span class="n">something</span> <span class="k">else</span> <span class="p">(</span><span class="err">#</span> <span class="p">[</span> <span class="n">no_mangle</span> <span class="p">])</span>
+  <span class="n">something</span> <span class="k">else</span> <span class="p">(</span><span class="err">#</span> <span class="p">[</span> <span class="n">inline</span> <span class="p">])</span>
+
+</code></pre></div>  </li>
+  <li>避免此类情况的唯一方法: 使用 tt 与 ident 进行匹配，使用任何其他的匹配 获得的捕获 不能够传递给其他的 macro</li>
+  <li>
+    <p>卫生： 默认情况下 macro都是卫生macro，除非我们需要：如下：</p>
+
+<div class="highlight"><pre class="highlight rust"><code> <span class="c">// 卫生宏</span>
+ <span class="nd">macro_rules!</span> <span class="n">using_a</span> <span class="p">{</span>
+     <span class="p">(</span><span class="nv">$e:expr</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+         <span class="p">{</span>
+             <span class="k">let</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+             <span class="nv">$e</span>
+         <span class="p">}</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+ <span class="c">// 宏调用是错误的，将导致编译错误，即a没有定义</span>
+ <span class="k">let</span> <span class="n">four</span> <span class="o">=</span> <span class="nd">using_a!</span><span class="p">(</span><span class="n">a</span> <span class="o">/</span> <span class="mi">10</span><span class="p">);</span>
+
+ <span class="c">// 非卫生宏，捕获 环境中的a</span>
+ <span class="nd">macro_rules!</span> <span class="n">using_a</span> <span class="p">{</span>
+     <span class="p">(</span><span class="nv">$a:ident</span><span class="p">,</span> <span class="nv">$e:expr</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+         <span class="p">{</span>
+             <span class="k">let</span> <span class="nv">$a</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+             <span class="nv">$e</span>
+         <span class="p">}</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+
+ <span class="k">let</span> <span class="n">four</span> <span class="o">=</span> <span class="nd">using_a!</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span> <span class="o">/</span> <span class="mi">10</span><span class="p">);</span>
+</code></pre></div>  </li>
+  <li>
+    <p>self: 标识符或关键字。self在代码中是一个关键字，但是macro中可以成为一个标识符，使用macro在struct中定义方法：</p>
+
+<div class="highlight"><pre class="highlight rust"><code> <span class="c">//依然需要借助  非卫生宏 来污染 空间，捕获 self</span>
+ <span class="nd">macro_rules!</span> <span class="n">double_method</span> <span class="p">{</span>
+     <span class="p">(</span><span class="nv">$self_:ident</span><span class="p">,</span> <span class="nv">$body:expr</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+         <span class="k">fn</span> <span class="nf">double</span><span class="p">(</span><span class="k">mut</span> <span class="nv">$self_</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Dummy</span> <span class="p">{</span>
+             <span class="nv">$body</span>
+         <span class="p">}</span>
+     <span class="p">};</span>
+ <span class="p">}</span>
+
+ <span class="k">struct</span> <span class="nf">Dummy</span><span class="p">(</span><span class="nb">i32</span><span class="p">);</span>
+
+ <span class="k">impl</span> <span class="n">Dummy</span> <span class="p">{</span>
+     <span class="nd">double_method!</span> <span class="p">{</span><span class="k">self</span><span class="p">,</span> <span class="p">{</span>
+         <span class="k">self</span><span class="na">.0</span> <span class="o">*=</span> <span class="mi">2</span><span class="p">;</span>
+         <span class="k">self</span>
+     <span class="p">}}</span>
+ <span class="p">}</span>
+
+</code></pre></div>  </li>
+  <li>
+    <p>一个巧妙的 macro之间传递内容的方法： 通过 ident捕获callback名称，通过添加 ! 来完成，对另一个macro的调用</p>
+
+<div class="highlight"><pre class="highlight rust"><code> <span class="nd">macro_rules!</span> <span class="n">call_with_ident</span> <span class="p">{</span>
+     <span class="p">(</span><span class="nv">$c:ident</span><span class="p">(</span><span class="nv">$i:ident</span><span class="p">))</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nv">$c</span><span class="o">!</span><span class="p">(</span><span class="nv">$i</span><span class="p">)};</span>
+ <span class="p">}</span>
+</code></pre></div>  </li>
+  <li>macro的 作用域：
+    <ul>
+      <li>macro 在定义之后 的代码中 以及 sub-module 中可见。</li>
+      <li>macro 需要 使用 #[macro_use] attribute 才能被 export 出来。</li>
+      <li>macro不同于 函数调用， 导致了一些 macro之间相互依赖的关系 与 可见性 关联起来 导致的复杂情景。  但基本上 可以按照 将macro层层 展开来，每层 macro依然 符合 前面两条规则 即： macro使用在 macro定义之后， macro 可见。</li>
+    </ul>
+  </li>
+</ol>
+
+<h4 id="macro-中的模式">macro 中的模式：</h4>
+<ol>
+  <li>
+    <p>callback: 因为macro之间传递参数的 限制，导致的一种间接调用形式。即：使用tt对callback 以及其参数 进行匹配，然后 拼接成  macro调用形式。</p>
+
+<div class="highlight"><pre class="highlight rust"><code> <span class="c">//因为 macro 接受参数问题 导致的问题 示例：</span>
+
+ <span class="nd">acro_rules!</span> <span class="n">call_with_larch</span> <span class="p">{</span>
+     <span class="p">(</span>$<span class="n">callback</span><span class="p">:</span><span class="n">ident</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span> $<span class="nd">callback!</span><span class="p">(</span><span class="n">larch</span><span class="p">)</span> <span class="p">};</span>
+ <span class="p">}</span>
+
+ <span class="nd">macro_rules!</span> <span class="n">expand_to_larch</span> <span class="p">{</span>
+     <span class="p">()</span> <span class="k">=&gt;</span> <span class="p">{</span> <span class="n">larch</span> <span class="p">};</span>
+ <span class="p">}</span>
+
+ <span class="nd">macro_rules!</span> <span class="n">recognise_tree</span> <span class="p">{</span>
+     <span class="p">(</span><span class="n">larch</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"#1, the Larch."</span><span class="p">)</span> <span class="p">};</span>
+     <span class="p">(</span><span class="n">redwood</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"#2, the Mighty Redwood."</span><span class="p">)</span> <span class="p">};</span>
+     <span class="p">(</span><span class="n">fir</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"#3, the Fir."</span><span class="p">)</span> <span class="p">};</span>
+     <span class="p">(</span><span class="n">chestnut</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"#4, the Horse Chestnut."</span><span class="p">)</span> <span class="p">};</span>
+     <span class="p">(</span><span class="n">pine</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"#5, the Scots Pine."</span><span class="p">)</span> <span class="p">};</span>
+     <span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$other:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span> <span class="nd">println!</span><span class="p">(</span><span class="s">"I don't know; some kind of birch maybe?"</span><span class="p">)</span> <span class="p">};</span>
+ <span class="p">}</span>
+
+ <span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+     <span class="nd">recognise_tree!</span><span class="p">(</span><span class="nd">expand_to_larch!</span><span class="p">());</span>
+     <span class="nd">call_with_larch!</span><span class="p">(</span><span class="n">recognise_tree</span><span class="p">);</span>
+ <span class="p">}</span>
+
+ <span class="c">// 展开形式 与 输出</span>
+
+ <span class="nd">recognise_tree!</span> <span class="p">{</span> <span class="n">expand_to_larch</span> <span class="o">!</span> <span class="p">(</span>  <span class="p">)</span> <span class="p">}</span>
+ <span class="nd">println!</span> <span class="p">{</span> <span class="s">"I don't know; some kind of birch maybe?"</span> <span class="p">}</span>
+ <span class="c">// ...</span>
+
+ <span class="nd">call_with_larch!</span> <span class="p">{</span> <span class="n">recognise_tree</span> <span class="p">}</span>
+ <span class="nd">recognise_tree!</span> <span class="p">{</span> <span class="n">larch</span> <span class="p">}</span>
+ <span class="nd">println!</span> <span class="p">{</span> <span class="s">"#1, the Larch."</span> <span class="p">}</span>
+
+ <span class="c">//callback形式 解决：</span>
+
+ <span class="nd">macro_rules!</span> <span class="n">callback</span> <span class="p">{</span>
+     <span class="p">(</span><span class="nv">$callback:ident</span><span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$args:tt</span><span class="p">)</span><span class="o">*</span><span class="p">))</span> <span class="k">=&gt;</span> <span class="p">{</span> <span class="c">//注意这里 使用tt 不仅匹配了callback name 还匹配了参数 ，保留了参数token的形式 </span>
+         <span class="nv">$callback</span><span class="o">!</span><span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$args</span><span class="p">)</span><span class="o">*</span><span class="p">)</span>
+     <span class="p">};</span>
+ <span class="p">}</span>
+
+ <span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+     <span class="nd">callback!</span><span class="p">(</span><span class="nf">callback</span><span class="p">(</span><span class="nf">println</span><span class="p">(</span><span class="s">"Yes, this *was* unnecessary."</span><span class="p">)));</span>
+ <span class="p">}</span>
+
+</code></pre></div>  </li>
+  <li>
+    <p>tt 递归匹配器，该模式 每次处理一个递归项目，然后调用自身 macro继续 处理后续 递归项目。需要注意macro的 递归次数限制。macro recursion limit 示例：</p>
+
+<div class="highlight"><pre class="highlight rust"><code> <span class="nd">macro_rules!</span> <span class="n">mixed_rules</span> <span class="p">{</span>
+     <span class="p">()</span> <span class="k">=&gt;</span> <span class="p">{};</span>
+     <span class="p">(</span><span class="n">trace</span> <span class="nv">$name:ident</span><span class="p">;</span> <span class="nv">$</span><span class="p">(</span><span class="nv">$tail:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+         <span class="p">{</span>
+             <span class="nd">println!</span><span class="p">(</span><span class="nd">concat!</span><span class="p">(</span><span class="nd">stringify!</span><span class="p">(</span><span class="nv">$name</span><span class="p">),</span> <span class="s">" = {:?}"</span><span class="p">),</span> <span class="nv">$name</span><span class="p">);</span>
+             <span class="nd">mixed_rules!</span><span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$tail</span><span class="p">)</span><span class="o">*</span><span class="p">);</span>
+         <span class="p">}</span>
+     <span class="p">};</span>
+     <span class="p">(</span><span class="n">trace</span> <span class="nv">$name:ident</span> <span class="o">=</span> <span class="nv">$init:expr</span><span class="p">;</span> <span class="nv">$</span><span class="p">(</span><span class="nv">$tail:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+         <span class="p">{</span>
+             <span class="k">let</span> <span class="nv">$name</span> <span class="o">=</span> <span class="nv">$init</span><span class="p">;</span>
+             <span class="nd">println!</span><span class="p">(</span><span class="nd">concat!</span><span class="p">(</span><span class="nd">stringify!</span><span class="p">(</span><span class="nv">$name</span><span class="p">),</span> <span class="s">" = {:?}"</span><span class="p">),</span> <span class="nv">$name</span><span class="p">);</span>
+             <span class="nd">mixed_rules!</span><span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$tail</span><span class="p">)</span><span class="o">*</span><span class="p">);</span>
+         <span class="p">}</span>
+     <span class="p">};</span>
+ <span class="p">}</span>
+</code></pre></div>  </li>
+  <li>
+    <p>为了隐藏 内部的macro，因为macro 可见性问题 导致 简单的macro_use 可能与其他的crate 产生名称冲突。所以：  使用一个 包含 所有 pattern规则 的module 进行封装：</p>
+
+<div class="highlight"><pre class="highlight rust"><code> <span class="nd">#[macro_export]</span>
+ <span class="nd">macro_rules!</span> <span class="n">foo</span> <span class="p">{</span>
+     <span class="p">(</span><span class="o">@</span><span class="n">as_expr</span> <span class="nv">$e:expr</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nv">$e</span><span class="p">};</span>
+
+     <span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$tts:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+         <span class="nd">foo!</span><span class="p">(</span><span class="o">@</span><span class="n">as_expr</span> <span class="nv">$</span><span class="p">(</span><span class="nv">$tts</span><span class="p">)</span><span class="o">*</span><span class="p">)</span>
+     <span class="p">};</span>
+ <span class="p">}</span>
+ <span class="c">//这样将 将as_expr 包装在 mod  foo 内部</span>
+
+ <span class="c">// macro 封装的通用形式</span>
+ <span class="nd">macro_rules!</span> <span class="n">crate_name_util</span> <span class="p">{</span>
+     <span class="p">(</span><span class="o">@</span><span class="n">as_expr</span> <span class="nv">$e:expr</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nv">$e</span><span class="p">};</span>
+     <span class="p">(</span><span class="o">@</span><span class="n">as_item</span> <span class="nv">$i:item</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nv">$i</span><span class="p">};</span>
+     <span class="p">(</span><span class="o">@</span><span class="n">count_tts</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="mi">0u</span><span class="n">size</span><span class="p">};</span>
+     <span class="c">// ...</span>
+ <span class="p">}</span>
+</code></pre></div>  </li>
+  <li>
+    <p>tt 模式常用方式，push down计算：</p>
+
+    <blockquote>
+      <p>如何实现 接受 形式 如 let strings: [String; 3] = init_array![String::from(“hi!”); 3]; 的macro 实现。</p>
+    </blockquote>
+
+<div class="highlight"><pre class="highlight rust"><code> <span class="c">//一个明显的、直接的 但实现错误的 递归实现 方法。</span>
+
+ <span class="nd">macro_rules!</span> <span class="n">init_array</span> <span class="p">{</span>
+     <span class="p">(</span><span class="o">@</span><span class="n">accum</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$_e:expr</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="cm">/* empty */</span><span class="p">};</span>
+     <span class="p">(</span><span class="o">@</span><span class="n">accum</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">$e:expr</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nv">$e</span><span class="p">};</span>
+     <span class="p">(</span><span class="o">@</span><span class="n">accum</span> <span class="mi">2</span><span class="p">,</span> <span class="nv">$e:expr</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nv">$e</span><span class="p">,</span> <span class="nd">init_array!</span><span class="p">(</span><span class="o">@</span><span class="n">accum</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">$e</span><span class="p">)};</span>
+     <span class="p">(</span><span class="o">@</span><span class="n">accum</span> <span class="mi">3</span><span class="p">,</span> <span class="nv">$e:expr</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nv">$e</span><span class="p">,</span> <span class="nd">init_array!</span><span class="p">(</span><span class="o">@</span><span class="n">accum</span> <span class="mi">2</span><span class="p">,</span> <span class="nv">$e</span><span class="p">)};</span>
+     <span class="p">[</span><span class="nv">$e:expr</span><span class="p">;</span> <span class="nv">$n:tt</span><span class="p">]</span> <span class="k">=&gt;</span> <span class="p">{</span>
+         <span class="p">{</span>
+             <span class="k">let</span> <span class="n">e</span> <span class="o">=</span> <span class="nv">$e</span><span class="p">;</span>
+             <span class="p">[</span><span class="nd">init_array!</span><span class="p">(</span><span class="o">@</span><span class="n">accum</span> <span class="nv">$n</span><span class="p">,</span> <span class="n">e</span><span class="p">)]</span>
+         <span class="p">}</span>
+     <span class="p">};</span>
+ <span class="p">}</span>
+
+
+ <span class="c">//该模式 编译不通过的原因 在于， 在 每一步骤中 构建了一个不完全的 {String::from("hi"), init_array!(@accum 1, $e)} 的表达式。因为 init_array! 并非一个完整的 表达式。所以 该种方法 并不正确。并导致 编译不通过。</span>
+
+
+ <span class="c">//下面是 push-down accumulation  方式 来实现：</span>
+
+ <span class="nd">macro_rules!</span> <span class="n">init_array</span> <span class="p">{</span>
+     <span class="p">(</span><span class="o">@</span><span class="nf">accum</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nv">$_e:expr</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$body:tt</span><span class="p">)</span><span class="o">*</span><span class="p">))</span>
+         <span class="k">=&gt;</span> <span class="p">{</span><span class="nd">init_array!</span><span class="p">(</span><span class="o">@</span><span class="n">as_expr</span> <span class="p">[</span><span class="nv">$</span><span class="p">(</span><span class="nv">$body</span><span class="p">)</span><span class="o">*</span><span class="p">])};</span>
+     <span class="p">(</span><span class="o">@</span><span class="nf">accum</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nv">$e:expr</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$body:tt</span><span class="p">)</span><span class="o">*</span><span class="p">))</span>
+         <span class="k">=&gt;</span> <span class="p">{</span><span class="nd">init_array!</span><span class="p">(</span><span class="o">@</span><span class="nf">accum</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nv">$e</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$body</span><span class="p">)</span><span class="o">*</span> <span class="nv">$e</span><span class="p">,))};</span>
+     <span class="p">(</span><span class="o">@</span><span class="nf">accum</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nv">$e:expr</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$body:tt</span><span class="p">)</span><span class="o">*</span><span class="p">))</span>
+         <span class="k">=&gt;</span> <span class="p">{</span><span class="nd">init_array!</span><span class="p">(</span><span class="o">@</span><span class="nf">accum</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nv">$e</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$body</span><span class="p">)</span><span class="o">*</span> <span class="nv">$e</span><span class="p">,))};</span>
+     <span class="p">(</span><span class="o">@</span><span class="nf">accum</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nv">$e:expr</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$body:tt</span><span class="p">)</span><span class="o">*</span><span class="p">))</span>
+         <span class="k">=&gt;</span> <span class="p">{</span><span class="nd">init_array!</span><span class="p">(</span><span class="o">@</span><span class="nf">accum</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nv">$e</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$body</span><span class="p">)</span><span class="o">*</span> <span class="nv">$e</span><span class="p">,))};</span>
+     <span class="p">(</span><span class="o">@</span><span class="n">as_expr</span> <span class="nv">$e:expr</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nv">$e</span><span class="p">};</span>
+     <span class="p">[</span><span class="nv">$e:expr</span><span class="p">;</span> <span class="nv">$n:tt</span><span class="p">]</span> <span class="k">=&gt;</span> <span class="p">{</span>
+         <span class="p">{</span>
+             <span class="k">let</span> <span class="n">e</span> <span class="o">=</span> <span class="nv">$e</span><span class="p">;</span>
+             <span class="nd">init_array!</span><span class="p">(</span><span class="o">@</span><span class="nf">accum</span> <span class="p">(</span><span class="nv">$n</span><span class="p">,</span> <span class="n">e</span><span class="nf">.clone</span><span class="p">())</span> <span class="k">-&gt;</span> <span class="p">())</span>
+         <span class="p">}</span>
+     <span class="p">};</span>
+ <span class="p">}</span>
+
+ <span class="k">let</span> <span class="n">strings</span><span class="p">:</span> <span class="p">[</span><span class="nb">String</span><span class="p">;</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nd">init_array!</span><span class="p">[</span><span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="s">"hi!"</span><span class="p">);</span> <span class="mi">3</span><span class="p">];</span>
+
+ <span class="c">//其展开形式为</span>
+
+ <span class="nd">init_array!</span> <span class="p">{</span> <span class="nn">String</span><span class="p">::</span> <span class="nf">from</span> <span class="p">(</span> <span class="s">"hi!"</span> <span class="p">)</span> <span class="p">;</span> <span class="mi">3</span> <span class="p">}</span>
+ <span class="nd">init_array!</span> <span class="p">{</span> <span class="o">@</span> <span class="nf">accum</span> <span class="p">(</span> <span class="mi">3</span> <span class="p">,</span> <span class="n">e</span> <span class="nf">. clone</span> <span class="p">(</span>  <span class="p">)</span> <span class="p">)</span> <span class="k">-&gt;</span> <span class="p">(</span>  <span class="p">)</span> <span class="p">}</span>
+ <span class="nd">init_array!</span> <span class="p">{</span> <span class="o">@</span> <span class="nf">accum</span> <span class="p">(</span> <span class="mi">2</span> <span class="p">,</span> <span class="n">e</span><span class="nf">.clone</span><span class="p">()</span> <span class="p">)</span> <span class="k">-&gt;</span> <span class="p">(</span> <span class="n">e</span><span class="nf">.clone</span><span class="p">()</span> <span class="p">,</span> <span class="p">)</span> <span class="p">}</span>
+ <span class="nd">init_array!</span> <span class="p">{</span> <span class="o">@</span> <span class="nf">accum</span> <span class="p">(</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">e</span><span class="nf">.clone</span><span class="p">()</span> <span class="p">)</span> <span class="k">-&gt;</span> <span class="p">(</span> <span class="n">e</span><span class="nf">.clone</span><span class="p">()</span> <span class="p">,</span> <span class="n">e</span><span class="nf">.clone</span><span class="p">()</span> <span class="p">,</span> <span class="p">)</span> <span class="p">}</span>
+ <span class="nd">init_array!</span> <span class="p">{</span> <span class="o">@</span> <span class="nf">accum</span> <span class="p">(</span> <span class="mi">0</span> <span class="p">,</span> <span class="n">e</span><span class="nf">.clone</span><span class="p">()</span> <span class="p">)</span> <span class="k">-&gt;</span> <span class="p">(</span> <span class="n">e</span><span class="nf">.clone</span><span class="p">()</span> <span class="p">,</span> <span class="n">e</span><span class="nf">.clone</span><span class="p">()</span> <span class="p">,</span> <span class="n">e</span><span class="nf">.clone</span><span class="p">()</span> <span class="p">,</span> <span class="p">)</span> <span class="p">}</span>
+ <span class="nd">init_array!</span> <span class="p">{</span> <span class="o">@</span> <span class="n">as_expr</span> <span class="p">[</span> <span class="n">e</span><span class="nf">.clone</span><span class="p">()</span> <span class="p">,</span> <span class="n">e</span><span class="nf">.clone</span><span class="p">()</span> <span class="p">,</span> <span class="n">e</span><span class="nf">.clone</span><span class="p">()</span> <span class="p">,</span> <span class="p">]</span> <span class="p">}</span>
+
+ <span class="c">//我们通过  在 一个新的匹配 部分 -&gt; (($(body):tt)*) 的重复匹配项，来匹配 递归过程中的积累部分 。通过 -&gt;($($body)* $e,)  来 进行 积累 以便 通过编译。</span>
+
+</code></pre></div>  </li>
+  <li>
+    <p>分隔符号： 通过该种形式，我们可以实现 表达式尾部 匹配 任意多的 ，</p>
+
+<div class="highlight"><pre class="highlight rust"><code>  <span class="nd">macro_rules!</span> <span class="n">match_exprs</span> <span class="p">{</span>
+      <span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$exprs:expr</span><span class="p">),</span><span class="o">*</span> <span class="nv">$</span><span class="p">(,)</span><span class="o">*</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="o">...</span><span class="p">};</span>
+  <span class="p">}</span>
+
+</code></pre></div>
+    <p>一般情况下，我们使用表达式  ($($exprs:expr),* 或者  $($exprs:expr,)*)  来写  macro的匹配项，这两种模式 只能匹配 存在 ， 或者 不存在 ， 而 使用上面的匹配方式 可以匹配任意多的，符号。</p>
+  </li>
+  <li>
+    <p>tt bundle 技巧： 在一个复杂的 macro中， 往往设定 许多中间的转发层 来携带 表达式或标识符 以传递给 最终处理层，在这种情况下， 中间层 可以将所有的参数 绑定到 一个tt中， 而不需要 写准确的 匹配规则，只是简单的将tt转发给 下一次层面 即可。</p>
+
+<div class="highlight"><pre class="highlight rust"><code> <span class="c">// 下面的示例中，macro通过,  一个 ($ab:tt, $_skip:tt $($tail:tt)*) 的pattern 来进行 匹配，并在随后的 模式中 传递 $ab tt</span>
+ <span class="nd">macro_rules!</span> <span class="n">call_a_or_b_on_tail</span> <span class="p">{</span>
+     <span class="p">((</span><span class="n">a</span><span class="p">:</span> <span class="nv">$a:expr</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nv">$b:expr</span><span class="p">),</span> <span class="n">call</span> <span class="n">a</span><span class="p">:</span> <span class="nv">$</span><span class="p">(</span><span class="nv">$tail:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+         <span class="nv">$a</span><span class="p">(</span><span class="nd">stringify!</span><span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$tail</span><span class="p">)</span><span class="o">*</span><span class="p">))</span>
+     <span class="p">};</span>
+
+     <span class="p">((</span><span class="n">a</span><span class="p">:</span> <span class="nv">$a:expr</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nv">$b:expr</span><span class="p">),</span> <span class="n">call</span> <span class="n">b</span><span class="p">:</span> <span class="nv">$</span><span class="p">(</span><span class="nv">$tail:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+         <span class="nv">$b</span><span class="p">(</span><span class="nd">stringify!</span><span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$tail</span><span class="p">)</span><span class="o">*</span><span class="p">))</span>
+     <span class="p">};</span>
+
+     <span class="p">(</span><span class="nv">$ab:tt</span><span class="p">,</span> <span class="nv">$_skip:tt</span> <span class="nv">$</span><span class="p">(</span><span class="nv">$tail:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+         <span class="nd">call_a_or_b_on_tail!</span><span class="p">(</span><span class="nv">$ab</span><span class="p">,</span> <span class="nv">$</span><span class="p">(</span><span class="nv">$tail</span><span class="p">)</span><span class="o">*</span><span class="p">)</span>
+     <span class="p">};</span>
+ <span class="p">}</span>
+
+ <span class="k">fn</span> <span class="nf">compute_len</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">str</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="nb">usize</span><span class="o">&gt;</span> <span class="p">{</span>
+     <span class="nf">Some</span><span class="p">(</span><span class="n">s</span><span class="nf">.len</span><span class="p">())</span>
+ <span class="p">}</span>
+
+ <span class="k">fn</span> <span class="nf">show_tail</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">str</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="nb">usize</span><span class="o">&gt;</span> <span class="p">{</span>
+     <span class="nd">println!</span><span class="p">(</span><span class="s">"tail: {:?}"</span><span class="p">,</span> <span class="n">s</span><span class="p">);</span>
+     <span class="nb">None</span>
+ <span class="p">}</span>
+
+ <span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+     <span class="nd">assert_eq!</span><span class="p">(</span>
+         <span class="nd">call_a_or_b_on_tail!</span><span class="p">(</span>
+             <span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">compute_len</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">show_tail</span><span class="p">),</span>
+             <span class="n">the</span> <span class="n">recursive</span> <span class="n">part</span> <span class="n">that</span> <span class="n">skips</span> <span class="n">over</span> <span class="n">all</span> <span class="n">these</span>
+             <span class="n">tokens</span> <span class="n">doesn</span><span class="nv">'t</span> <span class="n">much</span> <span class="n">care</span> <span class="n">whether</span> <span class="n">we</span> <span class="n">will</span> <span class="n">call</span> <span class="n">a</span>
+             <span class="n">or</span> <span class="n">call</span> <span class="n">b</span><span class="p">:</span> <span class="n">only</span> <span class="n">the</span> <span class="n">terminal</span> <span class="n">rules</span> <span class="n">care</span>.
+         <span class="p">),</span>
+         <span class="nb">None</span>
+     <span class="p">);</span>
+     <span class="nd">assert_eq!</span><span class="p">(</span>
+         <span class="nd">call_a_or_b_on_tail!</span><span class="p">(</span>
+             <span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">compute_len</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">show_tail</span><span class="p">),</span>
+             <span class="n">and</span> <span class="n">now</span><span class="p">,</span> <span class="n">to</span> <span class="n">justify</span> <span class="n">the</span> <span class="n">existence</span> <span class="n">of</span> <span class="n">two</span> <span class="n">paths</span>
+             <span class="n">we</span> <span class="n">will</span> <span class="n">also</span> <span class="n">call</span> <span class="n">a</span><span class="p">:</span> <span class="n">its</span> <span class="n">input</span> <span class="n">should</span> <span class="n">somehow</span>
+             <span class="n">be</span> <span class="k">self</span><span class="o">-</span><span class="n">referential</span><span class="p">,</span> <span class="n">so</span> <span class="k">let</span><span class="nv">'s</span> <span class="n">make</span> <span class="n">it</span> <span class="k">return</span>
+             <span class="n">some</span> <span class="n">ninety</span> <span class="nd">one!</span>
+         <span class="p">),</span>
+         <span class="nf">Some</span><span class="p">(</span><span class="mi">91</span><span class="p">)</span>
+     <span class="p">);</span>
+ <span class="p">}</span>
+
+</code></pre></div>  </li>
+  <li>
+    <p>因为rust对于 权限控制 可见性问题 上缺少 matcher，导致 macro处理起来非常困难。</p>
+
+<div class="highlight"><pre class="highlight rust"><code> <span class="c">// 下面示例，使用单独的 pattern 来匹配， 不同的 权限的 （pub 或者无pub） 的 结构声明</span>
+ <span class="nd">macro_rules!</span> <span class="n">newtype_new</span> <span class="p">{</span>
+     <span class="p">(</span><span class="k">struct</span> <span class="nv">$name:ident</span><span class="p">(</span><span class="nv">$t:ty</span><span class="p">);)</span> <span class="k">=&gt;</span> <span class="p">{</span> <span class="nd">newtype_new!</span> <span class="p">{</span> <span class="p">()</span> <span class="k">struct</span> <span class="nv">$name</span><span class="p">(</span><span class="nv">$t</span><span class="p">);</span> <span class="p">}</span> <span class="p">};</span>
+     <span class="p">(</span><span class="k">pub</span> <span class="k">struct</span> <span class="nv">$name:ident</span><span class="p">(</span><span class="nv">$t:ty</span><span class="p">);)</span> <span class="k">=&gt;</span> <span class="p">{</span> <span class="nd">newtype_new!</span> <span class="p">{</span> <span class="p">(</span><span class="k">pub</span><span class="p">)</span> <span class="k">struct</span> <span class="nv">$name</span><span class="p">(</span><span class="nv">$t</span><span class="p">);</span> <span class="p">}</span> <span class="p">};</span>
+
+     <span class="p">((</span><span class="nv">$</span><span class="p">(</span><span class="nv">$vis:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="k">struct</span> <span class="nv">$name:ident</span><span class="p">(</span><span class="nv">$t:ty</span><span class="p">);)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+         <span class="nd">as_item!</span> <span class="p">{</span>
+             <span class="k">impl</span> <span class="nv">$name</span> <span class="p">{</span>
+                 <span class="nv">$</span><span class="p">(</span><span class="nv">$vis</span><span class="p">)</span><span class="o">*</span> <span class="k">fn</span> <span class="nf">new</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nv">$t</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Self</span> <span class="p">{</span>
+                     <span class="nv">$name</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                 <span class="p">}</span>
+             <span class="p">}</span>
+         <span class="p">}</span>
+     <span class="p">};</span>
+ <span class="p">}</span>
+
+ <span class="nd">macro_rules!</span> <span class="n">as_item</span> <span class="p">{</span> <span class="p">(</span><span class="nv">$i:item</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nv">$i</span><span class="p">}</span> <span class="p">}</span>
+
+</code></pre></div>  </li>
+  <li>
+    <p>AST 强制： 解决rust 编译器 对于tt的一些问题，（当解析器期待一个特定的语法结构，而是找到一堆替换的 tt 标记时，就会出现问题。 它通常不会尝试解析它们，而是会放弃） 该种情况下，需要使用 AST强制， 这些强制通常与下推累积宏一起使用，以便让解析器将最终的 tt 序列视为一种特殊的语法结构。有以下几种 AST强制。</p>
+
+<div class="highlight"><pre class="highlight rust"><code> <span class="nd">macro_rules!</span> <span class="n">as_expr</span> <span class="p">{</span> <span class="p">(</span><span class="nv">$e:expr</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nv">$e</span><span class="p">}</span> <span class="p">}</span>
+ <span class="nd">macro_rules!</span> <span class="n">as_item</span> <span class="p">{</span> <span class="p">(</span><span class="nv">$i:item</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nv">$i</span><span class="p">}</span> <span class="p">}</span>
+ <span class="nd">macro_rules!</span> <span class="n">as_pat</span>  <span class="p">{</span> <span class="p">(</span><span class="nv">$p:pat</span><span class="p">)</span> <span class="k">=&gt;</span>  <span class="p">{</span><span class="nv">$p</span><span class="p">}</span> <span class="p">}</span>
+ <span class="nd">macro_rules!</span> <span class="n">as_stmt</span> <span class="p">{</span> <span class="p">(</span><span class="nv">$s:stmt</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nv">$s</span><span class="p">}</span> <span class="p">}</span>
+</code></pre></div>  </li>
+  <li>
+    <p>常见的 counting macro 的几种解法：</p>
+
+<div class="highlight"><pre class="highlight rust"><code>
+ <span class="c">// 重复方法</span>
+ <span class="nd">macro_rules!</span> <span class="n">replace_expr</span> <span class="p">{</span>
+     <span class="p">(</span><span class="nv">$_t:tt</span> <span class="nv">$sub:expr</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nv">$sub</span><span class="p">};</span>
+ <span class="p">}</span>
+
+ <span class="nd">macro_rules!</span> <span class="n">count_tts</span> <span class="p">{</span>
+     <span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$tts:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="mi">0u</span><span class="n">size</span> <span class="nv">$</span><span class="p">(</span><span class="o">+</span> <span class="nd">replace_expr!</span><span class="p">(</span><span class="nv">$tts</span> <span class="mi">1u</span><span class="n">size</span><span class="p">))</span><span class="o">*</span><span class="p">};</span>
+ <span class="p">}</span>
+
+
+ <span class="c">// 对于较小的数字，这是一种很好的方法，但可能会使编译器在输入大约 500 个左右的标记时崩溃。 考虑到输出将如下所示：</span>
+ <span class="c">//0usize + 1usize + /* ~500 `+ 1usize`s */ + 1usize</span>
+
+ <span class="nd">macro_rules!</span> <span class="n">count_tts</span> <span class="p">{</span>
+     <span class="p">()</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="mi">0u</span><span class="n">size</span><span class="p">};</span>
+     <span class="p">(</span><span class="nv">$_head:tt</span> <span class="nv">$</span><span class="p">(</span><span class="nv">$tail:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="mi">1u</span><span class="n">size</span> <span class="o">+</span> <span class="nd">count_tts!</span><span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$tail</span><span class="p">)</span><span class="o">*</span><span class="p">)};</span>
+ <span class="p">}</span>
+
+ <span class="c">//递归调用， 存在与重复方法同样的 递归限制 问题，可以使用一次匹配 多个项目 来减少 递归深度。如下： 将能够匹配的项目 提高到 ~1,200 </span>
+
+ <span class="nd">macro_rules!</span> <span class="n">count_tts</span> <span class="p">{</span>
+     <span class="p">(</span><span class="nv">$_a:tt</span> <span class="nv">$_b:tt</span> <span class="nv">$_c:tt</span> <span class="nv">$_d:tt</span> <span class="nv">$_e:tt</span>
+      <span class="nv">$_f:tt</span> <span class="nv">$_g:tt</span> <span class="nv">$_h:tt</span> <span class="nv">$_i:tt</span> <span class="nv">$_j:tt</span>
+      <span class="nv">$_k:tt</span> <span class="nv">$_l:tt</span> <span class="nv">$_m:tt</span> <span class="nv">$_n:tt</span> <span class="nv">$_o:tt</span>
+      <span class="nv">$_p:tt</span> <span class="nv">$_q:tt</span> <span class="nv">$_r:tt</span> <span class="nv">$_s:tt</span> <span class="nv">$_t:tt</span>
+      <span class="nv">$</span><span class="p">(</span><span class="nv">$tail:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span>
+         <span class="k">=&gt;</span> <span class="p">{</span><span class="mi">20u</span><span class="n">size</span> <span class="o">+</span> <span class="nd">count_tts!</span><span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$tail</span><span class="p">)</span><span class="o">*</span><span class="p">)};</span>
+     <span class="p">(</span><span class="nv">$_a:tt</span> <span class="nv">$_b:tt</span> <span class="nv">$_c:tt</span> <span class="nv">$_d:tt</span> <span class="nv">$_e:tt</span>
+      <span class="nv">$_f:tt</span> <span class="nv">$_g:tt</span> <span class="nv">$_h:tt</span> <span class="nv">$_i:tt</span> <span class="nv">$_j:tt</span>
+      <span class="nv">$</span><span class="p">(</span><span class="nv">$tail:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span>
+         <span class="k">=&gt;</span> <span class="p">{</span><span class="mi">10u</span><span class="n">size</span> <span class="o">+</span> <span class="nd">count_tts!</span><span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$tail</span><span class="p">)</span><span class="o">*</span><span class="p">)};</span>
+     <span class="p">(</span><span class="nv">$_a:tt</span> <span class="nv">$_b:tt</span> <span class="nv">$_c:tt</span> <span class="nv">$_d:tt</span> <span class="nv">$_e:tt</span>
+      <span class="nv">$</span><span class="p">(</span><span class="nv">$tail:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span>
+         <span class="k">=&gt;</span> <span class="p">{</span><span class="mi">5u</span><span class="n">size</span> <span class="o">+</span> <span class="nd">count_tts!</span><span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$tail</span><span class="p">)</span><span class="o">*</span><span class="p">)};</span>
+     <span class="p">(</span><span class="nv">$_a:tt</span>
+      <span class="nv">$</span><span class="p">(</span><span class="nv">$tail:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span>
+         <span class="k">=&gt;</span> <span class="p">{</span><span class="mi">1u</span><span class="n">size</span> <span class="o">+</span> <span class="nd">count_tts!</span><span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$tail</span><span class="p">)</span><span class="o">*</span><span class="p">)};</span>
+     <span class="p">()</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="mi">0u</span><span class="n">size</span><span class="p">};</span>
+ <span class="p">}</span>
+</code></pre></div>  </li>
+</ol>
+
+<h5 id="对macro进行debug">对macro进行debug：</h5>
+<ul>
+  <li>
+    <p>1）trace_macros 使用示例： 同样可以传递  -Z trace-macros 给rustc 命令调用上。</p>
+
+<div class="highlight"><pre class="highlight rust"><code>  <span class="nd">#![feature(trace_macros)]</span>
+
+  <span class="nd">macro_rules!</span> <span class="n">each_tt</span> <span class="p">{</span>
+      <span class="p">()</span> <span class="k">=&gt;</span> <span class="p">{};</span>
+      <span class="p">(</span><span class="nv">$_tt:tt</span> <span class="nv">$</span><span class="p">(</span><span class="nv">$rest:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nd">each_tt!</span><span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$rest</span><span class="p">)</span><span class="o">*</span><span class="p">);};</span>
+  <span class="p">}</span>
+
+  <span class="nd">each_tt!</span><span class="p">(</span><span class="n">foo</span> <span class="n">bar</span> <span class="n">baz</span> <span class="n">quux</span><span class="p">);</span>
+  <span class="nd">trace_macros!</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span> <span class="c">// 打开 debug</span>
+  <span class="nd">each_tt!</span><span class="p">(</span><span class="n">spim</span> <span class="n">wak</span> <span class="n">plee</span> <span class="n">whum</span><span class="p">);</span> <span class="c">// 将 macro的调用进行展开</span>
+  <span class="nd">trace_macros!</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span> <span class="c">// 关闭debug</span>
+  <span class="nd">each_tt!</span><span class="p">(</span><span class="n">trom</span> <span class="n">qlip</span> <span class="n">winp</span> <span class="n">xod</span><span class="p">);</span>
+
+
+  <span class="n">The</span> <span class="n">output</span> <span class="n">is</span><span class="p">:</span>
+
+  <span class="nd">each_tt!</span> <span class="p">{</span> <span class="n">spim</span> <span class="n">wak</span> <span class="n">plee</span> <span class="n">whum</span> <span class="p">}</span>
+  <span class="nd">each_tt!</span> <span class="p">{</span> <span class="n">wak</span> <span class="n">plee</span> <span class="n">whum</span> <span class="p">}</span>
+  <span class="nd">each_tt!</span> <span class="p">{</span> <span class="n">plee</span> <span class="n">whum</span> <span class="p">}</span>
+  <span class="nd">each_tt!</span> <span class="p">{</span> <span class="n">whum</span> <span class="p">}</span>
+  <span class="nd">each_tt!</span> <span class="p">{</span>  <span class="p">}</span>
+</code></pre></div>  </li>
+  <li>
+    <p>2) macro log_syntax  可以将 编译器 传递给macro的 内容全部输出出来，可以这样。</p>
+  </li>
+</ul>
+
+<div class="highlight"><pre class="highlight rust"><code><span class="nd">#![feature(log_syntax)]</span>
+
+<span class="nd">macro_rules!</span> <span class="n">sing</span> <span class="p">{</span>
+    <span class="p">()</span> <span class="k">=&gt;</span> <span class="p">{};</span>
+    <span class="p">(</span><span class="nv">$tt:tt</span> <span class="nv">$</span><span class="p">(</span><span class="nv">$rest:tt</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nd">log_syntax!</span><span class="p">(</span><span class="nv">$tt</span><span class="p">);</span> <span class="nd">sing!</span><span class="p">(</span><span class="nv">$</span><span class="p">(</span><span class="nv">$rest</span><span class="p">)</span><span class="o">*</span><span class="p">);};</span>
+<span class="p">}</span>
+
+</code></pre></div>
+<ul>
+  <li>3) 可以使用 编译参数 rustc -Z unstable-options –pretty expanded hello.rs 来输出macro展开之后的 形式内容</li>
+</ul>
+
+<div class="highlight"><pre class="highlight rust"><code><span class="c">// Shorthand for initialising a `String`.</span>
+<span class="nd">macro_rules!</span> <span class="n">S</span> <span class="p">{</span>
+    <span class="p">(</span><span class="nv">$e:expr</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span><span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="nv">$e</span><span class="p">)};</span>
+<span class="p">}</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">world</span> <span class="o">=</span> <span class="nd">S!</span><span class="p">(</span><span class="s">"World"</span><span class="p">);</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Hello, {}!"</span><span class="p">,</span> <span class="n">world</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c">//使用 --pretty  之后输出如下， 这里面将 println同样输出出来了。</span>
+<span class="nd">#![feature(no_std,</span> <span class="nd">prelude_import)]</span>
+<span class="nd">#![no_std]</span>
+<span class="nd">#[prelude_import]</span>
+<span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">prelude</span><span class="p">::</span><span class="nn">v1</span><span class="p">::</span><span class="o">*</span><span class="p">;</span>
+<span class="nd">#[macro_use]</span>
+<span class="k">extern</span> <span class="n">crate</span> <span class="n">std</span> <span class="k">as</span> <span class="n">std</span><span class="p">;</span>
+<span class="c">// Shorthand for initialising a `String`.</span>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">world</span> <span class="o">=</span> <span class="nn">String</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="s">"World"</span><span class="p">);</span>
+    <span class="p">::</span><span class="nn">std</span><span class="p">::</span><span class="nn">io</span><span class="p">::</span><span class="mi">_</span><span class="nf">print</span><span class="p">(::</span><span class="nn">std</span><span class="p">::</span><span class="nn">fmt</span><span class="p">::</span><span class="nn">Arguments</span><span class="p">::</span><span class="nf">new_v1</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="k">static</span> <span class="mi">__</span><span class="n">STATIC_FMTSTR</span><span class="p">:</span> <span class="o">&amp;</span><span class="nv">'static</span> <span class="p">[</span><span class="o">&amp;</span><span class="nv">'static</span> <span class="nb">str</span><span class="p">]</span>
+                <span class="o">=</span> <span class="o">&amp;</span><span class="p">[</span><span class="s">"Hello, "</span><span class="p">,</span> <span class="s">"!</span><span class="se">\n</span><span class="s">"</span><span class="p">];</span>
+            <span class="mi">__</span><span class="n">STATIC_FMTSTR</span>
+        <span class="p">},</span>
+        <span class="o">&amp;</span><span class="k">match</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">world</span><span class="p">,)</span> <span class="p">{</span>
+             <span class="p">(</span><span class="mi">__</span><span class="n">arg0</span><span class="p">,)</span> <span class="k">=&gt;</span> <span class="p">[</span>
+                <span class="p">::</span><span class="nn">std</span><span class="p">::</span><span class="nn">fmt</span><span class="p">::</span><span class="nn">ArgumentV1</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mi">__</span><span class="n">arg0</span><span class="p">,</span> <span class="p">::</span><span class="nn">std</span><span class="p">::</span><span class="nn">fmt</span><span class="p">::</span><span class="nn">Display</span><span class="p">::</span><span class="n">fmt</span><span class="p">)</span>
+            <span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">));</span>
+<span class="p">}</span>
+
+</code></pre></div>
 <div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2021 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");

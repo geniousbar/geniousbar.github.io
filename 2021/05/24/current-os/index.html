@@ -1,4 +1,11 @@
-<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>现代操作系统 | 日常学习</title><meta description="现代操作系统：    抽象是管理复杂性的关键， 好的抽象可以把一个 不可能管理的任务 分为 两个可管理的部件。 抽象的定义和实现 + 用这些抽象解决的问题。 操作系统的任务 就是 创建好的抽象 并实现和管理它所创建的抽象对象。抽象内容是理解操作系统的关键。   作为资源管理者的操作系统：  资源管理包括 以下两种不同方式实现 多路复用（共享）资源：时间上 复用 + 空间上复用 。          时间复用 例子 比如 打印机， 问题： 如何决定下一个执行哪个任务？ 以及 任务运行的时间 ... " /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-198d4031.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-b3988275.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li><li id="wechat"><a href="#" onclick="toggleShowWechat()">Wechat</a></li></ul></div></div></div><div id="header-wechat-img"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">现代操作系统</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">May 24, 2021</span></div><div class="tag-labels"><a href="/tags/os/"><small class="tag-label">os</small></a><a href="/tags/linux/"><small class="tag-label">linux</small></a></div><hr class="article-header-separator" /><h3 id="现代操作系统">现代操作系统：</h3>
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title> | 日常学习</title><meta description="  title: Modern current os date: 2021-05-24 tags: os, linux —  现代操作系统：    抽象是管理复杂性的关键， 好的抽象可以把一个 不可能管理的任务 分为 两个可管理的部件。 抽象的定义和实现 + 用这些抽象解决的问题。 操作系统的任务 就是 创建好的抽象 并实现和管理它所创建的抽象对象。抽象内容是理解操作系统的关键。   作为资源管理者的操作系统：  资源管理包括 以下两种不同方式实现 多路复用（共享）资源：时间上 复用 + ..." /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-198d4031.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-b3988275.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li><li id="wechat"><a href="#" onclick="toggleShowWechat()">Wechat</a></li></ul></div></div></div><div id="header-wechat-img"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title"></h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">May 24, 2021</span></div><div class="tag-labels"></div><hr class="article-header-separator" />
+<hr />
+<p>title: Modern current os<br />
+date: 2021-05-24<br />
+tags: os, linux<br />
+—</p>
+
+<h3 id="现代操作系统">现代操作系统：</h3>
 <blockquote>
   <p>抽象是管理复杂性的关键， 好的抽象可以把一个 不可能管理的任务 分为 两个可管理的部件。 抽象的定义和实现 + 用这些抽象解决的问题。<br />
 操作系统的任务 就是 创建好的抽象 并实现和管理它所创建的抽象对象。抽象内容是理解操作系统的关键。</p>
@@ -505,6 +512,14 @@ up操作； 对信号数值+1， 如果一个或者多个进程在该信号量�
       </li>
     </ul>
   </li>
+</ul>
+
+<p>场景目标：  <br />
+批处理系统： 吞吐量- 每小时做大作业量， 周转时间- 从提交到终止间的最小时间， CPU利用率- 保持cpu始终忙碌。<br />
+交互式系统： 响应时间–快速响应请求，均衡性– 满足用户的期望。<br />
+实时系统–满足截止时间： 避免丢失数据，可预测性- 在多媒体系统中避免低品质。</p>
+
+<ul>
   <li>批处理作业中的 三个衡量指标:  吞吐量，周转时间，cpu利用率。</li>
   <li>吞吐量（throught）: 系统每个小时完成的工作量。每小时完成50个作业好于 完成40个作业。</li>
   <li>周转时间(turnaround time): 从一个作业提交时刻开始直到 作业完成时刻为止 的统计平均时间。度量了 用户要得到输出所需要的平均时间，越小越好。</li>
@@ -528,6 +543,295 @@ up操作； 对信号数值+1， 如果一个或者多个进程在该信号量�
 
 <p>交互式系统中的调度：</p>
 
+<p>轮转调度（round robin）： 简单公平的调度算法， 每个进程被分配一个时间段，称为时间片。 （quantum）</p>
+
+<p>即允许 进程在该时间段内运行，如果在时间片结束时候该进程还在运行 则剥夺cpu并分配给另一个进程。如果该进程在时间片内 阻塞或者结束 则 cpu将立即切换。</p>
+
+<p>轮转调度算法 实现非常简单，即维护一个 可以运行的进程列表。不断的从列表头上取出进程运行，时间片用完后，将进程放到列表队尾。</p>
+
+<p>关于时间片的长度设定： 从一个进程切换到另一个进程 即 进程切换 也称为 上下文切换。 其中需要 保存和装入寄存器数值，更新各种列表，清除和重新调入内存 高速缓存等 操作。</p>
+
+<p>如果时间片设定为4ms 而进程切换需要 1ms，则 cpu时间将花费 20% 的时间在进程的切换上。<br />
+如果将时间片设定为100ms，则cpu时间将花费1%在进程间的切换上。但是 可以想见的是，排在队尾的进程将在很久之后才能得到cpu的时间，对于交互式系统用户而言，将是缓慢的。<br />
+如果将时间片设置为长于平均的cpu突发时间，那么将不会经常发生抢占，相反 多数进程将在时间片内发生 阻塞操作，从而引起进程切换，抢占的消失改善了性能，因为进程只有在逻辑上需要的时候发生了切换，即：进程确实不能够在继续进行下去。</p>
+
+<p>总结：时间片设定的太短，导致cpu利用率的降低，时间片设定的太长，导致交互请求的响应变长，普遍间时间片设定为 20-50ms范围内 。</p>
+
+<p>优先级调度：</p>
+
+<p>在轮转调度中 存在一个隐藏的假设，即： 所有的进程是同样重要的。实际上 进程的优先级是可以调整的。即进程之间存在重要性的差异。比如 在屏幕上显示视频的进程 比 后台发送邮件的进程具有较高的优先级。</p>
+
+<p>从此可以看到 时钟滴答 与 时间片 是不同的概念。这里面的时钟中断 应该是 linux中 可以控制的时钟周期，即cpu频率保持不变，但是在 配置的滴答个数 可以 进行时钟中断，而 时间片的概念呢？是建立在 时钟中断上的吧？</p>
+
+<p>两种方法：<br />
+为了防止 高优先级的进程一直无休止的运行下去，调度程序可能在每个时钟滴答（时钟中断）降低当前进程的优先级，如果这一行为导致该进程的优先级低于此高级优先级的进程，则进行进程切换。<br />
+给每个进程赋予一个允许运行的最大时间片。 当用完这个时间片  则 此高优先级的进程 便能获得运行机会，即进行进程切换。</p>
+
+<p>优先级 可静态确定 或 动态确定。 比如 按照行政等级 确定 等级高的人 的任务具有更高的优先级。</p>
+
+<p>动态确定： 的比如，将IO密集型进程设定更高的优先级，算法 1/f，f为进程在上次的时间片上用的时间片。IO密集型进程 其多数时间 用来等待 IO结束，当这样的进程需要CPU时候，应该立即分配给他，以便让其 启动下一个 IO请求，以充分利用cpu与IO设备。一个在50ms时间片中花费 1ms 时间的 进程 将获得 50的优先级，一个进行  2mscpu运算的进程将获得25的优先级。</p>
+
+<p>多级队列： 优先级调度 中优先级之间 改变优先级 的另外一种方法： 设立优先级类，将最高优先级类的 进程运行一个时间片，此高级优先级的进程 运行 2个时间片， 下一个优先级的进程类运行 4个时间片。 以此类推，当一个进程用完分配的时间片之后，将被移到下一个优先级类。 这样的规则将导致 cpu密集型进程将获得更低的优先级，更大的时间片进行运行。 这里面的存在的缺陷在于，没有将 优先级提升的方法，如果 交互式进程因为 偶尔的 用完时间片的行为  将导致 不断的惩罚，将导致 降低为 低优先级。</p>
+
+<p>最短进程优化：</p>
+
+<p>再批处理系统中 使用 最暖进程优先算法是非常好的。 然而如何将其 应用在交互式系统中 则成为问题，因为 如何从当前进程中找到运行时间 最短的那个进程。 交互式 进程通常的模式 为：  等待命令、执行命令、等待命令、执行命令 如此往复。<br />
+一种办法为： 根据进程过去的行为进行推测。使用时间老化算法来估算 进程运行时间。 假设进程 之前进程运行的时间  为  T0，当前估计时间 T1，本次 实际时间 为 T0/2 + T1/2 则  aT0 + (1 - a) T1 通过选择 a，可以决定 尽快忘掉老的运行时间。当 a = 1/2时，我们可以得到如下的队列：</p>
+
+<p>T0， T0/2 + T1/2， T0/4 + T1/4 + T2/2， T0/8 + T/8 + T2/4 + T3/2 在 3此过后 T0的权重 降低为 1/8</p>
+
+<p>我们把 这种通过当前预测值 + 先前估计值  加权平均 而得到 一个 估计值 的技术 成为 老化技术。</p>
+
+<p>保证调度： 向用户做出明确的性能保障，然后去实现它。一个简单的保证为： 如有n各用户登录，则保证用户将获得 1/n 的计算能力。 即系统 需要追踪 系统的运行参数， 诸如 用户进程 实际占用的cpu运行时间，以及 应该占用的cpu时间。其数值比率 大 则说明 获得时间多，而数值小 则说明 获得cpu时间少。  该算法 将优先调度 数值小的 进程 ，已实现 性能保证要求。</p>
+
+<p>彩票调度： 保证调度 很难实现，一种近似实现 为 彩票调度（lottery scheduling） 基本思想为 为进程提供 各种系统资源 的彩票。 需要做出调度决策时，就随机抽取一张彩票，拥有该彩票的进程获得调度。<br />
+如果cpu出售了1000张彩票 ，某个进程 持有 20张，则每一次抽奖 该进程就有20%的几率 获得cpu， 在较长的运行时间中，该进程将获得20%的cpu。与  优先级调度 相比较，很难解释进程的优先级为 20 是什么意思，也更难预测 进程将获得与 优先级相关的多少cpu时间。而彩票调度  则 非常明确，拥有 f分彩票 进程 大约得到 系统资源的f份额。</p>
+
+<p>彩票调度 可以用来解决一些 难题，比如 视频流服务器， 服务器上若干进程 为用户提供 帧速率 为10，20，25 的视频流，  只需要 分配 进程 对应的 彩票份额，10， 20，25 即可。</p>
+
+<p>公平分享调度： 需要具体考虑 公平 的定义，用户公平的调度 则需要考虑 在 进程调度 期间 用户的进程 分配 cpu占用问题。</p>
+
+<p>策略和机制： 调度机制 与 调度策略 分离开来。调度机制位于内核，而调度策略 则由用户进程 决定。</p>
+
+<p>线程调度： 若干进程 由多个线程 时候，系统中就存在两个层次的并行： 进程和线程， 在这样的系统中 调度 处理 有本质上的差别。当然这取决于线程 的实现： 即 用户级线程 还是内核级线程。</p>
+
+<p>在 用户级别线程下： 由于内核并不知道线程的存在 ，所以 内核 依然 按照 进程调度，即 用户线程调度 决定 选择那个一个线程。 调度算法 选取中 可以选用上面的任何一种，但 轮转调度 和优先级 调度更为常用。 缺陷则是缺乏 一个时钟中断中断运行时间 过长的线程，但是因为线程之间 为合作关系，所以通常并不是问题。<br />
+内核级线程： 对于内核  可以考虑优先调度同属于一个进程的线程，以为同进程间的线程调度 代价要小于 进程之间的调度。其他方面 则与 进程间调度没有什么不同。Linux中 线程与进程同为 调度实体。</p>
+
+<p>用户级线程 与 内核级线程 之间的差别在于 性能： 用户级线程的线程切换 需要较少的机器指令，而内核级线程 切换  则需要 完整的上下文切换、修改内存映像、高速缓存失效（而同样归于同进程的线程 则是不需要） 等操作，这导致了数量级别的延迟。</p>
+
+<p>用户级线程 可以使用 特定优化的调度算法，以为 应用程序 知道自己的应用场景，而 内核级线程 内核从来不了解 每个线程的作用。一般而言，应用定制的线程调度算法 能够比内核 更好的满足 应用的需要。</p>
+
+<p>经典的IPC问题：  哲学家就餐问题， 读者-写者问题</p>
+
+<p>哲学家就餐问题：</p>
+
+<p>直观的解法： 显然是错误的，如果 五位哲学家 同时执行（拿起 左边的筷子 、拿起右边的筷子） 将会导致 没有人能够拿起 右边的筷子， 从而导致死锁。  一个简单的解决方法为：  在哲学家拿起 左边的筷子时候，查看右边的筷子 是否可用，如果不可用，则先放下左边的筷子 ， 等一段时间，再重复这个过程。  但这个解法同样存在问题。 尽管原因不同，同一时间 所有的哲学家 都开始进行 该算法，同时 拿起左边的筷子，同时 查看右边筷子是否可用，放下，等待。 如此运行下去 所有的进程都在运行，但是却无法取得进展，该现象 我们称之为饥饿。<br />
+我们简单的将 上述 中的等待时间 设定为一个 动态的随机时间，而不是等待一个固定的时间 。这样发生饥饿的可能性就非常小了， 几乎在所有的程序中，稍后再试的办法并不会演化成为一个问题。例如 ： 在流行的以太网上，  如果两台计算机同时发送包 ，那么每台计算机会稍等一哥随机时间之后 再次尝试，在实践中  该方案工作良好。 少数的程序中， 人们希望一种总是能够工作的方案，他不会因为一串 随机数字而失败。</p>
+
+<div class="highlight"><pre class="highlight c"><code><span class="cp">#define N 5
+</span>
+
+<span class="n">vodi</span> <span class="nf">philosopher</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">think</span><span class="p">();</span>
+  <span class="n">take_fork</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+  <span class="n">take_fork</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">);</span>
+  <span class="n">eat</span><span class="p">();</span>
+  <span class="n">put_fork</span><span class="p">();</span>
+  <span class="n">put_fork</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div><p>最优的解法： 这里应该搜索，没有理解其代码意思。</p>
+
+<div class="highlight"><pre class="highlight c"><code><span class="kt">void</span> <span class="nf">philosopher</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+  
+<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">take_forks</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">down</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+  <span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">hungry</span><span class="p">;</span>
+  <span class="n">test</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+  <span class="n">up</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+  <span class="n">down</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">put_forks</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">down</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+  <span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">thinking</span><span class="p">;</span>
+  <span class="n">test</span><span class="p">(</span><span class="n">LEFT</span><span class="p">);</span>
+  <span class="n">test</span><span class="p">(</span><span class="n">RIGHT</span><span class="p">);</span>
+  <span class="n">up</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">test</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">hungry</span> <span class="o">&amp;&amp;</span> <span class="n">state</span><span class="p">[</span><span class="n">LEFT</span><span class="p">]</span> <span class="o">!=</span> <span class="n">EATING</span> <span class="o">&amp;&amp;</span> <span class="n">state</span><span class="p">[</span><span class="n">RIGHT</span><span class="p">]</span> <span class="o">!=</span> <span class="n">EATING</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">EATING</span><span class="o">:</span>
+    <span class="n">up</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>读者-写者问题：一个数据库访问模型：  多个进程可以同时读取数据库，但是如果一个进程 正在更新 写数据库，则所有的其他进程 都不能够访问数据库。</p>
+
+<p>下面是一个读者优先访问示例代码：</p>
+
+<div class="highlight"><pre class="highlight c"><code><span class="k">typedef</span> <span class="kt">int</span> <span class="n">semaphore</span><span class="p">;</span>
+<span class="n">semaphore</span> <span class="n">mutex</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">semaphore</span> <span class="n">db</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">reader</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">while</span><span class="p">(</span><span class="nb">true</span> <span class="p">{</span>
+    <span class="n">down</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutext</span><span class="p">);</span>
+    <span class="n">rc</span> <span class="o">=</span> <span class="n">rc</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rc</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="n">down</span><span class="p">(</span><span class="o">&amp;</span><span class="n">db</span><span class="p">);</span>
+    <span class="n">up</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+    <span class="n">read_data_base</span><span class="p">();</span>
+    <span class="n">down</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+    <span class="n">rc</span> <span class="o">=</span> <span class="n">rc</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="n">up</span><span class="p">(</span><span class="o">&amp;</span><span class="n">db</span><span class="p">);</span>
+    <span class="n">up</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+    <span class="n">use_data_read</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span> <span class="nf">write</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+  <span class="p">{</span>
+   <span class="n">think_up_data</span><span class="p">()</span>  <span class="p">;</span>
+   <span class="n">down</span><span class="p">(</span><span class="o">&amp;</span><span class="n">db</span><span class="p">);</span>
+   <span class="n">write_data_base</span><span class="p">();</span>
+   <span class="n">up</span><span class="p">(</span><span class="o">&amp;</span><span class="n">db</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div><p>该解法中 隐含着一种情况：即 数据库当前存在一个读者 时候，另一个读者来了 以及 更多的读者来了，同样允许。这时 一个写者到来  由于写者是拍他的，不允许进入数据库，导致被挂起。需要等待所有的读者处理完成之后 才能开始进行处理写操作。即 读者比 写者拥有更多高的优先级， 写总是排在读后面，如果读者多的情况下 将导致 写 迟迟不能完成操作。</p>
+
+<p>写优先的解法 需要查找 courtois等人的相关资料。</p>
+
+<p>总结：<br />
+进程问题已经有了成熟的解决方案，几乎所有的系统都将进程视为一个容器， 用以管理相关的资源，比如地址空间、线程、打开的文件描述符等。 不同的系统管理进程资源的基本想法大致相同。 只是在工程处理上略有差异。<br />
+线程是比进程新的概念，但是也经过了深入了的研究。<br />
+进行执行过程的 记录和重放  也是一个非常活跃的研究领域。 重放技术 可以帮助开发者 追踪一些难以发现的程序漏洞。<br />
+调度问题  也是研究者感兴趣的问题。 一些研究主题包括移动设备上的低能耗调度， 超线程级调度 和偏执意识调度 。 智能手机的计算量 增加 因为电池容量有限。 一些研究者提出 可能的时候将进程迁移到云上某个更强大的服务器上执行。但实际系统的设计者  很少会因为没有合适的线程调度算法 而苦恼。所以这是一个由 研究者推送而不是 需求推动的研究类型。总而言之， 进程，线程 与调度已经不再是研究热点了，功耗管理 、虚拟化、云计算 、与安全问题 成为了热点主题。</p>
+
+<p>习题答案 ：（部分重要）</p>
+
+<p>当代计算机中，为什么中断处理程序中 至少部分是由汇编程序来编的？<br />
+答： 高级语言不允许访问 必要的cpu资源，比如 一个中断处理程序中 可能需要开启、禁止 中断。 此外 中断处理程序 需要尽可能的快。</p>
+
+<p>中断 或 系统调用 将控制权 转移到 操作系统时，为什么 通常会 用到与 被中断进程 的栈分离的 内核栈？<br />
+答： 为内核使用单独的堆栈有几个原因。 其中两个如下。 首先，您不希望操作系统崩溃，因为编写得不好的用户程序不允许有足够的堆栈空间。 其次，如果内核在从系统调用返回时将堆栈数据留在用户程序的内存空间中，恶意用户可能能够使用这些数据来查找有关其他进程的信息。</p>
+
+<h3 id="内存管理-">内存管理 ：</h3>
+
+<p>不管存储器多大，程序都可以将其填满。</p>
+
+<p>分层存储器体系： 在这个体系中，存在 MB 的快速、昂贵、易失性的高速缓存，GB的速度价格适中的同样易失的内存 ，以及 TB的低速、廉价、非易失的磁盘存储。</p>
+
+<p>操作系统的工作之一 就是 将层次存储系统体系 抽象成为一个 有用的模型 并管理这个抽象。</p>
+
+<p>分层存储器系统称为 存储管理系统：  他的任务是 有效的管理内存，即记录哪些 内存是正在使用的，哪些 是空闲的， 在进程需要时候为其分配内存 ，不需要时释放内存。</p>
+
+<p>探索 内存抽象方案 的步骤：</p>
+
+<p>无存储器抽象：  最简单的存储器抽象 即 没有抽象。  早期的大型机  小型计算机 都没有存储抽象。 每一个程序 都直接访问物理内存。<br />
+因此  那时候呈现给编程人员的存储器 即是：  从0到某个上限的地址集合，每个地址 对应一个 可容纳 一定数目的二进制数据，通常是 8位。<br />
+指令 MOve Register1， 100  即：将  100的物理内存的内容，转移到 register1中。</p>
+
+<p>改种方案下， 系统中同时运行两个程序 是不可能的。如果进程 A在 地址 100位置写入数据，进程 2  在稍后的时间中 对地址 100进行了改写，可能导致 进程A的崩溃。</p>
+
+<p>在该模式 内存的布局方式有以下三种：</p>
+
+<p>操作系统位于 RAM 的底部<br />
+操作系统位于内存顶端 的ROM（只读存储器） 中<br />
+设备驱动程序位于顶端的ROM中，操作系统位于底端的RAM中</p>
+
+<p>第二种方案 经常用在 一些掌上电脑，和嵌入式系统中。<br />
+第三种方案 用于早期的个人计算机中， ROM中的系统部分 为 BIOS（basic  input output system）</p>
+
+<p>在没有存储器抽象的情况下 同时运行多个程序。</p>
+
+<p>操作系统 只需要 把当前的内存中的内容 保存到磁盘上 ，然后将下一个程序 读入到内存中 再次运行即可。 只要在同一时刻 内存中只有一个程序 即可。</p>
+
+<p>IBM 360 的做法：<br />
+内存被划分为 大小2KB的块。 每个块 分配一个 4位的保护键， 保护键存储在cpu的特殊寄存器中， PSW中存在一个 4位码， 一个运行中的进程如果访问保护码 与 PSW中的不同的内存，硬件将会捕获该事件。  因为只有系统可以修改保护键，这样就可以放置用户进程 之间、用户和操作系统之间的相互干扰。</p>
+
+<p>静态重定位技术： 即便 存在保护键，依然无法解决 两个进程 使用重复的绝对地址的问题，我们希望每个进程使用一套自己私有的内存地址来进行内存访问。IBM  360 采用的方法 即：在第二个 程序 装载到内存 100地址时， 常数100将被 加到 每一个 程序地址上。</p>
+
+<p>缺少存储器抽象在嵌入式系统中 依然非常常见， 比如 洗衣机 微波炉 此类 设备 都已经完全被ROM形式的软件控制。 这种情况下，软件都采用 绝对地址寻址的方式，以为 所有的运行的程序 都可以被事先确定，  用户不需要运行自己的软件。</p>
+
+<p>存储器抽象：地址空间</p>
+
+<p>直接暴露物理地址的问题： 1） 用户程序可以简单的寻址内存地址，很容易地破坏 操作系统。 2） 同时运行多个程序将非常困难。</p>
+
+<p>地址空间的概念：</p>
+
+<p>要多个应用程序 同时处于内存 而不互相影响 需要解决两个问题： 1）保护 2）重定位 。</p>
+
+<p>IBM 360的办法 实际效果并不好，因为 其 静态重定位 技术，不仅缓慢，还需要 额外的标记 来确定 那些地址 需要被加。</p>
+
+<p>就像 进程的概念 创造了 cpu的抽象 为 进程使用 一样。</p>
+
+<p>地址空间 为程序 创造了 一种抽象 的内存，地址空间 是一个进程可以用于寻址内存的地址集合。每个进程 都有自己的 地址空间，独立于 其他的 进程 地址空间。</p>
+
+<p>地址空间的概念非常常见：  比如 电话号码、url等。<br />
+简单实现：动态重定位：  给cpu配置两个寄存器： 基址寄存器 、界限寄存器。 使程序 装载期间 无需 重定位。当一个进程运行时 程序的起始地址 装载到 基址寄存器中，程序的长度 装载到 界限寄存器中。每次 进程访问内存，取一条指令、读写一个内存地址时， cpu硬件会将 地址发送到内存总线前， 自动把基址寄存器的数值 +  进程发出的地址上。 同时检查 结果是否在 界限寄存器 范围内。 超过了 界限 则捕获错误。</p>
+
+<p>基址寄存器 16384， 界限寄存器： 17000  指令 jmp 28 被翻译成 jmp  16412</p>
+
+<p>此方法可以简单实现存储器抽象。</p>
+
+<p>内存管理技术：</p>
+
+<p>1）交换技术：  两种处理内存超载的方法： 最简单的策略 是 交换技术， 即 将把进程完整的调入内存中，使该进程运行一段时间，然后把他 存回磁盘。 虚拟内存： 使程序只有一部分被调入内存的情况下 运行。</p>
+
+<p>空闲内存管理：</p>
+
+<p>动态分配内存时， 操作系统 必须 对其进行管理 ，一般有两种办法： 1） 位图 2） 空闲去链表，</p>
+
+<ol>
+  <li>使用位图的存储管理： 内存可能被划分为 几个字 或 几千字的分配单位，每个分配单位 对应于图中的一位。0表示空闲，1表示占用。分配单元的大小是一个重要的设计元素， 分配单元小 则位图大，位图占用的内存空间的比例就会提升。分配单元大 ，则位图小。但进程分配的存在更多的浪费。</li>
+</ol>
+
+<p>位图主要的问题是：  再决定分配一个 大小 为k个分配单元的进程调入内存时，存储管理器 必须搜索位图 已找到 k个连续的0串，因为 位图中该串可能跨越字的边界。 查找位图中 制定长度的连续0串是一个耗时操作。</p>
+
+<p>使用链表的存储管理：</p>
+
+<p>维护一个记录已分配内存段和空闲内存段的链表。</p>
+
+<p>有几种方法  为 新创建的进程 分配内存：<br />
+1） 首次匹配算法：  沿着链表进行搜索， 直到找到一个足够大的空闲区间。 除非空闲空间与 需要分配的空间大小一样，否则将该空闲区分为两部分，一部分供进程使用，一部分 成为新的空闲区。 速度非常快的算法，因为它可以尽可能少的搜索节点。</p>
+
+<p>2） 最佳适配算法：搜索整个链表， 找到能够容纳新进程的最小空闲区间。该算法试图找到最接近实际需要的空闲区。<br />
+其他算法： 快速适配法</p>
+
+<p>虚拟内存： 虽然 基址寄存器 + 界限寄存器 能够很好的 应对 内存抽象管理要求，但是  随着软件的膨胀 需要运行的程序往往大到内存 无法容纳， 而系统必须能够支撑起多个程序的同时运行， 即使内存仅仅 可以满足其中一个的程序需要。</p>
+
+<p>总体来看 程序对内存的需求 超过了实际内存大小。  交换技术 并不是一个很好的方案，因为 一个典型的SATA磁盘的峰值传输效率 只有几百兆每秒，这意味着需要好几秒 才能换入 一个1GB的程序。</p>
+
+<p>该类问题 很早就出现了，初始的简单解决办法 成为 ：覆盖 （overlay） 把程序分割成为许多片段， 程序开始，将覆盖管理模块转入内存，该管理模块立即 装并运行程序的片段0，在系统需要时 将由 管理模块 程序片段1装载到内存中，覆盖管理模块允许多个 片段  同时在内存中，部分在磁盘上，在需要时候动态的换入换出。</p>
+
+<p>虽然 有管理模块来负责 换入换出操作，但是 依然需要程序员将程序 分割成多个片段，最后人们将这种费事重复性的操作 交给了计算机去做。</p>
+
+<p>采用的这个方法 称为虚拟内存。 基本思想为： 每个程序拥有自己的地址空间，这个空间被分割成为多个块，每一块称作一页或页面（page）， 每一页 都有连续的地址范围，这些页面被影射到 物理内存， 但并不需要所有页面都在内存中才能够运行程序， 当程序引用到一部分在物理内存中的地址空间时，  由硬件执行必要的映射， 当程序引用到 一部分不在物理内存中的地址空间时， 由 操作系统负责将缺失的部分程序装入到 物理内存并重新执行失败的指令。</p>
+
+<p>分页： 大部分 虚拟内存使用的技术。</p>
+
+<p>Mov reg, 1000  将内存地址 1000 的内存复制到 reg中，其中的1000地址 可以由 索引、基址寄存器、段寄存器 或其他方式产生。</p>
+
+<p>由程序产生的地址称为虚拟地址（virtual address） 它们构成了一个虚拟地址空间。 没有虚拟内存的计算机上，虚拟地址 就是 内存物理地址， 使用虚拟内存的情况下， 虚拟地址 并不直接传送到内存总线上，而是 先传到  内存管理单元（memory  management unit MMU） mmu将虚拟地址映射称为 物理内存地址 ，在传送到物理内存地址总线上。</p>
+
+<p>虚拟地址 按照固定大小划分为称为 页面 （page）的单元， 物理内存中对应的为 页框（page frame）  RAM与磁盘之间的交换总是以整个页面为单元进行的。</p>
+
+<p>转换：</p>
+
+<p>程序执行 指令 MOV REG， 0 将虚拟地址 0 送到MMU， MMU 看到u虚拟地址落在页面0，根据映射结果 该页面对应得是页框是2（8192-12287）  因此 MMU把地址变换为8192 并将地址 8192发送到总线上，内存对MMU一无所知，他知道看到一个读写地址 8192 的请求并执行它，MMU从而有效的将 程序虚拟地址空间0-4095 映射到 8192-12287。</p>
+
+<p>通过且当的设定 MMU，可以讲16个虚拟页面，映射到 8个页表框中的任何一个。但是这并没有解决 虚拟地址空间大于物理内存空间的问题。   当程序需要访问 第9个页面的时候，会发生什么情况呢？ MMU注意到 第9个页面并没有被影射到内存中， 于是使cpu陷入到操作系统 ，称为缺页中断 或者缺页错误。 操作系统找到一个很少使用的页框 并把他的内容写入到磁盘中，随后把需要访问的页面 读到刚才 回收的页框中，修改映射关系，然后重新执行引起缺页中断的指令。</p>
+
+<p>缺页处理的具体步骤为：<br />
+1） 如果操作系统决定放弃页框1， 将虚拟页面8 装入物理地址4096，然后对MMU做两处修改，<br />
+1） 将虚拟页面1 标记为未映射，以便 以后任何对于 虚拟地址 4096-8191的访问 都会导致 缺页中断<br />
+2） 将虚拟页面8的标记页框为1，因此在重新执行引起缺页中断的指令时，能够将虚拟地址 32780 映射为物理地址 4108</p>
+
+<p>MMU内部结构如下：</p>
+
+<p>可以将16位的虚拟地址，划分为 4位的 页号 + 12 位的便宜里那个。 4位的页号 可以表达16个 页面 ， 12位的偏移地址 可以为一页内部的全部4096个字节编码。<br />
+使用页号作为页表的索引。以找出对于该虚拟页面的页框号， 如果 不在 则 引发一个缺页中断， 如果在 ，则 将在页表中查找到的 页框号 + 虚拟地址的偏移量  构成一个 物理地址。 输出到物理内存地址总线上。</p>
+
+<p>页表：</p>
 <div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2021 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
