@@ -1037,7 +1037,7 @@ info: downloading self-updates
   <span class="p">}</span>
 
 </code></pre></div>  </li>
-  <li>使用场景： 该Trait 显得简单，但是依然非常重要， 为 减少更具体类型 提供了帮助， 在 定义更具体的AsFoo trait之前，应该考虑是否可以 让现有类型实现 AsRef<Foo></Foo></li>
+  <li>使用场景： 该Trait 显得简单，但是依然非常重要， 为 减少更具体类型 提供了帮助， 在 定义更具体的AsFoo trait之前，应该考虑是否可以 让现有类型实现 AsRef&lt;Foo&gt;</li>
 </ul>
 
 <h4 id="borrow-and-borrowmut-与-asref-相似如果type-impl-borrow-则-能够从type-borrow-出一个-t-区别在于-borrow-添加了一些限制要求-type-与-t-能够hash-的数值一样-才行rust-并没有强制要求-而是-以文档方式要求-这-为-hash-table-与-tree-的key-比较-提供了方便">Borrow and BorrowMut: 与 AsRef 相似，如果type impl Borrow<T> 则 能够从type borrow() 出一个 &amp;T, 区别在于 Borrow 添加了一些限制，要求 type 与 &amp;T 能够hash 的数值一样 才行。（rust 并没有强制要求 ，而是 以文档方式要求） 这 为 Hash table 与 tree 的key 比较 提供了方便。</T></h4>
