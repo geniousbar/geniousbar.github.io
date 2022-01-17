@@ -394,7 +394,7 @@ sql: 任何其他的sql 都会锁住全部的 rows，导致 insert update 无法
 
 <p>这里面提到了， 聚簇索引 + 二级索引，也就是说 不同的sql 使用索引不同 将导致加锁 顺序不同， 即： 存在两种情况， 1）先lock 聚簇（Record lock） 然后 更新 二级索引， 2) 先lock 二级索引， 再获取 聚簇上的lock 。也就是说存在 两种加锁路径： 1） 使用lock 进行搜索，然后 修改二级索引 树， 2） 使用二级索引搜索，然后 修改 聚簇数据，二级索引树。</p>
 
-<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2021 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2022 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
   hm.src = "https://hm.baidu.com/hm.js?b43ef53b285c49e1af0bd7080994c825";

@@ -1,0 +1,105 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible" /><meta content="initial-scale=1.0, user-scalable=no" name="viewport" /><title>redis all | 日常学习</title><meta description="redis 总结：     redis 已经看了不少，也写了不少，但是总是 没有一篇文章能够将其贯穿起来。 发现并没有太好的形式 将其总结下来。 曾经使用调用栈的方式将 代码+文档的形式记录下来。但缺少足够的大局观，写大片的理论文章又缺少足够的细节。   Redis Server 整体结构： server.c 中的 main 函数 /Users/lishaohua/Documents/self_test/redis/src/server.c::6063 initServerConfig()..." /><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="../../../../stylesheets/style-198d4031.css" rel="stylesheet" type="text/css" /><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="../../../../images/favicon-6c3f3d04.png" rel="icon" type="image/png" /><script src="../../../../javascripts/all-b3988275.js"></script></head><body><header><div class="top-menu"><div class="top-menu-wrapper"><div class="top-menu-list"><ul><li><a href="/">Home</a></li><li><a href="/archives/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/by-year/">By Year</a></li><li id="wechat"><a href="#" onclick="toggleShowWechat()">Wechat</a></li></ul></div></div></div><div id="header-wechat-img"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><h1 class="logo"><a href="/" title="日常学习"><span class="logo-text">日常学习</span></a></h1></header><main><article><h1 class="article-title">redis all</h1><div class="posted-date-wrapper"><i class="fa fa-clock-o"></i><span class="posted-date">September 13, 2021</span></div><div class="tag-labels"><a href="/tags/redis/"><small class="tag-label">redis</small></a><a href="/tags/linux/"><small class="tag-label">linux</small></a></div><hr class="article-header-separator" /><h2 id="redis-总结">redis 总结：</h2>
+
+<blockquote>
+  <p>redis 已经看了不少，也写了不少，但是总是 没有一篇文章能够将其贯穿起来。 发现并没有太好的形式 将其总结下来。 曾经使用调用栈的方式将 代码+文档的形式记录下来。但缺少足够的大局观，写大片的理论文章又缺少足够的细节。</p>
+</blockquote>
+
+<h3 id="redis-server-整体结构">Redis Server 整体结构：</h3>
+<h4 id="serverc-中的-main-函数-userslishaohuadocumentsself_testredissrcserverc6063">server.c 中的 main 函数 /Users/lishaohua/Documents/self_test/redis/src/server.c::6063</h4>
+<h5 id="initserverconfig-userslishaohuadocumentsself_testredissrcserverc2628--主要初始化-server的初始配置信息并没有读取-config-file-初始化-server-结构中的变量数值比如-aof_state-以及-初始化-command-table-redis-命令表-其中包含--命令字符串--函数指针--等">initServerConfig() /Users/lishaohua/Documents/self_test/redis/src/server.c::2628  主要初始化 server的初始配置信息（并没有读取 config file）， 初始化 server 结构中的变量数值（比如， aof_state, 以及 初始化 command table (redis 命令表 其中包含  命令字符串 + 函数指针 )） 等</h5>
+<h5 id="根据环境配置-调用-loadserverconfig-根据用户的config-file-对server进行初始化">根据环境配置 调用 loadServerConfig 根据用户的config file 对server进行初始化</h5>
+<h5 id="initserver-整个-serverc-中最重要的代码逻辑其中包括-1-创建serverel-的eventloop-fd-2-创建-socket_accept_handleraccepttcphandler-并添加到-serverelevents-中--3-创建-time-event-添加到-servereltimeeventhead-链表的头部">initServer() 整个 server.c 中最重要的代码逻辑。其中包括 1） 创建server.el 的eventloop fd 2） 创建 socket_accept_handler(acceptTcpHandler) 并添加到 server.el.events 中  3） 创建 time event 添加到 server.el.timeEventHead 链表的头部</h5>
+<h5 id="initserverlast-创建-thread-分别进行-background-io-提交-以及-thread-io">InitServerLast() 创建 thread 分别进行 background IO 提交 以及 thread IO</h5>
+<h5 id="aemainserverel-server的主循环-循环调用函数-aeprocessevent-aeprocessevents-函数内部-主要-aeapipolleventloop-tvp-等待-事件的发生然后对事件进行处理调用aefileevent-内部的-wfileprocrfileproc-然后-筛选-到时间的timerevent-进行-调用这里面-aeapipoll中的-超时时间-tvp-是选取-timerevents中最快到期的event的时间作为时间的-所以可以满足timerevent中的事件触发-不会太晚-对于-timeevent的处理-则是简单的遍历-timeevent-list-判断是否应该发生te-when--now-发生则调用其--timeproc-函数并标记删除">aeMain(server.el); server的主循环， 循环调用函数 aeProcessEvent， aeProcessEvents 函数内部， 主要 aeApiPoll(eventLoop, tvp) 等待 事件的发生，然后对事件进行处理（调用aeFileEvent 内部的 wfileProc/rfileProc） 然后 筛选 到时间的timerEvent 进行 调用（这里面 aeApiPoll中的 超时时间 tvp 是选取 timerEvents中最快到期的event的时间作为时间的， 所以可以满足timerEvent中的事件触发 不会太晚. 对于 timeEvent的处理， 则是简单的遍历 timeEvent list 判断是否应该发生（te-&gt;when &lt; now） 发生则调用其 -&gt;timeProc 函数，并标记删除）</h5>
+
+<blockquote>
+  <p>从上面内容可以看到，很显然 对于 新连接（client） 的到来的处理关键为: socket_accept_handler 的函数 acceptTcpHandler</p>
+  <h3 id="accepttcphandler-函数内部">acceptTcpHandler 函数内部：</h3>
+  <h4 id="将接受-server-的listen_fd-作为fd-调用-anettcpacceptfd其内部调用-系统的accept-并返回-client_fd">将接受 server 的listen_fd 作为fd 调用 anetTcpAccept(fd)（其内部调用 系统的accept 并返回 client_fd）</h4>
+  <h4 id="调用-conn--conncreateacceptedsocketclient_fd-用以创建-connect-结构其内部-包含--fd--client_fd--type--ct_socket">调用 conn = connCreateAcceptedSocket(client_fd) 用以创建 Connect 结构，其内部 包含 -&gt;fd = client_fd, -&gt;type = &amp;CT_Socket</h4>
+  <h4 id="调用-acceptcommonhandlerconn-内部通过调用-createclientconn完成了-client结构的额创建以及-client_fd--上的事件绑定">调用 acceptCommonHandler(conn), 内部通过调用 createClient(conn)完成了 Client结构的额创建，以及 client_fd  上的事件绑定</h4>
+  <h5 id="createclient">createClient:</h5>
+  <ul>
+    <li>创建了Client 结构 与 Connect 进行双向绑定。</li>
+    <li>设定 Conn 上的 read_handler 函数指针 为readQueryFromClient</li>
+    <li>调用 (aeCreateFileEvent(server.el,conn-&gt;fd, AE_READABLE,conn-&gt;type-&gt;ae_handler,conn) == AE_ERR) 完成 使用epoll对 client_fd 的事件监听</li>
+  </ul>
+</blockquote>
+
+<blockquote>
+  <p>所以 从上面的 调用来看， 我们了解了 一个 client 与 server 连接的建立过程。所以 client在后续的 执行 command过程 是下一个分析的重点， readQueryFromClient</p>
+</blockquote>
+
+<h3 id="readqueryfromclient">readQueryFromClient:</h3>
+<ul>
+  <li>connRead(c-&gt;conn, c-querybuf, readlen); connRead  在 Client 对应的 client_fd 上进行read， 将内容复制到 querybuf 中</li>
+  <li>processInputBuffer(c); 经过一系列的 函数调用 最终调用了 call函数 (processMultibulkBuffer -&gt; processCommandAndResetClient() -&gt; processCommand -&gt; call )  call 通过 lookupCommand(c-&gt;argv[0]-&gt;ptr);  寻找对应的 redisCommadn 结构， 然后待用 c-&gt;cmd-&gt;proc(c） 来执行对应的 redis命令，并addReply</li>
+</ul>
+
+<h3 id="redis-的数据结构">Redis 的数据结构：</h3>
+<h4 id="server-结构定义-在这里--userslishaohuadocumentsself_testredissrcserverh1155-其中除了-重要的-redisdb-db-指针之外-其他的都为一些标记位">server 结构定义 在这里  /Users/lishaohua/Documents/self_test/redis/src/server.h::1155 其中除了 重要的 redisDB *db 指针之外， 其他的都为一些标记位。</h4>
+<h5 id="struct-redisdb-其中定义了-以下几个key">struct <a href="/Users/lishaohua/Documents/self_test/redis/src/server.h::705">redisDb</a> 其中定义了 以下几个key：</h5>
+<ul>
+  <li>dict *dict，redis中的 所有key存在该 键值下 //set key val， HSET key field value , ZADD key score member , SADD key member  etc 其中的key 存放在dict  中</li>
+  <li>dict *expires， 用于存在设定过期时间的key， 存储形式为 key =&gt; expired_at</li>
+  <li>dict *blocking_keys 当client发生阻塞调用（比如 blpop 等） 则 需要在该键值上面添加 key =&gt; List([c1, c2, c3…])</li>
+  <li>dict *ready_keys 表明 对于 该 key 上的 阻塞调用 已不再 需要阻塞 （搭配 blocking_keys 使用）  /Users/lishaohua/Documents/self_test/redis/src/blocked.c::713 (server.c 中存在同样名称的结构 server.ready_keys 为list)</li>
+  <li>dict *watched_keys 在 redis 中的 multi/exec 中的watch 使用</li>
+  <li>int id， redis db id</li>
+  <li>etc ..
+    <h5 id="其中大量的使用了-dict-字典-或者-hashmap-作为-键值类型">其中大量的使用了 dict （字典 或者 HashMap） 作为 键值类型：</h5>
+    <h5 id="redis-hashdict--结构-该结构相关-主要存在于-dictc--dicth-中">redis hash(dict ) 结构： 该结构相关 主要存在于 dict.c + dict.h 中</h5>
+  </li>
+  <li>结构如下：</li>
+</ul>
+
+<div class="highlight"><pre class="highlight c"><code><span class="k">typedef</span> <span class="k">struct</span> <span class="n">dictEntry</span> <span class="p">{</span>
+    <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">;</span>
+    <span class="k">union</span> <span class="p">{</span>
+        <span class="kt">void</span> <span class="o">*</span><span class="n">val</span><span class="p">;</span>
+        <span class="kt">uint64_t</span> <span class="n">u64</span><span class="p">;</span>
+        <span class="kt">int64_t</span> <span class="n">s64</span><span class="p">;</span>
+        <span class="kt">double</span> <span class="n">d</span><span class="p">;</span>
+    <span class="p">}</span> <span class="n">v</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">dictEntry</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">dictEntry</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">dictType</span> <span class="p">{</span>
+    <span class="kt">uint64_t</span> <span class="p">(</span><span class="o">*</span><span class="n">hashFunction</span><span class="p">)(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">keyDup</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">privdata</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">valDup</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">privdata</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">obj</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">keyCompare</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">privdata</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key2</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">keyDestructor</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">privdata</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">valDestructor</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">privdata</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">obj</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">expandAllowed</span><span class="p">)(</span><span class="kt">size_t</span> <span class="n">moreMem</span><span class="p">,</span> <span class="kt">double</span> <span class="n">usedRatio</span><span class="p">);</span>
+<span class="p">}</span> <span class="n">dictType</span><span class="p">;</span>
+
+<span class="cm">/* This is our hash table structure. Every dictionary has two of this as we
+ * implement incremental rehashing, for the old to the new table. */</span>
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">dictht</span> <span class="p">{</span>
+    <span class="n">dictEntry</span> <span class="o">**</span><span class="n">table</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">size</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">sizemask</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">used</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">dictht</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">dict</span> <span class="p">{</span>
+    <span class="n">dictType</span> <span class="o">*</span><span class="n">type</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="o">*</span><span class="n">privdata</span><span class="p">;</span>
+    <span class="n">dictht</span> <span class="n">ht</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="kt">long</span> <span class="n">rehashidx</span><span class="p">;</span> <span class="cm">/* rehashing not in progress if rehashidx == -1 */</span>
+    <span class="kt">int16_t</span> <span class="n">pauserehash</span><span class="p">;</span> <span class="cm">/* If &gt;0 rehashing is paused (&lt;0 indicates coding error) */</span>
+<span class="p">}</span> <span class="n">dict</span><span class="p">;</span>
+
+</code></pre></div>
+<ul>
+  <li>dict</li>
+</ul>
+
+<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2022 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b43ef53b285c49e1af0bd7080994c825";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script></footer></body></html>

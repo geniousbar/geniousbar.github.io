@@ -4,16 +4,142 @@
   <id>http://geniousbar.github.io</id>
   <link href="http://geniousbar.github.io"/>
   <link href="http://geniousbar.github.io/feed.xml" rel="self"/>
-  <updated>2021-06-30T00:00:00+00:00</updated>
+  <updated>2022-01-17T00:00:00+00:00</updated>
   <author>
     <name>geniousbar</name>
   </author>
+  <entry>
+    <title>deep rails stack</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2022/01/17/deep-rails-stack/"/>
+    <id>http://geniousbar.github.io/2022/01/17/deep-rails-stack/</id>
+    <published>2022-01-17T00:00:00+00:00</published>
+    <updated>2022-01-17T02:35:10+00:00</updated>
+    <summary type="html">&lt;p&gt;&lt;a href="/rails/" title="rails"&gt;deep rails stack&lt;/a&gt;&lt;/p&gt;
+</summary>
+    <content type="html">&lt;p&gt;&lt;a href="/rails/" title="rails"&gt;deep rails stack&lt;/a&gt;&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>redis all</title>
+    <link rel="alternate" href="http://geniousbar.github.io/2021/09/13/redis-all/"/>
+    <id>http://geniousbar.github.io/2021/09/13/redis-all/</id>
+    <published>2021-09-13T00:00:00+00:00</published>
+    <updated>2021-10-28T01:53:14+00:00</updated>
+    <summary type="html">&lt;h2 id="redis-总结"&gt;redis 总结：&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;redis 已经看了不少，也写了不少，但是总是 没有一篇文章能够将其贯穿起来。 发现并没有太好的形式 将其总结下来。 曾经使用调用栈的方式将 代码+文档的形式记录下来。但缺少足够的大局观，写大片的理论文章又缺少足够的细节。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id="redis-server-整体结构"&gt;Redis Server 整体结构：&lt;/h3&gt;
+&lt;h4 id="serverc-中的-main-函数-userslishaohuadocumentsself_testredissrcserverc6063"&gt;server.c 中的 main 函数 /Users/lishaohua/Documents/self_test/redis/src/server.c::6063&lt;/h4&gt;
+&lt;h5 id="initserverconfig-userslishaohuadocumentsself_testredissrcserverc2628--主要初始化-server的初始配置信息并没有读取-config-file-初始化-server-结构中的变量数值比如-aof_state-以及-初始化-command-table-redis-命令表-其中包含--命令字符串--函数指针--等"&gt;initServerConfig()...&lt;/h5&gt;</summary>
+    <content type="html">&lt;h2 id="redis-总结"&gt;redis 总结：&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;redis 已经看了不少，也写了不少，但是总是 没有一篇文章能够将其贯穿起来。 发现并没有太好的形式 将其总结下来。 曾经使用调用栈的方式将 代码+文档的形式记录下来。但缺少足够的大局观，写大片的理论文章又缺少足够的细节。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id="redis-server-整体结构"&gt;Redis Server 整体结构：&lt;/h3&gt;
+&lt;h4 id="serverc-中的-main-函数-userslishaohuadocumentsself_testredissrcserverc6063"&gt;server.c 中的 main 函数 /Users/lishaohua/Documents/self_test/redis/src/server.c::6063&lt;/h4&gt;
+&lt;h5 id="initserverconfig-userslishaohuadocumentsself_testredissrcserverc2628--主要初始化-server的初始配置信息并没有读取-config-file-初始化-server-结构中的变量数值比如-aof_state-以及-初始化-command-table-redis-命令表-其中包含--命令字符串--函数指针--等"&gt;initServerConfig() /Users/lishaohua/Documents/self_test/redis/src/server.c::2628  主要初始化 server的初始配置信息（并没有读取 config file）， 初始化 server 结构中的变量数值（比如， aof_state, 以及 初始化 command table (redis 命令表 其中包含  命令字符串 + 函数指针 )） 等&lt;/h5&gt;
+&lt;h5 id="根据环境配置-调用-loadserverconfig-根据用户的config-file-对server进行初始化"&gt;根据环境配置 调用 loadServerConfig 根据用户的config file 对server进行初始化&lt;/h5&gt;
+&lt;h5 id="initserver-整个-serverc-中最重要的代码逻辑其中包括-1-创建serverel-的eventloop-fd-2-创建-socket_accept_handleraccepttcphandler-并添加到-serverelevents-中--3-创建-time-event-添加到-servereltimeeventhead-链表的头部"&gt;initServer() 整个 server.c 中最重要的代码逻辑。其中包括 1） 创建server.el 的eventloop fd 2） 创建 socket_accept_handler(acceptTcpHandler) 并添加到 server.el.events 中  3） 创建 time event 添加到 server.el.timeEventHead 链表的头部&lt;/h5&gt;
+&lt;h5 id="initserverlast-创建-thread-分别进行-background-io-提交-以及-thread-io"&gt;InitServerLast() 创建 thread 分别进行 background IO 提交 以及 thread IO&lt;/h5&gt;
+&lt;h5 id="aemainserverel-server的主循环-循环调用函数-aeprocessevent-aeprocessevents-函数内部-主要-aeapipolleventloop-tvp-等待-事件的发生然后对事件进行处理调用aefileevent-内部的-wfileprocrfileproc-然后-筛选-到时间的timerevent-进行-调用这里面-aeapipoll中的-超时时间-tvp-是选取-timerevents中最快到期的event的时间作为时间的-所以可以满足timerevent中的事件触发-不会太晚-对于-timeevent的处理-则是简单的遍历-timeevent-list-判断是否应该发生te-when--now-发生则调用其--timeproc-函数并标记删除"&gt;aeMain(server.el); server的主循环， 循环调用函数 aeProcessEvent， aeProcessEvents 函数内部， 主要 aeApiPoll(eventLoop, tvp) 等待 事件的发生，然后对事件进行处理（调用aeFileEvent 内部的 wfileProc/rfileProc） 然后 筛选 到时间的timerEvent 进行 调用（这里面 aeApiPoll中的 超时时间 tvp 是选取 timerEvents中最快到期的event的时间作为时间的， 所以可以满足timerEvent中的事件触发 不会太晚. 对于 timeEvent的处理， 则是简单的遍历 timeEvent list 判断是否应该发生（te-&amp;gt;when &amp;lt; now） 发生则调用其 -&amp;gt;timeProc 函数，并标记删除）&lt;/h5&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;从上面内容可以看到，很显然 对于 新连接（client） 的到来的处理关键为: socket_accept_handler 的函数 acceptTcpHandler&lt;/p&gt;
+  &lt;h3 id="accepttcphandler-函数内部"&gt;acceptTcpHandler 函数内部：&lt;/h3&gt;
+  &lt;h4 id="将接受-server-的listen_fd-作为fd-调用-anettcpacceptfd其内部调用-系统的accept-并返回-client_fd"&gt;将接受 server 的listen_fd 作为fd 调用 anetTcpAccept(fd)（其内部调用 系统的accept 并返回 client_fd）&lt;/h4&gt;
+  &lt;h4 id="调用-conn--conncreateacceptedsocketclient_fd-用以创建-connect-结构其内部-包含--fd--client_fd--type--ct_socket"&gt;调用 conn = connCreateAcceptedSocket(client_fd) 用以创建 Connect 结构，其内部 包含 -&amp;gt;fd = client_fd, -&amp;gt;type = &amp;amp;CT_Socket&lt;/h4&gt;
+  &lt;h4 id="调用-acceptcommonhandlerconn-内部通过调用-createclientconn完成了-client结构的额创建以及-client_fd--上的事件绑定"&gt;调用 acceptCommonHandler(conn), 内部通过调用 createClient(conn)完成了 Client结构的额创建，以及 client_fd  上的事件绑定&lt;/h4&gt;
+  &lt;h5 id="createclient"&gt;createClient:&lt;/h5&gt;
+  &lt;ul&gt;
+    &lt;li&gt;创建了Client 结构 与 Connect 进行双向绑定。&lt;/li&gt;
+    &lt;li&gt;设定 Conn 上的 read_handler 函数指针 为readQueryFromClient&lt;/li&gt;
+    &lt;li&gt;调用 (aeCreateFileEvent(server.el,conn-&amp;gt;fd, AE_READABLE,conn-&amp;gt;type-&amp;gt;ae_handler,conn) == AE_ERR) 完成 使用epoll对 client_fd 的事件监听&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;所以 从上面的 调用来看， 我们了解了 一个 client 与 server 连接的建立过程。所以 client在后续的 执行 command过程 是下一个分析的重点， readQueryFromClient&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id="readqueryfromclient"&gt;readQueryFromClient:&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;connRead(c-&amp;gt;conn, c-querybuf, readlen); connRead  在 Client 对应的 client_fd 上进行read， 将内容复制到 querybuf 中&lt;/li&gt;
+  &lt;li&gt;processInputBuffer(c); 经过一系列的 函数调用 最终调用了 call函数 (processMultibulkBuffer -&amp;gt; processCommandAndResetClient() -&amp;gt; processCommand -&amp;gt; call )  call 通过 lookupCommand(c-&amp;gt;argv[0]-&amp;gt;ptr);  寻找对应的 redisCommadn 结构， 然后待用 c-&amp;gt;cmd-&amp;gt;proc(c） 来执行对应的 redis命令，并addReply&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id="redis-的数据结构"&gt;Redis 的数据结构：&lt;/h3&gt;
+&lt;h4 id="server-结构定义-在这里--userslishaohuadocumentsself_testredissrcserverh1155-其中除了-重要的-redisdb-db-指针之外-其他的都为一些标记位"&gt;server 结构定义 在这里  /Users/lishaohua/Documents/self_test/redis/src/server.h::1155 其中除了 重要的 redisDB *db 指针之外， 其他的都为一些标记位。&lt;/h4&gt;
+&lt;h5 id="struct-redisdb-其中定义了-以下几个key"&gt;struct &lt;a href="/Users/lishaohua/Documents/self_test/redis/src/server.h::705"&gt;redisDb&lt;/a&gt; 其中定义了 以下几个key：&lt;/h5&gt;
+&lt;ul&gt;
+  &lt;li&gt;dict *dict，redis中的 所有key存在该 键值下 //set key val， HSET key field value , ZADD key score member , SADD key member  etc 其中的key 存放在dict  中&lt;/li&gt;
+  &lt;li&gt;dict *expires， 用于存在设定过期时间的key， 存储形式为 key =&amp;gt; expired_at&lt;/li&gt;
+  &lt;li&gt;dict *blocking_keys 当client发生阻塞调用（比如 blpop 等） 则 需要在该键值上面添加 key =&amp;gt; List([c1, c2, c3…])&lt;/li&gt;
+  &lt;li&gt;dict *ready_keys 表明 对于 该 key 上的 阻塞调用 已不再 需要阻塞 （搭配 blocking_keys 使用）  /Users/lishaohua/Documents/self_test/redis/src/blocked.c::713 (server.c 中存在同样名称的结构 server.ready_keys 为list)&lt;/li&gt;
+  &lt;li&gt;dict *watched_keys 在 redis 中的 multi/exec 中的watch 使用&lt;/li&gt;
+  &lt;li&gt;int id， redis db id&lt;/li&gt;
+  &lt;li&gt;etc ..
+    &lt;h5 id="其中大量的使用了-dict-字典-或者-hashmap-作为-键值类型"&gt;其中大量的使用了 dict （字典 或者 HashMap） 作为 键值类型：&lt;/h5&gt;
+    &lt;h5 id="redis-hashdict--结构-该结构相关-主要存在于-dictc--dicth-中"&gt;redis hash(dict ) 结构： 该结构相关 主要存在于 dict.c + dict.h 中&lt;/h5&gt;
+  &lt;/li&gt;
+  &lt;li&gt;结构如下：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight c"&gt;&lt;code&gt;&lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;dictEntry&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;union&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;val&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="kt"&gt;uint64_t&lt;/span&gt; &lt;span class="n"&gt;u64&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="kt"&gt;int64_t&lt;/span&gt; &lt;span class="n"&gt;s64&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="kt"&gt;double&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;dictEntry&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;next&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="n"&gt;dictEntry&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;dictType&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kt"&gt;uint64_t&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;hashFunction&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;keyDup&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;privdata&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;valDup&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;privdata&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;keyCompare&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;privdata&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;key1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;key2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;keyDestructor&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;privdata&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;valDestructor&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;privdata&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;expandAllowed&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;moreMem&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;double&lt;/span&gt; &lt;span class="n"&gt;usedRatio&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="n"&gt;dictType&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* This is our hash table structure. Every dictionary has two of this as we
+ * implement incremental rehashing, for the old to the new table. */&lt;/span&gt;
+&lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;dictht&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;dictEntry&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;table&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="n"&gt;sizemask&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="n"&gt;used&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="n"&gt;dictht&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;dict&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;dictType&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;privdata&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;dictht&lt;/span&gt; &lt;span class="n"&gt;ht&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+    &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="n"&gt;rehashidx&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="cm"&gt;/* rehashing not in progress if rehashidx == -1 */&lt;/span&gt;
+    &lt;span class="kt"&gt;int16_t&lt;/span&gt; &lt;span class="n"&gt;pauserehash&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="cm"&gt;/* If &amp;gt;0 rehashing is paused (&amp;lt;0 indicates coding error) */&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="n"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;dict&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+  </entry>
   <entry>
     <title>rust 编码模式</title>
     <link rel="alternate" href="http://geniousbar.github.io/2021/06/30/rust-design-patterns/"/>
     <id>http://geniousbar.github.io/2021/06/30/rust-design-patterns/</id>
     <published>2021-06-30T00:00:00+00:00</published>
-    <updated>2021-06-29T10:01:35+00:00</updated>
+    <updated>2021-10-28T01:53:14+00:00</updated>
     <summary type="html">&lt;h3 id="设计模式"&gt;设计模式&lt;/h3&gt;
 &lt;ul&gt;
   &lt;li&gt;Design Patterns: 是在编写软件时解决常见问题的方法。&lt;/li&gt;
@@ -146,7 +272,7 @@
     <link rel="alternate" href="http://geniousbar.github.io/2021/05/25/current-os-virtual-memory/"/>
     <id>http://geniousbar.github.io/2021/05/25/current-os-virtual-memory/</id>
     <published>2021-05-25T00:00:00+00:00</published>
-    <updated>2021-08-17T08:00:01+00:00</updated>
+    <updated>2021-10-28T01:53:14+00:00</updated>
     <summary type="html">&lt;h2 id="内存管理"&gt;内存管理&lt;/h2&gt;
 
 &lt;blockquote&gt;
@@ -773,7 +899,7 @@ multics中的 地址 由两部分构成： 段 + 段内地址。 段内地址 �
     <link rel="alternate" href="http://geniousbar.github.io/2021/05/24/current-os/"/>
     <id>http://geniousbar.github.io/2021/05/24/current-os/</id>
     <published>2021-05-24T00:00:00+00:00</published>
-    <updated>2021-06-15T10:50:52+00:00</updated>
+    <updated>2021-10-28T01:53:14+00:00</updated>
     <summary type="html">&lt;h3 id="现代操作系统"&gt;现代操作系统：&lt;/h3&gt;
 &lt;blockquote&gt;
   &lt;p&gt;抽象是管理复杂性的关键， 好的抽象可以把一个 不可能管理的任务 分为 两个可管理的部件。 抽象的定义和实现 + 用这些抽象解决的问题。&lt;br&gt;
@@ -1623,7 +1749,7 @@ up操作； 对信号数值+1， 如果一个或者多个进程在该信号量�
     <link rel="alternate" href="http://geniousbar.github.io/2021/05/09/rust-async/"/>
     <id>http://geniousbar.github.io/2021/05/09/rust-async/</id>
     <published>2021-05-09T00:00:00+00:00</published>
-    <updated>2021-06-23T09:29:55+00:00</updated>
+    <updated>2021-10-28T01:53:14+00:00</updated>
     <summary type="html">&lt;h3 id="并发模型"&gt;并发模型&lt;/h3&gt;
 &lt;ul&gt;
   &lt;li&gt;
@@ -2248,555 +2374,6 @@ Futures created by async/await is an example of this.&lt;/T&gt;&lt;/p&gt;
   &lt;li&gt;Coroutines （协程， 即是语言在 OS上 对于 轻量线程的抽象， 在 《现代操作系统》 中 有详细介绍过此类模型，但是因为其 一些根源性问题， 对于系统信号、调度等并不友好）&lt;/li&gt;
   &lt;li&gt;The actor model: 将单元划分为 actor， 使用消息进行 通讯， Erlang 是典型的 actor并发代表&lt;/li&gt;
 &lt;/ul&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Mysql</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2021/04/11/mysql-relearn/"/>
-    <id>http://geniousbar.github.io/2021/04/11/mysql-relearn/</id>
-    <published>2021-04-11T00:00:00+00:00</published>
-    <updated>2021-04-22T02:50:09+00:00</updated>
-    <summary type="html">&lt;h2 id="mysql-relearn"&gt;Mysql Relearn&lt;/h2&gt;
-&lt;h3 id="内存模型"&gt;内存模型：&lt;/h3&gt;
-&lt;p&gt;&lt;img src="../../../../images/innodb-change-buffer-5fbd1a84.png" alt="memory-cache"&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Change BUffer： 缓存 不在Buffer pool 中的 索引页的变动， 变动 可能由 insert update， delete 等操作 导致， 将在以后 页面 被加载到 Buffer pool时 被合并
-    &lt;ul&gt;
-      &lt;li&gt;[image]&lt;/li&gt;
-      &lt;li&gt;不同于 聚簇索引， 普通的索引 通常是不唯一的，索引 的插入 删除 更新 通常是 random 的， 随后 将 change Buffer 的合并到 Buffer pool（当...&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;</summary>
-    <content type="html">&lt;h2 id="mysql-relearn"&gt;Mysql Relearn&lt;/h2&gt;
-&lt;h3 id="内存模型"&gt;内存模型：&lt;/h3&gt;
-&lt;p&gt;&lt;img src="../../../../images/innodb-change-buffer-5fbd1a84.png" alt="memory-cache" /&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Change BUffer： 缓存 不在Buffer pool 中的 索引页的变动， 变动 可能由 insert update， delete 等操作 导致， 将在以后 页面 被加载到 Buffer pool时 被合并
-    &lt;ul&gt;
-      &lt;li&gt;[image]&lt;/li&gt;
-      &lt;li&gt;不同于 聚簇索引， 普通的索引 通常是不唯一的，索引 的插入 删除 更新 通常是 random 的， 随后 将 change Buffer 的合并到 Buffer pool（当索引页被load 到 buffer pool时） 将减少 随机 的IO 操作。&lt;/li&gt;
-      &lt;li&gt;当系统 空闲时，或者缓慢关闭时 会定时的进行清理操作（将cache 写回到 硬盘中） 清理操作 将 一系列的 索引更新 写入到磁盘中 的速度 远高于 每个更新立即写入&lt;/li&gt;
-      &lt;li&gt;当存在大量的 受影响的row 和 众多的 索引时， change Buffer 的合并（这里的合并 应该不是简单的与 Buffer pool的合并，而是 合并之后，需要写回到 硬盘中吧） 可能 需要数个小时， 在这期间， IO将显著增加， 导致 磁盘绑定查询（意思是 需要 访问硬盘？） 的速度显著变慢，&lt;/li&gt;
-      &lt;li&gt;在Memory中， change buff 是Buffer pool 的一部分， 在disk上， change buff 是 system tablespace 的一部分（当服务器关闭是， 索引的更改change buff 可能保存其中）&lt;/li&gt;
-      &lt;li&gt;配置：
-        &lt;ol&gt;
-          &lt;li&gt;innodb_change_buffering 因为 change buffer 虽然能够 减少IO操作，但 依然占用了 部分的 Buffer pool, 所以提供了此变量 来精确的控制 insert， delete， purge（physical deletion happen in background）， changes(insert + delete) 操作 是否使用  change buffer&lt;/li&gt;
-          &lt;li&gt;innodb_change_buffer_max_size 可以控制 buffer的大小，数值为 其所占 Buffer pool 的百分比， 默认为 25，最高 为 50&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Monitor：
-        &lt;ul&gt;
-          &lt;li&gt;show engine Innodb status 中的 INSERT BUFFER AND ADAPTIVE HASH INDEX 段&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;  -------------------------------------
-  INSERT BUFFER AND ADAPTIVE HASH INDEX
-  -------------------------------------
-  Ibuf: size 1, free list len 0, seg size 2, 0 merges
-  merged operations:
-   insert 0, delete mark 0, delete 0
-  discarded operations:
-   insert 0, delete mark 0, delete 0
-  Hash table size 4425293, used cells 32, node heap has 1 buffer(s)
-  13577.57 hash searches/s, 202.47 non-hash searches/s
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;ul&gt;
-      &lt;li&gt;数据库方式： information_schema 中 相关的table 可以查询到相关信息 &lt;a href="https://dev.mysql.com/doc/refman/8.0/en/innodb-change-buffer.html#innodb-change-buffer-maximum-size"&gt;url&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id="自适应hash-索引"&gt;自适应Hash 索引：&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Hash 索引： 通过 索引 的前缀 构建 hash 的 key， 通过监控到的搜索， 如果InnoDB 认为可以 让查询从 简历Hash索引中 收益， 他会自动构建。&lt;/li&gt;
-  &lt;li&gt;在一些负载比较繁重的情况下， 导致 监控 争用 Hash索引 的开销 并不能够 使其 受益，则可以选择关闭 该选项， 以为很难判定 这种情况的出现， 则 应该使用 准确的基准测试 之后来决定&lt;/li&gt;
-  &lt;li&gt;自适应 Hash索引： 已经实现了 分区(partition)， 每个索引都绑定到特定的分区（并不知道有啥用,这里要讲啥?） 分区数量由 innodb_adaptive_hash_index_parts  控制，在 8…512 范围内&lt;/li&gt;
-  &lt;li&gt;可以 在 show engine innodb  status 中的  SEMAPHORES 段 来查看 btr0sea.c 的rw 锁 争用情况， 可以考虑增加 Hash索引的分区数值，或者关闭 该功能&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id="log-buffer"&gt;Log Buffer:&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Log buffer 用来缓存 将要写入 disk 的 log file的数据，&lt;/li&gt;
-  &lt;li&gt;配置：
-    &lt;ol&gt;
-      &lt;li&gt;innodb_log_buffer_size  用来控制Buffer 的大小， default is 16MB, 定期 刷新到 disk, 一个大 的 log buffer 可以让一个 da的 transaction 在commit 提交前 不需要将 redo log 刷新到disk 中。&lt;/li&gt;
-      &lt;li&gt;innodb_flush_log_at_trx_commit  控制 log buffer 而如何 同步到disk中&lt;/li&gt;
-      &lt;li&gt;innodb_flush_log_at_timeout： 控制log buffer 同步的频率&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id="innodb-磁盘数据结构"&gt;InnoDB 磁盘数据结构：&lt;/h3&gt;
-
-&lt;h4 id="table"&gt;Table&lt;/h4&gt;
-&lt;h4 id="创建表-create-table"&gt;创建表： create table,&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt;   &lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="nb"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="nb"&gt;CHAR&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="k"&gt;PRIMARY&lt;/span&gt; &lt;span class="k"&gt;KEY&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="n"&gt;ENGINE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-  &lt;li&gt;Innodb 默认 table 的存储方式 为一个 文件 一个table， 配置 innodb_file_per_table 用来打开、关闭 此行为
-    &lt;h4 id="row-format"&gt;Row format：&lt;/h4&gt;
-  &lt;/li&gt;
-  &lt;li&gt;row 的格式，决定了 InnoDB 行 在物理上的disk 的存储，支持 4中format， 每个格式 都有对应的存储特性。格式有：
-    &lt;ul&gt;
-      &lt;li&gt;redundant： 冗余&lt;/li&gt;
-      &lt;li&gt;compact： 紧凑&lt;/li&gt;
-      &lt;li&gt;dynamic： 动态&lt;/li&gt;
-      &lt;li&gt;compressed： 压缩&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;row 格式控制： 默认为 dynamic， 变量 innodb_default_row_format 可以控制 默认的row 存储格式， create table, alter table 也同样可以控制 row 格式&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id="primary-key"&gt;Primary key&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;建议 为每个table 创建自己的 primary key, 选取 primary key 的column 规则为：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;重要查询所使用&lt;/li&gt;
-      &lt;li&gt;永远不会存储空&lt;/li&gt;
-      &lt;li&gt;永远不会存储重复数值&lt;/li&gt;
-      &lt;li&gt;插入之后 很少更新的数值&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;如果没有 明显的选择的话， 则 可以创建一个 type 为number auto-increment 的column 作为主建&lt;/li&gt;
-  &lt;li&gt;尽管在没有定义主键的情况下表可以正常工作，但是主键涉及性能的许多方面，并且对于任何大型或经常使用的表都是至关重要的设计方面。 建议始终在CREATE TABLE语句中指定主键&lt;/li&gt;
-  &lt;li&gt;查看table的相关的属性：
-    &lt;ol&gt;
-      &lt;li&gt;SHOW TABLE STATUS&lt;/li&gt;
-    &lt;/ol&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt;   &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;SHOW&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="n"&gt;STATUS&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt; &lt;span class="k"&gt;LIKE&lt;/span&gt; &lt;span class="s1"&gt;'t%'&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="k"&gt;G&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-   &lt;span class="o"&gt;***************************&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt; &lt;span class="k"&gt;row&lt;/span&gt; &lt;span class="o"&gt;***************************&lt;/span&gt;
-              &lt;span class="n"&gt;Name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt;
-            &lt;span class="n"&gt;Engine&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt;
-           &lt;span class="k"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;
-        &lt;span class="n"&gt;Row_format&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;Dynamic&lt;/span&gt;
-              &lt;span class="k"&gt;Rows&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
-    &lt;span class="n"&gt;Avg_row_length&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
-       &lt;span class="n"&gt;Data_length&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;16384&lt;/span&gt;
-   &lt;span class="n"&gt;Max_data_length&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
-      &lt;span class="n"&gt;Index_length&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
-         &lt;span class="n"&gt;Data_free&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
-    &lt;span class="n"&gt;Auto_increment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;NULL&lt;/span&gt;
-       &lt;span class="n"&gt;Create_time&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2021&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;02&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;18&lt;/span&gt; &lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;18&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;28&lt;/span&gt;
-       &lt;span class="n"&gt;Update_time&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;NULL&lt;/span&gt;
-        &lt;span class="n"&gt;Check_time&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;NULL&lt;/span&gt;
-         &lt;span class="k"&gt;Collation&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;utf8mb4_0900_ai_ci&lt;/span&gt;
-          &lt;span class="n"&gt;Checksum&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;NULL&lt;/span&gt;
-    &lt;span class="n"&gt;Create_options&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
-           &lt;span class="k"&gt;Comment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;    
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;从 INFORMATION_SCHEMA.INNODB_TABLES 中获取信息:&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt;
-  &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;INFORMATION_SCHEMA&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;INNODB_TABLES&lt;/span&gt; &lt;span class="k"&gt;WHERE&lt;/span&gt; &lt;span class="n"&gt;NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'test/t1'&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="k"&gt;G&lt;/span&gt;
- &lt;span class="o"&gt;***************************&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt; &lt;span class="k"&gt;row&lt;/span&gt; &lt;span class="o"&gt;***************************&lt;/span&gt;
-      &lt;span class="n"&gt;TABLE_ID&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1144&lt;/span&gt;
-          &lt;span class="n"&gt;NAME&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;t1&lt;/span&gt;
-          &lt;span class="n"&gt;FLAG&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;33&lt;/span&gt;
-        &lt;span class="n"&gt;N_COLS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;
-         &lt;span class="k"&gt;SPACE&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;
-    &lt;span class="n"&gt;ROW_FORMAT&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;Dynamic&lt;/span&gt;
- &lt;span class="n"&gt;ZIP_PAGE_SIZE&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
-    &lt;span class="n"&gt;SPACE_TYPE&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Single&lt;/span&gt;
-  &lt;span class="n"&gt;INSTANT_COLS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id="在其他目录中存储-数据即-外部创建表"&gt;在其他目录中存储 数据：（即 外部创建表）&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;Using the DATA DIRECTORY Clause： 在 create table syntax 中 可以 添加  DATA DIRECTORY 来制定数据的存储目录&lt;/li&gt;
-  &lt;li&gt;Using TABLESPACE Clause: 在create table syntax 中添加 TABLESPACE = innodb_file_per_table 配合 data dictory 使用&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;示例：&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;USE&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="k"&gt;Database&lt;/span&gt; &lt;span class="n"&gt;changed&lt;/span&gt;
-
-&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c1&lt;/span&gt; &lt;span class="nb"&gt;INT&lt;/span&gt; &lt;span class="k"&gt;PRIMARY&lt;/span&gt; &lt;span class="k"&gt;KEY&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;DATA&lt;/span&gt; &lt;span class="n"&gt;DIRECTORY&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'/external/directory'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;MySQL&lt;/span&gt; &lt;span class="n"&gt;creates&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="k"&gt;table&lt;/span&gt;&lt;span class="s1"&gt;'s data file in a schema directory
-# under the external directory
-
-shell&amp;gt; cd /external/directory/test
-shell&amp;gt; ls
-t1.ibd
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id="导入-innodb-表"&gt;导入 InnoDB 表：&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;可能应用的场景有：
-    &lt;ol&gt;
-      &lt;li&gt;利用 线上 的数据做报表，而不像 增加额外的负担 在线上 2） 复制数据给 replica server 3） 从backup 上恢复 表 4）&lt;/li&gt;
-      &lt;li&gt;比import a dump file 更快的 移动数据 的方法&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;先决条件
-    &lt;ol&gt;
-      &lt;li&gt;innodb_file_per_table  变量 必须是打开的&lt;/li&gt;
-      &lt;li&gt;source server &amp;amp; desitnation server  的 page size of tablespace 配置必须相同，  innodb_page_size  变量控制&lt;/li&gt;
-      &lt;li&gt;foreign key 的关系， 如果 导出表 有 foreign key，  在 执行 discard talbespace 之前， 则 需要 foreign_key_checks 需要关闭， 还需要导出所有外键 关联的表，因为ALTER TABLE … IMPORT TABLESPACE不会对导入的数据实施外键约束。 为此 需要 停止更新 相关的表， 提交所有 transaction， 获取表 的 S锁，然后执行 export 操作&lt;/li&gt;
-      &lt;li&gt;导出导入 的mysql version  必须兼容&lt;/li&gt;
-      &lt;li&gt;导出导入server 的 data directory 必须 相同, 导致 schema mismatch error&lt;/li&gt;
-      &lt;li&gt;导出导入server 的 ROW_FORMAT 需要相同, 导致 schema mismatch errorgg&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;示例
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;在 destination server 上 创建表， schema 需要与 source server 表的 syntax 相同&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt; &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;USE&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
- &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c1&lt;/span&gt; &lt;span class="nb"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;ENGINE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;INNODB&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/li&gt;
-      &lt;li&gt;在destination server 上， 执行 discard tablespace 命令
-        &lt;ul&gt;
-          &lt;li&gt;table 将会 上 X 锁&lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;tablespace 与table 分离&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt; &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;ALTER&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="n"&gt;DISCARD&lt;/span&gt; &lt;span class="n"&gt;TABLESPACE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;在source server 上 执行 flush tables … for export， 执行之后 只能允许 读表请求， 将产生 .cfg, .ibd文件
-        &lt;ul&gt;
-          &lt;li&gt;导出的table 将会上S锁， 并将更新 flush 到disk&lt;/li&gt;
-          &lt;li&gt;停止 purge thread&lt;/li&gt;
-          &lt;li&gt;Dirty page sync to disk&lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;table metadata write to .cfg file&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt; &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;USE&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
- &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;FLUSH&lt;/span&gt; &lt;span class="n"&gt;TABLES&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="k"&gt;FOR&lt;/span&gt; &lt;span class="n"&gt;EXPORT&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
- &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="err"&gt;可能看到的&lt;/span&gt; &lt;span class="err"&gt;输出为&lt;/span&gt;
- &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Note&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Sync&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;disk&lt;/span&gt; &lt;span class="k"&gt;of&lt;/span&gt; &lt;span class="s1"&gt;'"test"."t1"'&lt;/span&gt; &lt;span class="n"&gt;started&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
- &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Note&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Stopping&lt;/span&gt; &lt;span class="n"&gt;purge&lt;/span&gt;
- &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Note&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Writing&lt;/span&gt; &lt;span class="k"&gt;table&lt;/span&gt; &lt;span class="n"&gt;metadata&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="s1"&gt;'./test/t1.cfg'&lt;/span&gt;
- &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Note&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;Table&lt;/span&gt; &lt;span class="s1"&gt;'"test"."t1"'&lt;/span&gt; &lt;span class="n"&gt;flushed&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;disk&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;复制数据：&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt; &lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;scp&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;to&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;datadir&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;t1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="err"&gt;{&lt;/span&gt;&lt;span class="n"&gt;ibd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;cfg&lt;/span&gt;&lt;span class="err"&gt;}&lt;/span&gt; &lt;span class="n"&gt;destination&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;server&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;to&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;datadir&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/li&gt;
-      &lt;li&gt;在 source server 上执行 unlock tables
-        &lt;ul&gt;
-          &lt;li&gt;删除 .cfg 文件&lt;/li&gt;
-          &lt;li&gt;table上的S锁 被释放&lt;/li&gt;
-          &lt;li&gt;purge thread 被重启&lt;/li&gt;
-        &lt;/ul&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt;  &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;USE&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;UNLOCK&lt;/span&gt; &lt;span class="n"&gt;TABLES&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-  &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="err"&gt;可能的输出&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="err"&gt;为&lt;/span&gt;
-  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Note&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Deleting&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;meta&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;data&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="s1"&gt;'./test/t1.cfg'&lt;/span&gt;
-  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Note&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Resuming&lt;/span&gt; &lt;span class="n"&gt;purge&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-      &lt;li&gt;在 destination server 上import tablespace
-        &lt;ul&gt;
-          &lt;li&gt;每个 tablespace page 会被 校验是否正确&lt;/li&gt;
-          &lt;li&gt;The space ID and log sequence numbers (LSNs) on each page are updated.&lt;/li&gt;
-          &lt;li&gt;Flags are validated and LSN updated for the header page.&lt;/li&gt;
-          &lt;li&gt;Btree pages are updated.&lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;The page state is set to dirty so that it is written to disk.&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt; &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;USE&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
- &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;ALTER&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="n"&gt;IMPORT&lt;/span&gt; &lt;span class="n"&gt;TABLESPACE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
- &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="err"&gt;可能输出&lt;/span&gt; &lt;span class="n"&gt;log&lt;/span&gt; &lt;span class="err"&gt;为：&lt;/span&gt;
-
- &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Note&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Importing&lt;/span&gt; &lt;span class="n"&gt;tablespace&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="k"&gt;table&lt;/span&gt; &lt;span class="s1"&gt;'test/t1'&lt;/span&gt; &lt;span class="n"&gt;that&lt;/span&gt; &lt;span class="n"&gt;was&lt;/span&gt; &lt;span class="n"&gt;exported&lt;/span&gt;
- &lt;span class="k"&gt;from&lt;/span&gt; &lt;span class="k"&gt;host&lt;/span&gt; &lt;span class="s1"&gt;'host_name'&lt;/span&gt;
- &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Note&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Phase&lt;/span&gt; &lt;span class="n"&gt;I&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="k"&gt;Update&lt;/span&gt; &lt;span class="k"&gt;all&lt;/span&gt; &lt;span class="n"&gt;pages&lt;/span&gt;
- &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Note&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Sync&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;disk&lt;/span&gt;
- &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Note&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Sync&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;disk&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;
- &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Note&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Phase&lt;/span&gt; &lt;span class="n"&gt;III&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Flush&lt;/span&gt; &lt;span class="n"&gt;changes&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;disk&lt;/span&gt;
- &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Note&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Phase&lt;/span&gt; &lt;span class="n"&gt;IV&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Flush&lt;/span&gt; &lt;span class="n"&gt;complete&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id="auto_increment-在innodb-中的处理方式"&gt;AUTO_INCREMENT 在InnoDB 中的处理方式&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;在表中 添加 AUTO_INCREMENT 字段， 是InnoDB 提高性能 与 稳定性的一种方式， 为了有效利用 AUTO_INCREMENT ， 必须将 AUTO_INCREMENT 字段设为索引， 以便 执行 select max(col) 以获得 最大值，&lt;/li&gt;
-  &lt;li&gt;AUTO_INCREMENT 锁的 集中方式，其中的区别 以及 每种对 replic 的影响&lt;/li&gt;
-  &lt;li&gt;数据插入的集中方式： 所有生成 新row的 语句， 包括 insert, insert .. select, replace, replace .. select, load data 包含
-    &lt;ol&gt;
-      &lt;li&gt;simple-insert: 可以预先知道 插入 行数 的 insert 语句，比如简单的单行， 多行 insert&lt;/li&gt;
-      &lt;li&gt;bulk-insert: 插入行数未知  的语句，比如： insert .. select ,replace .. select, load data 语句&lt;/li&gt;
-      &lt;li&gt;mixed-mode insert: 指定 auto_increment 数值的 insert 语句 或者  INSERT … ON DUPLICATE KEY UPDATE 等复杂的 语句，这些语句可能不会使用 auto_increment 分配的数值 比如：&lt;/li&gt;
-    &lt;/ol&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt;   &lt;span class="k"&gt;INSERT&lt;/span&gt; &lt;span class="k"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;c2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;VALUES&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;'a'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;'b'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;'c'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;'d'&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-  &lt;li&gt;innodb_autoinc_lock_mode 可能的模式有： 0 (traditional), 1(consecutive), 2(interleaved) Mysql 8.0 默认为 interleaved 模式， 8.0 之前 默认为 consecutive 模式
-    &lt;h5 id="lock-mode-的变化-反映了-mysql-从--基于语句-replica-转变到-基于-row-replica-的转变-基于语句复制-需要-一个-consecutive-的lock-mode--来确保-auto-increment-数值的-可以预测-可重复-性-因为-在replic时候-同步的是-sql-执行语句只有这样才能够保证-replic与-master-server-的数据一致性-而基于-row-replica-对于-语句的执行顺序并不敏感"&gt;lock mode 的变化 反映了 Mysql 从  基于语句 replica 转变到 基于 row replica 的转变。 基于语句复制 需要 一个 consecutive 的lock mode  来确保 auto-increment 数值的 可以预测 可重复 性 （因为 在replic时候， 同步的是 sql 执行语句，只有这样才能够保证 replic与 master server 的数据一致性）， 而基于 row replica 对于 语句的执行顺序并不敏感&lt;/h5&gt;
-    &lt;ol&gt;
-      &lt;li&gt;traditional: 该种模式下， 所有的inert like 语句 斗殴需要获取 一个特殊的 table-level  auto-inc lock， 该锁 需要把持到 语句的结束（非 transaction 结束） 来 保证 auto-increment 数值 的可重复性 与 可预见性， 同时保证了  auto-increment 字段数值的 连续性。 假设在 基于 语句 的复制模式中， 这意味着 sql语句 replic 到 replica server上的时候，将产生 与 source server上 完全相同的数值。 如果 让 多个 insert 语句 交替执行，则将导致 结果 不可重现， 即 replica server 与 source server数据 并不相同。 下面示例：&lt;/li&gt;
-    &lt;/ol&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt;  &lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
-    &lt;span class="n"&gt;c1&lt;/span&gt; &lt;span class="nb"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;NOT&lt;/span&gt; &lt;span class="k"&gt;NULL&lt;/span&gt; &lt;span class="n"&gt;AUTO_INCREMENT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;c2&lt;/span&gt; &lt;span class="nb"&gt;VARCHAR&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;DEFAULT&lt;/span&gt; &lt;span class="k"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="k"&gt;PRIMARY&lt;/span&gt; &lt;span class="k"&gt;KEY&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;ENGINE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-  &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="c1"&gt;----------&lt;/span&gt;
-  &lt;span class="n"&gt;Tx1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;INSERT&lt;/span&gt; &lt;span class="k"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="mi"&gt;1000&lt;/span&gt; &lt;span class="k"&gt;rows&lt;/span&gt; &lt;span class="k"&gt;from&lt;/span&gt; &lt;span class="n"&gt;another&lt;/span&gt; &lt;span class="k"&gt;table&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;
-  &lt;span class="n"&gt;Tx2&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;INSERT&lt;/span&gt; &lt;span class="k"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;VALUES&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'xxx'&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-
-
-  &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt; &lt;span class="err"&gt;并不能知道&lt;/span&gt; &lt;span class="n"&gt;Tx1&lt;/span&gt; &lt;span class="err"&gt;中到底有多少数据&lt;/span&gt; &lt;span class="err"&gt;需要插入，&lt;/span&gt; &lt;span class="err"&gt;使用&lt;/span&gt; &lt;span class="err"&gt;一个&lt;/span&gt; &lt;span class="k"&gt;table&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;level&lt;/span&gt; &lt;span class="err"&gt;的&lt;/span&gt;&lt;span class="k"&gt;lock&lt;/span&gt; &lt;span class="err"&gt;，可以&lt;/span&gt; &lt;span class="err"&gt;使&lt;/span&gt; &lt;span class="err"&gt;在同一时间&lt;/span&gt; &lt;span class="err"&gt;只执行&lt;/span&gt; &lt;span class="err"&gt;一个&lt;/span&gt; &lt;span class="k"&gt;sql&lt;/span&gt; &lt;span class="err"&gt;语句。&lt;/span&gt; &lt;span class="err"&gt;所以&lt;/span&gt; &lt;span class="err"&gt;当在&lt;/span&gt; &lt;span class="n"&gt;replica&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="err"&gt;上&lt;/span&gt; &lt;span class="err"&gt;使用&lt;/span&gt; &lt;span class="err"&gt;基于&lt;/span&gt;  &lt;span class="nb"&gt;binary&lt;/span&gt; &lt;span class="n"&gt;log&lt;/span&gt; &lt;span class="err"&gt;重放&lt;/span&gt; &lt;span class="k"&gt;sql&lt;/span&gt; &lt;span class="err"&gt;语句时候，无论是&lt;/span&gt;&lt;span class="n"&gt;Tx1&lt;/span&gt; &lt;span class="err"&gt;与&lt;/span&gt; &lt;span class="n"&gt;Tx2&lt;/span&gt; &lt;span class="err"&gt;谁先执行，&lt;/span&gt; &lt;span class="err"&gt;都会产生相同的结果。当然&lt;/span&gt; &lt;span class="err"&gt;一个&lt;/span&gt;&lt;span class="k"&gt;table&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;level&lt;/span&gt;&lt;span class="err"&gt;的&lt;/span&gt;&lt;span class="k"&gt;lock&lt;/span&gt; &lt;span class="err"&gt;必然会限制&lt;/span&gt; &lt;span class="err"&gt;并发&lt;/span&gt; &lt;span class="err"&gt;与&lt;/span&gt; &lt;span class="err"&gt;可伸缩性&lt;/span&gt; &lt;span class="err"&gt;的发挥&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;consecutive mode: 在该种模式下，
-    &lt;ul&gt;
-      &lt;li&gt;“bulk inserts” 使用特殊的 AUTO-INC table level lock 并一直把持到 语句的最后。该类规则将 应用到 所有 的 insert ..select, replace .. select, load data 的语句中，同一时间 只有 一个把持 AUTO-INC 的语句 能够执行，&lt;/li&gt;
-      &lt;li&gt;“simple inserts”: 因为可以预先知道插入的数量， 可以使用 特殊的 轻量级 X锁（只在auto-increment 分配阶段 保持），来避免  table-level AUTO-INC 锁。如果存在 其他的 transaction 持有 table-level 的 AUTO-INC lock 则 需要等待 该 transaction 完成&lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;”mixed-mode inserts“: 分配的数值增量 要大于 插入的行数， 自动分配的数值 也是连续的。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;简单的说， consecutive lock mode 下， 在 保证 基于语句的 replic 正确下，提高了 并发与可伸缩性， 完美兼容 tranditional mode&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;interleaved mode: 不使用 table-level auto-inc lock， 而且可以同时执行多个insert 语句， 是最快的，可伸缩 的 lock 模式， 但是对于 基于语句 复制的 server来说 并不安全。 在这种锁定模式下，保证auto-increment column 是唯一的，并且在所有同时执行的“类似INSERT”语句中单调递增。 但是，由于多个语句可以同时生成数字（也就是说，在语句之间交错分配数字），因此为任何给定语句插入的行生成的值可能不是连续的。即： 在 simple insert 语句中， auto-increment 中的column是连续的， mixed-mode insert 与 bulk insert 中 可能存在 gap&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;auto-increment gap: 自动增量间隙
-    &lt;ul&gt;
-      &lt;li&gt;在所有的lock mode下： 如果事务发生回滚，则分配给该 transaction 的数值 就丢失了，该值 将不会被重用，因为表中的 auto-increment column 数值 可能存在 gap&lt;/li&gt;
-      &lt;li&gt;批量插入： 在 traditional 或者 consecutive 模式下 任何插入 都不会产生 gap，因为批量插入 都需要获得 table-level 的 auto-inr lock 并保持到 活动结束。 在 interleaved 下，”bulk-insert” 可能产生gap。在 consecutive 或者 interleaved 模式下， 在连续的语句之间可能会出现gap，因为对于批量插入，可能不知道每个语句所需的自动递增值的确切数量，并且可能会高估。( 这里面 是不是描述有问题？ 因为已经在前面说了， tranditional or consecutive 模式下 批量插入并不会产生gap， 这里又说会有， 为什么？ &lt;a href="https://dev.mysql.com/doc/refman/8.0/en/innodb-auto-increment-handling.html"&gt;文档在此&lt;/a&gt;)&lt;/li&gt;
-      &lt;li&gt;mixed mode insert 在各种不同mode下产生的结果： 最近产生的sequence number  is 100：&lt;/li&gt;
-    &lt;/ul&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt;    &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
-    &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt; &lt;span class="nb"&gt;INT&lt;/span&gt; &lt;span class="nb"&gt;UNSIGNED&lt;/span&gt; &lt;span class="k"&gt;NOT&lt;/span&gt; &lt;span class="k"&gt;NULL&lt;/span&gt; &lt;span class="n"&gt;AUTO_INCREMENT&lt;/span&gt; &lt;span class="k"&gt;PRIMARY&lt;/span&gt; &lt;span class="k"&gt;KEY&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
-    &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;c2&lt;/span&gt; &lt;span class="nb"&gt;CHAR&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;ENGINE&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;INNODB&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-
-    &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;INSERT&lt;/span&gt; &lt;span class="k"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;c2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;VALUES&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;'a'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;'b'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;'c'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;'d'&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-
-    &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="k"&gt;lock&lt;/span&gt; &lt;span class="k"&gt;mode&lt;/span&gt; &lt;span class="err"&gt;为&lt;/span&gt; &lt;span class="n"&gt;traditional&lt;/span&gt; &lt;span class="err"&gt;时候，&lt;/span&gt; &lt;span class="err"&gt;执行插入操作&lt;/span&gt;
-    &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;c2&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="k"&gt;ORDER&lt;/span&gt; &lt;span class="k"&gt;BY&lt;/span&gt; &lt;span class="n"&gt;c2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-     &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-----+------+&lt;/span&gt;
-     &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt;  &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;c2&lt;/span&gt;   &lt;span class="o"&gt;|&lt;/span&gt;
-     &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-----+------+&lt;/span&gt;
-     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-     &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="mi"&gt;101&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="k"&gt;c&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-     &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="mi"&gt;102&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-     &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-----+------+&lt;/span&gt;
-
-    &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="k"&gt;lock&lt;/span&gt; &lt;span class="k"&gt;mode&lt;/span&gt; &lt;span class="err"&gt;为&lt;/span&gt; &lt;span class="n"&gt;consecutive&lt;/span&gt; &lt;span class="err"&gt;时候，&lt;/span&gt; &lt;span class="err"&gt;执行插入操作&lt;/span&gt;   
-
-        &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;c2&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="k"&gt;ORDER&lt;/span&gt; &lt;span class="k"&gt;BY&lt;/span&gt; &lt;span class="n"&gt;c2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-----+------+&lt;/span&gt;
-    &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt;  &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;c2&lt;/span&gt;   &lt;span class="o"&gt;|&lt;/span&gt;
-    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-----+------+&lt;/span&gt;
-    &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-    &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="mi"&gt;101&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-    &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="k"&gt;c&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-    &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="mi"&gt;102&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-----+------+&lt;/span&gt;
-
-
-    &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="k"&gt;lock&lt;/span&gt; &lt;span class="k"&gt;mode&lt;/span&gt; &lt;span class="err"&gt;为&lt;/span&gt; &lt;span class="n"&gt;interleaved&lt;/span&gt; &lt;span class="err"&gt;时候，&lt;/span&gt; &lt;span class="err"&gt;执行插入操作&lt;/span&gt; 
-
-     &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;c2&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="k"&gt;ORDER&lt;/span&gt; &lt;span class="k"&gt;BY&lt;/span&gt; &lt;span class="n"&gt;c2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-     &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-----+------+&lt;/span&gt;
-     &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt;  &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;c2&lt;/span&gt;   &lt;span class="o"&gt;|&lt;/span&gt;
-     &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-----+------+&lt;/span&gt;
-     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="k"&gt;c&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-     &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-----+------+    &lt;/span&gt;
-
-     &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="err"&gt;代表&lt;/span&gt; &lt;span class="err"&gt;唯一，但是并不能够确定的数值&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;InnoDB AUTO_INCREMENT Counter 的初始化：&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;mysql 5.7 auto-increment 的counter 存储在 main memory not disk， 所以 当server 重启，将执行  类似  SELECT MAX(ai_col) FROM table_name FOR UPDATE; 来 进行 counter 的初始化&lt;/li&gt;
-  &lt;li&gt;MySQL 8.0 之后，行为发生了改变， 目前最大的 auto-increment counter 数值 被写入到了 redo log， server 重启直接从 disk 进行初始化counter&lt;/li&gt;
-  &lt;li&gt;所以， 5.7 之后，如果transaction 发生rollback之后，重启server， 会出现rollback的 auto-increment id 被重复使用的问题，而 8.0 的server，则不会 重用 id， 因为 其将 counter 写入到了 disk中&lt;/li&gt;
-  &lt;li&gt;auto_increment_increment 设定 auto-increment 的起始点， 默认为1， auto_increment_increment 设置 增量 默认为 1&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id="index-没个-innodb-表-都有一个-特殊的index-称为-聚簇索引-用来保存-row-data-通常-聚簇索引-与-primary-key主键-同意-为了-请求获得-更好的性能-理解-innodb-如何使用-聚簇索引-来-进行优化-查询和-dml-操作-是非常重要-的"&gt;index: 没个 InnoDB 表， 都有一个 特殊的index 称为 聚簇索引， 用来保存 row data， 通常 聚簇索引 与 primary key(主键) 同意， 为了 请求获得 更好的性能， 理解 InnoDB 如何使用 聚簇索引 来 进行优化 查询，和 DML 操作 是非常重要 的&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;当你定义table 的Primary key时， InnoDB 用它作为聚簇索引， 如果没有 逻辑上的 唯一 非空 作为主键的情况下， 可以添加一个 auto-increment column 作为 主键&lt;/li&gt;
-  &lt;li&gt;如果没有为 table 设定 Primary key（ 主键） 时， InnoDB 使用第一个 Unique &amp;amp; 所有column not null 的index 作为聚簇索引&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如果table 没有 Primary key 和 合适的Unique index， 则 InnoDB 生成一个隐藏的名称为 GEN_CLUST_INDEX 的聚簇索引， 该字段为 6-byte 的单调递增&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;聚簇索引 如何 加快查询：
-    &lt;blockquote&gt;
-      &lt;p&gt;Accessing a row through the clustered index is fast because the index search leads directly to the page that contains the row data. If a table is large, the clustered index architecture often saves a disk I/O operation when compared to storage organizations that store row data using a different page from the index record.&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-  &lt;li&gt;二级索引 是如何关联到 聚簇索引的： 二级索引定义为： 除 聚簇索引之外的索引&lt;/li&gt;
-  &lt;li&gt;二级索引的每个条目（记录） 中 都包含 主键 + 二级索引 包含的column，InnoDB 使用 包含的主键 来 在聚簇索引中进行查找&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;所以 如果聚簇索引 很大的话，将加大 二级索引 的空间占用&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;InnoDB index 的物理结构：&lt;/li&gt;
-  &lt;li&gt;InnoDB 所以为B-tree， 索引记录 存储在 B-tree 的 页子 page 中， 默认的 index page 大小为 16KB， 可以通过   innodb_page_size  进行设定&lt;/li&gt;
-  &lt;li&gt;当插入 新纪录 到 聚簇索引时， InnoDB 尝试留下  1/16 的 空间 来满足 未来的insert update。 如果数据时按照 顺序插入的，则 index page 将占用 15/16 空间， 如果数据按照 random 顺序插入的，则可能 占用 1/2 - 15/16， innodb_fill_factor  用来控制 空间占用百分比&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如果InnoDB 索引页的占用率下降到 MERGE_THRESHOLD(默认为50%) 时， InnoDB 将尝试 收缩索引 以 释放页面&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://dev.mysql.com/doc/refman/8.0/en/sorted-index-builds.html"&gt;Sorted index builde&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id="the-system-tablespace"&gt;The System Tablespace:&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;change buffer 在 disk 上存储到 system tablespace, 如果在system tablespace 而非 file-per-table 或者 general tablespace 则 其中还包含 table 和 index data的数据。 8.0之前 还存储 doublewrite buffer， innodb data dictionary， 8.0之后 则分开存储&lt;/li&gt;
-  &lt;li&gt;system tablespace 可以有多个 data 文件， 默认的 一个 ibddata1 在 data directory中，&lt;/li&gt;
-  &lt;li&gt;tablespace 的数量 与 大小 在 启动项 innodb_data_file_path  进行设定&lt;/li&gt;
-  &lt;li&gt;可以进行调整，&lt;a href="https://dev.mysql.com/doc/refman/8.0/en/innodb-system-tablespace.html"&gt;文档在此&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id="file-per-table-tablespace-包含-table中的-data-和-index存储在系统中-单个文件中"&gt;File-Per-Table Tablespace: 包含 table中的 data 和 index，存储在系统中 单个文件中&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;innodb_file_per_table 控制开关， 默认为 打开状态。关闭将导致 InnoDB 存储table 数据到 system tablespace 中&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;file-per-table tablespace 在mysql 的 data directory(DATA DIRECTORY 可以在create table syntax 中指定) 目录下 存储 table_name.idb ，下面为示例：&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;USE&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
-   &lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="nb"&gt;INT&lt;/span&gt; &lt;span class="k"&gt;PRIMARY&lt;/span&gt; &lt;span class="k"&gt;KEY&lt;/span&gt; &lt;span class="n"&gt;AUTO_INCREMENT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-   &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="nb"&gt;VARCHAR&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
- &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;ENGINE&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;to&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;data&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;
-&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;ls&lt;/span&gt;
-&lt;span class="n"&gt;t1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ibd&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/li&gt;
-  &lt;li&gt;File-per-table 的优势：
-    &lt;ol&gt;
-      &lt;li&gt;当 发生drop file， table_name.idb 直接被删掉， 存储空间 可以快速的归还给操作系统&lt;/li&gt;
-      &lt;li&gt;Truncate table 表现的比较好&lt;/li&gt;
-      &lt;li&gt;可以将 data directory 指定到 单独的设备上&lt;/li&gt;
-      &lt;li&gt;创建在 改 tablespace 的table， 支持 dynamic compressed 存储格式(System tablespace 不支持)&lt;/li&gt;
-      &lt;li&gt;比较容易恢复和 备份&lt;/li&gt;
-      &lt;li&gt;允许单独监控 操作系统的 文件系统&lt;/li&gt;
-      &lt;li&gt;减少空间限制&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id="general-tablespace-通用-tablespace"&gt;General Tablespace： 通用 Tablespace&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;使用create  tablespace 创建的 共享的 tablespace, 其属性 是 file-per-tablespace 与 system tablespace 的结合。 可以 像 file-per-table tablespace 一样 指定目录存储 general tablespace， 想system tablespace 一样 存储多个 table 在一个文件中， 并可以支持 所有的存储类型。&lt;/li&gt;
-  &lt;li&gt;下面是 使用 General Tablespace 的方法：&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;创建&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt;&lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="n"&gt;TABLESPACE&lt;/span&gt; &lt;span class="n"&gt;tablespace_name&lt;/span&gt;
-    &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="k"&gt;ADD&lt;/span&gt; &lt;span class="n"&gt;DATAFILE&lt;/span&gt; &lt;span class="s1"&gt;'file_name'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-    &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;FILE_BLOCK_SIZE&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-        &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;ENGINE&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;engine_name&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
-
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="err"&gt;可以&lt;/span&gt; &lt;span class="err"&gt;使用&lt;/span&gt; &lt;span class="err"&gt;变量&lt;/span&gt; &lt;span class="n"&gt;innodb_directories&lt;/span&gt;  &lt;span class="err"&gt;控制&lt;/span&gt; &lt;span class="k"&gt;general&lt;/span&gt; &lt;span class="n"&gt;tablespace&lt;/span&gt; &lt;span class="err"&gt;的存储目录，&lt;/span&gt; 
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;ts1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;idb&lt;/span&gt; &lt;span class="err"&gt;为相对&lt;/span&gt; &lt;span class="n"&gt;innodb_directories&lt;/span&gt; &lt;span class="err"&gt;目录&lt;/span&gt;
-&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="n"&gt;TABLESPACE&lt;/span&gt; &lt;span class="nv"&gt;`ts1`&lt;/span&gt; &lt;span class="k"&gt;ADD&lt;/span&gt; &lt;span class="n"&gt;DATAFILE&lt;/span&gt; &lt;span class="s1"&gt;'ts1.ibd'&lt;/span&gt; &lt;span class="n"&gt;Engine&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="err"&gt;也可以执行全路径&lt;/span&gt;
-&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="n"&gt;TABLESPACE&lt;/span&gt; &lt;span class="nv"&gt;`ts1`&lt;/span&gt; &lt;span class="k"&gt;ADD&lt;/span&gt; &lt;span class="n"&gt;DATAFILE&lt;/span&gt; &lt;span class="s1"&gt;'/my/tablespace/directory/ts1.ibd'&lt;/span&gt; &lt;span class="n"&gt;Engine&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;InnoDB&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;ol&gt;
-  &lt;li&gt;使用： 添加table 到 general tablespace:&lt;br /&gt;
-  ```sql&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;mysql&amp;gt; CREATE TABLE t1 (c1 INT PRIMARY KEY) TABLESPACE ts1;&lt;br /&gt;
-  mysql&amp;gt; ALTER TABLE t2 TABLESPACE ts1;&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;  
-   * 使用alter table 可以将table 的tablespace 在各个 tablespace 中进行转换： general tablespace为具体的create tablespace 的名字， file-per-table名称为 innodb_file_per_table， system tablespace 为innodb_system； 如下： 
-   
-   ```sql
-   
-   
-   ALTER TABLE tbl_name TABLESPACE [=] tablespace_name;
-   
-   ALTER TABLE tbl_name TABLESPACE [=] innodb_system;
-   
-   ALTER TABLE tbl_name TABLESPACE [=] innodb_file_per_table;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;重命名tablespace： ALTER TABLESPACE s1 RENAME TO s2;， 重命名操作不能发生在 lock tables， flush tables 作用期间&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;删掉 tablespace： 在tablespace中的所有table 都必须删除掉，才能够成功的 drop tablespace&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight sql"&gt;&lt;code&gt;   
-    &lt;span class="o"&gt;#&lt;/span&gt;&lt;span class="n"&gt;Use&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;query&lt;/span&gt; &lt;span class="k"&gt;similar&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;following&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;identify&lt;/span&gt; &lt;span class="n"&gt;tables&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="k"&gt;general&lt;/span&gt; &lt;span class="n"&gt;tablespace&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt; 
-     &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NAME&lt;/span&gt; &lt;span class="k"&gt;AS&lt;/span&gt; &lt;span class="n"&gt;space_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NAME&lt;/span&gt; &lt;span class="k"&gt;AS&lt;/span&gt; &lt;span class="k"&gt;table_name&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;INFORMATION_SCHEMA&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;INNODB_TABLESPACES&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-          &lt;span class="n"&gt;INFORMATION_SCHEMA&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;INNODB_TABLES&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="k"&gt;WHERE&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;SPACE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;SPACE&lt;/span&gt; &lt;span class="k"&gt;AND&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NAME&lt;/span&gt; &lt;span class="k"&gt;LIKE&lt;/span&gt; &lt;span class="s1"&gt;'ts1'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;------------+------------+&lt;/span&gt;
-   &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;space_name&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="k"&gt;table_name&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;
-   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;------------+------------+&lt;/span&gt;
-   &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;ts1&lt;/span&gt;        &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;t1&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-   &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;ts1&lt;/span&gt;        &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;t2&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-   &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;ts1&lt;/span&gt;        &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;t3&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt;
-   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;------------+------------+&lt;/span&gt;
-
-   &lt;span class="k"&gt;DROP&lt;/span&gt; &lt;span class="n"&gt;TABLESPACE&lt;/span&gt; &lt;span class="n"&gt;ts1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;a href="https://dev.mysql.com/doc/refman/8.0/en/general-tablespaces.html"&gt;文档在此&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Undo tablespace: 用于保存undo log 的地方， undo log 产生于 insert, update, delete, 等DML 操作， 用于 事务回滚， consistent reading 等&lt;/li&gt;
-  &lt;li&gt;默认的undo tablespace 存储在 mysql data dir 中， 可以使用 innodb_undo_directory  进行控制， 默认的 tablespace 文件为  undo_001 , undo_002， 对应的 tablespace名称 为 innodb_undo_001, innodb_undo_002&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://dev.mysql.com/doc/refman/8.0/en/innodb-undo-tablespaces.html"&gt;文档在此&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;undo tablespace 作为一个系统使用的tablespace 一样可以允许创建，删除， 但是与 应系统性能表现相关， 比较重要&lt;/li&gt;
-&lt;/ul&gt;
-
-</content>
-  </entry>
-  <entry>
-    <title>Redis Client conection</title>
-    <link rel="alternate" href="http://geniousbar.github.io/2021/02/21/redis/"/>
-    <id>http://geniousbar.github.io/2021/02/21/redis/</id>
-    <published>2021-02-21T00:00:00+00:00</published>
-    <updated>2021-04-20T08:07:49+00:00</updated>
-    <summary type="html">&lt;h2 id="redis-建立链接过程"&gt;Redis 建立链接过程&lt;/h2&gt;
-&lt;p&gt;&lt;img src="../../../../images/redis-d67208d8.png" alt="redis" /&gt;&lt;/p&gt;
-</summary>
-    <content type="html">&lt;h2 id="redis-建立链接过程"&gt;Redis 建立链接过程&lt;/h2&gt;
-&lt;p&gt;&lt;img src="../../../../images/redis-d67208d8.png" alt="redis" /&gt;&lt;/p&gt;
 </content>
   </entry>
 </feed>
