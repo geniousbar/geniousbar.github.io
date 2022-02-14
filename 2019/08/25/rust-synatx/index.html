@@ -411,7 +411,8 @@
       <span class="nf">.map</span><span class="p">(</span><span class="nn">ToString</span><span class="p">::</span><span class="n">to_string</span><span class="p">)</span>
       <span class="nf">.collect</span><span class="p">();</span>
 </code></pre></div>
-<h3 id="macros">macros:</h3>
+<h2 id="macros">macros:</h2>
+<h3 id="macro_rules">macro_rules:</h3>
 <h4 id="rust-tokens-分类">rust tokens 分类：</h4>
 <div class="highlight"><pre class="highlight plaintext"><code>  Identifiers: foo, Bambous, self, we_can_dance, LaCaravane, …
   Integers: 42, 72u32, 0_______0, …
@@ -1013,7 +1014,7 @@ macro_rules! vec_strs {
 
 </code></pre></div>
 <ul>
-  <li>3) 可以使用 编译参数 rustc -Z unstable-options –pretty expanded hello.rs 来输出macro展开之后的 形式内容</li>
+  <li>3) 可以使用 编译参数 rustc -Z unstable-options –pretty=expanded hello.rs 来输出macro展开之后的 形式内容</li>
 </ul>
 
 <div class="highlight"><pre class="highlight rust"><code><span class="c">// Shorthand for initialising a `String`.</span>
@@ -1051,8 +1052,96 @@ macro_rules! vec_strs {
     <span class="p">));</span>
 <span class="p">}</span>
 
+</code></pre></div><h3 id="3种-procedural-macros-1-在-struce--enum-上使用derive-2-在任何-地方可以使用的-attribute-like-macros-3-function-like-macros">3种 procedural macros: 1) 在 struce &amp; enum 上使用：#[derive] 2) 在任何 地方可以使用的： Attribute-like macros 3) Function-like macros</h3>
+<h4 id="procedural-macro-的-整体概览">procedural macro 的 整体概览：</h4>
+<h5 id="1-使用-rust-func-对-macro接受的-tokenstream-进行处理-并返回--tokenstream">1. 使用 rust func 对 macro接受的 TokenStream 进行处理， 并返回  TokenStream</h5>
+<div class="highlight"><pre class="highlight rust"><code><span class="k">pub</span> <span class="k">fn</span> <span class="nf">hello_macro_derive</span><span class="p">(</span><span class="n">input</span><span class="p">:</span> <span class="n">TokenStream</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">TokenStream</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</code></pre></div><h5 id="2-依赖-crate--proc-macro-syn-quote-其中-proc-macro-存在于-rust-lib-库中">2. 依赖 crate:  proc-macro syn quote. 其中 proc-macro 存在于 rust lib 库中。</h5>
+<ul>
+  <li>proc-macro: 提供 将 #[derive()], #[some_type], println!() macro 声明方式，关联到 macro 定义的 rust func 中</li>
+  <li>syn: 将TokenStream —&gt; syn::DeriveInput</li>
+  <li>quote: rust code —&gt; TokenStream</li>
+  <li>macro func: 将 syn::DeriveInput —&gt; TokenStream （需要quote 的帮助, 为 macro定义的主要逻辑）</li>
+</ul>
+
+<h5 id="3-derive-example">3. #[derive] example:</h5>
+<div class="highlight"><pre class="highlight rust"><code>  <span class="c">// hello_macro</span>
+   <span class="k">pub</span> <span class="k">trait</span> <span class="n">HelloMacro</span> <span class="p">{</span>
+       <span class="k">fn</span> <span class="nf">hello_macro</span><span class="p">();</span>
+   <span class="p">}</span>
+
+  <span class="c">// hello_macro_derive</span>
+  <span class="c">// Cargo.toml</span>
+  <span class="p">[</span><span class="n">lib</span><span class="p">]</span>
+  <span class="n">proc</span><span class="o">-</span><span class="n">macro</span> <span class="o">=</span> <span class="k">true</span>
+
+  <span class="p">[</span><span class="n">dependencies</span><span class="p">]</span>
+  <span class="n">syn</span> <span class="o">=</span> <span class="s">"1.0"</span>
+  <span class="n">quote</span> <span class="o">=</span> <span class="s">"1.0"</span>
+
+  <span class="c">// src/lib.rs</span>
+  <span class="k">extern</span> <span class="n">crate</span> <span class="n">proc_macro</span><span class="p">;</span>
+
+  <span class="k">use</span> <span class="nn">proc_macro</span><span class="p">::</span><span class="n">TokenStream</span><span class="p">;</span>
+  <span class="k">use</span> <span class="nn">quote</span><span class="p">::</span><span class="n">quote</span><span class="p">;</span>
+  <span class="k">use</span> <span class="n">syn</span><span class="p">;</span>
+
+  <span class="nd">#[proc_macro_derive(HelloMacro)]</span>
+  <span class="k">pub</span> <span class="k">fn</span> <span class="nf">hello_macro_derive</span><span class="p">(</span><span class="n">input</span><span class="p">:</span> <span class="n">TokenStream</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">TokenStream</span> <span class="p">{</span>
+      <span class="c">// Construct a representation of Rust code as a syntax tree</span>
+      <span class="c">// that we can manipulate</span>
+      <span class="k">let</span> <span class="n">ast</span> <span class="o">=</span> <span class="nn">syn</span><span class="p">::</span><span class="nf">parse</span><span class="p">(</span><span class="n">input</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+
+      <span class="c">// Build the trait implementation</span>
+      <span class="nf">impl_hello_macro</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ast</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="k">fn</span> <span class="nf">impl_hello_macro</span><span class="p">(</span><span class="n">ast</span><span class="p">:</span> <span class="o">&amp;</span><span class="nn">syn</span><span class="p">::</span><span class="n">DeriveInput</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">TokenStream</span> <span class="p">{</span>
+      <span class="k">let</span> <span class="n">name</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ast</span><span class="py">.ident</span><span class="p">;</span>
+      <span class="k">let</span> <span class="n">gen</span> <span class="o">=</span> <span class="nd">quote!</span> <span class="p">{</span>
+          <span class="k">impl</span> <span class="n">HelloMacro</span> <span class="k">for</span> #<span class="n">name</span> <span class="p">{</span>
+              <span class="k">fn</span> <span class="nf">hello_macro</span><span class="p">()</span> <span class="p">{</span>
+                  <span class="nd">println!</span><span class="p">(</span><span class="s">"Hello, Macro! My name is {}!"</span><span class="p">,</span> <span class="nd">stringify!</span><span class="p">(</span>#<span class="n">name</span><span class="p">));</span>
+              <span class="p">}</span>
+          <span class="p">}</span>
+      <span class="p">};</span>
+      <span class="n">gen</span><span class="nf">.into</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="c">//useage</span>
+
+  <span class="k">use</span> <span class="nn">hello_macro</span><span class="p">::</span><span class="n">HelloMacro</span><span class="p">;</span>
+  <span class="k">use</span> <span class="nn">hello_macro_derive</span><span class="p">::</span><span class="n">HelloMacro</span><span class="p">;</span>
+
+  <span class="nd">#[derive(HelloMacro)]</span>
+  <span class="k">struct</span> <span class="n">Pancakes</span><span class="p">;</span>
+
+  <span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nn">Pancakes</span><span class="p">::</span><span class="nf">hello_macro</span><span class="p">();</span>
+  <span class="p">}</span>
+
+
 </code></pre></div>
-<div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2022 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
+<h5 id="4-attribute-like-macros-跟-derive-类似-但是这里没有明确的示例-即-不知道-item-tokenstream-的内容">4. Attribute-like macros: 跟 #[derive] 类似， 但是这里没有明确的示例， 即 不知道 item: TokenStream 的内容</h5>
+
+<div class="highlight"><pre class="highlight rust"><code>
+<span class="nd">#[route(GET,</span> <span class="s">"/"</span><span class="nd">)]</span>
+<span class="k">fn</span> <span class="nf">index</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="nd">#[proc_macro_attribute]</span>
+<span class="k">pub</span> <span class="k">fn</span> <span class="nf">route</span><span class="p">(</span><span class="n">attr</span><span class="p">:</span> <span class="n">TokenStream</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">TokenStream</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">TokenStream</span> <span class="p">{</span>
+</code></pre></div>
+<h5 id="5-function-like-macros-类似于-macro_rules但是远比--macro_rule-要灵活因为-可以使用rust-code-对--tokenstream-进行处理-所以可以sql-这种复杂的语句">5. Function-like macros: 类似于 macro_rules，但是远比  macro_rule 要灵活，因为 可以使用rust code 对  TokenStream 进行处理。 所以可以sql 这种复杂的语句</h5>
+
+<div class="highlight"><pre class="highlight rust"><code><span class="k">let</span> <span class="n">sql</span> <span class="o">=</span> <span class="nd">sql!</span><span class="p">(</span><span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="n">posts</span> <span class="n">WHERE</span> <span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="nd">#[proc_macro]</span>
+<span class="k">pub</span> <span class="k">fn</span> <span class="nf">sql</span><span class="p">(</span><span class="n">input</span><span class="p">:</span> <span class="n">TokenStream</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">TokenStream</span> <span class="p">{</span>
+<span class="p">}</span>
+
+</code></pre></div><div class="social"></div></article></main><footer><div class="footer-wrapper"><div class="author"><div class="image-wrapper"><a href="/author/"><img alt="author" src="../../../../images/profile-1e71686a.png" /></a></div></div><div class="image-content"><img src="../../../../images/wechat_nasa-0d87c0dd.png" /></div><div class="copyright"><i class="fa fa-copyright"></i> 2022 <a href="/">日常学习</a> - geniousbar</div></div><script>var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
   hm.src = "https://hm.baidu.com/hm.js?b43ef53b285c49e1af0bd7080994c825";
